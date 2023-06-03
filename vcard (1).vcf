@@ -1,0 +1,16 @@
+BEGIN:VCARD
+VERSION:3.0
+FN;CHARSET=UTF-8:Manav Joshi
+N;CHARSET=UTF-8:Joshi;Manav;;;
+GENDER:M
+BDAY:20000219
+EMAIL;CHARSET=UTF-8;type=HOME,INTERNET:work@manavjoshi.com
+TEL;TYPE=HOME,VOICE:+91 99259 78977
+URL;type=WORK;CHARSET=UTF-8:www.manavjoshi.com
+X-SOCIALPROFILE;TYPE=facebook:https://www.facebook.com/manav.joshi.31?mibextid=LQQJ4d
+X-SOCIALPROFILE;TYPE=twitter:https://twitter.com/manavjoshii
+X-SOCIALPROFILE;TYPE=linkedin:https://www.linkedin.com/in/manav-joshi
+X-SOCIALPROFILE;TYPE=instagram:https://instagram.com/manav.joshii
+X-SOCIALPROFILE;TYPE=youtube:https://youtube.com/shorts/XiGj1cpIjuo?feature=share
+REV:2023-02-03T09:04:27.746Z
+END:VCARD
