@@ -37,7 +37,7 @@
     const routes = {
 
       "/": {
-        template: "/templates/index.html",
+        template: "index.html",
         title: "",
         description: "This is the home page",
       },
@@ -73,6 +73,12 @@
     window.addEventListener("hashchange", locationHandler);
     // call the urlLocationHandler to load the page
     locationHandler();
+    // add an event listener to the window that watches for url changes
+window.onpopstate = urlLocationHandler;
+// call the urlLocationHandler function to handle the initial url
+window.route = urlRoute;
+// call the urlLocationHandler function to handle the initial url
+urlLocationHandler();
 
   </script>
   <link href="https://uploads-ssl.webflow.com/63aea4db2c152d0f2ee3b178/6437cc6e36329bd65dacbaac_Transparent%20Icon.png"
