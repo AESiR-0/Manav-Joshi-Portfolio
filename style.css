@@ -1,0 +1,15 @@
+.process{
+    transition: ease-out 0.4s;
+}
+
+.process:hover{
+    transform: scale(1.08);
+}
+
+p{
+    font-weight: bold;
+    font-size: 1.2rem;
+    z-index: 100;
+    margin-top: 10px;
+    opacity: 1;
+}
