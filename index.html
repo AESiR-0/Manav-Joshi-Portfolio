@@ -11,6 +11,8 @@
     rel="stylesheet" type="text/css" />
   <link href="https://fonts.googleapis.com" rel="preconnect" />
   <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css">
+
   <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin="anonymous" />
   <script src="https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js" type="text/javascript"></script>
   <script type="text/javascript">
@@ -47,7 +49,7 @@
         description: "This is the Gallery",
       }
     };
-    
+
     // create a function that watches the url and calls the urlLocationHandler
     const locationHandler = async () => {
       // get the url path, replace hash with empty string
@@ -74,11 +76,19 @@
     // call the urlLocationHandler to load the page
     locationHandler();
     // add an event listener to the window that watches for url changes
-window.onpopstate = urlLocationHandler;
-// call the urlLocationHandler function to handle the initial url
-window.route = urlRoute;
-// call the urlLocationHandler function to handle the initial url
-urlLocationHandler();
+    window.onpopstate = urlLocationHandler;
+    // call the urlLocationHandler function to handle the initial url
+    window.route = urlRoute;
+    // call the urlLocationHandler function to handle the initial url
+    urlLocationHandler();
+
+
+  </script>
+  <script type="text/javascript">
+
+    const audio = new Audio();
+
+    audio.src = "./click.mp3";
 
   </script>
   <link href="https://uploads-ssl.webflow.com/63aea4db2c152d0f2ee3b178/6437cc6e36329bd65dacbaac_Transparent%20Icon.png"
@@ -89,493 +99,528 @@ urlLocationHandler();
 
 <body class="body" id="main-page">
   <div class="floating_contact-button">
-    <a href="#" data-w-id="11c5d518-aca5-42d0-1176-64e7444f2539" class="button-2 w-button">
-      <strong>Let&#x27;s Talk</strong>
+    <a href="http://wa.me/+919925978977">
+      <button onclick="audio.play();" class="pushable">
+        <span class="front">
+          Let's Talk
+        </span>
     </a>
   </div>
   <div id="main-page">
-  <div class="all-sections header wf-section" >
-    <div class="all-containers w-container">
-      <div class="padding-tb-20 horizontal-align">
-        <div data-animation="default" data-collapse="medium" data-duration="400" data-easing="ease" data-easing2="ease"
-          role="banner" class="navbar w-nav">
-          <div class="container w-container">
-            <a href="/" aria-current="page" class="brand w-nav-brand w--current">
+    <div class="all-sections header wf-section">
+      <div class="all-containers w-container">
+        <div class="padding-tb-20 horizontal-align">
+          <div data-animation="default" data-collapse="medium" data-duration="400" data-easing="ease"
+            data-easing2="ease" role="banner" class="navbar w-nav">
+            <div class="container w-container">
+              <a href="/" aria-current="page" class="brand w-nav-brand w--current">
+                <img style="position:fixed;"
+                  src="https://uploads-ssl.webflow.com/63aea4db2c152d0f2ee3b178/63bbf535abd1942f9f05cee7_Manav%20Joshi%20sign%20gif.gif"
+                  loading="lazy" width="150" alt="" />
+              </a>
+              <nav role="navigation" class="nav-menu nav w-nav-menu">
+                <a href="#about" class="nav-link w-nav-link">About Us</a>
+                <a href="#Work" class="nav-link w-nav-link">Work</a>
+                <a href="#brands" class="nav-link w-nav-link">Brands</a>
+                <a href="https://www.youtube.com/channel/UCNBK6_Xg4j-ebsmsI_bIo4g F"
+                  class="nav-link w-nav-link">Gallery</a>
+                <a href="http://wa.me/+919925978977" class="nav_link connect w-nav-link">Let&#x27;s Connect</a>
+              </nav>
+              <div class="menu-button w-nav-button">
+                <div class="w-icon-nav-menu"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      data-poster-url="https://uploads-ssl.webflow.com/63aea4db2c152d0f2ee3b178/63d932dc345a640437cbe231_Landing Page Video-poster-00001.jpg"
+      data-video-urls="https://uploads-ssl.webflow.com/63aea4db2c152d0f2ee3b178/63d932dc345a640437cbe231_Landing Page Video-transcode.mp4,https://uploads-ssl.webflow.com/63aea4db2c152d0f2ee3b178/63d932dc345a640437cbe231_Landing Page Video-transcode.webm"
+      data-autoplay="true" data-loop="true" data-wf-ignore="true"
+      class="video_block-100vh w-background-video w-background-video-atom">
+      <video id="5fe0e63f-a6e0-e8c4-155e-bc4949fa619e-video" autoplay="" loop=""
+        style="background-image:url(&quot;https://uploads-ssl.webflow.com/63aea4db2c152d0f2ee3b178/63d932dc345a640437cbe231_Landing Page Video-poster-00001.jpg&quot;)"
+        muted="" playsinline="" data-wf-ignore="true" data-object-fit="cover">
+        <source
+          src="https://uploads-ssl.webflow.com/63aea4db2c152d0f2ee3b178/63d932dc345a640437cbe231_Landing Page Video-transcode.mp4"
+          data-wf-ignore="true" />
+        <source
+          src="https://uploads-ssl.webflow.com/63aea4db2c152d0f2ee3b178/63d932dc345a640437cbe231_Landing Page Video-transcode.webm"
+          data-wf-ignore="true" />
+      </video>
+      <div class="all-containers _100vh w-container">
+        <div class="padding-tb-60 vertical-align">
+          <h1 data-w-id="821e6803-8768-3b02-f137-6858664968b8"
+            style="-webkit-transform:translate3d(0, 20px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-moz-transform:translate3d(0, 20px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-ms-transform:translate3d(0, 20px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);transform:translate3d(0, 20px, 0) scale3d(1, 1, 1) z-index:100; rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);  "
+            <div class="hero_title">Making world happier <br />one show at a time. </h1>
+          <div class="spacer-20"></div>
+          <a href="#Let-s-Work" data-w-id="b9ed153f-142d-676c-c5b7-a518157209a7"
+            style=" -webkit-transform:translate3d(0, 20px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-moz-transform:translate3d(0, 20px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-ms-transform:translate3d(0, 20px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);transform:translate3d(0, 20px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0)"
+            class="button w-button">Let&#x27;s Work</a>
+        </div>
+      </div>
+    </div>
+    <div id="about" class="about_section wf-section">
+      <div class="all-containers _100vh w-container">
+        <div class="about_me_padding">
+          <div class="about-me-block">
+            <h1 class="h1">About</h1>
+            <p class="paragraph section_1">Manav is a <span class="red">Performer, VJ, Marketer, and Bathroom
+                singer</span>. Hosting his first show when he was 12, Manav has over 250 stage shows under his belt,
+              having entertained crowds as huge as 15,000 people. As the host of the popular travel show &quot;Shu
+              Plan?&quot; on VTV Gujarati, Manav&#x27;s videos have garnered over 10 million views across social media.
+              <br />
+              <br />Manav has conducted 50+ insightful interviews with prominent personalities from the Gujarati
+              entertainment industry. An artist at heart, Manav has a background in marketing with a 5+ years of
+              experience in some fantastic projects. <br />
+              <br />
+              <span class="bold_about">Bring the electrifying energy on stage, on camera, in your next project. Work
+                with
+                Manav, for your next big gig!</span>
+              <br />
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <section class="gallery" id="gallery" style="height: 100vh; display:flex; gap:80px; ">
+      <h1 style=" color: white; width:150px; height:100px; margin-left:30px;">Gallery </h1>
+      <div class="whole">
+        <div class="row" style="gap:6px;">
+          <div class="column">
+            <img class="image" src="./Galllery/1.jpg" alt="">
+
+            
+            
+            <img class="image" src="./Galllery/4.jpg" alt="">
+
+
+            
+          </div>
+
+          <div class="column">
+
+            <img class="image" src="./Galllery/8.jpg" alt="">
+            <img class="image" src="./Galllery/7.jpg" alt="">
+            <img class="image" src="./Galllery/6.jpg" alt="">
+            <img class="image" src="./Galllery/9.jpg" alt="">
+            <img class="image" src="./Galllery/2.jpg" alt="">
+   
+            
+            
+            
+
+          </div>
+          <div class="column">
+            <img class="image" src="./Galllery/10.jpg" alt="">
+            <img class="image" src="./Galllery/12.jpg" alt="">
+            <img class="image" src="./Galllery/13.jpg" alt="">       
+            <img class="image" src="./Galllery/20.jpg" alt="">
+            <img class="image" src="./Galllery/3.jpg" alt="">
+                
+ 
+
+
+
+          </div>
+          <div class="column">          
+            <img class="image" src="./Galllery/14.jpg" alt="">
+            <img class="image" src="./Galllery/17.JPG" alt="">
+            <img class="image" src="./Galllery/15.jpg" alt="">
+          
+            
+                     
+            </div>
+            <div class="column">
+
+           <img class="image" src="./Galllery/19.JPG" alt="">     <img class="image" src="./Galllery/18.JPG" alt="">        <img class="image" src="./Galllery/5.jpg" alt="">
+            
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+
+
+
+
+    <div id="Work" class="all-sections _100vh wf-section">
+      <div class="all-containers _100vh w-container">
+        <div class="padding-tb-60">
+          <div class="block_work-content">
+            <h1 class="h1 is_center-align">Work</h1>
+            <p class="paragraph is-center-align">Some Projects I could be a part of…</p>
+          </div>
+          <div data-w-id="ceb68ce4-01ba-c4d3-e641-b814a1668cad" class="block_work-wrapper">
+            <div class="collection-list-wrapper w-dyn-list">
+              <div role="list" class="collection-list w-dyn-items">
+                <div data-w-id="4c112bd1-6158-d9e0-3734-22c5ba9b7ceb" role="listitem"
+                  class="collection-item w-dyn-item">
+                  <a data-w-id="b67a5883-9279-81a0-27ac-e046e94d678d"
+                    style="background-image:url(&quot;https://uploads-ssl.webflow.com/63b038722091f12e07532228/63c7b58ef24bf96803c85158_IFP.jpg&quot;)"
+                    href="https://ifp.world/" class="process link-block w-inline-block">
+
+                    <h2 class="heading_h2">IFP</h2>
+
+                    <p style=" margin-top:10px; -webkit-transform:translate3d(null, 30px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-moz-transform:translate3d(null, 30px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-ms-transform:translate3d(null, 30px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);transform:translate3d(null, 30px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0)"
+                      class="work_description">Previously known as India Film Project, is Asia’s Largest Content
+                      Festival
+                    </p>
+                    <div class="div-block-4"></div>
+                  </a>
+                </div>
+                <div data-w-id="4c112bd1-6158-d9e0-3734-22c5ba9b7ceb" role="listitem"
+                  class="collection-item w-dyn-item">
+                  <a data-w-id="b67a5883-9279-81a0-27ac-e046e94d678d"
+                    style="background-image:url(&quot;https://uploads-ssl.webflow.com/63b038722091f12e07532228/63c7b5aef98d4442befe2980_Aaron%20Colton.JPG&quot;)"
+                    href="" class="process link-block w-inline-block">
+                    <h2
+                      style="-webkit-transform:translate3d(0, 30px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-moz-transform:translate3d(0, 30px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-ms-transform:translate3d(0, 30px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);transform:translate3d(0, 30px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0)"
+                      class="heading_h2">Aaron Colton Showcase</h2>
+                    <p style=" margin-top:10px; -webkit-transform:translate3d(null, 30px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-moz-transform:translate3d(null, 30px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-ms-transform:translate3d(null, 30px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);transform:translate3d(null, 30px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0)"
+                      class="work_description">Aaron is one of the most recognized Street Freestyle riders in the world.
+                    </p>
+                    <div class="div-block-4"></div>
+                  </a>
+                </div>
+                <div data-w-id="4c112bd1-6158-d9e0-3734-22c5ba9b7ceb" role="listitem"
+                  class="collection-item w-dyn-item">
+                  <a data-w-id="b67a5883-9279-81a0-27ac-e046e94d678d"
+                    style="background-image:url(&quot;https://uploads-ssl.webflow.com/63b038722091f12e07532228/63c7b5cd749c0def427a734d_Anuv2.jpg&quot;)"
+                    href="#" class="process link-block w-inline-block">
+                    <h2
+                      style="-webkit-transform:translate3d(0, 30px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-moz-transform:translate3d(0, 30px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-ms-transform:translate3d(0, 30px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);transform:translate3d(0, 30px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0)"
+                      class="heading_h2">Anuv Jain Concert</h2>
+                    <p style=" margin-top:10px; -webkit-transform:translate3d(null, 30px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-moz-transform:translate3d(null, 30px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-ms-transform:translate3d(null, 30px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);transform:translate3d(null, 30px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0)"
+                      class="work_description">Anuv Jain is an Indian singer, songwriter and composer.</p>
+                    <div class="div-block-4"></div>
+                  </a>
+                </div>
+                <div data-w-id="4c112bd1-6158-d9e0-3734-22c5ba9b7ceb" role="listitem"
+                  class="collection-item w-dyn-item">
+                  <a data-w-id="b67a5883-9279-81a0-27ac-e046e94d678d"
+                    style="background-image:url(&quot;https://uploads-ssl.webflow.com/63b038722091f12e07532228/63c788ab5d20aa00ca8f35a9_Shu%20Plan.jpg&quot;)"
+                    href="https://youtu.be/JuyTJYtvOjI" class="process link-block w-inline-block">
+                    <h2
+                      style="-webkit-transform:translate3d(0, 30px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-moz-transform:translate3d(0, 30px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-ms-transform:translate3d(0, 30px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);transform:translate3d(0, 30px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0)"
+                      class="heading_h2">Shu Plan</h2>
+                    <p style=" margin-top:10px; -webkit-transform:translate3d(null, 30px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-moz-transform:translate3d(null, 30px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-ms-transform:translate3d(null, 30px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);transform:translate3d(null, 30px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0)"
+                      class="work_description">Shu Plan is a food and travel show Gujarati Media House VTV News</p>
+                    <div class="div-block-4"></div>
+                  </a>
+                </div>
+                <div data-w-id="4c112bd1-6158-d9e0-3734-22c5ba9b7ceb" role="listitem"
+                  class="collection-item w-dyn-item">
+                  <a data-w-id="b67a5883-9279-81a0-27ac-e046e94d678d"
+                    style="background-image:url(&quot;https://uploads-ssl.webflow.com/63b038722091f12e07532228/63c789081500083c2920ed16_Nucleya%20.png&quot;)"
+                    href="" class="process link-block w-inline-block">
+
+                    <h2
+                      style="-webkit-transform:translate3d(0, 30px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-moz-transform:translate3d(0, 30px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-ms-transform:translate3d(0, 30px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);transform:translate3d(0, 30px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0)"
+                      class="heading_h2">Neucleya Concert</h2>
+                    <p style=" margin-top:10px; -webkit-transform:translate3d(null, 30px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-moz-transform:translate3d(null, 30px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-ms-transform:translate3d(null, 30px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);transform:translate3d(null, 30px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0)"
+                      class="work_description">Single-handedly responsible for defining a sound and building a lexicon
+                      of
+                      bass music unique to India, Nucleya, aka Udyan Sagar, is undoubtedly the country&#x27;s most
+                      popular
+                      and influential independent artist.</p>
+                    <div class="div-block-4"></div>
+                  </a>
+                </div>
+                <div data-w-id="4c112bd1-6158-d9e0-3734-22c5ba9b7ceb" role="listitem"
+                  class="collection-item w-dyn-item">
+                  <a data-w-id="b67a5883-9279-81a0-27ac-e046e94d678d"
+                    style="background-image:url(&quot;https://uploads-ssl.webflow.com/63b038722091f12e07532228/63c78868ebac45a5dc274264_Abhivyakti.jpeg&quot;)"
+                    href="https://www.abhivyaktiart.org/" class="process link-block w-inline-block">
+                    <h2
+                      style="-webkit-transform:translate3d(0, 30px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-moz-transform:translate3d(0, 30px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-ms-transform:translate3d(0, 30px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);transform:translate3d(0, 30px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0)"
+                      class="heading_h2">Abhivyakti City Arts Project</h2>
+                    <p style=" margin-top:10px; -webkit-transform:translate3d(null, 30px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-moz-transform:translate3d(null, 30px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-ms-transform:translate3d(null, 30px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);transform:translate3d(null, 30px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0)"
+                      class="work_description">Abhivyakti is a festival that brings together a variety of performing and
+                      visual art forms conceptualized and curated for Ahmedabad. </p>
+                    <div class="div-block-4"></div>
+                  </a>
+                </div>
+                <div data-w-id="4c112bd1-6158-d9e0-3734-22c5ba9b7ceb" role="listitem"
+                  class="collection-item w-dyn-item">
+                  <a data-w-id="b67a5883-9279-81a0-27ac-e046e94d678d" style="background-image:url(./Galllery/10.jpg)"
+                    class="process link-block w-inline-block">
+                    <h2
+                      style="-webkit-transform:translate3d(0, 30px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-moz-transform:translate3d(0, 30px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-ms-transform:translate3d(0, 30px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);transform:translate3d(0, 30px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0)"
+                      class="heading_h2">Aditya Gadhvi</h2>
+                    <p style=" margin-top:10px; -webkit-transform:translate3d(null, 30px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-moz-transform:translate3d(null, 30px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-ms-transform:translate3d(null, 30px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);transform:translate3d(null, 30px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0)"
+                      class="work_description">Infamous Gujarati concert</p>
+                    <div class="div-block-4"></div>
+                  </a>
+                </div>
+                <div data-w-id="4c112bd1-6158-d9e0-3734-22c5ba9b7ceb" role="listitem"
+                  class="collection-item w-dyn-item">
+                  <a data-w-id="b67a5883-9279-81a0-27ac-e046e94d678d"
+                    style="background-image:url(&quot;https://uploads-ssl.webflow.com/63b038722091f12e07532228/63c79755c44658ccec0f459e_Lampros.jpg&quot;)"
+                    href="https://www.instagram.com/lamproschristmascarnival/"
+                    class="process link-block w-inline-block">
+                    <h2
+                      style="-webkit-transform:translate3d(0, 30px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-moz-transform:translate3d(0, 30px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-ms-transform:translate3d(0, 30px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);transform:translate3d(0, 30px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0)"
+                      class="heading_h2">Lampros Christmas Carnival</h2>
+                    <p style=" margin-top:10px; -webkit-transform:translate3d(null, 30px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-moz-transform:translate3d(null, 30px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-ms-transform:translate3d(null, 30px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);transform:translate3d(null, 30px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0)"
+                      class="work_description">A Talent show, game show followed by a Bollywood themed fashion show by
+                      5-10 y/o kids</p>
+                    <div class="div-block-4"></div>
+                  </a>
+                </div>
+                <div data-w-id="4c112bd1-6158-d9e0-3734-22c5ba9b7ceb" role="listitem"
+                  class="collection-item w-dyn-item">
+                  <a data-w-id="b67a5883-9279-81a0-27ac-e046e94d678d"
+                    style="background-image:url(&quot;https://uploads-ssl.webflow.com/63b038722091f12e07532228/63c7b46dc44658552211167c_ToyotaChristmas-13.jpg&quot;)"
+                    href="" class="process link-block w-inline-block">
+                    <h2
+                      style="-webkit-transform:translate3d(0, 30px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-moz-transform:translate3d(0, 30px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-ms-transform:translate3d(0, 30px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);transform:translate3d(0, 30px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0)"
+                      class="heading_h2">Toyota Year End Festival</h2>
+                    <p style=" margin-top:10px; -webkit-transform:translate3d(null, 30px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-moz-transform:translate3d(null, 30px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-ms-transform:translate3d(null, 30px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);transform:translate3d(null, 30px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0)"
+                      class="work_description">A power packed 3 hour interaction and games with premium Toyota Clients
+                    </p>
+                    <div class="div-block-4"></div>
+                  </a>
+                </div>
+                <div data-w-id="4c112bd1-6158-d9e0-3734-22c5ba9b7ceb" role="listitem"
+                  class="collection-item w-dyn-item">
+                  <a data-w-id="b67a5883-9279-81a0-27ac-e046e94d678d"
+                    style="background-image:url(&quot;https://uploads-ssl.webflow.com/63b038722091f12e07532228/63c7b49aeffd1a650e2a7585_Ftv.jpeg&quot;)"
+                    href="" class="process link-block w-inline-block">
+                    <h2
+                      style="-webkit-transform:translate3d(0, 30px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-moz-transform:translate3d(0, 30px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-ms-transform:translate3d(0, 30px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);transform:translate3d(0, 30px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0)"
+                      class="heading_h2">FTV SOPA Fashion Show</h2>
+                    <p style=" margin-top:10px; -webkit-transform:translate3d(null, 30px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-moz-transform:translate3d(null, 30px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-ms-transform:translate3d(null, 30px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);transform:translate3d(null, 30px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0)"
+                      class="work_description">FTV is world’s highest viewed fashion broadcasting network</p>
+                    <div class="div-block-4"></div>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="brands" class="all-sections wf-section">
+      <div class="all-containers full_width w-container">
+        <div class="padding-tb-60">
+          <div class="block_work-content">
+            <h1 class="h1 is_center-align">Work with Manav</h1>
+            <p class="paragraph is-center-align">like they did...</p>
+          </div>
+          <div id="w-node-c60b8ad4-9b06-6e90-75f5-a553f830dbee-1de3b179" class="client-logo-wrapper">
+            <div class="img_grid">
+              <img src="https://uploads-ssl.webflow.com/63aea4db2c152d0f2ee3b178/63b18de85808d36d524b62e0_red-bull.png"
+                loading="lazy" id="w-node-_5cfeb267-3c62-e99b-0f0c-24c73f69f074-1de3b179"
+                sizes="(max-width: 479px) 38vw, (max-width: 767px) 29vw, (max-width: 991px) 30vw, 300px"
+                srcset="https://uploads-ssl.webflow.com/63aea4db2c152d0f2ee3b178/63b18de85808d36d524b62e0_red-bull-p-500.png 500w, https://uploads-ssl.webflow.com/63aea4db2c152d0f2ee3b178/63b18de85808d36d524b62e0_red-bull.png 600w"
+                alt="Red Bull" class="client_img" />
+              <img src="https://uploads-ssl.webflow.com/63aea4db2c152d0f2ee3b178/63bbf4d6e7d3d4273d145417_Toyota.png"
+                loading="lazy" id="w-node-da8d7a63-09af-6838-e6bc-02e2ce0e2356-1de3b179"
+                sizes="(max-width: 479px) 38vw, (max-width: 767px) 29vw, (max-width: 991px) 30vw, 300px"
+                srcset="https://uploads-ssl.webflow.com/63aea4db2c152d0f2ee3b178/63bbf4d6e7d3d4273d145417_Toyota-p-500.png 500w, https://uploads-ssl.webflow.com/63aea4db2c152d0f2ee3b178/63bbf4d6e7d3d4273d145417_Toyota.png 600w"
+                alt="Toyota" class="client_img" />
               <img
-                src="https://uploads-ssl.webflow.com/63aea4db2c152d0f2ee3b178/63bbf535abd1942f9f05cee7_Manav%20Joshi%20sign%20gif.gif"
-                loading="lazy" width="150" alt="" />
-            </a>
-            <nav role="navigation" class="nav-menu w-nav-menu">
-              <a href="#about" class="nav-link w-nav-link">About Us</a>
-              <a href="#Work" class="nav-link w-nav-link">Work</a>
-              <a href="#brands" class="nav-link w-nav-link">Brands</a>
-              <a href="https://www.youtube.com/channel/UCNBK6_Xg4j-ebsmsI_bIo4g F" class="nav-link w-nav-link">Gallery</a>
-              <a href="#Let-s-Connect" class="nav_link connect w-nav-link">Let&#x27;s Connect</a>
-            </nav>
-            <div class="menu-button w-nav-button">
-              <div class="w-icon-nav-menu"></div>
+                src="https://uploads-ssl.webflow.com/63aea4db2c152d0f2ee3b178/63d3c6d3de61ca909cab91c0_vtv%20logo.png"
+                loading="lazy" id="w-node-_719101bb-82b9-9c5a-dfa9-331aa77427df-1de3b179"
+                sizes="(max-width: 479px) 38vw, (max-width: 767px) 29vw, (max-width: 991px) 30vw, 300px"
+                srcset="https://uploads-ssl.webflow.com/63aea4db2c152d0f2ee3b178/63d3c6d3de61ca909cab91c0_vtv%20logo-p-500.png 500w, https://uploads-ssl.webflow.com/63aea4db2c152d0f2ee3b178/63d3c6d3de61ca909cab91c0_vtv%20logo.png 600w"
+                alt="" class="client_img" />
+              <img
+                src="https://uploads-ssl.webflow.com/63aea4db2c152d0f2ee3b178/63d3c6deadb5e04fc8533999_just%20dogs.png"
+                loading="lazy" id="w-node-_41169cf8-4f24-e8a6-05f1-040758db3be3-1de3b179"
+                sizes="(max-width: 479px) 38vw, (max-width: 767px) 29vw, (max-width: 991px) 30vw, 300px"
+                srcset="https://uploads-ssl.webflow.com/63aea4db2c152d0f2ee3b178/63d3c6deadb5e04fc8533999_just%20dogs-p-500.png 500w, https://uploads-ssl.webflow.com/63aea4db2c152d0f2ee3b178/63d3c6deadb5e04fc8533999_just%20dogs.png 600w"
+                alt="" class="client_img" />
+              <img
+                src="https://uploads-ssl.webflow.com/63aea4db2c152d0f2ee3b178/63d94e4f4311a962dd47cd40_intel%20Colourful%20logo.png"
+                loading="lazy" id="w-node-eb44ce2f-ed81-c86a-c33d-9654656a5d6d-1de3b179"
+                sizes="(max-width: 479px) 38vw, (max-width: 767px) 29vw, (max-width: 991px) 30vw, 300px"
+                srcset="https://uploads-ssl.webflow.com/63aea4db2c152d0f2ee3b178/63d94e4f4311a962dd47cd40_intel%20Colourful%20logo-p-500.png 500w, https://uploads-ssl.webflow.com/63aea4db2c152d0f2ee3b178/63d94e4f4311a962dd47cd40_intel%20Colourful%20logo.png 600w"
+                alt="" class="client_img" />
+              <img
+                src="https://uploads-ssl.webflow.com/63aea4db2c152d0f2ee3b178/63d94e7c0c18d882d88d4aa6_ftv%20color%20logo.png"
+                loading="lazy" id="w-node-aa68f0d4-ec46-2755-b4f4-2d8f03aab4aa-1de3b179"
+                sizes="(max-width: 479px) 38vw, (max-width: 767px) 29vw, (max-width: 991px) 30vw, 300px"
+                srcset="https://uploads-ssl.webflow.com/63aea4db2c152d0f2ee3b178/63d94e7c0c18d882d88d4aa6_ftv%20color%20logo-p-500.png 500w, https://uploads-ssl.webflow.com/63aea4db2c152d0f2ee3b178/63d94e7c0c18d882d88d4aa6_ftv%20color%20logo.png 600w"
+                alt="" class="client_img" />
+              <img
+                src="https://uploads-ssl.webflow.com/63aea4db2c152d0f2ee3b178/63d94e370d5dc2168bbc4c0c_torrent%20Colourful%20logo.png"
+                loading="lazy" id="w-node-a81e261f-ee0a-b41f-be39-093e4f3e8f7e-1de3b179"
+                sizes="(max-width: 479px) 38vw, (max-width: 767px) 29vw, (max-width: 991px) 30vw, 300px"
+                srcset="https://uploads-ssl.webflow.com/63aea4db2c152d0f2ee3b178/63d94e370d5dc2168bbc4c0c_torrent%20Colourful%20logo-p-500.png 500w, https://uploads-ssl.webflow.com/63aea4db2c152d0f2ee3b178/63d94e370d5dc2168bbc4c0c_torrent%20Colourful%20logo.png 600w"
+                alt="" class="client_img" />
+              <img
+                src="https://uploads-ssl.webflow.com/63aea4db2c152d0f2ee3b178/63d94e42235def70e49993d9_Parul%20Colourful%20logo.png"
+                loading="lazy" id="w-node-_94bfae64-ed12-dd04-fec5-67009da6408a-1de3b179"
+                sizes="(max-width: 479px) 38vw, (max-width: 767px) 29vw, (max-width: 991px) 30vw, 300px"
+                srcset="https://uploads-ssl.webflow.com/63aea4db2c152d0f2ee3b178/63d94e42235def70e49993d9_Parul%20Colourful%20logo-p-500.png 500w, https://uploads-ssl.webflow.com/63aea4db2c152d0f2ee3b178/63d94e42235def70e49993d9_Parul%20Colourful%20logo.png 600w"
+                alt="" class="client_img" />
+              <img src="https://uploads-ssl.webflow.com/63aea4db2c152d0f2ee3b178/63bbf4d4e7d3d45d90145404_IFP.png"
+                loading="lazy" id="w-node-_8935c429-e205-9076-ed46-ceb7774a3484-1de3b179"
+                sizes="(max-width: 479px) 38vw, (max-width: 767px) 29vw, (max-width: 991px) 30vw, 300px"
+                srcset="https://uploads-ssl.webflow.com/63aea4db2c152d0f2ee3b178/63bbf4d4e7d3d45d90145404_IFP-p-500.png 500w, https://uploads-ssl.webflow.com/63aea4db2c152d0f2ee3b178/63bbf4d4e7d3d45d90145404_IFP.png 600w"
+                alt="India Film Project" class="client_img" />
+              <img
+                src="https://uploads-ssl.webflow.com/63aea4db2c152d0f2ee3b178/63d94e6f7e33c7b7e865db57_indus%20Colourful%20logo.png"
+                loading="lazy" id="w-node-_6f7c125e-4789-3e25-afa8-3e3c958f3149-1de3b179"
+                sizes="(max-width: 479px) 38vw, (max-width: 767px) 29vw, (max-width: 991px) 30vw, 300px"
+                srcset="https://uploads-ssl.webflow.com/63aea4db2c152d0f2ee3b178/63d94e6f7e33c7b7e865db57_indus%20Colourful%20logo-p-500.png 500w, https://uploads-ssl.webflow.com/63aea4db2c152d0f2ee3b178/63d94e6f7e33c7b7e865db57_indus%20Colourful%20logo.png 600w"
+                alt="" class="client_img" />
+              <img src="https://uploads-ssl.webflow.com/63aea4db2c152d0f2ee3b178/63bbf4d4e495ff134fc44b99_Hungrito.png"
+                loading="lazy" id="w-node-_5b07a0dd-00e6-9b24-3671-41874d0e1bb6-1de3b179"
+                sizes="(max-width: 479px) 38vw, (max-width: 767px) 29vw, (max-width: 991px) 30vw, 300px"
+                srcset="https://uploads-ssl.webflow.com/63aea4db2c152d0f2ee3b178/63bbf4d4e495ff134fc44b99_Hungrito-p-500.png 500w, https://uploads-ssl.webflow.com/63aea4db2c152d0f2ee3b178/63bbf4d4e495ff134fc44b99_Hungrito.png 600w"
+                alt="" class="client_img" />
+              <img
+                src="https://uploads-ssl.webflow.com/63aea4db2c152d0f2ee3b178/63d3c6a0310f8d5834399474_abhivyakti.png"
+                loading="lazy" id="w-node-_71d2af36-06a7-faf2-e572-cd31bfa535e1-1de3b179"
+                sizes="(max-width: 479px) 38vw, (max-width: 767px) 29vw, (max-width: 991px) 30vw, 300px"
+                srcset="https://uploads-ssl.webflow.com/63aea4db2c152d0f2ee3b178/63d3c6a0310f8d5834399474_abhivyakti-p-500.png 500w, https://uploads-ssl.webflow.com/63aea4db2c152d0f2ee3b178/63d3c6a0310f8d5834399474_abhivyakti.png 600w"
+                alt="" class="client_img" />
+              <img src="https://uploads-ssl.webflow.com/63aea4db2c152d0f2ee3b178/63bbf4d438f63f9f0b80b47d_Gimme%205.png"
+                loading="lazy" id="w-node-_91bf9922-4d01-943b-ad40-4a9debae080b-1de3b179"
+                sizes="(max-width: 479px) 38vw, (max-width: 767px) 29vw, (max-width: 991px) 30vw, 300px"
+                srcset="https://uploads-ssl.webflow.com/63aea4db2c152d0f2ee3b178/63bbf4d438f63f9f0b80b47d_Gimme%205-p-500.png 500w, https://uploads-ssl.webflow.com/63aea4db2c152d0f2ee3b178/63bbf4d438f63f9f0b80b47d_Gimme%205.png 600w"
+                alt="" class="client_img" />
+              <img src="https://uploads-ssl.webflow.com/63aea4db2c152d0f2ee3b178/63bbf4d592207e0c7bb29893_Lampros.png"
+                loading="lazy" id="w-node-b700ad33-6e28-bc80-49d5-007cd8caaced-1de3b179"
+                sizes="(max-width: 479px) 38vw, (max-width: 767px) 29vw, (max-width: 991px) 30vw, 300px"
+                srcset="https://uploads-ssl.webflow.com/63aea4db2c152d0f2ee3b178/63bbf4d592207e0c7bb29893_Lampros-p-500.png 500w, https://uploads-ssl.webflow.com/63aea4db2c152d0f2ee3b178/63bbf4d592207e0c7bb29893_Lampros.png 600w"
+                alt="" class="client_img" />
+              <h1 id="w-node-acebe3f8-b2ef-09d6-b736-9ad4a7f59e3c-1de3b179" class="client_logo_paragraph">and many
+                more...
+              </h1>
             </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
-  <div
-    data-poster-url="https://uploads-ssl.webflow.com/63aea4db2c152d0f2ee3b178/63d932dc345a640437cbe231_Landing Page Video-poster-00001.jpg"
-    data-video-urls="https://uploads-ssl.webflow.com/63aea4db2c152d0f2ee3b178/63d932dc345a640437cbe231_Landing Page Video-transcode.mp4,https://uploads-ssl.webflow.com/63aea4db2c152d0f2ee3b178/63d932dc345a640437cbe231_Landing Page Video-transcode.webm"
-    data-autoplay="true" data-loop="true" data-wf-ignore="true"
-    class="video_block-100vh w-background-video w-background-video-atom">
-    <video id="5fe0e63f-a6e0-e8c4-155e-bc4949fa619e-video" autoplay="" loop=""
-      style="background-image:url(&quot;https://uploads-ssl.webflow.com/63aea4db2c152d0f2ee3b178/63d932dc345a640437cbe231_Landing Page Video-poster-00001.jpg&quot;)" 
-      muted="" playsinline="" data-wf-ignore="true" data-object-fit="cover">
-      <source
-        src="https://uploads-ssl.webflow.com/63aea4db2c152d0f2ee3b178/63d932dc345a640437cbe231_Landing Page Video-transcode.mp4"
-        data-wf-ignore="true" />
-      <source
-        src="https://uploads-ssl.webflow.com/63aea4db2c152d0f2ee3b178/63d932dc345a640437cbe231_Landing Page Video-transcode.webm"
-        data-wf-ignore="true" />
-    </video>
-    <div class="all-containers _100vh w-container">
-      <div class="padding-tb-60 vertical-align">
-        <h1 data-w-id="821e6803-8768-3b02-f137-6858664968b8"
-          style="-webkit-transform:translate3d(0, 20px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-moz-transform:translate3d(0, 20px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-ms-transform:translate3d(0, 20px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);transform:translate3d(0, 20px, 0) scale3d(1, 1, 1) z-index:100; rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);  "
-          <div class="hero_title">Making world happier <br />one show at a time. </h1>
-        <div class="spacer-20"></div>
-        <a href="#Let-s-Work" data-w-id="b9ed153f-142d-676c-c5b7-a518157209a7"
-          style=" -webkit-transform:translate3d(0, 20px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-moz-transform:translate3d(0, 20px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-ms-transform:translate3d(0, 20px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);transform:translate3d(0, 20px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0)"
-          class="button w-button">Let&#x27;s Work</a>
-      </div>
-    </div>
-  </div>
-  <div id="about" class="about_section wf-section">
-    <div class="all-containers _100vh w-container">
-      <div class="about_me_padding">
-        <div class="about-me-block">
-          <h1 class="h1">About</h1>
-          <p class="paragraph section_1">Manav is a <span class="red">Performer, VJ, Marketer, and Bathroom
-              singer</span>. Hosting his first show when he was 12, Manav has over 250 stage shows under his belt,
-            having entertained crowds as huge as 15,000 people. As the host of the popular travel show &quot;Shu
-            Plan?&quot; on VTV Gujarati, Manav&#x27;s videos have garnered over 10 million views across social media.
-            <br />
-            <br />Manav has conducted 50+ insightful interviews with prominent personalities from the Gujarati
-            entertainment industry. An artist at heart, Manav has a background in marketing with a 5+ years of
-            experience in some fantastic projects. <br />
-            <br />
-            <span class="bold_about">Bring the electrifying energy on stage, on camera, in your next project. Work with
-              Manav, for your next big gig!</span>
-            <br />
-          </p>
-        </div>
-      </div>
-    </div>
-  </div>
-  <section class="" style="height: 100vh; display:flex; flex-wrap: wrap; " >
-    <h1  style=" color: white; width:150px; height:100px; margin-left:30px;">Gallery </h1>
-    <div class="hexagon-gallery" >
-    <div class="hex"></div>
-    <div class="hex" ></div>
-    <div class="hex"></div>
-    <div class="hex"></div>
-    <div class="hex"></div>
-    <div class="hex"></div>
-    <div class="hex"></div>
-    <div class="hex"></div>
-    <div class="hex"></div>
-    <div class="hex"></div>
-    
-
-    </div>
-      </section>
-
-
-
-
-
-  <div id="Work" class="all-sections _100vh wf-section">
-    <div class="all-containers _100vh w-container">
-      <div class="padding-tb-60">
-        <div class="block_work-content">
-          <h1 class="h1 is_center-align">Work</h1>
-          <p class="paragraph is-center-align">Some Projects I could be a part of…</p>
-        </div>
-        <div data-w-id="ceb68ce4-01ba-c4d3-e641-b814a1668cad" class="block_work-wrapper">
-          <div class="collection-list-wrapper w-dyn-list">
-            <div role="list" class="collection-list w-dyn-items">
-              <div data-w-id="4c112bd1-6158-d9e0-3734-22c5ba9b7ceb" role="listitem" class="collection-item w-dyn-item">
-                <a data-w-id="b67a5883-9279-81a0-27ac-e046e94d678d"
-                  style="background-image:url(&quot;https://uploads-ssl.webflow.com/63b038722091f12e07532228/63c7b58ef24bf96803c85158_IFP.jpg&quot;)"
-                  href="https://ifp.world/" class="process link-block w-inline-block">
-                  
-                  <h2
-                    class="heading_h2">IFP</h2>
-                    
-                  <p style=" margin-top:10px; -webkit-transform:translate3d(null, 30px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-moz-transform:translate3d(null, 30px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-ms-transform:translate3d(null, 30px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);transform:translate3d(null, 30px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0)"
-                    class="work_description">Previously known as India Film Project, is Asia’s Largest Content Festival
-                  </p>
-                  <div class="div-block-4"></div>
-                </a>
-              </div>
-              <div data-w-id="4c112bd1-6158-d9e0-3734-22c5ba9b7ceb" role="listitem" class="collection-item w-dyn-item">
-                <a data-w-id="b67a5883-9279-81a0-27ac-e046e94d678d"
-                  style="background-image:url(&quot;https://uploads-ssl.webflow.com/63b038722091f12e07532228/63c7b5aef98d4442befe2980_Aaron%20Colton.JPG&quot;)"
-                  href="" class="process link-block w-inline-block">
-                  <h2
-                    style="-webkit-transform:translate3d(0, 30px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-moz-transform:translate3d(0, 30px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-ms-transform:translate3d(0, 30px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);transform:translate3d(0, 30px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0)"
-                    class="heading_h2">Aaron Colton Showcase</h2>
-                  <p style=" margin-top:10px; -webkit-transform:translate3d(null, 30px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-moz-transform:translate3d(null, 30px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-ms-transform:translate3d(null, 30px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);transform:translate3d(null, 30px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0)"
-                    class="work_description">Aaron is one of the most recognized Street Freestyle riders in the world.
-                  </p>
-                  <div class="div-block-4"></div>
-                </a>
-              </div>
-              <div data-w-id="4c112bd1-6158-d9e0-3734-22c5ba9b7ceb" role="listitem" class="collection-item w-dyn-item">
-                <a data-w-id="b67a5883-9279-81a0-27ac-e046e94d678d"
-                  style="background-image:url(&quot;https://uploads-ssl.webflow.com/63b038722091f12e07532228/63c7b5cd749c0def427a734d_Anuv2.jpg&quot;)"
-                  href="#" class="process link-block w-inline-block">
-                  <h2
-                    style="-webkit-transform:translate3d(0, 30px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-moz-transform:translate3d(0, 30px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-ms-transform:translate3d(0, 30px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);transform:translate3d(0, 30px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0)"
-                    class="heading_h2">Anuv Jain Concert</h2>
-                  <p style=" margin-top:10px; -webkit-transform:translate3d(null, 30px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-moz-transform:translate3d(null, 30px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-ms-transform:translate3d(null, 30px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);transform:translate3d(null, 30px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0)"
-                    class="work_description">Anuv Jain is an Indian singer, songwriter and composer.</p>
-                  <div class="div-block-4"></div>
-                </a>
-              </div>
-              <div data-w-id="4c112bd1-6158-d9e0-3734-22c5ba9b7ceb" role="listitem" class="collection-item w-dyn-item">
-                <a data-w-id="b67a5883-9279-81a0-27ac-e046e94d678d"
-                  style="background-image:url(&quot;https://uploads-ssl.webflow.com/63b038722091f12e07532228/63c788ab5d20aa00ca8f35a9_Shu%20Plan.jpg&quot;)"
-                  href="https://youtu.be/JuyTJYtvOjI" class="process link-block w-inline-block">
-                  <h2
-                    style="-webkit-transform:translate3d(0, 30px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-moz-transform:translate3d(0, 30px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-ms-transform:translate3d(0, 30px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);transform:translate3d(0, 30px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0)"
-                    class="heading_h2">Shu Plan</h2>
-                  <p style=" margin-top:10px; -webkit-transform:translate3d(null, 30px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-moz-transform:translate3d(null, 30px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-ms-transform:translate3d(null, 30px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);transform:translate3d(null, 30px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0)"
-                    class="work_description">Shu Plan is a food and travel show Gujarati Media House VTV News</p>
-                  <div class="div-block-4"></div>
-                </a>
-              </div>
-              <div data-w-id="4c112bd1-6158-d9e0-3734-22c5ba9b7ceb" role="listitem" class="collection-item w-dyn-item">
-                <a data-w-id="b67a5883-9279-81a0-27ac-e046e94d678d"
-                  style="background-image:url(&quot;https://uploads-ssl.webflow.com/63b038722091f12e07532228/63c789081500083c2920ed16_Nucleya%20.png&quot;)"
-                  href="" class="process link-block w-inline-block">
-
-                  <h2
-                    style="-webkit-transform:translate3d(0, 30px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-moz-transform:translate3d(0, 30px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-ms-transform:translate3d(0, 30px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);transform:translate3d(0, 30px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0)"
-                    class="heading_h2">Neucleya Concert</h2>
-                  <p style=" margin-top:10px; -webkit-transform:translate3d(null, 30px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-moz-transform:translate3d(null, 30px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-ms-transform:translate3d(null, 30px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);transform:translate3d(null, 30px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0)"
-                    class="work_description">Single-handedly responsible for defining a sound and building a lexicon of
-                    bass music unique to India, Nucleya, aka Udyan Sagar, is undoubtedly the country&#x27;s most popular
-                    and influential independent artist.</p>
-                  <div class="div-block-4"></div>
-                </a>
-              </div>
-              <div data-w-id="4c112bd1-6158-d9e0-3734-22c5ba9b7ceb" role="listitem" class="collection-item w-dyn-item">
-                <a data-w-id="b67a5883-9279-81a0-27ac-e046e94d678d"
-                  style="background-image:url(&quot;https://uploads-ssl.webflow.com/63b038722091f12e07532228/63c78868ebac45a5dc274264_Abhivyakti.jpeg&quot;)"
-                  href="https://www.abhivyaktiart.org/" class="process link-block w-inline-block">
-                  <h2
-                    style="-webkit-transform:translate3d(0, 30px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-moz-transform:translate3d(0, 30px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-ms-transform:translate3d(0, 30px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);transform:translate3d(0, 30px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0)"
-                    class="heading_h2">Abhivyakti City Arts Project</h2>
-                  <p style=" margin-top:10px; -webkit-transform:translate3d(null, 30px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-moz-transform:translate3d(null, 30px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-ms-transform:translate3d(null, 30px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);transform:translate3d(null, 30px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0)"
-                    class="work_description">Abhivyakti is a festival that brings together a variety of performing and
-                    visual art forms conceptualized and curated for Ahmedabad. </p>
-                  <div class="div-block-4"></div>
-                </a>
-              </div>
-              <div data-w-id="4c112bd1-6158-d9e0-3734-22c5ba9b7ceb" role="listitem" class="collection-item w-dyn-item">
-                <a data-w-id="b67a5883-9279-81a0-27ac-e046e94d678d"
-                  style="background-image:url(&quot;https://uploads-ssl.webflow.com/63b038722091f12e07532228/63c7b60703812209ad19ae41_Hungrito.jpg&quot;)"
-                  href="https://www.instagram.com/hungrito/?hl=en" class="process link-block w-inline-block">
-                  <h2
-                    style="-webkit-transform:translate3d(0, 30px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-moz-transform:translate3d(0, 30px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-ms-transform:translate3d(0, 30px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);transform:translate3d(0, 30px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0)"
-                    class="heading_h2">Hungrito Food Festival</h2>
-                  <p style=" margin-top:10px; -webkit-transform:translate3d(null, 30px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-moz-transform:translate3d(null, 30px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-ms-transform:translate3d(null, 30px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);transform:translate3d(null, 30px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0)"
-                    class="work_description">Hongrito Food Festival is Gujaratis celebrating what they love the most</p>
-                  <div class="div-block-4"></div>
-                </a>
-              </div>
-              <div data-w-id="4c112bd1-6158-d9e0-3734-22c5ba9b7ceb" role="listitem" class="collection-item w-dyn-item">
-                <a data-w-id="b67a5883-9279-81a0-27ac-e046e94d678d"
-                  style="background-image:url(&quot;https://uploads-ssl.webflow.com/63b038722091f12e07532228/63c79755c44658ccec0f459e_Lampros.jpg&quot;)"
-                  href="https://www.instagram.com/lamproschristmascarnival/" class="process link-block w-inline-block">
-                  <h2
-                    style="-webkit-transform:translate3d(0, 30px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-moz-transform:translate3d(0, 30px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-ms-transform:translate3d(0, 30px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);transform:translate3d(0, 30px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0)"
-                    class="heading_h2">Lampros Christmas Carnival</h2>
-                  <p style=" margin-top:10px; -webkit-transform:translate3d(null, 30px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-moz-transform:translate3d(null, 30px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-ms-transform:translate3d(null, 30px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);transform:translate3d(null, 30px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0)"
-                    class="work_description">A Talent show, game show followed by a Bollywood themed fashion show by
-                    5-10 y/o kids</p>
-                  <div class="div-block-4"></div>
-                </a>
-              </div>
-              <div data-w-id="4c112bd1-6158-d9e0-3734-22c5ba9b7ceb" role="listitem" class="collection-item w-dyn-item">
-                <a data-w-id="b67a5883-9279-81a0-27ac-e046e94d678d"
-                  style="background-image:url(&quot;https://uploads-ssl.webflow.com/63b038722091f12e07532228/63c7b46dc44658552211167c_ToyotaChristmas-13.jpg&quot;)"
-                  href="" class="process link-block w-inline-block">
-                  <h2
-                    style="-webkit-transform:translate3d(0, 30px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-moz-transform:translate3d(0, 30px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-ms-transform:translate3d(0, 30px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);transform:translate3d(0, 30px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0)"
-                    class="heading_h2">Toyota Year End Festival</h2>
-                  <p style=" margin-top:10px; -webkit-transform:translate3d(null, 30px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-moz-transform:translate3d(null, 30px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-ms-transform:translate3d(null, 30px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);transform:translate3d(null, 30px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0)"
-                    class="work_description">A power packed 3 hour interaction and games with premium Toyota Clients</p>
-                  <div class="div-block-4"></div>
-                </a>
-              </div>
-              <div data-w-id="4c112bd1-6158-d9e0-3734-22c5ba9b7ceb" role="listitem" class="collection-item w-dyn-item">
-                <a data-w-id="b67a5883-9279-81a0-27ac-e046e94d678d"
-                  style="background-image:url(&quot;https://uploads-ssl.webflow.com/63b038722091f12e07532228/63c7b49aeffd1a650e2a7585_Ftv.jpeg&quot;)"
-                  href="" class="process link-block w-inline-block">
-                  <h2
-                    style="-webkit-transform:translate3d(0, 30px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-moz-transform:translate3d(0, 30px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-ms-transform:translate3d(0, 30px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);transform:translate3d(0, 30px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0)"
-                    class="heading_h2">FTV SOPA Fashion Show</h2>
-                  <p style=" margin-top:10px; -webkit-transform:translate3d(null, 30px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-moz-transform:translate3d(null, 30px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-ms-transform:translate3d(null, 30px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);transform:translate3d(null, 30px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0)"
-                    class="work_description">FTV is world’s highest viewed fashion broadcasting network</p>
-                  <div class="div-block-4"></div>
-                </a>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div id="brands" class="all-sections wf-section">
-    <div class="all-containers full_width w-container">
-      <div class="padding-tb-60">
-        <div class="block_work-content">
-          <h1 class="h1 is_center-align">Work with Manav</h1>
-          <p class="paragraph is-center-align">like they did...</p>
-        </div>
-        <div id="w-node-c60b8ad4-9b06-6e90-75f5-a553f830dbee-1de3b179" class="client-logo-wrapper">
-          <div class="img_grid">
-            <img src="https://uploads-ssl.webflow.com/63aea4db2c152d0f2ee3b178/63b18de85808d36d524b62e0_red-bull.png"
-              loading="lazy" id="w-node-_5cfeb267-3c62-e99b-0f0c-24c73f69f074-1de3b179"
-              sizes="(max-width: 479px) 38vw, (max-width: 767px) 29vw, (max-width: 991px) 30vw, 300px"
-              srcset="https://uploads-ssl.webflow.com/63aea4db2c152d0f2ee3b178/63b18de85808d36d524b62e0_red-bull-p-500.png 500w, https://uploads-ssl.webflow.com/63aea4db2c152d0f2ee3b178/63b18de85808d36d524b62e0_red-bull.png 600w"
-              alt="Red Bull" class="client_img" />
-            <img src="https://uploads-ssl.webflow.com/63aea4db2c152d0f2ee3b178/63bbf4d6e7d3d4273d145417_Toyota.png"
-              loading="lazy" id="w-node-da8d7a63-09af-6838-e6bc-02e2ce0e2356-1de3b179"
-              sizes="(max-width: 479px) 38vw, (max-width: 767px) 29vw, (max-width: 991px) 30vw, 300px"
-              srcset="https://uploads-ssl.webflow.com/63aea4db2c152d0f2ee3b178/63bbf4d6e7d3d4273d145417_Toyota-p-500.png 500w, https://uploads-ssl.webflow.com/63aea4db2c152d0f2ee3b178/63bbf4d6e7d3d4273d145417_Toyota.png 600w"
-              alt="Toyota" class="client_img" />
-            <img src="https://uploads-ssl.webflow.com/63aea4db2c152d0f2ee3b178/63d3c6d3de61ca909cab91c0_vtv%20logo.png"
-              loading="lazy" id="w-node-_719101bb-82b9-9c5a-dfa9-331aa77427df-1de3b179"
-              sizes="(max-width: 479px) 38vw, (max-width: 767px) 29vw, (max-width: 991px) 30vw, 300px"
-              srcset="https://uploads-ssl.webflow.com/63aea4db2c152d0f2ee3b178/63d3c6d3de61ca909cab91c0_vtv%20logo-p-500.png 500w, https://uploads-ssl.webflow.com/63aea4db2c152d0f2ee3b178/63d3c6d3de61ca909cab91c0_vtv%20logo.png 600w"
-              alt="" class="client_img" />
-            <img src="https://uploads-ssl.webflow.com/63aea4db2c152d0f2ee3b178/63d3c6deadb5e04fc8533999_just%20dogs.png"
-              loading="lazy" id="w-node-_41169cf8-4f24-e8a6-05f1-040758db3be3-1de3b179"
-              sizes="(max-width: 479px) 38vw, (max-width: 767px) 29vw, (max-width: 991px) 30vw, 300px"
-              srcset="https://uploads-ssl.webflow.com/63aea4db2c152d0f2ee3b178/63d3c6deadb5e04fc8533999_just%20dogs-p-500.png 500w, https://uploads-ssl.webflow.com/63aea4db2c152d0f2ee3b178/63d3c6deadb5e04fc8533999_just%20dogs.png 600w"
-              alt="" class="client_img" />
-            <img
-              src="https://uploads-ssl.webflow.com/63aea4db2c152d0f2ee3b178/63d94e4f4311a962dd47cd40_intel%20Colourful%20logo.png"
-              loading="lazy" id="w-node-eb44ce2f-ed81-c86a-c33d-9654656a5d6d-1de3b179"
-              sizes="(max-width: 479px) 38vw, (max-width: 767px) 29vw, (max-width: 991px) 30vw, 300px"
-              srcset="https://uploads-ssl.webflow.com/63aea4db2c152d0f2ee3b178/63d94e4f4311a962dd47cd40_intel%20Colourful%20logo-p-500.png 500w, https://uploads-ssl.webflow.com/63aea4db2c152d0f2ee3b178/63d94e4f4311a962dd47cd40_intel%20Colourful%20logo.png 600w"
-              alt="" class="client_img" />
-            <img
-              src="https://uploads-ssl.webflow.com/63aea4db2c152d0f2ee3b178/63d94e7c0c18d882d88d4aa6_ftv%20color%20logo.png"
-              loading="lazy" id="w-node-aa68f0d4-ec46-2755-b4f4-2d8f03aab4aa-1de3b179"
-              sizes="(max-width: 479px) 38vw, (max-width: 767px) 29vw, (max-width: 991px) 30vw, 300px"
-              srcset="https://uploads-ssl.webflow.com/63aea4db2c152d0f2ee3b178/63d94e7c0c18d882d88d4aa6_ftv%20color%20logo-p-500.png 500w, https://uploads-ssl.webflow.com/63aea4db2c152d0f2ee3b178/63d94e7c0c18d882d88d4aa6_ftv%20color%20logo.png 600w"
-              alt="" class="client_img" />
-            <img
-              src="https://uploads-ssl.webflow.com/63aea4db2c152d0f2ee3b178/63d94e370d5dc2168bbc4c0c_torrent%20Colourful%20logo.png"
-              loading="lazy" id="w-node-a81e261f-ee0a-b41f-be39-093e4f3e8f7e-1de3b179"
-              sizes="(max-width: 479px) 38vw, (max-width: 767px) 29vw, (max-width: 991px) 30vw, 300px"
-              srcset="https://uploads-ssl.webflow.com/63aea4db2c152d0f2ee3b178/63d94e370d5dc2168bbc4c0c_torrent%20Colourful%20logo-p-500.png 500w, https://uploads-ssl.webflow.com/63aea4db2c152d0f2ee3b178/63d94e370d5dc2168bbc4c0c_torrent%20Colourful%20logo.png 600w"
-              alt="" class="client_img" />
-            <img
-              src="https://uploads-ssl.webflow.com/63aea4db2c152d0f2ee3b178/63d94e42235def70e49993d9_Parul%20Colourful%20logo.png"
-              loading="lazy" id="w-node-_94bfae64-ed12-dd04-fec5-67009da6408a-1de3b179"
-              sizes="(max-width: 479px) 38vw, (max-width: 767px) 29vw, (max-width: 991px) 30vw, 300px"
-              srcset="https://uploads-ssl.webflow.com/63aea4db2c152d0f2ee3b178/63d94e42235def70e49993d9_Parul%20Colourful%20logo-p-500.png 500w, https://uploads-ssl.webflow.com/63aea4db2c152d0f2ee3b178/63d94e42235def70e49993d9_Parul%20Colourful%20logo.png 600w"
-              alt="" class="client_img" />
-            <img src="https://uploads-ssl.webflow.com/63aea4db2c152d0f2ee3b178/63bbf4d4e7d3d45d90145404_IFP.png"
-              loading="lazy" id="w-node-_8935c429-e205-9076-ed46-ceb7774a3484-1de3b179"
-              sizes="(max-width: 479px) 38vw, (max-width: 767px) 29vw, (max-width: 991px) 30vw, 300px"
-              srcset="https://uploads-ssl.webflow.com/63aea4db2c152d0f2ee3b178/63bbf4d4e7d3d45d90145404_IFP-p-500.png 500w, https://uploads-ssl.webflow.com/63aea4db2c152d0f2ee3b178/63bbf4d4e7d3d45d90145404_IFP.png 600w"
-              alt="India Film Project" class="client_img" />
-            <img
-              src="https://uploads-ssl.webflow.com/63aea4db2c152d0f2ee3b178/63d94e6f7e33c7b7e865db57_indus%20Colourful%20logo.png"
-              loading="lazy" id="w-node-_6f7c125e-4789-3e25-afa8-3e3c958f3149-1de3b179"
-              sizes="(max-width: 479px) 38vw, (max-width: 767px) 29vw, (max-width: 991px) 30vw, 300px"
-              srcset="https://uploads-ssl.webflow.com/63aea4db2c152d0f2ee3b178/63d94e6f7e33c7b7e865db57_indus%20Colourful%20logo-p-500.png 500w, https://uploads-ssl.webflow.com/63aea4db2c152d0f2ee3b178/63d94e6f7e33c7b7e865db57_indus%20Colourful%20logo.png 600w"
-              alt="" class="client_img" />
-            <img src="https://uploads-ssl.webflow.com/63aea4db2c152d0f2ee3b178/63bbf4d4e495ff134fc44b99_Hungrito.png"
-              loading="lazy" id="w-node-_5b07a0dd-00e6-9b24-3671-41874d0e1bb6-1de3b179"
-              sizes="(max-width: 479px) 38vw, (max-width: 767px) 29vw, (max-width: 991px) 30vw, 300px"
-              srcset="https://uploads-ssl.webflow.com/63aea4db2c152d0f2ee3b178/63bbf4d4e495ff134fc44b99_Hungrito-p-500.png 500w, https://uploads-ssl.webflow.com/63aea4db2c152d0f2ee3b178/63bbf4d4e495ff134fc44b99_Hungrito.png 600w"
-              alt="" class="client_img" />
-            <img src="https://uploads-ssl.webflow.com/63aea4db2c152d0f2ee3b178/63d3c6a0310f8d5834399474_abhivyakti.png"
-              loading="lazy" id="w-node-_71d2af36-06a7-faf2-e572-cd31bfa535e1-1de3b179"
-              sizes="(max-width: 479px) 38vw, (max-width: 767px) 29vw, (max-width: 991px) 30vw, 300px"
-              srcset="https://uploads-ssl.webflow.com/63aea4db2c152d0f2ee3b178/63d3c6a0310f8d5834399474_abhivyakti-p-500.png 500w, https://uploads-ssl.webflow.com/63aea4db2c152d0f2ee3b178/63d3c6a0310f8d5834399474_abhivyakti.png 600w"
-              alt="" class="client_img" />
-            <img src="https://uploads-ssl.webflow.com/63aea4db2c152d0f2ee3b178/63bbf4d438f63f9f0b80b47d_Gimme%205.png"
-              loading="lazy" id="w-node-_91bf9922-4d01-943b-ad40-4a9debae080b-1de3b179"
-              sizes="(max-width: 479px) 38vw, (max-width: 767px) 29vw, (max-width: 991px) 30vw, 300px"
-              srcset="https://uploads-ssl.webflow.com/63aea4db2c152d0f2ee3b178/63bbf4d438f63f9f0b80b47d_Gimme%205-p-500.png 500w, https://uploads-ssl.webflow.com/63aea4db2c152d0f2ee3b178/63bbf4d438f63f9f0b80b47d_Gimme%205.png 600w"
-              alt="" class="client_img" />
-            <img src="https://uploads-ssl.webflow.com/63aea4db2c152d0f2ee3b178/63bbf4d592207e0c7bb29893_Lampros.png"
-              loading="lazy" id="w-node-b700ad33-6e28-bc80-49d5-007cd8caaced-1de3b179"
-              sizes="(max-width: 479px) 38vw, (max-width: 767px) 29vw, (max-width: 991px) 30vw, 300px"
-              srcset="https://uploads-ssl.webflow.com/63aea4db2c152d0f2ee3b178/63bbf4d592207e0c7bb29893_Lampros-p-500.png 500w, https://uploads-ssl.webflow.com/63aea4db2c152d0f2ee3b178/63bbf4d592207e0c7bb29893_Lampros.png 600w"
-              alt="" class="client_img" />
-            <h1 id="w-node-acebe3f8-b2ef-09d6-b736-9ad4a7f59e3c-1de3b179" class="client_logo_paragraph">and many more...
-            </h1>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="all-sections wf-section">
-    <div class="all-containers w-container">
-      <div class="padding-tb-60">
-        <h1 class="h1 is_center-align">Shu Plan Che?</h1>
-        <div class="spacer-40"></div>
-        <div class="video-block">
-          <div data-delay="4000" data-animation="slide" class="slider w-slider" data-autoplay="false" data-easing="ease"
-            data-hide-arrows="false" data-disable-swipe="false" data-autoplay-limit="0" data-nav-spacing="3"
-            data-duration="500" data-infinite="true">
-            <div class="mask w-slider-mask">
-              <div class="slider_padding-lr140 w-slide">
-                <div style="padding-top:56.17021276595745%" class="video w-video w-embed">
-                  <iframe class="embedly-embed"
-                    src="//cdn.embedly.com/widgets/media.html?src=https%3A%2F%2Fwww.youtube.com%2Fembed%2FEl59GSC37Fc%3Ffeature%3Doembed&display_name=YouTube&url=https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3DEl59GSC37Fc&image=https%3A%2F%2Fi.ytimg.com%2Fvi%2FEl59GSC37Fc%2Fhqdefault.jpg&key=96f1f04c5f4143bcb0f2e68c87d65feb&type=text%2Fhtml&schema=youtube"
-                    scrolling="no" allowfullscreen
-                    title="માનવામાં જ નહીં આવે, અમદાવાદમાં આવું મિની જંગલ? | Shu Plan"></iframe>
-                </div>
-              </div>
-              <div class="slider_padding-lr140 w-slide">
-                <div style="padding-top:56.17021276595745%" class="video w-video w-embed">
-                  <iframe class="embedly-embed"
-                    src="//cdn.embedly.com/widgets/media.html?src=https%3A%2F%2Fwww.youtube.com%2Fembed%2FHukOLLdTnQ4&display_name=YouTube&url=https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3DHukOLLdTnQ4&image=http%3A%2F%2Fi.ytimg.com%2Fvi%2FHukOLLdTnQ4%2Fhqdefault.jpg&key=96f1f04c5f4143bcb0f2e68c87d65feb&type=text%2Fhtml&schema=youtube"
-                    scrolling="no" title="YouTube embed" frameborder="0" allow="autoplay; fullscreen"
-                    allowfullscreen="true"></iframe>
-                </div>
-              </div>
-              <div class="slider_padding-lr140 w-slide">
-                <div style="padding-top:56.17021276595745%" class="w-video w-embed">
-                  <iframe class="embedly-embed"
-                    src="//cdn.embedly.com/widgets/media.html?src=https%3A%2F%2Fwww.youtube.com%2Fembed%2FxADyuMDTUbs%3Ffeature%3Doembed&display_name=YouTube&url=https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3DxADyuMDTUbs&image=https%3A%2F%2Fi.ytimg.com%2Fvi%2FxADyuMDTUbs%2Fhqdefault.jpg&key=96f1f04c5f4143bcb0f2e68c87d65feb&type=text%2Fhtml&schema=youtube"
-                    scrolling="no" allowfullscreen
-                    title="નિલકંઠ ધામ પોઈચા - ધરતી પર જાણે સ્વર્ગ આવી ગયું, પરિવાર સાથે પિકનિક પર જવા માટેની બેસ્ટ પ્લેસ"></iframe>
-                </div>
-              </div>
-              <div class="slider_padding-lr140 w-slide">
-                <div style="padding-top:56.17021276595745%" class="w-video w-embed">
-                  <iframe class="embedly-embed"
-                    src="//cdn.embedly.com/widgets/media.html?src=https%3A%2F%2Fwww.youtube.com%2Fembed%2FKxbuDmvZEnE%3Fstart%3D179%26feature%3Doembed%26start%3D179&display_name=YouTube&url=https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3DKxbuDmvZEnE&image=https%3A%2F%2Fi.ytimg.com%2Fvi%2FKxbuDmvZEnE%2Fhqdefault.jpg&key=96f1f04c5f4143bcb0f2e68c87d65feb&type=text%2Fhtml&schema=youtube"
-                    scrolling="no" allowfullscreen
-                    title="Ahmedabad માં જાણે જપાન આવી ગયું, રૂ. 50 માણો મજા । Zen-Kaizen at AMA | Shu Plan"></iframe>
-                </div>
-              </div>
-              <div class="slider_padding-lr140 w-slide">
-                <div style="padding-top:56.17021276595745%" class="w-video w-embed">
-                  <iframe class="embedly-embed"
-                    src="//cdn.embedly.com/widgets/media.html?src=https%3A%2F%2Fwww.youtube.com%2Fembed%2FGDsDIb-hYv0%3Fstart%3D28%26feature%3Doembed%26start%3D28&display_name=YouTube&url=https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3DGDsDIb-hYv0&image=https%3A%2F%2Fi.ytimg.com%2Fvi%2FGDsDIb-hYv0%2Fhqdefault.jpg&key=96f1f04c5f4143bcb0f2e68c87d65feb&type=text%2Fhtml&schema=youtube"
-                    scrolling="no" allowfullscreen
-                    title="Ahmedabad નું Ravivari Bazaar, અહીં10-20 રૂપિયામાં મળતી વસ્તુ તમને લાખો કમાવી શકે | Shu Plan"></iframe>
-                </div>
-              </div>
-              <div class="slider_padding-lr140 w-slide">
-                <div style="padding-top:56.17021276595745%" class="w-video w-embed">
-                  <iframe class="embedly-embed"
-                    src="//cdn.embedly.com/widgets/media.html?src=https%3A%2F%2Fwww.youtube.com%2Fembed%2FBsePCXIp77I%3Fstart%3D374%26feature%3Doembed%26start%3D374&display_name=YouTube&url=https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3DBsePCXIp77I&image=https%3A%2F%2Fi.ytimg.com%2Fvi%2FBsePCXIp77I%2Fhqdefault.jpg&key=96f1f04c5f4143bcb0f2e68c87d65feb&type=text%2Fhtml&schema=youtube"
-                    scrolling="no" allowfullscreen
-                    title="અમદાવાદમાં ભારતનું સૌથી મોટું એક્વેરિયમ | Science city Aquatic Gallery | Shu Plan"></iframe>
-                </div>
-              </div>
-            </div>
-            <div class="left-arrow w-slider-arrow-left">
-              <div class="arrow_icon w-icon-slider-left"></div>
-            </div>
-            <div class="right-arrow w-slider-arrow-right">
-              <div class="arrow_icon w-icon-slider-right"></div>
-            </div>
-            <div class="slide-nav w-slider-nav w-round"></div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="all-sections wf-section">
-    <div class="all-containers w-container">
-      <div class="padding-tb-60">
-        <div data-w-id="7f863e3c-3e99-e87b-e8ef-ea9931d8280c" class="counter_wrapper">
-          <div class="counter">
-            <div class="counter_column">
-              <h1 class="counter_heading followers" id="Shows">264</h1>
-              <h3 class="counter_content">Shows</h3>
-            </div>
-            <div class="counter_column">
-              <h1 class="counter_heading followers" id="Views">98749903</h1>
-              <h3 class="counter_content">Views</h3>
-            </div>
-            <div class="counter_column">
-              <h1 class="counter_heading followers" id="Interviews">54</h1>
-              <h3 class="counter_content">Interviews</h3>
-            </div>
-            <div class="counter_column">
-              <h1 class="counter_heading followers" id="Days">3987</h1>
-              <h3 class="counter_content">Days of Herogiri</h3>
-            </div>
-            <div class="counter_column">
-              <h1 class="counter_heading followers">∞</h1>
-              <h3 class="counter_content">Smiles</h3>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div id="Let-s-Connect" class="all-sections _100vh wf-section">
-    <div class="all-containers _100vh w-container">
-      <div id="Let-s-Work" class="padding-tb-60 horizontal-align mobile-vertical">
-        <div class="_60-block">
-          <h1 class="h1">Let&#x27;s Talk</h1>
+    <div class="all-sections wf-section">
+      <div class="all-containers w-container">
+        <div class="padding-tb-60">
+          <h1 class="h1 is_center-align">Shu Plan Che?</h1>
           <div class="spacer-40"></div>
-          <div data-w-id="7dc8f2e9-f913-7375-2af8-0daed97d3b1f" class="form_component w-form">
-            <form id="email-form" name="email-form" data-name="Email Form" method="get" class="form_block">
-              <label for="name" class="field-label">Name</label>
-              <input type="text" class="input-field w-input" maxlength="256" name="name" data-name="Name" placeholder=""
-                id="name" />
-              <label for="contact" class="field-label">Contact No.</label>
-              <input type="tel" class="input-field w-input" maxlength="256" name="Contact-No" data-name="Contact No."
-                placeholder="" id="contact" required="" />
-              <label for="city" class="field-label">City</label>
-              <input type="text" class="input-field w-input" maxlength="256" name="City" data-name="City" placeholder=""
-                id="city" />
-              <label for="email" class="field-label">Email Address</label>
-              <input type="email" class="input-field w-input" maxlength="256" name="email" data-name="Email"
-                placeholder="" id="email" required="" />
-              <label for="purpose" class="field-label">Purpose</label>
-              <select id="purpose" name="Purpose" data-name="Purpose" required=""
-                class="input-field select-field w-select">
-                <option value="">Select one...</option>
-                <option value="Private Event">Private Event</option>
-                <option value="Corporate Event">Corporate Event</option>
-                <option value="Concert">Concert</option>
-                <option value="Festival">Festival</option>
-                <option value="Branded Content">Branded Content</option>
-                <option value="Other">Other</option>
-              </select>
-              <label for="Message" class="field-label">Message</label>
-              <input type="text" class="input-field w-input" maxlength="256" name="Message" data-name="Message"
-                placeholder="" id="Message" />
-              <input type="submit" value="Submit" data-wait="Please wait..." class="submit-button w-button" />
-            </form>
-            <div class="form_success-message w-form-done">
-              <div>Thank you! Your submission has been received!</div>
-            </div>
-            <div class="form_error-message w-form-fail">
-              <div>Oops! Something went wrong while submitting the form.</div>
+          <div class="video-block">
+            <div data-delay="4000" data-animation="slide" class="slider w-slider" data-autoplay="false"
+              data-easing="ease" data-hide-arrows="false" data-disable-swipe="false" data-autoplay-limit="0"
+              data-nav-spacing="3" data-duration="500" data-infinite="true">
+              <div class="mask w-slider-mask">
+                <div class="slider_padding-lr140 w-slide">
+                  <div style="padding-top:56.17021276595745%" class="video w-video w-embed">
+                    <iframe class="embedly-embed"
+                      src="//cdn.embedly.com/widgets/media.html?src=https%3A%2F%2Fwww.youtube.com%2Fembed%2FEl59GSC37Fc%3Ffeature%3Doembed&display_name=YouTube&url=https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3DEl59GSC37Fc&image=https%3A%2F%2Fi.ytimg.com%2Fvi%2FEl59GSC37Fc%2Fhqdefault.jpg&key=96f1f04c5f4143bcb0f2e68c87d65feb&type=text%2Fhtml&schema=youtube"
+                      scrolling="no" allowfullscreen
+                      title="માનવામાં જ નહીં આવે, અમદાવાદમાં આવું મિની જંગલ? | Shu Plan"></iframe>
+                  </div>
+                </div>
+                <div class="slider_padding-lr140 w-slide">
+                  <div style="padding-top:56.17021276595745%" class="video w-video w-embed">
+                    <iframe class="embedly-embed"
+                      src="//cdn.embedly.com/widgets/media.html?src=https%3A%2F%2Fwww.youtube.com%2Fembed%2FHukOLLdTnQ4&display_name=YouTube&url=https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3DHukOLLdTnQ4&image=http%3A%2F%2Fi.ytimg.com%2Fvi%2FHukOLLdTnQ4%2Fhqdefault.jpg&key=96f1f04c5f4143bcb0f2e68c87d65feb&type=text%2Fhtml&schema=youtube"
+                      scrolling="no" title="YouTube embed" frameborder="0" allow="autoplay; fullscreen"
+                      allowfullscreen="true"></iframe>
+                  </div>
+                </div>
+                <div class="slider_padding-lr140 w-slide">
+                  <div style="padding-top:56.17021276595745%" class="w-video w-embed">
+                    <iframe class="embedly-embed"
+                      src="//cdn.embedly.com/widgets/media.html?src=https%3A%2F%2Fwww.youtube.com%2Fembed%2FxADyuMDTUbs%3Ffeature%3Doembed&display_name=YouTube&url=https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3DxADyuMDTUbs&image=https%3A%2F%2Fi.ytimg.com%2Fvi%2FxADyuMDTUbs%2Fhqdefault.jpg&key=96f1f04c5f4143bcb0f2e68c87d65feb&type=text%2Fhtml&schema=youtube"
+                      scrolling="no" allowfullscreen
+                      title="નિલકંઠ ધામ પોઈચા - ધરતી પર જાણે સ્વર્ગ આવી ગયું, પરિવાર સાથે પિકનિક પર જવા માટેની બેસ્ટ પ્લેસ"></iframe>
+                  </div>
+                </div>
+                <div class="slider_padding-lr140 w-slide">
+                  <div style="padding-top:56.17021276595745%" class="w-video w-embed">
+                    <iframe class="embedly-embed"
+                      src="//cdn.embedly.com/widgets/media.html?src=https%3A%2F%2Fwww.youtube.com%2Fembed%2FKxbuDmvZEnE%3Fstart%3D179%26feature%3Doembed%26start%3D179&display_name=YouTube&url=https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3DKxbuDmvZEnE&image=https%3A%2F%2Fi.ytimg.com%2Fvi%2FKxbuDmvZEnE%2Fhqdefault.jpg&key=96f1f04c5f4143bcb0f2e68c87d65feb&type=text%2Fhtml&schema=youtube"
+                      scrolling="no" allowfullscreen
+                      title="Ahmedabad માં જાણે જપાન આવી ગયું, રૂ. 50 માણો મજા । Zen-Kaizen at AMA | Shu Plan"></iframe>
+                  </div>
+                </div>
+                <div class="slider_padding-lr140 w-slide">
+                  <div style="padding-top:56.17021276595745%" class="w-video w-embed">
+                    <iframe class="embedly-embed"
+                      src="//cdn.embedly.com/widgets/media.html?src=https%3A%2F%2Fwww.youtube.com%2Fembed%2FGDsDIb-hYv0%3Fstart%3D28%26feature%3Doembed%26start%3D28&display_name=YouTube&url=https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3DGDsDIb-hYv0&image=https%3A%2F%2Fi.ytimg.com%2Fvi%2FGDsDIb-hYv0%2Fhqdefault.jpg&key=96f1f04c5f4143bcb0f2e68c87d65feb&type=text%2Fhtml&schema=youtube"
+                      scrolling="no" allowfullscreen
+                      title="Ahmedabad નું Ravivari Bazaar, અહીં10-20 રૂપિયામાં મળતી વસ્તુ તમને લાખો કમાવી શકે | Shu Plan"></iframe>
+                  </div>
+                </div>
+                <div class="slider_padding-lr140 w-slide">
+                  <div style="padding-top:56.17021276595745%" class="w-video w-embed">
+                    <iframe class="embedly-embed"
+                      src="//cdn.embedly.com/widgets/media.html?src=https%3A%2F%2Fwww.youtube.com%2Fembed%2FBsePCXIp77I%3Fstart%3D374%26feature%3Doembed%26start%3D374&display_name=YouTube&url=https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3DBsePCXIp77I&image=https%3A%2F%2Fi.ytimg.com%2Fvi%2FBsePCXIp77I%2Fhqdefault.jpg&key=96f1f04c5f4143bcb0f2e68c87d65feb&type=text%2Fhtml&schema=youtube"
+                      scrolling="no" allowfullscreen
+                      title="અમદાવાદમાં ભારતનું સૌથી મોટું એક્વેરિયમ | Science city Aquatic Gallery | Shu Plan"></iframe>
+                  </div>
+                </div>
+              </div>
+              <div class="left-arrow w-slider-arrow-left">
+                <div class="arrow_icon w-icon-slider-left"></div>
+              </div>
+              <div class="right-arrow w-slider-arrow-right">
+                <div class="arrow_icon w-icon-slider-right"></div>
+              </div>
+              <div class="slide-nav w-slider-nav w-round"></div>
             </div>
           </div>
         </div>
-        <div class="spacer-60"></div>
-        <div class="_40-block">
-          <div class="spacer-120"></div>
-          <h3 data-w-id="e22311c8-d8ab-6121-eebe-4418430e77ad" class="h3">Social Media</h3>
-          <div data-w-id="60b678d5-f6f2-8509-7cfb-114061ca7c17" style="  " class="w-layout-grid grid">
+      </div>
+    </div>
+    <div class="all-sections wf-section">
+      <div class="all-containers w-container">
+        <div class="padding-tb-60">
+          <div data-w-id="7f863e3c-3e99-e87b-e8ef-ea9931d8280c" class="counter_wrapper">
+            <div class="counter">
+              <div class="counter_column">
+                <h1 class="counter_heading followers" id="Shows">264</h1>
+                <h3 class="counter_content">Shows</h3>
+              </div>
+              <div class="counter_column">
+                <h1 class="counter_heading followers" id="Views">98749903</h1>
+                <h3 class="counter_content">Views</h3>
+              </div>
+              <div class="counter_column">
+                <h1 class="counter_heading followers" id="Interviews">54</h1>
+                <h3 class="counter_content">Interviews</h3>
+              </div>
+              <div class="counter_column">
+                <h1 class="counter_heading followers" id="Days">3987</h1>
+                <h3 class="counter_content">Days of Herogiri</h3>
+              </div>
+              <div class="counter_column">
+                <h1 class="counter_heading followers">∞</h1>
+                <h3 class="counter_content">Smiles</h3>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    </div>
+    </div>
+</body>
+    <footer>
+    <div class="footer_section wf-section" style="height:auto;background-color: rgba(65, 65, 65, 0.408);">
+      <div style="display: flex; align-items:center; scale:0.5; height:350px;transform:translateY(-30px);">
+        <img src="./white logo 2.png" alt="">
+      </div>
+      <div class="footer_container w-container">
+        <p class="paragraph_center_align">Copyright @ 2023 ✸ Manav Joshi</p>
+      </div>
+
+
+      <!-- <div id="Let-s-Connect" class="">
+    <div class="all-containers  w-container">
+
+  
+      <div id="Let-s-Work" class="padding-tb-20 horizontal-align mobile-vertical">
+      
+        <div class="spacer-10"></div>
+        <div class="20-block">
+          <div data-w-id="60b678d5-f6f2-8509-7cfb-114061ca7c17" class="w-layout-grid grid">
             <a id="w-node-_5387152e-16b4-908e-3cff-7209e27ae9d2-1de3b179" href="#"
               class="icon-block insta w-inline-block">
               <img src="https://uploads-ssl.webflow.com/63aea4db2c152d0f2ee3b178/63aecf33b337a6dc29f783dc_Vector.svg"
@@ -587,7 +632,7 @@ urlLocationHandler();
                 loading="lazy" width="20" id="w-node-e6e351dc-7af6-5beb-a2ea-ac112950fc7d-1de3b179" alt=""
                 class="image-4" />
             </a>
-            <a id="w-node-_3a5116aa-bcfe-6490-bd22-cde914e5cb2a-1de3b179" href="http://www.wa.me/919925978977"
+            <a id="w-node-_3a5116aa-bcfe-6490-bd22-cde914e5cb2a-1de3b179" href="http://wa.me/+919925978977"
               class="icon-block whatsapp w-inline-block">
               <img src="https://uploads-ssl.webflow.com/63aea4db2c152d0f2ee3b178/63d3be1e5f0e69447af60b35_Whatsapp.svg"
                 loading="lazy" width="24" id="w-node-_3a5116aa-bcfe-6490-bd22-cde914e5cb2b-1de3b179" alt=""
@@ -615,13 +660,18 @@ urlLocationHandler();
           </div>
         </div>
       </div>
+    -->
+    <div class="social_media">
+      <a href="#" id="facebook"><i class="fab fa-facebook-f"></i></a>
+      <a href="#" id="twitter"><i class="fab fa-twitter"></i></a>
+      <a href="#" id="instagram"><i class="fab fa-instagram"></i></a>
+      <a href="#" id="youtube"><i class="fab fa-youtube"></i></a>
+  </div>
     </div>
   </div>
-  <div class="footer_section wf-section">
-    <div class="footer_container w-container">
-      <p class="paragraph_center_align">Copyright @ 2023 ✸ Manav Joshi</p>
-    </div>
   </div>
+
+
   <script src="https://d3e54v103j8qbb.cloudfront.net/js/jquery-3.5.1.min.dc5e7f18c8.js?site=63aea4db2c152d0f2ee3b178"
     type="text/javascript" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0="
     crossorigin="anonymous"></script>
@@ -629,7 +679,9 @@ urlLocationHandler();
 		<script src="//cdnjs.cloudflare.com/ajax/libs/placeholders/3.0.2/placeholders.min.js"></script>
 		<![endif]-->
 
-  </div>   
-</body>
-  <script src="script.js"></script>
+  </div>
+</footer>
+
+<script src="script.js"></script>
+
 </html>

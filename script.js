@@ -9,11 +9,4 @@ const showsHTML = shows.innerHTML;
 
 
 
-viewsHTML=98749903;
-
-setInterval(() => {
-viewsHTML += 100;
-}, 8640)
-
-
 
