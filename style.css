@@ -11,6 +11,7 @@ p{
     font-size: 1.2rem;
     z-index: 100;
     margin-top: 10px;
+
     opacity: 1;
     transform: translateY(10px);
 }
@@ -45,6 +46,9 @@ h2 {
     flex: 50%;
     max-width: 50%;
   }
+  p{
+    margin-bottom: 40px;
+  }
 }
 
 
@@ -66,12 +70,24 @@ h2 {
 }
 
 /* Responsive layout - makes the two columns stack on top of each other instead of next to each other */
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 800px) {
   .column {
     flex: 100%;
-    max-width: 100%;
+    max-width:80%;
+
   }
-}
+
+
+  .gallery{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    height: 100vh;
+    overflow: scroll;
+    width: 100vw;
+  }
+  }
+
 
   .pushable {
     background: hsl(340deg 100% 32%);
@@ -143,3 +159,4 @@ a:active{
 
     margin-bottom:30px;
   }
+
