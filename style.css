@@ -49,6 +49,12 @@ h2 {
   p{
     margin-bottom: 40px;
   }
+  footer{
+    overflow: hidden;
+  }
+  .foot-logo{
+    scale:1.3;
+  }
 }
 
 
