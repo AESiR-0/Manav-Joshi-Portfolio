@@ -22,6 +22,7 @@ h2 {
 }
 
 .row {
+  width: 100vw;
   display: flex;
   flex-wrap: wrap;
   padding: 0 4px;
@@ -29,6 +30,8 @@ h2 {
 
 /* Create four equal columns that sits next to each other */
 .column {
+  position: static;
+  
   flex: 20%;
   max-width: 17%;
   padding: 0 2px;
@@ -83,6 +86,15 @@ h2 {
     flex: 100%;
     max-width:80%;
 
+  }
+
+  .connect{
+    display: none;
+  }
+
+  .column:nth-child(odd){
+    position: absolute;
+    display: none;
   }
 
 
@@ -168,3 +180,10 @@ a:active{
     margin-bottom:30px;
   }
 
+.main-page{
+  overflow: scroll;
+}
+
+:root{
+  overflow-x: hidden;
+}
