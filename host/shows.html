@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Shows &amp; On-Camera — Manav Joshi</title>
+  <meta name="description" content="Manav Joshi — TV and on-camera host. 25M+ views. Travel show, sports show.">
+  <meta name="theme-color" content="#080808">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" media="print" onload="this.media='all'">
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap"></noscript>
+  <style>
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+    :root { --pad-x:clamp(24px,7vw,80px); --pad-top:clamp(20px,4.5vw,40px); --font:'Inter',-apple-system,BlinkMacSystemFont,'Helvetica Neue',sans-serif; }
+    html, body { width:100%; height:100%; overflow:hidden; background:#080808; color:#fff; font-family:var(--font); -webkit-font-smoothing:antialiased; }
+    .bg { position:fixed; inset:0; z-index:0; }
+    .bg-layer { position:absolute; inset:0; background-size:cover; background-position:center 30%; will-change:opacity; }
+    #layer1 { opacity:1; } #layer2 { opacity:0; }
+    .bg-overlay { position:absolute; inset:0; z-index:1; background:linear-gradient(175deg,rgba(0,0,0,.18) 0%,rgba(0,0,0,.38) 45%,rgba(0,0,0,.65) 100%); }
+    .sig-wrap { position:fixed; top:var(--pad-top); left:var(--pad-x); z-index:20; opacity:0; animation:riseIn .9s cubic-bezier(.22,1,.36,1) .2s forwards; }
+    .sig-wrap img { height:clamp(44px,7vw,88px); width:auto; display:block; filter:brightness(0) invert(1); }
+    .back{position:fixed;top:var(--pad-top);right:var(--pad-x);z-index:20;height:clamp(44px,7vw,88px);display:flex;align-items:center;font-size:clamp(22px,3vw,32px);line-height:1;letter-spacing:0;color:rgba(255,255,255,.5);text-decoration:none;transition:color .2s;opacity:0;animation:fadeIn .6s ease .3s forwards;}
+    .back:hover{color:rgba(255,255,255,.9);}
+    .stage { position:fixed; inset:0; z-index:10; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:clamp(100px,18vh,160px) var(--pad-x) clamp(60px,12vh,100px); }
+    .cat-label { font-size:clamp(11px,1.2vw,12px); font-weight:400; letter-spacing:.22em; text-transform:uppercase; color:rgba(255,255,255,.3); margin-bottom:clamp(12px,2.2vh,22px); opacity:0; animation:fadeIn .5s ease .3s forwards; }
+    .cat-name { font-size:clamp(18px,2.8vw,30px); font-weight:600; letter-spacing:-.02em; line-height:1.1; margin-bottom:clamp(20px,3.5vh,38px); opacity:0; animation:riseIn .65s cubic-bezier(.22,1,.36,1) .35s forwards; }
+    .brag { height:clamp(13px,2.2vh,17px); overflow:hidden; margin-bottom:clamp(28px,5vh,54px); opacity:0; animation:fadeIn .6s ease .55s forwards; }
+    .brag-text { font-size:clamp(11px,1.35vw,14px); font-weight:400; letter-spacing:.14em; text-transform:uppercase; color:rgba(255,255,255,.44); display:block; transition:opacity .45s ease,transform .45s ease; }
+    .brag-text.out { opacity:0; transform:translateY(-6px); }
+    .brag-text.in  { opacity:1; transform:translateY(0); }
+    .ctas { display:flex; gap:clamp(18px,3vw,32px); justify-content:center; flex-wrap:wrap; opacity:0; animation:fadeIn .6s ease .7s forwards; }
+    .cta { font-size:clamp(11px,1.3vw,13px); font-weight:500; letter-spacing:.18em; text-transform:uppercase; color:rgba(255,255,255,.45); text-decoration:none; border-bottom:1px solid rgba(255,255,255,.18); padding-bottom:3px; transition:color .2s,border-color .2s; }
+    .cta:hover { color:rgba(255,255,255,.9); border-color:rgba(255,255,255,.5); }
+    @keyframes riseIn { from { opacity:0; transform:translateY(12px); } to { opacity:1; transform:none; } }
+    @keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
+    /* Socials */
+    .socials{position:fixed;bottom:clamp(18px,4vh,34px);left:50%;transform:translateX(-50%);z-index:20;display:flex;gap:clamp(14px,2.2vw,20px);align-items:center;}
+    .soc{color:rgba(255,255,255,.42);text-decoration:none;display:flex;align-items:center;transition:color .22s,transform .22s;}
+    .soc:hover{color:#fff;transform:translateY(-1px);}
+    .soc svg{width:clamp(15px,1.7vw,18px);height:clamp(15px,1.7vw,18px);display:block;}
+    @media (prefers-reduced-motion: reduce) { .sig-wrap,.cat-name,.cat-label,.brag,.ctas,.back { animation-name:fadeIn; animation-duration:.3s; } }
+  </style>
+</head>
+<body>
+<div class="bg"><div class="bg-layer" id="layer1"></div><div class="bg-layer" id="layer2"></div><div class="bg-overlay"></div></div>
+<a href="../index.html" class="sig-wrap" aria-label="Home — Manav Joshi">
+  <img src="../assets/signature.gif" alt="MJ" onerror="this.closest('.sig-wrap').style.display='none'">
+</a>
+<a href="../host.html" class="back" aria-label="Back">←</a>
+<main class="stage">
+  <p class="cat-label">Shows &amp; On-Camera</p>
+  <h1 class="cat-name">25M+ views.<br>And counting.</h1>
+  <div class="brag" aria-live="polite" aria-atomic="true">
+    <span class="brag-text in" id="bragText"></span>
+  </div>
+  <div class="ctas">
+    <a href="https://www.youtube.com/@manav.joshii" target="_blank" rel="noopener" class="cta">Watch my reel ↗</a>
+    <a href="https://wa.me/+919925978977" target="_blank" rel="noopener noreferrer" class="cta">Book me →</a>
+  </div>
+</main>
+<nav class="socials" aria-label="Social profiles">
+  <a href="https://www.instagram.com/manav.joshii/" target="_blank" rel="noopener noreferrer" class="soc" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.55" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4.4"/><circle cx="17.5" cy="6.5" r=".75" fill="currentColor" stroke="none"/></svg></a>
+  <a href="https://www.linkedin.com/in/manav-joshi/" target="_blank" rel="noopener noreferrer" class="soc" aria-label="LinkedIn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.45 20.45h-3.55v-5.57c0-1.33-.03-3.04-1.85-3.04-1.86 0-2.14 1.45-2.14 2.94v5.67H9.36V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 110-4.12 2.06 2.06 0 010 4.12zM7.12 20.45H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45C23.2 24 24 23.23 24 22.27V1.73C24 .77 23.2 0 22.22 0z"/></svg></a>
+  <a href="https://www.youtube.com/@manav.joshii" target="_blank" rel="noopener noreferrer" class="soc" aria-label="YouTube"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M23.5 6.19a3.02 3.02 0 00-2.12-2.14C19.5 3.55 12 3.55 12 3.55s-7.5 0-9.38.5A3.02 3.02 0 00.5 6.19C0 8.07 0 12 0 12s0 3.93.5 5.81a3.02 3.02 0 002.12 2.14c1.88.5 9.38.5 9.38.5s7.5 0 9.38-.5a3.02 3.02 0 002.12-2.14C24 15.93 24 12 24 12s0-3.93-.5-5.81zM9.55 15.57V8.43L15.82 12l-6.27 3.57z"/></svg></a>
+  <a href="https://wa.me/+919925978977" target="_blank" rel="noopener noreferrer" class="soc" aria-label="WhatsApp"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.47 14.38c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.16-.17.2-.35.22-.65.07-.3-.15-1.26-.46-2.4-1.48-.88-.79-1.48-1.76-1.65-2.06-.17-.3-.02-.46.13-.61.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.07-.15-.67-1.61-.92-2.2-.24-.58-.49-.5-.67-.51-.17-.01-.37-.01-.57-.01-.2 0-.52.07-.79.37-.27.3-1.04 1.02-1.04 2.48 0 1.46 1.07 2.88 1.22 3.07.15.2 2.1 3.2 5.08 4.49.71.31 1.26.49 1.69.62.71.23 1.36.2 1.87.12.57-.09 1.76-.72 2.01-1.41.25-.7.25-1.29.17-1.41-.07-.12-.27-.2-.57-.35zm-5.42 7.4a9.87 9.87 0 01-5.03-1.38l-.36-.21-3.74.98 1-3.65-.24-.37A9.86 9.86 0 011.17 12C1.17 6.55 5.6 2.12 12.05 2.12c2.64 0 5.12 1.03 6.99 2.9a9.82 9.82 0 012.89 6.99c-.003 5.45-4.44 9.88-9.88 9.88zm8.41-18.3A11.82 11.82 0 0012.05 0C5.5 0 .16 5.34.16 11.89c0 2.1.55 4.14 1.59 5.95L.06 24l6.3-1.65a11.88 11.88 0 005.69 1.45c6.55 0 11.89-5.34 11.89-11.89 0-3.18-1.24-6.16-3.48-8.4z"/></svg></a>
+  <a href="https://x.com/manavjoshii" target="_blank" rel="noopener noreferrer" class="soc" aria-label="X"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.24 2.25h3.31L14.32 10.5l8.5 11.25h-7.08l-4.71-6.23-5.4 6.23H2.74l7.74-8.83L1.26 2.25h7.25l4.26 5.64 5.47-5.64zm-1.16 17.52h1.83L7.08 4.13H5.12l11.96 15.64z"/></svg></a>
+  <a href="mailto:work@manavjoshi.com" class="soc" aria-label="Email"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.55" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 7l-10 7L2 7"/></svg></a>
+</nav>
+<script>
+const PHOTOS=['../assets/photos/1.jpg','../assets/photos/4.jpg','../assets/photos/7.jpg','../assets/photos/9.jpg','../assets/photos/8.jpg'];
+async function fetchBrags(tag){try{const r=await fetch('/src/content/brags.txt');const txt=await r.text();return txt.split('\n').map(l=>l.trim()).filter(Boolean).flatMap(l=>{const[b,t]=l.split('|');if(!b||!t)return[];return t.split(',').map(s=>s.trim()).includes(tag)?[b.trim()]:[];});}catch{return[];}}
+(function(){const l1=document.getElementById('layer1'),l2=document.getElementById('layer2');let front=l1,back=l2;const loaded=[];let pool=[],pidx=0,last=null;function shuffle(a){const b=[...a];for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]];}return b;}function nextSrc(){const av=loaded.length?loaded:PHOTOS;if(pidx>=pool.length){let f=shuffle([...av]);if(last&&f.length>1&&f[0]===last)f=[...f.slice(1),f[0]];pool=f;pidx=0;}last=pool[pidx];return pool[pidx++];}function prime(src){back.style.transition='none';back.style.backgroundImage=`url('${src}')`;back.getBoundingClientRect();}function crossfade(ms,ease){back.style.transition=`opacity ${ms}ms ${ease}`;front.style.transition=`opacity ${ms}ms ${ease}`;back.style.opacity='1';front.style.opacity='0';[front,back]=[back,front];}const SCH=[...Array(12).fill(0).map(()=>[120,90,'ease-in-out']),[200,130,'ease-in-out'],[320,180,'ease-in-out'],[500,280,'cubic-bezier(.4,0,.2,1)'],[750,400,'cubic-bezier(.4,0,.2,1)'],[1300,600,'cubic-bezier(.4,0,.2,1)'],[2600,780,'cubic-bezier(.4,0,.2,1)'],[5200,780,'cubic-bezier(.4,0,.2,1)']];const STEADY=[7000,780,'cubic-bezier(.4,0,.2,1)'];function start(){prime(nextSrc());back.style.transition='opacity 450ms ease-in';back.style.opacity='1';[front,back]=[back,front];let step=0;function tick(){const[hold,fade,ease]=step<SCH.length?SCH[step++]:STEADY;prime(nextSrc());setTimeout(()=>{crossfade(fade,ease);tick();},hold);}setTimeout(tick,500);}function preload(cb){let called=false;PHOTOS.forEach(src=>{const img=new Image();img.onload=()=>{loaded.push(src);if(!called){called=true;cb();}};img.src=src;});}const slow=()=>{const c=navigator.connection||navigator.mozConnection||navigator.webkitConnection;return c&&(c.saveData||c.effectiveType==='slow-2g'||c.effectiveType==='2g');};window.addEventListener('load',()=>{if(slow()){l1.style.backgroundImage=`url('${PHOTOS[0]}')`;l1.style.opacity='1';}else preload(start);});})();
+(async()=>{const lines=await fetchBrags('shows');if(!lines.length)return;const el=document.getElementById('bragText');let idx=0;el.textContent=lines[0];setInterval(()=>{el.classList.remove('in');el.classList.add('out');setTimeout(()=>{idx=(idx+1)%lines.length;el.textContent=lines[idx];el.classList.remove('out');el.classList.add('in');},460);},4200);})();
+</script>
+</body>
+</html>

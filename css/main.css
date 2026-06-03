@@ -1,0 +1,361 @@
+/* ─── Reset & Base ─────────────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --font: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --red: #FF2535;
+  --text: #ffffff;
+  --text-dim: rgba(255, 255, 255, 0.55);
+  --text-dimmer: rgba(255, 255, 255, 0.32);
+  --overlay: rgba(0, 0, 0, 0.38);
+  --sig-pad: 22px;
+}
+
+html, body {
+  height: 100%;
+  overflow: hidden;
+  background: #000;
+  font-family: var(--font);
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ─── Photo Burst ───────────────────────────────────────────────────────────── */
+.burst {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+}
+
+.burst-layer {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  background-color: #111;
+  opacity: 0;
+  will-change: opacity;
+  transition: opacity 0.12s ease;
+}
+
+.burst-layer.active { opacity: 1; }
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  background: var(--overlay);
+  z-index: 1;
+}
+
+/* ─── Signature ─────────────────────────────────────────────────────────────── */
+.signature {
+  position: fixed;
+  top: var(--sig-pad);
+  left: var(--sig-pad);
+  z-index: 10;
+  display: block;
+  line-height: 0;
+  opacity: 0.92;
+  transition: opacity 0.2s;
+}
+.signature:hover { opacity: 1; }
+.signature img { width: 72px; height: auto; display: block; }
+
+/* ─── Back link ─────────────────────────────────────────────────────────────── */
+.back {
+  position: fixed;
+  top: var(--sig-pad);
+  right: var(--sig-pad);
+  z-index: 10;
+  font-size: 0.65rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.back:hover { color: var(--text); }
+
+/* ─── Main Content (all pages) ──────────────────────────────────────────────── */
+.page-main {
+  position: fixed;
+  inset: 0;
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 80px 24px 80px;
+  pointer-events: none;
+}
+
+.page-main > * { pointer-events: auto; }
+
+/* ─── Identities ────────────────────────────────────────────────────────────── */
+.identities {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-bottom: 28px;
+}
+
+.identity {
+  font-size: clamp(0.78rem, 2.4vw, 0.92rem);
+  font-weight: 400;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--text);
+  text-decoration: none;
+  transition: opacity 0.2s;
+}
+.identity:hover { opacity: 0.65; }
+
+.identity-sep {
+  color: var(--text-dimmer);
+  font-size: 0.7rem;
+  letter-spacing: 0;
+}
+
+/* ─── Lead copy ─────────────────────────────────────────────────────────────── */
+.lead-copy {
+  font-size: clamp(0.82rem, 2.6vw, 0.98rem);
+  font-weight: 300;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  margin-bottom: 32px;
+  text-align: center;
+}
+
+/* ─── Brag Line ─────────────────────────────────────────────────────────────── */
+.brag-line {
+  font-size: clamp(0.62rem, 1.8vw, 0.72rem);
+  font-weight: 300;
+  letter-spacing: 0.1em;
+  color: var(--text-dim);
+  text-align: center;
+  min-height: 1.4em;
+  transition: opacity 0.5s ease;
+  margin-bottom: 24px;
+  max-width: 320px;
+}
+.brag-line.fade { opacity: 0; }
+
+/* ─── Brand Logos ───────────────────────────────────────────────────────────── */
+.logos {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px 14px;
+  margin-bottom: 18px;
+  max-width: 340px;
+}
+
+.logo-mark {
+  font-size: 0.5rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-dimmer);
+  transition: color 0.2s;
+  line-height: 1;
+}
+
+/* ─── Fun links trigger ─────────────────────────────────────────────────────── */
+.fun-links-trigger {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: var(--font);
+  font-size: 0.52rem;
+  font-weight: 400;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-dimmer);
+  padding: 0;
+  transition: color 0.2s;
+}
+.fun-links-trigger:hover { color: var(--text-dim); }
+
+/* ─── Social Row ────────────────────────────────────────────────────────────── */
+.social-row {
+  position: fixed;
+  bottom: 22px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.social-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(255,255,255,0.5);
+  transition: color 0.2s;
+  line-height: 0;
+}
+.social-link:hover { color: #fff; }
+.social-link svg { width: 15px; height: 15px; fill: currentColor; }
+
+/* ─── Linktree Overlay ──────────────────────────────────────────────────────── */
+.linktree-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+  background: rgba(0, 0, 0, 0.88);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  padding: 40px 24px;
+  opacity: 1;
+  transition: opacity 0.25s ease;
+}
+.linktree-overlay.hidden { opacity: 0; pointer-events: none; }
+
+.linktree-close {
+  position: absolute;
+  top: 22px;
+  right: 24px;
+  background: none;
+  border: none;
+  font-family: var(--font);
+  font-size: 1.4rem;
+  font-weight: 300;
+  color: var(--text-dim);
+  cursor: pointer;
+  padding: 0;
+  transition: color 0.2s;
+  line-height: 1;
+}
+.linktree-close:hover { color: var(--text); }
+
+.linktree-link {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 400;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(255,255,255,0.15);
+  padding-bottom: 14px;
+  width: 100%;
+  max-width: 280px;
+  text-align: center;
+  transition: color 0.2s;
+}
+.linktree-link:last-child { border-bottom: none; }
+.linktree-link:hover { color: var(--text-dim); }
+
+/* ─── Founder Page ──────────────────────────────────────────────────────────── */
+.ventures {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  align-items: center;
+  margin-top: 12px;
+}
+
+.venture-link {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  text-decoration: none;
+  transition: opacity 0.2s;
+}
+.venture-link:hover { opacity: 0.65; }
+
+.venture-name {
+  font-size: clamp(0.78rem, 2.4vw, 0.92rem);
+  font-weight: 400;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--text);
+}
+
+.venture-sub {
+  font-size: 0.52rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-dimmer);
+}
+
+/* ─── Bathroom Singer ───────────────────────────────────────────────────────── */
+.bathroom-line {
+  font-size: clamp(0.7rem, 2.2vw, 0.85rem);
+  font-weight: 300;
+  letter-spacing: 0.14em;
+  color: var(--text-dim);
+  text-align: center;
+}
+
+/* ─── Category Followup Pages ───────────────────────────────────────────────── */
+.category-headline {
+  font-size: clamp(0.78rem, 2.4vw, 0.92rem);
+  font-weight: 400;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--text);
+  text-align: center;
+  margin-bottom: 12px;
+}
+
+.category-proof {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.proof-line {
+  font-size: clamp(0.6rem, 1.7vw, 0.7rem);
+  font-weight: 300;
+  letter-spacing: 0.08em;
+  color: var(--text-dim);
+  text-align: center;
+}
+
+.category-links {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
+}
+
+.category-cta {
+  font-size: 0.6rem;
+  font-weight: 400;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-dimmer);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(255,255,255,0.2);
+  padding-bottom: 4px;
+  transition: color 0.2s, border-color 0.2s;
+}
+.category-cta:hover { color: var(--text); border-color: rgba(255,255,255,0.5); }
+
+/* ─── Utilities ─────────────────────────────────────────────────────────────── */
+.sr-only {
+  position: absolute;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden;
+  clip: rect(0,0,0,0);
+  border: 0;
+}
+
+@media (min-width: 768px) {
+  .identities { gap: 16px; }
+  .logos { max-width: 440px; gap: 12px 20px; }
+  .logo-mark { font-size: 0.55rem; }
+}
