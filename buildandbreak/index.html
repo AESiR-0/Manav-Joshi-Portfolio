@@ -76,7 +76,7 @@
     /* ─── Hero: full-bleed cover before the filed report ─── */
     .hero {
       position: relative; width: 100%; min-height: 100vh; min-height: 100svh;
-      display: flex; flex-direction: column; justify-content: flex-end;
+      display: flex; align-items: center; justify-content: center; text-align: center;
       overflow: hidden; background: #16240f;
     }
     .hero-photo { position: absolute; inset: 0; z-index: 0; }
@@ -84,25 +84,22 @@
     .hero-scrim {
       position: absolute; inset: 0; z-index: 1;
       background:
-        linear-gradient(to top, rgba(16,24,12,.95) 0%, rgba(16,24,12,.62) 30%, rgba(16,24,12,.12) 60%, rgba(16,24,12,0) 82%),
-        linear-gradient(102deg, rgba(16,24,12,.5) 0%, rgba(16,24,12,0) 48%);
+        radial-gradient(112% 76% at 50% 44%, rgba(16,24,12,.3), rgba(16,24,12,.72) 100%),
+        linear-gradient(to bottom, rgba(16,24,12,.45), rgba(16,24,12,.26) 36%, rgba(16,24,12,.6));
     }
     .hero-bar {
-      position: absolute; top: clamp(18px,3.5vw,30px); left: 0; right: 0; z-index: 2;
-      display: flex; justify-content: space-between; gap: 14px;
-      padding: 0 clamp(22px,5vw,56px);
-      font-size: 13px; letter-spacing: .04em; color: rgba(252,249,218,.82);
+      position: absolute; top: clamp(20px,4vw,40px); left: clamp(22px,5vw,56px); z-index: 3;
     }
-    .hero-content { position: relative; z-index: 2; padding: 0 clamp(22px,5vw,56px) clamp(64px,12vh,118px); max-width: 900px; color: #fcf9da; }
-    .hero-kicker { font-size: clamp(12px,3.4vw,15px); letter-spacing: .14em; color: rgba(252,249,218,.85); margin-bottom: 16px; }
-    .hero-h1 { font-size: clamp(2.6rem, 11vw, 5.2rem); font-weight: 400; line-height: .98; letter-spacing: -.025em; max-width: 15ch; }
-    .hero-h1 strong { font-weight: 900; }
-    .hero-hand { font-family: var(--hand); color: #9fd48f; font-size: clamp(1.3rem,5.2vw,1.7rem); margin: 16px 0 20px; transform: rotate(-2deg); }
-    .hero-sub { font-size: clamp(1rem,4vw,1.18rem); line-height: 1.42; color: rgba(252,249,218,.92); max-width: 42ch; margin-bottom: 16px; }
-    .hero-meta { font-size: clamp(13px,3.6vw,15.5px); letter-spacing: .03em; color: rgba(252,249,218,.86); margin-top: 4px; }
-    .hero-logo-cl { height: clamp(34px, 7vw, 50px); width: auto; filter: brightness(0) invert(1); }
-    .hero-logo-bnb { display: block; width: clamp(280px, 76vw, 500px); height: auto; max-width: 100%; margin: 6px 0 20px; }
-    .hero-seats { display: flex; align-items: center; gap: 12px; margin-bottom: 22px; }
+    .hero-content {
+      position: relative; z-index: 2; color: #fcf9da;
+      display: flex; flex-direction: column; align-items: center;
+      gap: clamp(20px, 3.2vw, 32px); width: 100%; max-width: 600px;
+      padding: clamp(96px,15vh,150px) clamp(22px,5vw,56px) clamp(76px,12vh,116px);
+    }
+    .hero-meta { font-size: clamp(13.5px,3.6vw,16px); letter-spacing: .03em; color: rgba(252,249,218,.88); }
+    .hero-logo-cl { height: clamp(38px, 6.5vw, 58px); width: auto; filter: brightness(0) invert(1); }
+    .hero-logo-bnb { display: block; width: clamp(260px, 62vw, 520px); height: auto; max-width: 100%; }
+    .hero-seats { display: flex; align-items: center; justify-content: center; gap: 12px; }
     .hero-seats .tube { width: clamp(28px,7.5vw,34px); height: auto; flex-shrink: 0; }
     .tube { transform-origin: 50% 92%; }
     @media (prefers-reduced-motion: no-preference) {
@@ -121,6 +118,13 @@
     a { color: var(--green); }
     ::selection { background: rgba(41, 116, 29, .18); }
     :focus-visible { outline: 3px solid var(--green); outline-offset: 3px; border-radius: 2px; }
+
+    /* scroll progress bar */
+    .scrollbar {
+      position: fixed; top: 0; left: 0; height: 3px; width: 0; z-index: 70;
+      background: #4f9e2e; pointer-events: none; transition: width .08s linear;
+      box-shadow: 0 0 8px rgba(79,158,46,.5);
+    }
 
     /* ─── The sheet: a physical document on a desk ─── */
     .sheet {
@@ -425,6 +429,8 @@
 </head>
 <body>
 
+<div class="scrollbar" id="scrollbar" aria-hidden="true"></div>
+
 <a class="sticky-cta prescroll" id="stickyCta" href="#rsvp">lock my seat · ₹499</a>
 
 <header class="hero">
@@ -713,6 +719,11 @@ new IntersectionObserver((entries, io) => {
 /* ── sticky cta: appears from first scroll, hides while the form is on screen ── */
 addEventListener('scroll', () => {
   $('stickyCta').classList.toggle('prescroll', scrollY < 40);
+  const sb = $('scrollbar');
+  if (sb) {
+    const h = document.documentElement.scrollHeight - innerHeight;
+    sb.style.width = (h > 0 ? Math.min(100, scrollY / h * 100) : 0) + '%';
+  }
 }, { passive: true });
 new IntersectionObserver(entries => {
   $('stickyCta').classList.toggle('gone', entries[0].isIntersecting);
