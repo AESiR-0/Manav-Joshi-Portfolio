@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>build (and break) — debrief</title>
+  <link rel="icon" href="/buildandbreak/favicon.svg" type="image/svg+xml">
+  <meta name="description" content="the debrief. tell us what reacted and what exploded. honest beats nice.">
+  <meta name="theme-color" content="#172a12">
+  <meta name="robots" content="noindex">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preload" href="/assets/fonts/HelveticaNowDisplay-Regular.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/assets/fonts/HelveticaNowDisplay-Black.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;900&family=Schoolbell&display=swap">
+
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    [hidden] { display: none !important; }
+
+    @font-face { font-family: 'Helvetica Now Display'; src: url('/assets/fonts/HelveticaNowDisplay-Regular.woff2') format('woff2'); font-weight: 400; font-display: swap; }
+    @font-face { font-family: 'Helvetica Now Display'; src: url('/assets/fonts/HelveticaNowDisplay-Medium.woff2') format('woff2'); font-weight: 500; font-display: swap; }
+    @font-face { font-family: 'Helvetica Now Display'; src: url('/assets/fonts/HelveticaNowDisplay-Black.woff2') format('woff2'); font-weight: 900; font-display: swap; }
+
+    :root {
+      --green: #29741d; --green-press: #1d5413;
+      --ink: #20241c; --ink-soft: rgba(32,36,28,.78); --ink-faint: rgba(32,36,28,.54);
+      --rule: rgba(32,36,28,.22); --ink-rule: rgba(32,36,28,.85);
+      --green-line: rgba(41,116,29,.15); --paper: #edeee8; --desk: #172a12;
+      --hairline: rgba(60,60,60,.035); --major: rgba(60,60,60,.07);
+      --font: 'Helvetica Now Display','Inter','Helvetica Neue',-apple-system,sans-serif;
+      --hand: 'Schoolbell', cursive;
+    }
+    html { scroll-behavior: smooth; }
+    @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+    body { background: var(--desk); color: var(--ink); font-family: var(--font); font-size: 17px; line-height: 1.58; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; padding: 0; }
+    a { color: var(--green); }
+    ::selection { background: rgba(41,116,29,.18); }
+    :focus-visible { outline: 3px solid var(--green); outline-offset: 3px; border-radius: 2px; }
+
+    .scrollbar { position: fixed; top: 0; left: 0; height: 3px; width: 0; z-index: 70; background: #4f9e2e; pointer-events: none; transition: width .08s linear; box-shadow: 0 0 8px rgba(79,158,46,.5); }
+
+    .sheet {
+      position: relative; max-width: 760px; width: calc(100% - clamp(16px,6vw,80px));
+      margin: clamp(30px,6vw,72px) auto; background-color: var(--paper);
+      background-image:
+        linear-gradient(var(--hairline) 1px, transparent 1px),
+        linear-gradient(90deg, var(--hairline) 1px, transparent 1px),
+        linear-gradient(var(--major) 1px, transparent 1px),
+        linear-gradient(90deg, var(--major) 1px, transparent 1px);
+      background-size: 20px 20px, 20px 20px, 100px 100px, 100px 100px;
+      box-shadow: 0 2px 6px rgba(0,0,0,.18), 0 30px 70px -20px rgba(0,0,0,.55), 0 60px 120px -40px rgba(0,0,0,.5);
+    }
+    .sheet::before { content: ''; position: absolute; top: 0; bottom: 0; left: 74px; width: 1px; background: var(--green-line); pointer-events: none; }
+    .doc { padding: clamp(28px,4vw,48px) clamp(28px,5vw,58px) clamp(36px,5vw,56px); padding-left: clamp(28px,11vw,100px); }
+    @media (max-width: 680px) { .sheet::before { display: none; } .doc { padding: 28px 22px 40px; } }
+
+    .logo img { display: block; height: clamp(48px,12vw,70px); width: auto; margin-bottom: clamp(20px,4vw,32px); }
+    .logo-fallback { display: block; font-weight: 400; font-size: clamp(20px,5vw,26px); line-height: .9; letter-spacing: -.02em; color: var(--ink); margin-bottom: clamp(20px,4vw,32px); }
+
+    .eyebrow { font-size: 12px; letter-spacing: .16em; color: var(--green); margin-bottom: 10px; text-transform: lowercase; }
+    h1 { font-size: clamp(2rem,8vw,3rem); font-weight: 400; line-height: .95; letter-spacing: -.025em; }
+    h1 strong { font-weight: 900; }
+    .intro { color: var(--ink-soft); margin: 16px 0 6px; max-width: 46ch; }
+    .intro .hand { font-family: var(--hand); color: var(--green); font-size: 1.15em; }
+
+    .sec-head { display: flex; align-items: baseline; gap: 10px; padding-bottom: 10px; margin: clamp(34px,6vw,52px) 0 20px; border-bottom: 1.5px solid var(--ink-rule); }
+    .sec-no { font-weight: 900; font-size: clamp(18px,5vw,24px); color: var(--green); }
+    .sec-sep { color: var(--rule); }
+    .sec-title { font-weight: 400; font-size: clamp(16px,4.4vw,20px); text-transform: lowercase; }
+
+    .scale-hint { font-size: 12.5px; letter-spacing: .04em; color: var(--ink-faint); margin-bottom: 20px; }
+
+    .rate { padding: 13px 0; border-bottom: 1px solid rgba(32,36,28,.12); display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 16px; }
+    .rate:first-of-type { border-top: 1px solid rgba(32,36,28,.12); }
+    .rate-label { display: flex; flex-direction: column; }
+    .rate-name { font-size: 17px; color: var(--ink); }
+    .stars { display: flex; gap: clamp(2px,1vw,6px); }
+    .star {
+      width: clamp(34px,9vw,42px); height: clamp(34px,9vw,42px); border: none; background: transparent;
+      color: var(--rule); font-size: clamp(22px,6.5vw,28px); line-height: 1; cursor: pointer;
+      display: flex; align-items: center; justify-content: center; transition: transform .1s, color .12s;
+    }
+    .star:active { transform: scale(.85); }
+    .star.on { color: var(--green); }
+    .rate-err .stars .star { color: #9a3412; }
+
+    .field { margin: 22px 0; }
+    .field label { display: block; font-size: 14px; letter-spacing: .04em; color: var(--ink); margin-bottom: 8px; }
+    .field label small { color: var(--ink-faint); letter-spacing: 0; font-size: 13px; }
+    .field textarea, .field input[type="text"], .field input[type="url"], .field input[type="tel"] {
+      width: 100%; font-family: var(--font); font-size: 17px; color: var(--ink);
+      background: rgba(255,255,255,.4); border: 1.5px solid var(--rule); border-radius: 12px;
+      padding: 12px 14px; transition: border-color .2s, background .2s;
+    }
+    .field textarea { min-height: 84px; resize: vertical; line-height: 1.5; }
+    .field input:focus, .field textarea:focus { outline: none; border-color: var(--green); background: rgba(255,255,255,.7); }
+    .phone-row { display: flex; align-items: stretch; gap: 10px; }
+    .phone-row .prefix { display: flex; align-items: center; font-size: 17px; color: var(--ink-soft); border: 1.5px solid var(--rule); border-radius: 12px; padding: 0 12px; background: rgba(255,255,255,.4); }
+    .phone-row input { flex: 1; }
+    .chips { display: flex; flex-wrap: wrap; gap: 9px; margin-top: 2px; }
+    .chip { position: relative; }
+    .chip input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+    .chip span {
+      display: block; font-size: 14.5px; color: var(--ink-soft);
+      border: 1.5px solid var(--rule); border-radius: 999px;
+      padding: 9px 16px; cursor: pointer; transition: all .15s; user-select: none;
+    }
+    .chip span:active { transform: translateY(1px); }
+    .chip input:checked + span { color: var(--paper); background: var(--green); border-color: var(--green); }
+    .chip input:focus-visible + span { outline: 3px solid var(--green); outline-offset: 2px; }
+    .photo-note { font-size: 13.5px; color: var(--ink-soft); margin-top: 8px; }
+    .photo-note .hand { font-family: var(--hand); color: var(--green); font-size: 1.1em; }
+
+    .field-err { font-size: 13.5px; color: #9a3412; margin: -8px 0 14px; }
+
+    .btn { display: block; width: 100%; font-family: var(--font); font-size: 17px; font-weight: 500; text-align: center; color: var(--paper); background: var(--green); border: none; border-radius: 14px; padding: 16px 24px; cursor: pointer; box-shadow: 0 4px 0 var(--green-press); transition: transform .08s, box-shadow .08s; margin-top: 12px; }
+    .btn:active { transform: translateY(4px); box-shadow: 0 0 0 var(--green-press); }
+    @media (prefers-reduced-motion: reduce) { .btn:active { transform: none; box-shadow: 0 4px 0 var(--green-press); } }
+    .micro { font-size: 13px; color: var(--ink-faint); margin-top: 14px; text-align: center; }
+
+    #thanks { text-align: left; }
+    #thanks h2 { font-size: clamp(1.6rem,6vw,2.1rem); font-weight: 400; line-height: 1.12; margin-bottom: 12px; }
+    #thanks h2 .hand { font-family: var(--hand); color: var(--green); }
+    #thanks p { color: var(--ink-soft); max-width: 44ch; }
+
+    footer { max-width: 760px; margin: 0 auto; padding: 0 clamp(22px,5vw,58px) clamp(60px,12vw,100px); }
+    footer .mark { font-size: 15px; color: var(--ink); }
+    footer p { font-size: 12.5px; color: var(--ink-faint); margin-top: 6px; }
+    noscript .card-note { display: block; font-size: 14px; color: var(--ink-soft); margin-top: 16px; }
+  </style>
+</head>
+<body>
+
+<div class="scrollbar" id="scrollbar" aria-hidden="true"></div>
+
+<div class="sheet">
+  <div class="doc">
+    <div class="logo">
+      <img src="/assets/logos/chemistry-lab.png" alt="chemistry lab." onerror="this.remove()">
+      <span class="logo-fallback" hidden>chemistry lab.</span>
+    </div>
+
+    <p class="eyebrow">experiment № 01 · debrief</p>
+    <h1>how did it <strong>react?</strong></h1>
+    <p class="intro">the experiment's over. tell us what worked and what exploded. <span class="hand">honest &gt; nice.</span> takes 90 seconds.</p>
+
+    <form id="fbForm" novalidate>
+
+      <p class="sec-head"><span class="sec-no">01</span><span class="sec-sep">/</span><span class="sec-title">the readings</span></p>
+      <p class="scale-hint">tap 1 (meh) to 5 (loved it).</p>
+      <div id="ratings"></div>
+
+      <p class="sec-head"><span class="sec-no">02</span><span class="sec-sep">/</span><span class="sec-title">field notes</span></p>
+
+      <div class="field">
+        <label for="link">link to what you built</label>
+        <input id="link" type="url" inputmode="url" placeholder="https://…" autocomplete="off">
+      </div>
+      <div class="field">
+        <label>what worked best?</label>
+        <div class="chips" id="bestChips">
+          <label class="chip"><input type="checkbox" value="the build"><span>the build</span></label>
+          <label class="chip"><input type="checkbox" value="the learning"><span>the learning</span></label>
+          <label class="chip"><input type="checkbox" value="the people"><span>the people</span></label>
+          <label class="chip"><input type="checkbox" value="the space"><span>the space</span></label>
+          <label class="chip"><input type="checkbox" value="__other" id="bestOtherToggle"><span>something else</span></label>
+        </div>
+        <input id="bestOther" type="text" placeholder="say it your way" hidden style="margin-top:14px">
+      </div>
+      <div class="field">
+        <label>what could be better?</label>
+        <div class="chips" id="betterChips">
+          <label class="chip"><input type="checkbox" value="the build"><span>the build</span></label>
+          <label class="chip"><input type="checkbox" value="the learning"><span>the learning</span></label>
+          <label class="chip"><input type="checkbox" value="the people"><span>the people</span></label>
+          <label class="chip"><input type="checkbox" value="the space"><span>the space</span></label>
+          <label class="chip"><input type="checkbox" value="__other" id="betterOtherToggle"><span>something else</span></label>
+        </div>
+        <input id="betterOther" type="text" placeholder="say it your way" hidden style="margin-top:14px">
+      </div>
+      <div class="field">
+        <label for="oneline">one line to sum up your experience</label>
+        <input id="oneline" type="text" autocomplete="off">
+      </div>
+
+      <p class="sec-head"><span class="sec-no">03</span><span class="sec-sep">/</span><span class="sec-title">sign off</span></p>
+
+      <div class="field">
+        <label for="phone">whatsapp number</label>
+        <div class="phone-row">
+          <span class="prefix">+91</span>
+          <input id="phone" type="tel" inputmode="numeric" maxlength="10" autocomplete="tel-national">
+        </div>
+        <p class="photo-note"><span class="hand">a whatsapp number</span> we can share your pictures on.</p>
+      </div>
+
+      <p class="field-err" id="err" role="alert" hidden></p>
+      <button type="submit" class="btn">file the debrief</button>
+      <p class="micro">honest answers only.</p>
+
+      <noscript><span class="card-note">this form needs javascript. whatsapp your feedback to <a href="https://wa.me/+919925978977">+91 99259 78977</a> instead.</span></noscript>
+    </form>
+
+    <div id="thanks" hidden tabindex="-1">
+      <h2>filed. <span class="hand">thanks for breaking it.</span></h2>
+      <p>genuinely — the honest bits are how the next one gets better. your photos from the day land on whatsapp soon.</p>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <span class="mark">chemistry lab.</span>
+  <p>experiment № 01 · debrief</p>
+</footer>
+
+<script>
+/* ════════ same endpoint as the rsvp page — posts to a "feedback" tab ════════ */
+const SHEET_ENDPOINT = 'https://script.google.com/macros/s/AKfycbyIdrCDzYTx7XQQ5l8ByaFW6FsGuSIJJvwTkN449Fhq20HrZjIYTnZpOWI4qs8-2uP5gw/exec';
+
+const $ = id => document.getElementById(id);
+
+/* scroll progress */
+addEventListener('scroll', () => {
+  const h = document.documentElement.scrollHeight - innerHeight;
+  $('scrollbar').style.width = (h > 0 ? Math.min(100, scrollY / h * 100) : 0) + '%';
+}, { passive: true });
+
+/* logo fallback if image missing */
+(() => { const img = document.querySelector('.logo img'); if (img) img.addEventListener('error', () => { const f = document.querySelector('.logo-fallback'); if (f) f.hidden = false; }); })();
+
+/* ── build the 5 rating rows ── */
+const PARAMS = [
+  { k: 'build',  name: 'build' },
+  { k: 'break',  name: 'learning' },
+  { k: 'humans', name: 'humans' },
+  { k: 'vibe',   name: 'space' },
+  { k: 'again',  name: 'would you do this again?' },
+];
+const ratings = {};
+const ratingsWrap = $('ratings');
+PARAMS.forEach(p => {
+  const row = document.createElement('div');
+  row.className = 'rate'; row.dataset.k = p.k;
+  const lab = document.createElement('div');
+  lab.className = 'rate-label';
+  lab.innerHTML = '<span class="rate-name">' + p.name + '</span>';
+  const stars = document.createElement('div');
+  stars.className = 'stars'; stars.setAttribute('role', 'radiogroup'); stars.setAttribute('aria-label', 'rate ' + p.name);
+  for (let v = 1; v <= 5; v++) {
+    const b = document.createElement('button');
+    b.type = 'button'; b.className = 'star'; b.dataset.v = v; b.textContent = '★';
+    b.setAttribute('role', 'radio'); b.setAttribute('aria-label', v + ' of 5'); b.setAttribute('aria-checked', 'false');
+    b.addEventListener('click', () => setRating(p.k, v));
+    stars.appendChild(b);
+  }
+  row.appendChild(lab); row.appendChild(stars);
+  ratingsWrap.appendChild(row);
+});
+function setRating(k, v) {
+  ratings[k] = v;
+  const row = ratingsWrap.querySelector('.rate[data-k="' + k + '"]');
+  row.classList.remove('rate-err');
+  row.querySelectorAll('.star').forEach((d, i) => {
+    d.classList.toggle('on', (i + 1) <= v);
+    d.setAttribute('aria-checked', (i + 1) === v ? 'true' : 'false');
+  });
+}
+
+/* ── chip groups: 'something else' toggle ── */
+function wireChipOther(toggleId, otherId) {
+  const toggle = $(toggleId), other = $(otherId);
+  toggle.addEventListener('change', () => {
+    other.hidden = !toggle.checked;
+    if (toggle.checked) other.focus();
+  });
+}
+wireChipOther('bestOtherToggle', 'bestOther');
+wireChipOther('betterOtherToggle', 'betterOther');
+function collectChips(chipsId, otherToggleId, otherId) {
+  const picked = [...document.querySelectorAll('#' + chipsId + ' input:checked')]
+    .map(i => i.value).filter(v => v !== '__other');
+  const other = $(otherId).value.trim();
+  if ($(otherToggleId).checked && other) picked.push(other);
+  return picked.join(', ');
+}
+
+/* ── submit ── */
+function postRow(data) {
+  if (!SHEET_ENDPOINT || SHEET_ENDPOINT.startsWith('PASTE')) { console.warn('SHEET_ENDPOINT not set:', JSON.stringify(data)); return; }
+  fetch(SHEET_ENDPOINT, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: new URLSearchParams(data) }).catch(() => {});
+}
+
+$('fbForm').addEventListener('submit', e => {
+  e.preventDefault();
+  const err = $('err');
+  const missing = PARAMS.filter(p => !ratings[p.k]);
+  if (missing.length) {
+    missing.forEach(p => ratingsWrap.querySelector('.rate[data-k="' + p.k + '"]').classList.add('rate-err'));
+    err.textContent = 'rate all five first — one tap each, that’s it.'; err.hidden = false;
+    ratingsWrap.querySelector('.rate.rate-err').scrollIntoView({ behavior: 'smooth', block: 'center' });
+    return;
+  }
+  const digits = $('phone').value.replace(/\D/g, '');
+  if (digits.length !== 10) { err.textContent = 'we need your 10-digit number to send your photos.'; err.hidden = false; $('phone').focus(); return; }
+  err.hidden = true;
+
+  postRow({
+    form: 'feedback',
+    phone: '+91' + digits,
+    build: ratings.build, break: ratings.break, humans: ratings.humans, vibe: ratings.vibe, again: ratings.again,
+    link: $('link').value.trim(),
+    best: collectChips('bestChips', 'bestOtherToggle', 'bestOther'),
+    better: collectChips('betterChips', 'betterOtherToggle', 'betterOther'),
+    oneline: $('oneline').value.trim(),
+  });
+
+  $('fbForm').hidden = true;
+  const t = $('thanks'); t.hidden = false; t.focus();
+  t.scrollIntoView({ behavior: 'smooth', block: 'center' });
+});
+</script>
+
+</body>
+</html>

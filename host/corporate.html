@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Corporate Event & Brand Show Host — Manav Joshi</title>
+  <meta name="description" content="Corporate emcee who spent almost a decade as a marketer — Red Bull, Blinkit, MICA. Hosted for Mercedes, Toyota, Canon, Intel.">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <meta property="og:title" content="Corporate Event & Brand Show Host — Manav Joshi">
+  <meta property="og:description" content="Corporate emcee who spent almost a decade as a marketer — Red Bull, Blinkit, MICA. Hosted for Mercedes, Toyota, Canon, Intel.">
+  <meta property="og:image" content="https://manavjoshi.com/assets/host/og-image.jpg">
+  <meta property="og:url" content="https://manavjoshi.com/host/corporate.html">
+  <meta property="og:type" content="profile">
+  <meta name="theme-color" content="#080808">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" media="print" onload="this.media='all'">
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap"></noscript>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"Person","name":"Manav Joshi","url":"https://manavjoshi.com/","jobTitle":"Live Events Host & Emcee","address":{"@type":"PostalAddress","addressLocality":"Ahmedabad","addressCountry":"IN"},"knowsLanguage":["hi","gu","en"],"sameAs":["https://www.instagram.com/manav.joshii/","https://www.linkedin.com/in/manav-joshi/","https://www.youtube.com/@manav.joshii","https://x.com/manavjoshii"]}
+  </script>
+  <!-- GA4: paste gtag.js snippet here once Measurement ID exists -->
+  <style>
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+    :root { --pad-x:clamp(24px,7vw,80px); --pad-top:clamp(20px,4.5vw,40px); --font:'Inter',-apple-system,BlinkMacSystemFont,'Helvetica Neue',sans-serif; }
+    html { scroll-behavior:smooth; }
+    html, body { background:#080808; color:#fff; font-family:var(--font); -webkit-font-smoothing:antialiased; }
+    .bg { position:fixed; inset:0; z-index:0; }
+    .bg-layer { position:absolute; inset:0; background-size:cover; background-position:center 25%; will-change:opacity; }
+    #layer1 { opacity:1; } #layer2 { opacity:0; }
+    .bg-overlay { position:absolute; inset:0; z-index:1; background:linear-gradient(175deg,rgba(0,0,0,.6) 0%,rgba(0,0,0,.74) 55%,rgba(0,0,0,.86) 100%); }
+
+    /* Top bar: back (left, one step up) · wordmark (right, home). Absolute so it
+       scrolls away with the hero instead of overlapping the proof below. */
+    .back { position:absolute; top:var(--pad-top); left:var(--pad-x); z-index:30; height:clamp(40px,7vw,64px); display:flex; align-items:center; gap:9px; font-size:clamp(11px,1.3vw,13px); font-weight:500; letter-spacing:.14em; text-transform:uppercase; color:rgba(255,255,255,.62); text-decoration:none; transition:color .2s; opacity:0; animation:fadeIn .6s ease .3s forwards; }
+    .back svg { width:15px; height:15px; }
+    .back:hover { color:#fff; }
+    .home { position:absolute; top:var(--pad-top); right:var(--pad-x); z-index:30; opacity:0; animation:riseIn .9s cubic-bezier(.22,1,.36,1) .2s forwards; }
+    .home img { height:clamp(38px,6vw,64px); width:auto; display:block; filter:brightness(0) invert(1); }
+
+    /* ── Hero: video + Book, instantly visible ── */
+    .hero { position:relative; z-index:10; min-height:86svh; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:clamp(88px,14vh,130px) var(--pad-x) clamp(40px,6vh,64px); }
+    .cat-label { font-size:clamp(11px,1.2vw,12px); letter-spacing:.22em; text-transform:uppercase; color:rgba(255,255,255,.4); margin-bottom:clamp(10px,1.8vh,18px); opacity:0; animation:fadeIn .5s ease .3s forwards; }
+    .cat-name { font-size:clamp(24px,4.2vw,50px); font-weight:600; letter-spacing:-.02em; line-height:1.12; margin-bottom:clamp(22px,3.6vh,38px); opacity:0; animation:riseIn .65s cubic-bezier(.22,1,.36,1) .35s forwards; }
+
+    .hv { width:100%; opacity:0; animation:riseIn .7s cubic-bezier(.22,1,.36,1) .5s forwards; margin-bottom:clamp(24px,4vh,40px); }
+    .hv-land { width:min(560px,90vw); aspect-ratio:16/9; margin:0 auto; border-radius:12px; overflow:hidden; background:#000; }
+    .hv-land iframe, .hv-land video { width:100%; height:100%; border:0; display:block; }
+    .hv-vert { width:min(300px,66vw); aspect-ratio:9/16; margin:0 auto; border-radius:14px; overflow:hidden; background:#000; }
+    .hv-vert iframe, .hv-vert video { width:100%; height:100%; object-fit:cover; border:0; display:block; }
+
+    .book { display:inline-block; font-size:clamp(12px,1.4vw,14px); font-weight:500; letter-spacing:.16em; text-transform:uppercase; text-decoration:none; padding:15px 34px; border-radius:999px; background:#fff; color:#080808; transition:transform .2s,box-shadow .2s; opacity:0; animation:fadeIn .6s ease .68s forwards; }
+    .book:hover { transform:translateY(-1px); box-shadow:0 10px 30px rgba(0,0,0,.4); }
+    /* scroll cue sits in normal flow BELOW the book so the two never collide */
+    .scroll-cue { margin-top:clamp(20px,3.4vh,34px); color:rgba(255,255,255,.4); font-size:12px; letter-spacing:.18em; text-transform:uppercase; text-decoration:none; display:inline-flex; flex-direction:column; align-items:center; gap:3px; opacity:0; animation:fadeIn .6s ease .9s forwards; }
+    .scroll-cue .chev { animation:bob 2.4s ease-in-out infinite; }
+    @keyframes bob { 0%,100% { transform:translateY(0); } 50% { transform:translateY(5px); } }
+
+    /* ── One short scroll of proof ── */
+    .content { position:relative; z-index:10; background:#080808; border-top:1px solid rgba(255,255,255,.06); }
+    section { padding:clamp(30px,5vh,54px) var(--pad-x); max-width:760px; margin:0 auto; }
+    section + section { border-top:1px solid rgba(255,255,255,.06); }
+    .label { font-size:clamp(11px,1.2vw,12px); letter-spacing:.22em; text-transform:uppercase; color:rgba(255,255,255,.35); text-align:center; margin-bottom:clamp(22px,3.6vh,32px); }
+    .copy { max-width:560px; margin:0 auto; }
+    .copy p { font-size:clamp(15px,1.75vw,18px); line-height:1.7; color:rgba(255,255,255,.82); }
+    .copy p + p { margin-top:1.1em; }
+
+    .more-media { max-width:560px; margin:0 auto; }
+    .more-media .hv-land, .more-media .hv-vert { margin-left:auto; margin-right:auto; }
+    .more-media .hv-land { width:100%; aspect-ratio:16/9; border-radius:12px; overflow:hidden; background:#000; }
+    .more-media .hv-land iframe, .more-media .hv-land video { width:100%; height:100%; border:0; display:block; }
+    .more-media .hv-vert { width:min(300px,66vw); aspect-ratio:9/16; border-radius:14px; overflow:hidden; background:#000; }
+    .more-media .hv-vert iframe, .more-media .hv-vert video { width:100%; height:100%; object-fit:cover; border:0; display:block; }
+    .media-note { text-align:center; margin-top:clamp(16px,3vh,24px); }
+    .media-note a { font-size:clamp(11px,1.3vw,13px); font-weight:500; letter-spacing:.18em; text-transform:uppercase; color:rgba(255,255,255,.45); text-decoration:none; border-bottom:1px solid rgba(255,255,255,.18); padding-bottom:3px; transition:color .2s,border-color .2s; }
+    .media-note a:hover { color:#fff; border-color:rgba(255,255,255,.5); }
+
+    /* ── "Some more work" — Instagram-style highlight circles ── */
+    .hl-row { display:flex; justify-content:center; flex-wrap:wrap; gap:clamp(20px,6vw,42px); }
+    .hl { display:flex; flex-direction:column; align-items:center; gap:11px; background:none; border:none; padding:0; cursor:pointer; -webkit-tap-highlight-color:transparent; }
+    .hl-ring { width:clamp(78px,21vw,104px); height:clamp(78px,21vw,104px); border-radius:50%; padding:2.5px; background:conic-gradient(from 210deg,#e6d3a3,#b9935a,#e6d3a3,#8a6d3b,#e6d3a3); transition:transform .2s; }
+    .hl:hover .hl-ring, .hl:focus-visible .hl-ring { transform:translateY(-2px) scale(1.03); }
+    .hl-ring img { width:100%; height:100%; border-radius:50%; object-fit:cover; border:2.5px solid #080808; display:block; background:#161616; }
+    .hl-name { font-size:clamp(10px,1.2vw,12px); letter-spacing:.07em; text-transform:uppercase; color:rgba(255,255,255,.65); max-width:clamp(92px,24vw,120px); line-height:1.4; text-align:center; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
+
+    /* ── Story viewer (fullscreen, native) ── */
+    .story { position:fixed; inset:0; z-index:200; background:#000; display:none; flex-direction:column; align-items:center; }
+    .story.open { display:flex; }
+    .story-shell { position:relative; width:100%; max-width:min(440px,100vw); height:100%; display:flex; flex-direction:column; }
+    .story-bars { display:flex; gap:4px; padding:12px 12px 6px; z-index:4; }
+    .story-bar { flex:1; height:2.5px; border-radius:2px; background:rgba(255,255,255,.32); overflow:hidden; }
+    .story-bar > i { display:block; height:100%; width:0; background:#fff; }
+    .story-bar.done > i { width:100%; }
+    .story-top { display:flex; align-items:center; justify-content:space-between; padding:2px 16px 10px; z-index:4; }
+    .story-cap { font-size:12px; letter-spacing:.1em; text-transform:uppercase; color:#fff; opacity:.9; }
+    .story-close { background:none; border:none; color:#fff; font-size:26px; line-height:1; cursor:pointer; padding:4px 6px; }
+    .story-stage { position:relative; flex:1; min-height:0; display:flex; align-items:center; justify-content:center; overflow:hidden; }
+    .story-stage video { width:100%; height:100%; object-fit:contain; background:#000; }
+    .story-stage iframe { width:100%; aspect-ratio:16/9; border:0; background:#000; display:none; }
+    .story.yt .story-stage video { display:none; }
+    .story.yt .story-stage iframe { display:block; }
+    .story.yt.yt-portrait .story-stage iframe { width:auto; height:100%; aspect-ratio:9/16; }
+    .story-tap { position:absolute; inset:0; display:flex; z-index:3; }
+    .story-tap .prev { flex:0 0 22%; } .story-tap .mid { flex:1; } .story-tap .next { flex:0 0 22%; }
+    .story-tap button { background:none; border:none; cursor:pointer; -webkit-tap-highlight-color:transparent; }
+    /* YouTube item: middle passes through so YT's own controls work */
+    .story.yt .story-tap { pointer-events:none; }
+    .story.yt .story-tap .prev, .story.yt .story-tap .next { pointer-events:auto; }
+
+    .quotes { display:grid; gap:14px; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); }
+    .quote { border:1px solid rgba(255,255,255,.09); border-radius:12px; padding:clamp(18px,3vw,26px); display:flex; flex-direction:column; gap:12px; }
+    .quote p { font-size:clamp(14px,1.6vw,16px); line-height:1.55; color:rgba(255,255,255,.85); }
+    .quote cite { font-style:normal; font-size:clamp(10px,1.1vw,11px); letter-spacing:.15em; text-transform:uppercase; color:rgba(255,255,255,.4); margin-top:auto; }
+
+    .wall { text-align:center; font-size:clamp(11px,1.3vw,13px); letter-spacing:.15em; text-transform:uppercase; line-height:2.2; color:rgba(255,255,255,.55); max-width:620px; margin:0 auto clamp(30px,5vh,46px); }
+    .facts { max-width:560px; margin:0 auto; }
+    .facts li { list-style:none; font-size:clamp(13px,1.6vw,16px); line-height:1.65; color:rgba(255,255,255,.72); padding:clamp(11px,2vh,15px) 0; }
+    .facts li + li { border-top:1px solid rgba(255,255,255,.07); }
+
+    /* ── Close: one more Book, then sideways nav ── */
+    .foot-cta { position:relative; z-index:10; background:#080808; border-top:1px solid rgba(255,255,255,.06); display:flex; flex-direction:column; align-items:center; gap:clamp(18px,3.2vh,26px); padding:clamp(30px,5.5vh,52px) var(--pad-x) clamp(24px,4vh,32px); }
+    .sw-label { font-size:clamp(10px,1.15vw,11px); letter-spacing:.2em; text-transform:uppercase; color:rgba(255,255,255,.3); }
+    .switcher { display:flex; flex-wrap:wrap; justify-content:center; gap:clamp(6px,1.4vw,10px); }
+    .sw { font-size:clamp(11px,1.3vw,13px); font-weight:500; letter-spacing:.12em; text-transform:uppercase; text-decoration:none; padding:8px 15px; border-radius:999px; border:1px solid rgba(255,255,255,.14); color:rgba(255,255,255,.55); transition:color .2s,border-color .2s,background .2s; }
+    .sw:hover { color:#fff; border-color:rgba(255,255,255,.4); }
+    .sw.active { color:#080808; background:#fff; border-color:#fff; }
+
+    footer { position:relative; z-index:10; background:#080808; padding:clamp(24px,5vh,40px) var(--pad-x) clamp(30px,6vh,48px); display:flex; flex-direction:column; align-items:center; gap:18px; }
+    .socials { display:flex; gap:clamp(14px,2.2vw,20px); align-items:center; }
+    .soc { color:rgba(255,255,255,.42); text-decoration:none; display:flex; align-items:center; transition:color .22s,transform .22s; }
+    .soc:hover { color:#fff; transform:translateY(-1px); }
+    .soc svg { width:clamp(15px,1.7vw,18px); height:clamp(15px,1.7vw,18px); display:block; }
+    .fine { font-size:10.5px; letter-spacing:.14em; text-transform:uppercase; color:rgba(255,255,255,.25); }
+
+    @keyframes riseIn { from { opacity:0; transform:translateY(12px); } to { opacity:1; transform:none; } }
+    @keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
+    @media (prefers-reduced-motion: reduce) {
+      .back,.home,.cat-name,.cat-label,.hv,.book,.scroll-cue { animation-name:fadeIn; animation-duration:.3s; }
+      .scroll-cue .chev { animation:none; }
+      html { scroll-behavior:auto; }
+    }
+  </style>
+</head>
+<body>
+<div class="bg"><div class="bg-layer" id="layer1"></div><div class="bg-layer" id="layer2"></div><div class="bg-overlay"></div></div>
+
+<a href="../host.html" class="back" aria-label="Back to all events"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>Host</a>
+<a href="../index.html" class="home" aria-label="Manav Joshi — home"><img src="../assets/signature.gif" alt="MJ" onerror="this.closest('.home').style.display='none'"></a>
+
+<header class="hero">
+  <p class="cat-label">Corporate &amp; Brand Events</p>
+  <h1 class="cat-name">On-brand. Always.</h1>
+  <div class="hv"><div class="hv-vert"><iframe src="https://www.youtube-nocookie.com/embed/riSpVUJB32A?rel=0&amp;playsinline=1&amp;modestbranding=1&amp;iv_load_policy=3" loading="lazy" allow="accelerometer; encrypted-media; picture-in-picture" allowfullscreen title="Manav Joshi"></iframe></div></div>
+  <a href="https://wa.me/919925978977?text=Hi%20Manav%21%20Found%20you%20on%20manavjoshi.com.%20We%26%2339%3Bre%20planning%20a%20brand/corporate%20event%20on%20%5Bdate%5D%20in%20%5Bcity%5D.%20Are%20you%20available%3F" target="_blank" rel="noopener noreferrer" class="book">Chat with me</a>
+  <a href="#more" class="scroll-cue" aria-label="More below"><span>More</span><span class="chev" aria-hidden="true">↓</span></a>
+</header>
+
+<div class="content" id="more">
+  <section>
+    <p class="label">Why me</p>
+    <div class="copy">
+      <p>I&rsquo;ve sat on your side of the table. I&rsquo;ve been a marketer for almost a decade, working at Red Bull, Blinkit and being at a MICA classroom in between.</p>
+      <p>So when I speak for your brand, it doesn&rsquo;t sound like a host reading a script. It sounds like the brand talking.</p>
+      <p>You&rsquo;re not briefing an emcee. You&rsquo;re briefing someone who&rsquo;s written the brief.</p>
+    </div>
+  </section>
+  <section class="more-work">
+    <p class="label">Some more work</p>
+    <div class="hl-row">
+      <button type="button" class="hl" data-hl="0" aria-label="Torrent's Abhivyakti"><span class="hl-ring"><img src="../assets/video/corporate-h1.jpg" alt="" loading="lazy"></span><span class="hl-name">Torrent's Abhivyakti</span></button>
+      <button type="button" class="hl" data-hl="1" aria-label="Toyota Customers"><span class="hl-ring"><img src="../assets/video/corporate-h2.jpg" alt="" loading="lazy"></span><span class="hl-name">Toyota Customers</span></button>
+      <button type="button" class="hl" data-hl="2" aria-label="Youth Dialogue"><span class="hl-ring"><img src="../assets/video/corporate-dialogue.jpg" alt="" loading="lazy"></span><span class="hl-name">Youth Dialogue</span></button>
+      <button type="button" class="hl" data-hl="3" aria-label="Auction"><span class="hl-ring"><img src="../assets/video/auction-poster.jpg" alt="" loading="lazy"></span><span class="hl-name">Auction</span></button>
+    </div>
+  </section>
+
+
+  <section>
+    <p class="label">Events hosted for</p>
+    <p class="wall">Red Bull · Mercedes-Benz · Toyota · Canon · Intel · Fashion TV · IIM Ahmedabad · MICA · VTV Gujarat · IFP · Hungrito · Abhivyakti · DA-IICT</p>
+    <p class="label">Good to know</p>
+    <ul class="facts">
+      <li>Based in Ahmedabad. Performed across 7 Indian states and 3 countries so far.</li>
+      <li>Hosts in Hindi, Gujarati and English with native proficiency.</li>
+    </ul>
+  </section>
+</div>
+
+<div class="foot-cta">
+  <a href="https://wa.me/919925978977?text=Hi%20Manav%21%20Found%20you%20on%20manavjoshi.com.%20We%26%2339%3Bre%20planning%20a%20brand/corporate%20event%20on%20%5Bdate%5D%20in%20%5Bcity%5D.%20Are%20you%20available%3F" target="_blank" rel="noopener noreferrer" class="book">Chat with me</a>
+  <p class="sw-label">Or another event type</p>
+  <nav class="switcher" aria-label="Other event types">
+  <a class="sw" href="concerts.html">Concerts</a>
+  <a class="sw" href="weddings.html">Weddings</a>
+  <span class="sw active" aria-current="page">Corporate</span>
+  <a class="sw" href="shows.html">Shows</a>
+  </nav>
+</div>
+
+<footer>
+  <nav class="socials" aria-label="Social profiles">
+  <a href="https://www.instagram.com/manav.joshii/" target="_blank" rel="noopener noreferrer" class="soc" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.55" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4.4"/><circle cx="17.5" cy="6.5" r=".75" fill="currentColor" stroke="none"/></svg></a>
+  <a href="https://www.linkedin.com/in/manav-joshi/" target="_blank" rel="noopener noreferrer" class="soc" aria-label="LinkedIn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.45 20.45h-3.55v-5.57c0-1.33-.03-3.04-1.85-3.04-1.86 0-2.14 1.45-2.14 2.94v5.67H9.36V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 110-4.12 2.06 2.06 0 010 4.12zM7.12 20.45H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45C23.2 24 24 23.23 24 22.27V1.73C24 .77 23.2 0 22.22 0z"/></svg></a>
+  <a href="https://www.youtube.com/@manav.joshii" target="_blank" rel="noopener noreferrer" class="soc" aria-label="YouTube"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M23.5 6.19a3.02 3.02 0 00-2.12-2.14C19.5 3.55 12 3.55 12 3.55s-7.5 0-9.38.5A3.02 3.02 0 00.5 6.19C0 8.07 0 12 0 12s0 3.93.5 5.81a3.02 3.02 0 002.12 2.14c1.88.5 9.38.5 9.38.5s7.5 0 9.38-.5a3.02 3.02 0 002.12-2.14C24 15.93 24 12 24 12s0-3.93-.5-5.81zM9.55 15.57V8.43L15.82 12l-6.27 3.57z"/></svg></a>
+  <a href="https://wa.me/919925978977" target="_blank" rel="noopener noreferrer" class="soc" aria-label="WhatsApp"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.47 14.38c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.16-.17.2-.35.22-.65.07-.3-.15-1.26-.46-2.4-1.48-.88-.79-1.48-1.76-1.65-2.06-.17-.3-.02-.46.13-.61.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.07-.15-.67-1.61-.92-2.2-.24-.58-.49-.5-.67-.51-.17-.01-.37-.01-.57-.01-.2 0-.52.07-.79.37-.27.3-1.04 1.02-1.04 2.48 0 1.46 1.07 2.88 1.22 3.07.15.2 2.1 3.2 5.08 4.49.71.31 1.26.49 1.69.62.71.23 1.36.2 1.87.12.57-.09 1.76-.72 2.01-1.41.25-.7.25-1.29.17-1.41-.07-.12-.27-.2-.57-.35zm-5.42 7.4a9.87 9.87 0 01-5.03-1.38l-.36-.21-3.74.98 1-3.65-.24-.37A9.86 9.86 0 011.17 12C1.17 6.55 5.6 2.12 12.05 2.12c2.64 0 5.12 1.03 6.99 2.9a9.82 9.82 0 012.89 6.99c-.003 5.45-4.44 9.88-9.88 9.88zm8.41-18.3A11.82 11.82 0 0012.05 0C5.5 0 .16 5.34.16 11.89c0 2.1.55 4.14 1.59 5.95L.06 24l6.3-1.65a11.88 11.88 0 005.69 1.45c6.55 0 11.89-5.34 11.89-11.89 0-3.18-1.24-6.16-3.48-8.4z"/></svg></a>
+  <a href="https://x.com/manavjoshii" target="_blank" rel="noopener noreferrer" class="soc" aria-label="X"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.24 2.25h3.31L14.32 10.5l8.5 11.25h-7.08l-4.71-6.23-5.4 6.23H2.74l7.74-8.83L1.26 2.25h7.25l4.26 5.64 5.47-5.64zm-1.16 17.52h1.83L7.08 4.13H5.12l11.96 15.64z"/></svg></a>
+  <a href="mailto:work@manavjoshi.com" class="soc" aria-label="Email"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.55" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 7l-10 7L2 7"/></svg></a>
+</nav>
+  <p class="fine">Manav Joshi · Ahmedabad · work@manavjoshi.com</p>
+</footer>
+
+<div class="story" id="story" role="dialog" aria-modal="true" aria-label="Highlight reels">
+  <div class="story-shell">
+    <div class="story-bars" id="storyBars"></div>
+    <div class="story-top">
+      <span class="story-cap" id="storyCap"></span>
+      <button type="button" class="story-close" id="storyClose" aria-label="Close">&times;</button>
+    </div>
+    <div class="story-stage">
+      <video id="storyVideo" playsinline preload="auto"></video>
+      <iframe id="storyYt" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen title="Manav Joshi"></iframe>
+      <div class="story-tap">
+        <button type="button" class="prev" id="storyPrev" aria-label="Previous"></button>
+        <button type="button" class="mid" id="storyMid" aria-label="Pause or play"></button>
+        <button type="button" class="next" id="storyNext" aria-label="Next"></button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const HL=[{"yt": "pFD3lRa2Ngc", "label": "Torrent's Abhivyakti"}, {"yt": "HXNRzSa8WJE", "label": "Toyota Customers", "orient": "portrait"}, {"yt": "TezGMMm_q-k", "start": 15150, "label": "Youth Dialogue"}, {"yt": "xwTtRDu4_OA", "label": "Auction", "orient": "portrait"}];
+(function(){if(!HL.length)return;const story=document.getElementById('story'),bars=document.getElementById('storyBars'),cap=document.getElementById('storyCap'),v=document.getElementById('storyVideo'),yf=document.getElementById('storyYt');let idx=0;
+function renderBars(){bars.innerHTML=HL.map(()=>'<div class="story-bar"><i></i></div>').join('');}
+function fillBars(){[...bars.children].forEach((b,i)=>{b.classList.toggle('done',i<idx);const bar=b.querySelector('i');if(i!==idx)bar.style.width=i<idx?'100%':'0';});}
+function load(){const h=HL[idx];cap.textContent=h.label||'';fillBars();
+if(h.yt){v.pause();v.removeAttribute('src');v.load();story.classList.add('yt');story.classList.toggle('yt-portrait',h.orient==='portrait');yf.src='https://www.youtube-nocookie.com/embed/'+h.yt+'?autoplay=1&playsinline=1&rel=0&modestbranding=1&iv_load_policy=3'+(h.start?('&start='+h.start):'');bars.children[idx]&&(bars.children[idx].querySelector('i').style.width='100%');}
+else{yf.removeAttribute('src');story.classList.remove('yt');v.src=h.src;v.currentTime=0;v.play().catch(()=>{});}}
+function open(i){idx=i;story.classList.add('open');document.documentElement.style.overflow='hidden';renderBars();load();}
+function close(){story.classList.remove('open','yt','yt-portrait');document.documentElement.style.overflow='';v.pause();v.removeAttribute('src');v.load();yf.removeAttribute('src');}
+function next(){if(idx<HL.length-1){idx++;load();}else close();}
+function prev(){if(idx>0){idx--;load();}else if(!HL[idx].yt){v.currentTime=0;v.play().catch(()=>{});}}
+v.addEventListener('timeupdate',()=>{if(!v.duration)return;bars.children[idx]&&(bars.children[idx].querySelector('i').style.width=(v.currentTime/v.duration*100)+'%');});
+v.addEventListener('ended',next);
+document.getElementById('storyNext').addEventListener('click',next);
+document.getElementById('storyPrev').addEventListener('click',prev);
+document.getElementById('storyMid').addEventListener('click',()=>{if(HL[idx].yt)return;if(v.paused)v.play().catch(()=>{});else v.pause();});
+document.getElementById('storyClose').addEventListener('click',close);
+document.addEventListener('keydown',e=>{if(!story.classList.contains('open'))return;if(e.key==='Escape')close();else if(e.key==='ArrowRight')next();else if(e.key==='ArrowLeft')prev();});
+document.querySelectorAll('[data-hl]').forEach(b=>b.addEventListener('click',()=>open(+b.dataset.hl)));
+})();
+const PHOTOS=['../assets/host/corporate-1.jpg', '../assets/host/corporate-2.jpg', '../assets/host/corporate-3.jpg', '../assets/photos/2.jpg', '../assets/photos/7.jpg'];
+(function(){const l1=document.getElementById('layer1'),l2=document.getElementById('layer2');let front=l1,back=l2;const loaded=[];let pool=[],pidx=0,last=null;function shuffle(a){const b=[...a];for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]];}return b;}function nextSrc(){const av=loaded.length?loaded:PHOTOS;if(pidx>=pool.length){let f=shuffle([...av]);if(last&&f.length>1&&f[0]===last)f=[...f.slice(1),f[0]];pool=f;pidx=0;}last=pool[pidx];return pool[pidx++];}function prime(src){back.style.transition='none';back.style.backgroundImage=`url('${src}')`;back.getBoundingClientRect();}function crossfade(ms,ease){back.style.transition=`opacity ${ms}ms ${ease}`;front.style.transition=`opacity ${ms}ms ${ease}`;back.style.opacity='1';front.style.opacity='0';[front,back]=[back,front];}const SCH=[...Array(12).fill(0).map(()=>[120,90,'ease-in-out']),[200,130,'ease-in-out'],[320,180,'ease-in-out'],[500,280,'cubic-bezier(.4,0,.2,1)'],[750,400,'cubic-bezier(.4,0,.2,1)'],[1300,600,'cubic-bezier(.4,0,.2,1)'],[2600,780,'cubic-bezier(.4,0,.2,1)'],[5200,780,'cubic-bezier(.4,0,.2,1)']];const STEADY=[7000,780,'cubic-bezier(.4,0,.2,1)'];function start(){prime(nextSrc());back.style.transition='opacity 450ms ease-in';back.style.opacity='1';[front,back]=[back,front];let step=0;function tick(){const[hold,fade,ease]=step<SCH.length?SCH[step++]:STEADY;prime(nextSrc());setTimeout(()=>{crossfade(fade,ease);tick();},hold);}setTimeout(tick,500);}function preload(cb){let called=false;PHOTOS.forEach(src=>{const img=new Image();img.onload=()=>{loaded.push(src);if(!called){called=true;cb();}};img.src=src;});}const slow=()=>{const c=navigator.connection||navigator.mozConnection||navigator.webkitConnection;return !!(c&&c.saveData);};const boot=()=>{if(slow()){l1.style.backgroundImage=`url('${PHOTOS[0]}')`;l1.style.opacity='1';}else preload(start);};if(document.readyState==='complete')boot();else window.addEventListener('load',boot);})();
+</script>
+</body>
+</html>

@@ -1,0 +1,189 @@
+.process{
+    transition: ease-out 0.4s;
+}
+
+.process:hover{
+    transform: scale(1.08);
+}
+
+p{
+    font-weight: bold;
+    font-size: 1.2rem;
+    z-index: 100;
+    margin-top: 10px;
+
+    opacity: 1;
+    transform: translateY(10px);
+}
+
+
+h2 {
+    margin-bottom: 25px;
+}
+
+.row {
+  width: 100vw;
+  display: flex;
+  flex-wrap: wrap;
+  padding: 0 4px;
+}
+
+/* Create four equal columns that sits next to each other */
+.column {
+  position: static;
+  
+  flex: 20%;
+  max-width: 17%;
+  padding: 0 2px;
+}
+
+.column img {
+  margin-top: 8px;
+  vertical-align: middle;
+  width: 100%;
+}
+
+/* Responsive layout - makes a two column-layout instead of four columns */
+@media screen and (max-width: 800px) {
+  .column {
+    flex: 50%;
+    max-width: 50%;
+    margin-left: 10%;
+  }
+  p{
+    margin-bottom: 40px;
+  }
+  footer{
+    overflow: hidden;
+  }
+  .foot-logo>img{
+    scale:2.3;
+  }
+
+}
+
+
+.image{
+  transition: ease-in-out 400ms
+}
+
+.image:hover{
+
+  box-shadow: 0 0 20px black;
+  transform: translateY(-4px);
+  transform: scale(1.14);
+}
+
+.whole{
+
+  scroll-behavior: smooth;
+   
+}
+
+/* Responsive layout - makes the two columns stack on top of each other instead of next to each other */
+@media screen and (max-width: 800px) {
+  .column {
+    flex: 100%;
+    max-width:80%;
+
+  }
+
+  .connect{
+    display: none;
+  }
+
+  .column:nth-child(odd){
+    position: absolute;
+    display: none;
+  }
+
+
+  .gallery{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    height: 100vh;
+    overflow: scroll;
+    width: 100vw;
+  }
+  }
+
+
+  .pushable {
+    background: hsl(340deg 100% 32%);
+    border-radius: 12px;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    outline-offset: 4px;
+  }
+  .front {
+    display: block;
+    padding: 12px 42px;
+    border-radius: 12px;
+    font-size: 1.25rem;
+    background: hsl(345deg 100% 47%);
+    color: white;
+    transform: translateY(-6px);
+  }
+
+a{
+  text-decoration: none;
+  color: white;
+}
+
+a:active{
+  text-decoration: none;
+}
+
+  .pushable:active .front {
+    transform: translateY(-3px);
+  }
+  .social_media{
+    margin-top: 100px;
+    height: 80px;
+    display: flex;
+    flex-direction:  row;
+    justify-content: center;
+    gap: 80px;
+  }
+
+  .social_media>a{
+    scale: 1.5;
+    transition: ease-in-out 200ms;
+  }
+
+
+  #twitter:hover{
+    scale: 1.49;
+    color: rgb(67, 193, 235);
+  }
+
+  #facebook:hover{
+    scale: 1.49;
+    color: rgb(0, 48, 240);
+  }
+
+  #youtube:hover{
+    scale: 1.49;
+    color: rgb(235, 67, 67);
+  }
+
+
+  #instagram:hover{
+    scale: 1.49;
+
+  }
+
+  .gallery{
+
+    margin-bottom:30px;
+  }
+
+.main-page{
+  overflow: scroll;
+}
+
+:root{
+  overflow-x: hidden;
+}

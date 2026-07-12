@@ -1,0 +1,5 @@
+# Raw source videos (huge, ~1GB) — only the compressed files in assets/video/ ship.
+host/Videos/
+
+.DS_Store
+**/.DS_Store
