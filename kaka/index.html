@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Kaka — the to-do app that reports to your second brain</title>
+<meta name="description" content="A free, open source to-do and habit tracker you run on your own cloud, with your own AI key, behind your own password. Built by Manav Joshi for himself first." />
+<meta property="og:title" content="Kaka" />
+<meta property="og:description" content="The to-do app that reports to your second brain. Yours. Not rented." />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://manavjoshi.com/kaka" />
+<link rel="icon" href="/favicon.svg" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --ink: #16130e;
+    --paper: #fffdf6;
+    --marigold: #eda912;
+    --red: #c8401a;
+    --line: 2px solid var(--ink);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: "Bricolage Grotesque", system-ui, sans-serif;
+    font-size: 17px;
+    line-height: 1.55;
+  }
+  ::selection { background: var(--marigold); color: var(--ink); }
+  .wrap { max-width: 880px; margin: 0 auto; padding: 0 24px; }
+  section { border-bottom: var(--line); }
+  code, .mono { font-family: "IBM Plex Mono", monospace; }
+
+  /* top bar */
+  .bar {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 14px 24px; border-bottom: var(--line);
+    max-width: 100%; font-size: 14px;
+  }
+  .bar .mark { font-weight: 800; letter-spacing: 0.02em; }
+  .bar a { color: var(--ink); text-decoration: none; border-bottom: 2px solid var(--marigold); }
+  .bar a:hover { background: var(--marigold); }
+
+  /* hero */
+  .hero { padding: 72px 0 56px; }
+  .hero h1 {
+    font-size: clamp(64px, 14vw, 150px);
+    font-weight: 800; line-height: 0.95; letter-spacing: -0.02em;
+    text-transform: uppercase;
+  }
+  .hero h1 .dot { color: var(--marigold); }
+  .hero .claim {
+    margin-top: 28px; font-size: clamp(22px, 3.4vw, 32px);
+    font-weight: 600; line-height: 1.25; max-width: 640px;
+  }
+  .hero .sub { margin-top: 18px; max-width: 560px; font-size: 18px; }
+  .chips { margin-top: 22px; display: flex; gap: 10px; flex-wrap: wrap; }
+  .chip {
+    font-family: "IBM Plex Mono", monospace; font-size: 12.5px;
+    border: var(--line); padding: 4px 10px; background: var(--paper);
+  }
+  .ctas { margin-top: 34px; display: flex; gap: 14px; flex-wrap: wrap; }
+  .btn {
+    display: inline-block; text-decoration: none; font-weight: 600;
+    font-size: 17px; padding: 14px 26px; border: var(--line); color: var(--ink);
+    background: var(--marigold); box-shadow: 5px 5px 0 var(--ink);
+    transition: transform 0.08s, box-shadow 0.08s;
+  }
+  .btn.ghost { background: var(--paper); }
+  .btn:hover { transform: translate(2px, 2px); box-shadow: 3px 3px 0 var(--ink); }
+  .btn:active { transform: translate(5px, 5px); box-shadow: 0 0 0 var(--ink); }
+
+  /* manifesto */
+  .manifesto { padding: 64px 0; }
+  .manifesto h2, .name h2, .does h2, .brain h2, .setup h2 {
+    font-family: "IBM Plex Mono", monospace; font-size: 13px; font-weight: 500;
+    text-transform: uppercase; letter-spacing: 0.14em; margin-bottom: 28px;
+  }
+  .manifesto p {
+    font-size: clamp(24px, 4vw, 38px); font-weight: 600; line-height: 1.25;
+    max-width: 780px;
+  }
+  .manifesto p + p { margin-top: 30px; }
+  .manifesto em { font-style: normal; background: var(--marigold); padding: 0 6px; }
+  .manifesto .kicker { font-size: 18px; font-weight: 400; margin-top: 34px; max-width: 640px; }
+
+  /* name */
+  .name { padding: 64px 0; background: var(--ink); color: var(--paper); }
+  .name h2 { color: var(--marigold); }
+  .name .big { font-size: clamp(26px, 4.4vw, 42px); font-weight: 800; line-height: 1.15; max-width: 760px; }
+  .name .big span { color: var(--marigold); }
+  .name p.small { margin-top: 26px; max-width: 620px; font-size: 18px; color: #d8d3c6; }
+
+  /* what it does */
+  .does { padding: 64px 0; }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; border-top: var(--line); border-left: var(--line); }
+  .cell { border-right: var(--line); border-bottom: var(--line); padding: 22px 22px 26px; }
+  .cell h3 { font-size: 19px; font-weight: 800; margin-bottom: 8px; }
+  .cell h3 .n { color: var(--red); font-family: "IBM Plex Mono", monospace; font-size: 13px; margin-right: 8px; }
+  .cell p { font-size: 15.5px; }
+  .cell p code { font-size: 13.5px; background: #f1ecdd; padding: 1px 5px; }
+
+  /* second brain */
+  .brain { padding: 64px 0; }
+  .brain .lead { font-size: clamp(22px, 3.4vw, 32px); font-weight: 600; max-width: 700px; line-height: 1.25; }
+  .brain .lead em { font-style: normal; border-bottom: 4px solid var(--marigold); }
+  .endpoints { margin-top: 34px; border: var(--line); box-shadow: 6px 6px 0 var(--marigold); overflow-x: auto; }
+  .endpoints table { width: 100%; border-collapse: collapse; font-size: 14.5px; }
+  .endpoints td { padding: 14px 16px; border-bottom: 1px solid #d9d2bf; vertical-align: top; }
+  .endpoints tr:last-child td { border-bottom: none; }
+  .endpoints td:first-child { font-family: "IBM Plex Mono", monospace; white-space: nowrap; font-weight: 500; }
+  .brain .after { margin-top: 26px; max-width: 620px; font-size: 17px; }
+
+  /* setup */
+  .setup { padding: 64px 0; }
+  .setup .two { display: grid; grid-template-columns: 1.1fr 1fr; gap: 34px; }
+  .setup h3 { font-size: 22px; font-weight: 800; margin-bottom: 14px; }
+  .setup ol { padding-left: 22px; font-size: 16.5px; }
+  .setup ol li { margin-bottom: 10px; }
+  .setup .agent-note { margin-top: 16px; font-size: 15px; border-left: 5px solid var(--marigold); padding-left: 14px; }
+  pre {
+    background: var(--ink); color: #f4efe2; font-family: "IBM Plex Mono", monospace;
+    font-size: 13px; line-height: 1.7; padding: 18px; overflow-x: auto;
+  }
+  pre .c { color: #9a927e; }
+  .setup .free { margin-top: 22px; font-size: 15px; }
+  .setup .free strong { background: var(--marigold); padding: 0 5px; }
+
+  /* footer */
+  footer { padding: 48px 24px 64px; }
+  footer .wrap { display: flex; justify-content: space-between; gap: 20px; flex-wrap: wrap; align-items: baseline; }
+  footer .made { font-size: 17px; font-weight: 600; max-width: 420px; }
+  footer nav { display: flex; gap: 18px; font-size: 15px; }
+  footer a { color: var(--ink); text-decoration: none; border-bottom: 2px solid var(--marigold); }
+  footer a:hover { background: var(--marigold); }
+
+  @media (max-width: 640px) {
+    .grid { grid-template-columns: 1fr; }
+    .setup .two { grid-template-columns: 1fr; }
+    .hero { padding: 48px 0 44px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="bar">
+  <span class="mark">KAKA<span style="color:var(--marigold)">.</span></span>
+  <a href="https://github.com/manavjoshii/kaka" target="_blank" rel="noopener noreferrer">GitHub</a>
+</div>
+
+<section class="hero">
+  <div class="wrap">
+    <h1>Kaka<span class="dot">.</span></h1>
+    <p class="claim">The to-do app that reports to your second brain.</p>
+    <p class="sub">Runs on your own cloud, with your own AI key, behind your own
+    password. Free forever, because there is nothing to charge you for.</p>
+    <div class="chips">
+      <span class="chip">open source · MIT</span>
+      <span class="chip">self-hosted</span>
+      <span class="chip">₹0 / $0 to run</span>
+    </div>
+    <div class="ctas">
+      <a class="btn" href="https://github.com/manavjoshii/kaka/archive/refs/heads/main.zip">Download Kaka</a>
+      <a class="btn ghost" href="https://github.com/manavjoshii/kaka" target="_blank" rel="noopener noreferrer">Read the code</a>
+    </div>
+  </div>
+</section>
+
+<section class="manifesto">
+  <div class="wrap">
+    <h2>The problem with your task list</h2>
+    <p>Your to-do app knows your habits, your meals, your worries at 2am.
+    <em>That does not belong in a startup's database.</em></p>
+    <p>Kaka has no server of ours. No account with us. No pricing page.
+    You deploy it once and it answers to you.</p>
+    <p class="kicker">When you stop renting your tools, nothing expires. The app
+    stays up because your Cloudflare account stays up. Your data sits in your
+    storage. If we disappear tomorrow, your Kaka doesn't notice.</p>
+  </div>
+</section>
+
+<section class="name">
+  <div class="wrap">
+    <h2>Why "Kaka"</h2>
+    <p class="big">Kaka is Gujarati for <span>uncle</span>. Every Indian household
+    has one. He remembers your deadlines before you do, asks whether you went to
+    the gym, and tells you the truth on Sunday whether you asked for it or not.</p>
+    <p class="small">That is the app. It captures whatever you throw at it, nags
+    you at exactly the right moment, and writes you an honest review of your week.
+    Warm, but never soft on you.</p>
+  </div>
+</section>
+
+<section class="does">
+  <div class="wrap">
+    <h2>What it does</h2>
+    <div class="grid">
+      <div class="cell">
+        <h3><span class="n">01</span>Speak, don't fill forms</h3>
+        <p>"Call the accountant Friday 4pm, remind me an hour before" becomes
+        exactly that. Brain dumps get split into items. Goals get broken into
+        first moves instead of rotting as one vague todo.</p>
+      </div>
+      <div class="cell">
+        <h3><span class="n">02</span>Three things each morning</h3>
+        <p>Kaka pre-picks the three tasks that matter most today, using due
+        dates, importance, and age. One tap accepts. The day starts decided.</p>
+      </div>
+      <div class="cell">
+        <h3><span class="n">03</span>Pillars, not categories</h3>
+        <p>Define the areas every day should touch. The AI files each task
+        silently, and a chip lights up when you feed a pillar. You see a
+        starved pillar before it becomes a starved month.</p>
+      </div>
+      <div class="cell">
+        <h3><span class="n">04</span>Reminders that reach you</h3>
+        <p>Real push notifications on your phone, on by default for every dated
+        task. Add Kaka to your home screen and it behaves like any app.</p>
+      </div>
+      <div class="cell">
+        <h3><span class="n">05</span>A weekly review with opinions</h3>
+        <p>Every Monday, the AI reads your week and writes you 4 to 6 honest
+        sentences. What moved, what slipped, what keeps getting pushed. Then
+        one specific suggestion.</p>
+      </div>
+      <div class="cell">
+        <h3><span class="n">06</span>It files your life</h3>
+        <p>Meals, workouts, sleep, learnings, streaks with XP on top. Say it in
+        one line and Kaka puts it where it belongs.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="brain">
+  <div class="wrap">
+    <h2>The part nobody else built</h2>
+    <p class="lead">Your notes app keeps the memory. Kaka runs the day.
+    <em>The two talk to each other.</em></p>
+    <div class="endpoints">
+      <table>
+        <tr>
+          <td>GET /api/digest</td>
+          <td>One day of your activity as clean markdown, plus every learning you
+          captured. Pipe it into Obsidian, Notion, or a plain journal folder.</td>
+        </tr>
+        <tr>
+          <td>POST /api/context</td>
+          <td>Push your goals and projects up, so Kaka's AI knows who it is
+          talking to when it files and advises.</td>
+        </tr>
+        <tr>
+          <td>GET /api/review</td>
+          <td>The latest weekly review as JSON, ready to archive.</td>
+        </tr>
+      </table>
+    </div>
+    <p class="after">Most to-do apps are a silo. They know what you did and tell
+    nobody. Kaka closes the loop: your knowledge system finally learns what you
+    actually did today, automatically.</p>
+  </div>
+</section>
+
+<section class="setup">
+  <div class="wrap">
+    <h2>Setup</h2>
+    <div class="two">
+      <div>
+        <h3>The 2026 way</h3>
+        <ol>
+          <li>Download the folder above.</li>
+          <li>Open it in Claude Code, Cursor, or any coding agent.</li>
+          <li>Say <strong>"set up my Kaka"</strong>.</li>
+        </ol>
+        <p class="agent-note">The repo carries a runbook your agent follows. It
+        does everything itself and stops only where a human is required: you
+        click one Allow button and type two secrets into your own terminal. It
+        never sees your password or your key. About ten minutes.</p>
+      </div>
+      <div>
+        <h3>The manual way</h3>
+<pre><span class="c"># free Cloudflare account + free Gemini key, then:</span>
+npm install
+npx wrangler login
+npx wrangler kv namespace create KAKA_KV
+npm run build &amp;&amp; npx wrangler deploy
+npx wrangler secret put SITE_PASSWORD
+npx wrangler secret put GEMINI_API_KEY</pre>
+        <p class="free">Runs comfortably inside Cloudflare's and Google's free
+        tiers. <strong>Monthly cost: nothing.</strong></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <p class="made">Built by <a href="https://manavjoshi.com">Manav Joshi</a> for
+    himself first. He still runs it every day.</p>
+    <nav>
+      <a href="https://github.com/manavjoshii/kaka" target="_blank" rel="noopener noreferrer">GitHub</a>
+      <a href="https://github.com/manavjoshii/kaka/blob/main/LICENSE" target="_blank" rel="noopener noreferrer">MIT License</a>
+    </nav>
+  </div>
+</footer>
+
+</body>
+</html>
