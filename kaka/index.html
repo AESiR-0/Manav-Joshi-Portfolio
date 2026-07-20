@@ -24,7 +24,6 @@
     --muted: #a49e90;
     --faint: #6f695c;
     --amber: #f3b02c;
-    --amber-deep: #e08e0b;
     --radius: 12px;
   }
   * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -46,8 +45,15 @@
   ::selection { background: rgba(243,176,44,0.35); }
   a { color: inherit; }
   .wrap { max-width: 1040px; margin: 0 auto; padding: 0 24px; }
-  h1, h2, .h { font-family: "Inter Tight", "Inter", sans-serif; letter-spacing: -0.02em; }
-  .mono { font-family: "IBM Plex Mono", monospace; }
+  h1, h2 { font-family: "Inter Tight", "Inter", sans-serif; letter-spacing: -0.02em; }
+
+  /* reveal on scroll */
+  .rv { opacity: 0; transform: translateY(16px); transition: opacity 0.7s ease, transform 0.7s ease; }
+  .rv.in { opacity: 1; transform: none; }
+  @media (prefers-reduced-motion: reduce) {
+    .rv { opacity: 1; transform: none; transition: none; }
+    * { animation: none !important; }
+  }
 
   /* nav */
   .nav {
@@ -55,14 +61,11 @@
     backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
     background: rgba(12,11,9,0.72); border-bottom: 1px solid var(--border-soft);
   }
-  .nav .wrap {
-    display: flex; align-items: center; justify-content: space-between;
-    height: 58px;
-  }
+  .nav .wrap { display: flex; align-items: center; justify-content: space-between; height: 58px; }
   .logo { display: flex; align-items: baseline; gap: 10px; text-decoration: none; }
-  .logo .word { font-family: "Inter Tight", sans-serif; font-weight: 700; font-size: 17px; letter-spacing: -0.01em; }
+  .logo .word { font-family: "Inter Tight", sans-serif; font-weight: 700; font-size: 17px; }
   .logo .word i { font-style: normal; color: var(--amber); }
-  .logo .tag { font-size: 12.5px; color: var(--faint); font-weight: 400; }
+  .logo .tag { font-size: 12.5px; color: var(--faint); }
   .nav-links { display: flex; align-items: center; gap: 22px; font-size: 14px; }
   .nav-links a { text-decoration: none; color: var(--muted); transition: color 0.15s; }
   .nav-links a:hover { color: var(--text); }
@@ -70,15 +73,28 @@
     color: #161309 !important; background: linear-gradient(180deg, #f6c453, var(--amber));
     padding: 7px 14px; border-radius: 8px; font-weight: 600;
     box-shadow: 0 1px 0 rgba(255,255,255,0.25) inset, 0 4px 14px rgba(243,176,44,0.18);
+    transition: filter 0.15s, transform 0.15s;
   }
-  .nav-cta:hover { filter: brightness(1.06); }
+  .nav-cta:hover { filter: brightness(1.07); transform: translateY(-1px); }
 
   /* hero */
-  .hero { position: relative; padding: 96px 0 0; text-align: center; }
-  .hero .glow {
-    position: absolute; top: -180px; left: 50%; transform: translateX(-50%);
-    width: 900px; height: 520px; pointer-events: none;
-    background: radial-gradient(ellipse at center, rgba(243,176,44,0.14), rgba(243,176,44,0.04) 45%, transparent 70%);
+  .hero { position: relative; padding: 92px 0 0; text-align: center; }
+  .aurora, .aurora2 {
+    position: absolute; pointer-events: none; filter: blur(60px); opacity: 0.55;
+  }
+  .aurora {
+    top: -160px; left: 50%; width: 720px; height: 420px; margin-left: -360px;
+    background: radial-gradient(ellipse at center, rgba(243,176,44,0.22), transparent 65%);
+    animation: drift 16s ease-in-out infinite alternate;
+  }
+  .aurora2 {
+    top: -60px; left: 50%; width: 480px; height: 320px; margin-left: -120px;
+    background: radial-gradient(ellipse at center, rgba(255,236,190,0.10), transparent 60%);
+    animation: drift 22s ease-in-out infinite alternate-reverse;
+  }
+  @keyframes drift {
+    from { transform: translate(-30px, 0) scale(1); }
+    to   { transform: translate(30px, 24px) scale(1.12); }
   }
   .badge {
     display: inline-flex; align-items: center; gap: 8px;
@@ -86,39 +102,54 @@
     border: 1px solid var(--border); background: var(--panel);
     padding: 5px 12px; border-radius: 999px; margin-bottom: 26px;
   }
-  .badge .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--amber); box-shadow: 0 0 8px rgba(243,176,44,0.9); }
+  .badge .dot {
+    width: 6px; height: 6px; border-radius: 50%; background: var(--amber);
+    box-shadow: 0 0 8px rgba(243,176,44,0.9);
+    animation: breathe 2.8s ease-in-out infinite;
+  }
+  @keyframes breathe {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.35); opacity: 0.7; }
+  }
   .hero h1 {
+    position: relative;
     font-size: clamp(40px, 6.4vw, 68px); font-weight: 700; line-height: 1.06;
     max-width: 800px; margin: 0 auto;
   }
   .hero h1 .grad {
-    background: linear-gradient(92deg, #f6c453 10%, #e08e0b 90%);
+    background: linear-gradient(92deg, #f6c453, #e08e0b 45%, #f6c453 70%, #ffd98a);
+    background-size: 220% 100%;
     -webkit-background-clip: text; background-clip: text; color: transparent;
+    animation: shimmer 7s ease-in-out infinite;
   }
-  .hero .sub {
-    margin: 22px auto 0; max-width: 560px; font-size: 17.5px; color: var(--muted);
+  @keyframes shimmer {
+    0%, 100% { background-position: 0% 0; }
+    50% { background-position: 100% 0; }
   }
-  .hero .ctas { margin-top: 34px; display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+  .hero .sub { margin: 20px auto 0; max-width: 480px; font-size: 18px; color: var(--muted); }
+  .hero .sub b { color: var(--text); font-weight: 600; }
+  .hero .ctas { margin-top: 32px; display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
   .btn {
     display: inline-flex; align-items: center; gap: 8px; text-decoration: none;
     font-size: 15px; font-weight: 600; padding: 12px 22px; border-radius: 10px;
-    transition: transform 0.15s, filter 0.15s, background 0.15s;
+    transition: transform 0.15s, filter 0.15s, background 0.15s, box-shadow 0.15s;
   }
   .btn:hover { transform: translateY(-1px); }
+  .btn:active { transform: translateY(0) scale(0.98); }
   .btn-primary {
     color: #161309; background: linear-gradient(180deg, #f6c453, var(--amber));
     box-shadow: 0 1px 0 rgba(255,255,255,0.3) inset, 0 8px 24px rgba(243,176,44,0.22);
   }
-  .btn-primary:hover { filter: brightness(1.06); }
+  .btn-primary:hover { filter: brightness(1.06); box-shadow: 0 1px 0 rgba(255,255,255,0.3) inset, 0 10px 32px rgba(243,176,44,0.3); }
   .btn-ghost { color: var(--text); border: 1px solid var(--border); background: var(--panel); }
   .btn-ghost:hover { background: var(--panel-2); }
-  .hero .meta { margin-top: 18px; font-size: 13px; color: var(--faint); }
-  .hero .meta span + span::before { content: "·"; margin: 0 8px; color: var(--faint); }
+  .hero .meta { margin-top: 16px; font-size: 13px; color: var(--faint); }
+  .hero .meta span + span::before { content: "·"; margin: 0 8px; }
 
-  /* product frame */
-  .frame-zone { position: relative; margin-top: 64px; padding-bottom: 96px; }
+  /* product frame + live demo */
+  .frame-zone { position: relative; margin-top: 60px; padding-bottom: 92px; }
   .frame {
-    max-width: 780px; margin: 0 auto; text-align: left;
+    max-width: 720px; margin: 0 auto; text-align: left;
     border: 1px solid var(--border); border-radius: 14px; overflow: hidden;
     background: #fbf9f5; color: #3a342c;
     box-shadow: 0 0 0 1px rgba(0,0,0,0.4), 0 30px 80px rgba(0,0,0,0.55), 0 10px 30px rgba(243,176,44,0.07);
@@ -133,81 +164,88 @@
     color: #8a8172; background: #faf7f0; border: 1px solid #e4ded0;
     padding: 3px 12px; border-radius: 6px;
   }
-  .app { padding: 22px 24px 24px; font-size: 13.5px; }
-  .app .greet { font-family: "Inter Tight", sans-serif; font-size: 21px; font-weight: 700; letter-spacing: -0.01em; }
+  .app { padding: 20px 22px 22px; font-size: 13.5px; }
+  .app .greet { font-family: "Inter Tight", sans-serif; font-size: 20px; font-weight: 700; }
   .app .date { color: #97907f; font-size: 12.5px; margin-top: 2px; }
-  .pills { display: flex; gap: 7px; margin-top: 14px; flex-wrap: wrap; }
+  .pills { display: flex; gap: 7px; margin-top: 13px; flex-wrap: wrap; }
   .pill {
     font-size: 11.5px; font-weight: 600; padding: 4px 11px; border-radius: 999px;
     border: 1px solid #e4ded0; color: #97907f; background: #fff;
+    transition: background 0.4s, border-color 0.4s, color 0.4s, transform 0.3s;
   }
   .pill.lit { background: #fdf3dd; border-color: #edc96e; color: #8a5d00; }
+  .pill.pop { transform: scale(1.12); }
   .card {
-    margin-top: 16px; border: 1px solid #e9e3d5; border-radius: 10px;
-    background: #fff; padding: 14px 16px;
+    margin-top: 14px; border: 1px solid #e9e3d5; border-radius: 10px;
+    background: #fff; padding: 12px 15px;
   }
-  .card .label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: #b0a893; margin-bottom: 10px; }
+  .card .label { font-size: 10.5px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: #b0a893; margin-bottom: 8px; }
   .task { display: flex; align-items: center; gap: 10px; padding: 7px 0; border-bottom: 1px solid #f4f0e6; }
   .task:last-child { border-bottom: none; }
-  .box { width: 16px; height: 16px; border-radius: 5px; border: 1.5px solid #cfc7b4; flex-shrink: 0; }
-  .box.done { background: #e8a020; border-color: #e8a020; position: relative; }
+  .task.new { overflow: hidden; max-height: 0; opacity: 0; transition: max-height 0.5s ease, opacity 0.5s ease 0.15s; }
+  .task.new.show { max-height: 40px; opacity: 1; }
+  .box {
+    width: 16px; height: 16px; border-radius: 5px; border: 1.5px solid #cfc7b4;
+    flex-shrink: 0; position: relative; transition: background 0.25s, border-color 0.25s, transform 0.2s;
+  }
+  .box.done { background: #e8a020; border-color: #e8a020; }
   .box.done::after { content: "✓"; position: absolute; inset: 0; color: #fff; font-size: 11px; line-height: 16px; text-align: center; }
-  .task .t { flex: 1; }
+  .box.pop { transform: scale(1.3); }
+  .task .t { flex: 1; transition: color 0.3s; }
   .task .t.done { text-decoration: line-through; color: #b0a893; }
-  .task .when { font-size: 11px; color: #b0a893; }
+  .task .when { font-size: 11px; color: #b0a893; white-space: nowrap; }
   .task .streak { font-size: 11.5px; color: #8a5d00; background: #fdf3dd; padding: 2px 8px; border-radius: 999px; font-weight: 600; }
   .askbar {
-    margin-top: 16px; display: flex; align-items: center; justify-content: space-between;
-    border: 1px solid #e4ded0; border-radius: 10px; padding: 10px 14px;
-    color: #b0a893; background: #fff;
+    margin-top: 14px; display: flex; align-items: center; justify-content: space-between; gap: 10px;
+    border: 1px solid #e4ded0; border-radius: 10px; padding: 10px 14px; background: #fff;
+    transition: border-color 0.3s, box-shadow 0.3s;
   }
+  .askbar.active { border-color: #e8a020; box-shadow: 0 0 0 3px rgba(232,160,32,0.12); }
+  .askbar .field { color: #3a342c; min-height: 21px; }
+  .askbar .field .ph { color: #b0a893; }
+  .askbar .caret {
+    display: inline-block; width: 1.5px; height: 15px; background: #e8a020;
+    vertical-align: -2px; margin-left: 1px; animation: blink 1s step-end infinite;
+  }
+  @keyframes blink { 50% { opacity: 0; } }
   .askbar .go {
     width: 26px; height: 26px; border-radius: 8px; background: #3a342c; color: #fbf9f5;
-    font-size: 13px; line-height: 26px; text-align: center;
+    font-size: 13px; line-height: 26px; text-align: center; flex-shrink: 0;
+    transition: transform 0.15s, background 0.2s;
   }
+  .askbar .go.pop { transform: scale(1.2); background: #e8a020; }
+  .toast {
+    margin-top: 10px; font-size: 12px; color: #8a5d00; background: #fdf3dd;
+    border: 1px solid #edc96e; border-radius: 8px; padding: 7px 12px;
+    opacity: 0; transform: translateY(4px); transition: opacity 0.4s, transform 0.4s;
+  }
+  .toast.show { opacity: 1; transform: none; }
 
   /* sections */
-  section.block { padding: 88px 0; border-top: 1px solid var(--border-soft); }
+  section.block { padding: 84px 0; border-top: 1px solid var(--border-soft); }
   .eyebrow {
     font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.12em;
     color: var(--amber); margin-bottom: 14px;
   }
-  .block h2 { font-size: clamp(28px, 4vw, 40px); font-weight: 700; line-height: 1.15; max-width: 640px; }
-  .block .lede { margin-top: 16px; max-width: 600px; color: var(--muted); font-size: 17px; }
+  .block h2 { font-size: clamp(26px, 3.8vw, 38px); font-weight: 700; line-height: 1.15; }
+  .block .lede { margin-top: 14px; max-width: 560px; color: var(--muted); font-size: 16.5px; }
 
-  /* ownership */
-  .own-lines { margin-top: 40px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+  /* ownership strip */
+  .own-lines { margin-top: 36px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
   .own {
     border: 1px solid var(--border); border-radius: var(--radius);
-    background: var(--panel); padding: 22px;
+    background: var(--panel); padding: 20px 22px;
+    transition: border-color 0.25s, background 0.25s, transform 0.25s;
   }
-  .own .k { font-family: "Inter Tight", sans-serif; font-weight: 600; font-size: 17px; }
-  .own p { margin-top: 6px; font-size: 14px; color: var(--muted); }
-
-  /* features */
-  .feat-grid { margin-top: 44px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
-  .feat {
-    border: 1px solid var(--border-soft); border-radius: var(--radius);
-    background: var(--panel); padding: 22px; transition: background 0.2s, border-color 0.2s;
-  }
-  .feat:hover { background: var(--panel-2); border-color: var(--border); }
-  .feat .ico {
-    width: 34px; height: 34px; border-radius: 9px; margin-bottom: 14px;
-    display: flex; align-items: center; justify-content: center;
-    background: rgba(243,176,44,0.12); border: 1px solid rgba(243,176,44,0.25);
-    color: var(--amber); font-size: 15px;
-  }
-  .feat h3 { font-family: "Inter Tight", sans-serif; font-size: 16.5px; font-weight: 600; }
-  .feat p { margin-top: 7px; font-size: 14px; color: var(--muted); line-height: 1.55; }
+  .own:hover { border-color: rgba(243,176,44,0.4); background: var(--panel-2); transform: translateY(-2px); }
+  .own .k { font-family: "Inter Tight", sans-serif; font-weight: 600; font-size: 16.5px; }
+  .own p { margin-top: 5px; font-size: 13.5px; color: var(--muted); }
 
   /* loop */
-  .loop-grid { margin-top: 44px; display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center; }
-  .endpoint { display: flex; gap: 14px; padding: 16px 0; border-bottom: 1px solid var(--border-soft); }
+  .loop-grid { margin-top: 40px; display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center; }
+  .endpoint { display: flex; gap: 14px; padding: 14px 0; border-bottom: 1px solid var(--border-soft); align-items: baseline; }
   .endpoint:last-child { border-bottom: none; }
-  .endpoint .m {
-    font-family: "IBM Plex Mono", monospace; font-size: 12.5px; color: var(--amber);
-    white-space: nowrap; padding-top: 2px;
-  }
+  .endpoint .m { font-family: "IBM Plex Mono", monospace; font-size: 12.5px; color: var(--amber); white-space: nowrap; }
   .endpoint p { font-size: 14px; color: var(--muted); }
   .term {
     border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden;
@@ -222,62 +260,63 @@
   .term .c { color: var(--faint); }
   .term .a { color: var(--amber); }
 
-  /* name */
-  .name-quote {
-    margin-top: 40px; max-width: 760px;
-    font-family: "Inter Tight", sans-serif; font-size: clamp(22px, 3.2vw, 32px);
-    font-weight: 500; line-height: 1.4; letter-spacing: -0.01em;
+  /* features: tight list */
+  .feat-list { margin-top: 36px; display: grid; grid-template-columns: 1fr 1fr; gap: 4px 40px; }
+  .fl {
+    display: flex; gap: 12px; padding: 14px 10px; border-radius: 10px;
+    transition: background 0.2s;
   }
-  .name-quote .a { color: var(--amber); }
-  .name-note { margin-top: 20px; max-width: 560px; color: var(--muted); font-size: 16px; }
+  .fl:hover { background: var(--panel); }
+  .fl .tick { color: var(--amber); font-size: 14px; padding-top: 2px; }
+  .fl p { font-size: 15px; color: var(--muted); }
+  .fl p b { color: var(--text); font-weight: 600; }
 
   /* setup */
-  .setup-grid { margin-top: 44px; display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .setup-grid { margin-top: 40px; display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
   .path {
     border: 1px solid var(--border); border-radius: var(--radius);
-    background: var(--panel); padding: 26px;
+    background: var(--panel); padding: 24px;
+    transition: border-color 0.25s, transform 0.25s;
   }
-  .path .num { font-size: 12px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--faint); }
-  .path h3 { font-family: "Inter Tight", sans-serif; font-size: 19px; font-weight: 600; margin-top: 6px; }
-  .path ol { margin-top: 14px; padding-left: 20px; font-size: 14.5px; color: var(--muted); }
-  .path ol li { margin-bottom: 8px; }
+  .path:hover { border-color: rgba(243,176,44,0.35); transform: translateY(-2px); }
+  .path .num { font-size: 11.5px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--faint); }
+  .path h3 { font-family: "Inter Tight", sans-serif; font-size: 19px; font-weight: 600; margin-top: 5px; }
+  .path ol { margin-top: 12px; padding-left: 20px; font-size: 14.5px; color: var(--muted); }
+  .path ol li { margin-bottom: 7px; }
   .path ol strong { color: var(--text); font-weight: 600; }
-  .path .fine { margin-top: 14px; font-size: 13px; color: var(--faint); }
+  .path .fine { margin-top: 12px; font-size: 13px; color: var(--faint); }
   .path pre {
-    margin-top: 14px; background: #12100c; border: 1px solid var(--border-soft);
+    margin-top: 12px; background: #12100c; border: 1px solid var(--border-soft);
     border-radius: 9px; padding: 14px; font-family: "IBM Plex Mono", monospace;
     font-size: 12px; line-height: 1.75; color: #d8d2c2; overflow-x: auto;
   }
   .path pre .c { color: var(--faint); }
 
   /* final cta */
-  .fin { position: relative; text-align: center; padding: 110px 0; border-top: 1px solid var(--border-soft); overflow: hidden; }
+  .fin { position: relative; text-align: center; padding: 108px 0; border-top: 1px solid var(--border-soft); overflow: hidden; }
   .fin .glow2 {
     position: absolute; bottom: -220px; left: 50%; transform: translateX(-50%);
     width: 800px; height: 420px; pointer-events: none;
     background: radial-gradient(ellipse at center, rgba(243,176,44,0.16), transparent 65%);
   }
   .fin h2 { font-size: clamp(30px, 4.6vw, 46px); font-weight: 700; }
-  .fin p { margin: 14px auto 0; max-width: 480px; color: var(--muted); }
-  .fin .ctas { margin-top: 30px; display: flex; gap: 12px; justify-content: center; }
+  .fin p { margin: 12px auto 0; max-width: 440px; color: var(--muted); }
+  .fin .ctas { margin-top: 28px; display: flex; gap: 12px; justify-content: center; }
 
-  footer { border-top: 1px solid var(--border-soft); padding: 34px 0 44px; }
+  footer { border-top: 1px solid var(--border-soft); padding: 32px 0 44px; }
   footer .wrap { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; flex-wrap: wrap; }
   footer p { font-size: 13.5px; color: var(--faint); }
-  footer p a { color: var(--muted); text-decoration: none; }
-  footer p a:hover { color: var(--text); }
+  footer a { color: var(--muted); text-decoration: none; }
+  footer a:hover { color: var(--text); }
   footer nav { display: flex; gap: 18px; font-size: 13.5px; }
-  footer nav a { color: var(--muted); text-decoration: none; }
-  footer nav a:hover { color: var(--text); }
 
   @media (max-width: 860px) {
-    .own-lines, .feat-grid { grid-template-columns: 1fr 1fr; }
-    .loop-grid, .setup-grid { grid-template-columns: 1fr; }
+    .own-lines { grid-template-columns: 1fr; }
+    .loop-grid, .setup-grid, .feat-list { grid-template-columns: 1fr; }
   }
   @media (max-width: 560px) {
-    .own-lines, .feat-grid { grid-template-columns: 1fr; }
-    .hero { padding-top: 64px; }
-    .nav .tag { display: none; }
+    .hero { padding-top: 60px; }
+    .logo .tag { display: none; }
   }
 </style>
 </head>
@@ -297,48 +336,46 @@
 </div>
 
 <section class="hero">
-  <div class="glow"></div>
+  <div class="aurora"></div>
+  <div class="aurora2"></div>
   <div class="wrap">
     <div class="badge"><span class="dot"></span> Open source · MIT · self-hosted</div>
     <h1>The to-do app that feeds<br /><span class="grad">your second brain.</span></h1>
-    <p class="sub">It runs on your Cloudflare account with your Gemini key. Nobody's
-    server sits between you and your day. Free forever, because there is nothing
-    to charge you for.</p>
+    <p class="sub"><b>Software you own. Data you own.</b><br />Runs on your own cloud. Free forever.</p>
     <div class="ctas">
       <a class="btn btn-primary" href="https://github.com/manavjoshii/kaka/archive/refs/heads/main.zip">Download Kaka</a>
       <a class="btn btn-ghost" href="https://github.com/manavjoshii/kaka" target="_blank" rel="noopener noreferrer">GitHub</a>
     </div>
-    <p class="meta"><span>10-minute setup</span><span>₹0 / $0 to run</span><span>your AI sets it up for you</span></p>
+    <p class="meta"><span>10-minute setup</span><span>₹0 / $0 to run</span><span>your AI installs it</span></p>
   </div>
   <div class="frame-zone">
     <div class="wrap">
-      <div class="frame">
+      <div class="frame" id="demo">
         <div class="chrome">
           <span class="b"></span><span class="b"></span><span class="b"></span>
           <span class="url">kaka.yourname.workers.dev</span>
         </div>
         <div class="app">
           <div class="greet">Good morning, Ria.</div>
-          <div class="date">Monday, July 20 · 2 of 5 pillars fed</div>
+          <div class="date">Monday, July 20 · <span id="fedcount">1</span> of 5 pillars fed</div>
           <div class="pills">
             <span class="pill lit">🚀 Moonshot</span>
             <span class="pill">💰 Money</span>
             <span class="pill">🎬 Content</span>
-            <span class="pill lit">🏃 Movement</span>
+            <span class="pill" id="pill-move">🏃 Movement</span>
             <span class="pill">🤝 Social</span>
           </div>
           <div class="card">
             <div class="label">Today's three</div>
-            <div class="task"><span class="box done"></span><span class="t done">Morning run before it gets hot</span></div>
-            <div class="task"><span class="box"></span><span class="t">Ship the pricing page draft</span><span class="when">⏰ 4:00 pm</span></div>
-            <div class="task"><span class="box"></span><span class="t">Call Amma</span><span class="when">⏰ 7:30 pm</span></div>
+            <div class="task"><span class="box done"></span><span class="t done">Ship the pricing page draft</span></div>
+            <div class="task"><span class="box" id="run-box"></span><span class="t" id="run-t">Morning run before it gets hot</span></div>
+            <div class="task new" id="acct-task"><span class="box"></span><span class="t">Call the accountant</span><span class="when">Fri 4:00 pm · 🔔 3:00</span></div>
           </div>
-          <div class="card">
-            <div class="label">Habits</div>
-            <div class="task"><span class="box done"></span><span class="t done">Read 20 minutes</span><span class="streak">14-day streak</span></div>
-            <div class="task"><span class="box"></span><span class="t">No screens after 11</span><span class="streak">6-day streak</span></div>
+          <div class="askbar" id="askbar">
+            <span class="field"><span id="typed" class="ph">Ask Kaka anything…</span><span class="caret" id="caret" style="display:none"></span></span>
+            <span class="go" id="go">↑</span>
           </div>
-          <div class="askbar"><span>Ask Kaka anything…</span><span class="go">↑</span></div>
+          <div class="toast" id="toast">Scheduled Friday 4:00 pm. I'll remind you at 3.</div>
         </div>
       </div>
     </div>
@@ -346,132 +383,80 @@
 </section>
 
 <section class="block">
-  <div class="wrap">
+  <div class="wrap rv">
     <p class="eyebrow">Ownership</p>
-    <h2>Software you own. Data you own.</h2>
-    <p class="lede">Your to-do app knows your habits, your meals, your worries at
-    2am. That does not belong in a startup's database.</p>
+    <h2>Nobody's server sits between<br />you and your day.</h2>
     <div class="own-lines">
       <div class="own">
         <div class="k">No server of ours</div>
-        <p>Kaka runs as a worker on your own Cloudflare account. If we disappear
-        tomorrow, your Kaka doesn't notice.</p>
+        <p>If we disappear tomorrow, your Kaka doesn't notice.</p>
       </div>
       <div class="own">
         <div class="k">No account with us</div>
-        <p>One password, chosen by you, stored by you. Your data sits in your
-        storage and nowhere else.</p>
+        <p>One password, yours. Data in your storage, nowhere else.</p>
       </div>
       <div class="own">
         <div class="k">No pricing page</div>
-        <p>It fits inside Cloudflare's and Google's free tiers. When you stop
-        renting your tools, nothing expires.</p>
+        <p>Fits in Cloudflare's and Google's free tiers. Nothing to expire.</p>
       </div>
     </div>
   </div>
 </section>
 
 <section class="block">
-  <div class="wrap">
-    <p class="eyebrow">What it does</p>
-    <h2>Smart to-dos and habits.</h2>
-    <div class="feat-grid">
-      <div class="feat">
-        <div class="ico">✎</div>
-        <h3>Speak, don't fill forms</h3>
-        <p>"Call the accountant Friday 4pm, remind me an hour before" becomes
-        exactly that. Brain dumps get split into items. Goals get broken into
-        first moves.</p>
-      </div>
-      <div class="feat">
-        <div class="ico">☰</div>
-        <h3>Three things each morning</h3>
-        <p>Kaka pre-picks the three tasks that matter most today, using due
-        dates, importance, and age. One tap accepts. The day starts decided.</p>
-      </div>
-      <div class="feat">
-        <div class="ico">◈</div>
-        <h3>Pillars, not categories</h3>
-        <p>Define the areas every day should touch. The AI files each task
-        silently, and a chip lights up when you feed a pillar.</p>
-      </div>
-      <div class="feat">
-        <div class="ico">◷</div>
-        <h3>Reminders that reach you</h3>
-        <p>Real push notifications on your phone, on by default for every dated
-        task. Add Kaka to your home screen and it behaves like any app.</p>
-      </div>
-      <div class="feat">
-        <div class="ico">✦</div>
-        <h3>A weekly review with opinions</h3>
-        <p>Every Monday, the AI reads your week and writes you 4 to 6 honest
-        sentences. What moved, what slipped, then one specific suggestion.</p>
-      </div>
-      <div class="feat">
-        <div class="ico">✓</div>
-        <h3>It files your life</h3>
-        <p>Meals, workouts, sleep, learnings, streaks with XP on top. Say it in
-        one line and Kaka puts it where it belongs.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section class="block">
-  <div class="wrap">
+  <div class="wrap rv">
     <p class="eyebrow">The second brain loop</p>
-    <h2>Your notes app keeps the memory.<br />Kaka runs the day.</h2>
-    <p class="lede">Every other to-do app is a silo. It knows what you did and
-    tells nobody. Kaka closes the loop: your vault learns what you actually did
-    today, without you writing it up.</p>
+    <h2>Your notes keep the memory.<br />Kaka runs the day.</h2>
+    <p class="lede">Every other to-do app is a silo. Kaka writes your day back
+    into your vault, without you writing it up.</p>
     <div class="loop-grid">
       <div>
         <div class="endpoint">
           <span class="m">GET /api/digest</span>
-          <p>One day of your activity as clean markdown, plus every learning you
-          captured. Pipe it into Obsidian, Notion, or a plain journal folder.</p>
+          <p>Your day as markdown, into Obsidian or any vault.</p>
         </div>
         <div class="endpoint">
           <span class="m">POST /api/context</span>
-          <p>Push your goals and projects up, so Kaka's AI knows who it is
-          talking to when it files and advises.</p>
+          <p>Your goals go up, so the AI knows you.</p>
         </div>
         <div class="endpoint">
           <span class="m">GET /api/review</span>
-          <p>The latest weekly review as JSON, ready to archive.</p>
+          <p>The weekly review, ready to archive.</p>
         </div>
       </div>
       <div class="term">
         <div class="bar2"><span></span><span></span><span></span></div>
         <pre><span class="c"># this morning, automatically</span>
-$ curl kaka.you.dev/api/digest?date=2026-07-19
-<span class="a"># 2026-07-19 — Kaka daily</span>
+$ curl kaka.you.dev/api/digest
+<span class="a"># 2026-07-19 · Kaka daily</span>
 ## Done
 - Ship the pricing page draft
 - Morning run (movement)
-## Learnings captured
+## Learnings
 - Sam is a potential client
-<span class="c">→ saved to vault/log/2026-07-19.md</span></pre>
+<span class="c">→ vault/log/2026-07-19.md</span></pre>
       </div>
     </div>
   </div>
 </section>
 
 <section class="block">
-  <div class="wrap">
-    <p class="eyebrow">Why "Kaka"</p>
-    <p class="name-quote">Kaka is Gujarati for <span class="a">uncle</span>. Every
-    Indian household has one. He remembers your deadlines before you do, asks
-    whether you went to the gym, and tells you the truth on Sunday whether you
-    asked for it or not.</p>
-    <p class="name-note">That is the app. It captures whatever you throw at it,
-    nags you at exactly the right moment, and writes you an honest review of
-    your week. Warm, but never soft on you.</p>
+  <div class="wrap rv">
+    <p class="eyebrow">What it does</p>
+    <h2>Smart to-dos and habits.</h2>
+    <div class="feat-list">
+      <div class="fl"><span class="tick">✦</span><p><b>Speak, don't fill forms.</b> One sentence in, a scheduled task out.</p></div>
+      <div class="fl"><span class="tick">✦</span><p><b>Three things each morning.</b> Picked before you wake up. One tap accepts.</p></div>
+      <div class="fl"><span class="tick">✦</span><p><b>Pillars, not categories.</b> A chip lights up when you feed an area of your life.</p></div>
+      <div class="fl"><span class="tick">✦</span><p><b>Reminders that reach you.</b> Push notifications, on by default for every dated task.</p></div>
+      <div class="fl"><span class="tick">✦</span><p><b>A weekly review with opinions.</b> Six honest sentences every Monday.</p></div>
+      <div class="fl"><span class="tick">✦</span><p><b>It files your life.</b> Meals, workouts, learnings. Said once, filed right.</p></div>
+    </div>
   </div>
 </section>
 
 <section class="block">
-  <div class="wrap">
+  <div class="wrap rv">
     <p class="eyebrow">Setup</p>
     <h2>Ten minutes, once.</h2>
     <div class="setup-grid">
@@ -479,26 +464,23 @@ $ curl kaka.you.dev/api/digest?date=2026-07-19
         <p class="num">The 2026 way</p>
         <h3>Let your AI do it</h3>
         <ol>
-          <li>Download the folder above.</li>
-          <li>Open it in Claude Code, Cursor, or any coding agent.</li>
+          <li>Download the folder.</li>
+          <li>Open it in Claude Code or Cursor.</li>
           <li>Say <strong>"set up my Kaka"</strong>.</li>
         </ol>
-        <p class="fine">The repo carries a runbook your agent follows. It stops
-        only where a human is required: you click one Allow button and type two
-        secrets into your own terminal. It never sees your password or your key.</p>
+        <p class="fine">The repo carries the runbook. Your agent stops only where
+        a human is required: one Allow click, two secrets typed by you.</p>
       </div>
       <div class="path">
         <p class="num">The manual way</p>
         <h3>Six commands</h3>
-<pre><span class="c"># free Cloudflare account + free Gemini key, then:</span>
+<pre><span class="c"># free Cloudflare account + free Gemini key</span>
 npm install
 npx wrangler login
 npx wrangler kv namespace create KAKA_KV
 npm run build &amp;&amp; npx wrangler deploy
 npx wrangler secret put SITE_PASSWORD
 npx wrangler secret put GEMINI_API_KEY</pre>
-        <p class="fine">Runs comfortably inside Cloudflare's and Google's free
-        tiers. Monthly cost: nothing.</p>
       </div>
     </div>
   </div>
@@ -506,7 +488,7 @@ npx wrangler secret put GEMINI_API_KEY</pre>
 
 <section class="fin">
   <div class="glow2"></div>
-  <div class="wrap">
+  <div class="wrap rv">
     <h2>Take Kaka home.</h2>
     <p>Built by Manav Joshi for himself first. He still runs it every day.</p>
     <div class="ctas">
@@ -525,6 +507,118 @@ npx wrangler secret put GEMINI_API_KEY</pre>
     </nav>
   </div>
 </footer>
+
+<script>
+(function () {
+  var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  // scroll reveals
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); }
+    });
+  }, { threshold: 0.15 });
+  document.querySelectorAll(".rv").forEach(function (el) { io.observe(el); });
+
+  if (reduced) {
+    // static end-state for the demo
+    document.getElementById("acct-task").classList.add("show");
+    return;
+  }
+
+  // live capture demo
+  var typed = document.getElementById("typed");
+  var caret = document.getElementById("caret");
+  var askbar = document.getElementById("askbar");
+  var go = document.getElementById("go");
+  var toast = document.getElementById("toast");
+  var acct = document.getElementById("acct-task");
+  var runBox = document.getElementById("run-box");
+  var runT = document.getElementById("run-t");
+  var pillMove = document.getElementById("pill-move");
+  var fed = document.getElementById("fedcount");
+
+  var LINE1 = "call the accountant friday 4pm, remind me an hour before";
+  var LINE2 = "done with the morning run";
+
+  function wait(ms) { return new Promise(function (r) { setTimeout(r, ms); }); }
+
+  function typeText(text, speed) {
+    return new Promise(function (resolve) {
+      typed.classList.remove("ph");
+      typed.textContent = "";
+      caret.style.display = "inline-block";
+      askbar.classList.add("active");
+      var i = 0;
+      (function tick() {
+        if (i < text.length) {
+          typed.textContent += text[i++];
+          setTimeout(tick, speed + Math.random() * 40);
+        } else resolve();
+      })();
+    });
+  }
+
+  function send() {
+    go.classList.add("pop");
+    typed.textContent = "";
+    caret.style.display = "none";
+    askbar.classList.remove("active");
+    return wait(250).then(function () { go.classList.remove("pop"); });
+  }
+
+  function resetBar() {
+    typed.classList.add("ph");
+    typed.textContent = "Ask Kaka anything…";
+  }
+
+  function showToast(msg) {
+    toast.textContent = msg;
+    toast.classList.add("show");
+    return wait(2200).then(function () { toast.classList.remove("show"); });
+  }
+
+  function run() {
+    wait(1400)
+      .then(function () { return typeText(LINE1, 38); })
+      .then(function () { return wait(500); })
+      .then(send)
+      .then(function () {
+        acct.classList.add("show");
+        return showToast("Scheduled Friday 4:00 pm. I'll remind you at 3.");
+      })
+      .then(function () { return wait(900); })
+      .then(function () { return typeText(LINE2, 42); })
+      .then(function () { return wait(400); })
+      .then(send)
+      .then(function () {
+        runBox.classList.add("done", "pop");
+        runT.classList.add("done");
+        pillMove.classList.add("lit", "pop");
+        fed.textContent = "2";
+        return wait(350).then(function () {
+          runBox.classList.remove("pop");
+          pillMove.classList.remove("pop");
+          return showToast("Morning run done. Movement fed. 🔥");
+        });
+      })
+      .then(function () { return wait(2600); })
+      .then(function () {
+        // reset to base state and loop
+        acct.classList.remove("show");
+        runBox.classList.remove("done");
+        runT.classList.remove("done");
+        pillMove.classList.remove("lit");
+        fed.textContent = "1";
+        resetBar();
+        run();
+      });
+  }
+
+  resetBar();
+  run();
+})();
+</script>
 
 </body>
 </html>
