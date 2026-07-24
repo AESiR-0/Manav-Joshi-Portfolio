@@ -424,7 +424,7 @@
     <section class="panel rv" id="apply">
       <div class="audit">
         <span id="auditDate">Sunday, 10 – 1</span>
-        <span>Ahmedabad</span>
+        <span>Vastrapur, Ahmedabad</span>
         <span>&#8377;449 &middot; coffee's on us</span>
         <span>Ten invites</span>
       </div>
@@ -438,7 +438,7 @@
           <input type="text" id="fName" name="name" autocomplete="name" required>
         </div>
         <div class="field">
-          <label for="fPhone">WhatsApp <span class="hint">(your invite lands here)</span></label>
+          <label for="fPhone">WhatsApp number <span class="hint">(your invite lands here)</span></label>
           <input type="tel" id="fPhone" name="phone" autocomplete="tel" inputmode="tel" required>
         </div>
         <div class="field field-chips">
@@ -447,17 +447,13 @@
             <label class="chip"><input type="radio" name="work" value="Founder"><span>Founder</span></label>
             <label class="chip"><input type="radio" name="work" value="Creator"><span>Creator</span></label>
             <label class="chip"><input type="radio" name="work" value="Artist"><span>Artist</span></label>
-            <label class="chip"><input type="radio" name="work" value="Designer"><span>Designer</span></label>
-            <label class="chip"><input type="radio" name="work" value="Developer"><span>Developer</span></label>
-            <label class="chip"><input type="radio" name="work" value="Writer"><span>Writer</span></label>
-            <label class="chip"><input type="radio" name="work" value="Student"><span>Student</span></label>
             <label class="chip"><input type="radio" name="work" value="__other" id="workOther"><span>Something else</span></label>
           </div>
           <input type="text" id="fWorkOther" placeholder="then what?" hidden aria-label="tell us what you do">
         </div>
         <div class="field">
-          <label for="fWhy">The ambitious project you're stuck with</label>
-          <textarea id="fWhy" name="why" placeholder="Two lines. What is it, where is it stuck?" required></textarea>
+          <label for="fWhy">Tell us about an ambitious project you're stuck with</label>
+          <textarea id="fWhy" name="why" placeholder="Don't use AI. Just tell us what you're building and what you need help with." required></textarea>
         </div>
 
         <input type="text" name="website" id="fHp" tabindex="-1" autocomplete="off"
@@ -466,12 +462,12 @@
         <label class="check">
           <input type="checkbox" id="cCity" required>
           <span class="box"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M2.5 8.5 6 12 13.5 4"/></svg></span>
-          <span>I can be in Ahmedabad on <b id="dateLine">Sunday</b>, 10 AM to 1 PM.</span>
+          <span>I am in Ahmedabad on <b id="dateLine">Sunday</b>, 10am</span>
         </label>
         <label class="check">
           <input type="checkbox" id="cFee" required>
           <span class="box"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M2.5 8.5 6 12 13.5 4"/></svg></span>
-          <span>I know it's &#8377;449 if I get an invite.</span>
+          <span>I know I pay &#8377;449/- if I am invited</span>
         </label>
 
         <div class="form-foot">
@@ -536,7 +532,7 @@
     var pad = function (n) { return (n < 10 ? '0' : '') + n; };
     var sundayISO = sunday.getFullYear() + '-' + pad(sunday.getMonth() + 1) + '-' + pad(sunday.getDate());
 
-    $('heroMeta').textContent  = 'Sunday, ' + dateShort + ' · 10 am – 1 pm · Ahmedabad';
+    $('heroMeta').textContent  = 'Sunday, ' + dateShort + ' · 10 am';
     $('dateLine').textContent  = 'Sunday, ' + dateShort;
     $('auditDate').textContent = dateShort + ', 10 – 1';
 
