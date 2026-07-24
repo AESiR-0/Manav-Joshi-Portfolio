@@ -126,7 +126,8 @@
     }
     .hero-cap {
       margin-top: 12px; font-family: var(--disp); font-weight: 600;
-      font-size: clamp(21px, 6vw, 29px); line-height: 1.15; color: var(--green-deep);
+      font-size: clamp(19px, 5.2vw, 26px); line-height: 1.22; color: var(--green-deep);
+      max-width: 20ch; text-wrap: balance;
     }
     .hero .cta { margin-top: 24px; }
     .hero-scrolldown {
@@ -258,12 +259,13 @@
       transition: transform .38s var(--ease);
     }
     .field:focus-within::after { transform: scaleX(1); }
-    .field label {
+    /* direct child only — the pill <label>s inside .chips must not inherit this */
+    .field > label {
       display: block; font-size: 11.5px; font-weight: 700;
       letter-spacing: .17em; text-transform: uppercase; margin-bottom: 8px;
       transition: color .25s ease;
     }
-    .field:focus-within label { color: var(--green); }
+    .field:focus-within > label { color: var(--green); }
     .field .hint { text-transform: none; letter-spacing: 0; font-weight: 400; color: var(--ink-soft); }
     input[type=text], input[type=tel], textarea {
       width: 100%; font-family: var(--mono); font-size: 16px; color: var(--ink);
@@ -275,6 +277,32 @@
     textarea { resize: vertical; min-height: 86px; line-height: 1.6; }
     input:focus, textarea:focus { outline: none; border-color: var(--green); background: rgba(255,255,255,.62); }
     input::placeholder, textarea::placeholder { color: #9c9a8c; }
+
+    /* pick-one pills */
+    .field-chips::after { display: none; }          /* no underline rule under chips */
+    .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+    .chip { position: relative; }
+    .chip input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+    .chip span {
+      display: block; font-family: var(--mono); font-size: 13px; color: var(--ink-soft);
+      background: rgba(255,255,255,.34);
+      border: 1.5px solid rgba(35,39,31,.30); border-radius: 999px;
+      padding: 10px 13px; cursor: pointer; user-select: none;
+      transition: background .18s ease, color .18s ease, border-color .18s ease, transform .18s var(--ease);
+    }
+    .chip span:hover { border-color: var(--green); color: var(--green); }
+    .chip span:active { transform: translateY(1px) scale(.97); }
+    .chip input:checked + span {
+      color: var(--paper); background: var(--green); border-color: var(--green-deep);
+      transform: translateY(-1px);
+    }
+    @media (prefers-reduced-motion: no-preference) {
+      .chip input:checked + span { animation: pick .34s var(--ease); }
+    }
+    @keyframes pick { 0% { transform: scale(.92); } 58% { transform: scale(1.06); } 100% { transform: translateY(-1px); } }
+    .chip input:focus-visible + span { outline: 3px solid var(--green); outline-offset: 2px; }
+    #fWorkOther { margin-top: 12px; }
+    #fWorkOther[hidden] { display: none; }
 
     .check { display: flex; gap: 13px; align-items: flex-start; cursor: pointer; padding: 9px 0; }
     .check input { position: absolute; opacity: 0; pointer-events: none; }
@@ -368,24 +396,23 @@
   </div>
 
   <header class="hero">
-    <p class="hero-meta" id="heroMeta">every sunday &middot; 10 am – 1 pm &middot; ahmedabad</p>
-    <p class="hero-cap">Ten invites a week.</p>
+    <p class="hero-meta" id="heroMeta">&nbsp;</p>
+    <p class="hero-cap">Ten believers in a room working on their most ambitious projects.</p>
     <a class="cta" href="#apply">[ Request an invite ]</a>
-    <a class="hero-scrolldown" href="#what">what this is &darr;</a>
+    <a class="hero-scrolldown" href="#why">why this exists &darr;</a>
   </header>
 
   <main>
 
-    <section class="panel mirror rv">
+    <section class="panel mirror rv" id="why">
       <p>
         Most people don't have anyone to challenge their ideas and push their audacity.
         <span class="turn">We're building that space.</span>
       </p>
     </section>
 
-    <section class="panel rv" id="what">
-      <span class="tag">[ WHAT ]</span>
-      <p class="lede">Ten believers in a room working on their most ambitious projects.</p>
+    <section class="panel rv" id="how">
+      <span class="tag">[ HOW ]</span>
       <ul class="steps">
         <li style="--i:0"><span class="gg">&gt;&gt;</span> Enter with a defined goal</li>
         <li style="--i:1"><span class="gg">&gt;&gt;</span> Focus work hour</li>
@@ -414,9 +441,19 @@
           <label for="fPhone">WhatsApp <span class="hint">(your invite lands here)</span></label>
           <input type="tel" id="fPhone" name="phone" autocomplete="tel" inputmode="tel" required>
         </div>
-        <div class="field">
-          <label for="fWork">What do you do?</label>
-          <input type="text" id="fWork" name="work" placeholder="founder / writer / filmmaker / student / ..." required>
+        <div class="field field-chips">
+          <label id="workLabel">What do you do?</label>
+          <div class="chips" role="radiogroup" aria-labelledby="workLabel">
+            <label class="chip"><input type="radio" name="work" value="Founder"><span>Founder</span></label>
+            <label class="chip"><input type="radio" name="work" value="Creator"><span>Creator</span></label>
+            <label class="chip"><input type="radio" name="work" value="Artist"><span>Artist</span></label>
+            <label class="chip"><input type="radio" name="work" value="Designer"><span>Designer</span></label>
+            <label class="chip"><input type="radio" name="work" value="Developer"><span>Developer</span></label>
+            <label class="chip"><input type="radio" name="work" value="Writer"><span>Writer</span></label>
+            <label class="chip"><input type="radio" name="work" value="Student"><span>Student</span></label>
+            <label class="chip"><input type="radio" name="work" value="__other" id="workOther"><span>Something else</span></label>
+          </div>
+          <input type="text" id="fWorkOther" placeholder="then what?" hidden aria-label="tell us what you do">
         </div>
         <div class="field">
           <label for="fWhy">The ambitious project you're stuck with</label>
@@ -439,7 +476,7 @@
 
         <div class="form-foot">
           <button class="cta" type="submit" id="sendBtn">[ Send request ]</button>
-          <p class="form-note" id="formNote">Fill everything above, and tick both boxes.</p>
+          <p class="form-note" id="formNote">Fill everything above, pick what you do, and tick both boxes.</p>
         </div>
       </form>
 
@@ -484,10 +521,14 @@
     var ENDPOINT = 'https://script.google.com/macros/s/AKfycbyIdrCDzYTx7XQQ5l8ByaFW6FsGuSIJJvwTkN449Fhq20HrZjIYTnZpOWI4qs8-2uP5gw/exec';
     var $ = function (id) { return document.getElementById(id); };
 
-    /* ── upcoming Sunday; today counts if it is Sunday ── */
+    /* ── the next edition. today counts, but only until it's over. ── */
     var now = new Date();
     var sunday = new Date(now);
     sunday.setDate(now.getDate() + ((7 - now.getDay()) % 7));
+    if (now.getDay() === 0 && now.getHours() >= 13) {   /* sunday, past 1pm — that one's done */
+      sunday.setDate(sunday.getDate() + 7);
+    }
+    sunday.setHours(0, 0, 0, 0);
     var MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
     var dateShort = MONTHS[sunday.getMonth()] + ' ' + sunday.getDate();
 
@@ -495,8 +536,23 @@
     var pad = function (n) { return (n < 10 ? '0' : '') + n; };
     var sundayISO = sunday.getFullYear() + '-' + pad(sunday.getMonth() + 1) + '-' + pad(sunday.getDate());
 
+    $('heroMeta').textContent  = 'Sunday, ' + dateShort + ' · 10 am – 1 pm · Ahmedabad';
     $('dateLine').textContent  = 'Sunday, ' + dateShort;
     $('auditDate').textContent = dateShort + ', 10 – 1';
+
+    /* ── "something else" reveals a field ── */
+    Array.prototype.forEach.call(document.querySelectorAll('.chip input'), function (r) {
+      r.addEventListener('change', function () {
+        var other = $('workOther').checked;
+        $('fWorkOther').hidden = !other;
+        if (other) { $('fWorkOther').focus(); } else { $('fWorkOther').value = ''; }
+      });
+    });
+    function pickedWork() {
+      var sel = document.querySelector('.chip input:checked');
+      if (!sel) return '';
+      return sel.value === '__other' ? $('fWorkOther').value.trim() : sel.value;
+    }
 
     /* ── scrim tracks scroll so glass keeps contrast past the hero ── */
     var ticking = false;
@@ -535,7 +591,7 @@
       ev.preventDefault();
       var name  = $('fName').value.trim(),
           phone = $('fPhone').value.trim(),
-          work  = $('fWork').value.trim(),
+          work  = pickedWork(),
           why   = $('fWhy').value.trim();
 
       if (!name || !phone || !work || !why || !$('cCity').checked || !$('cFee').checked) {
