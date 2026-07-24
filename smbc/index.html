@@ -1,0 +1,491 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sunday Morning Build Club</title>
+  <meta name="description" content="Ten believers in a room working on their most ambitious projects. Every Sunday, 10 AM to 1 PM, Ahmedabad. Ten invites a week.">
+  <meta property="og:title" content="Sunday Morning Build Club">
+  <meta property="og:description" content="Ten believers in a room working on their most ambitious projects. Every Sunday, Ahmedabad.">
+  <meta property="og:image" content="https://manavjoshi.com/images/smbc/hero.jpg">
+  <meta property="og:url" content="https://manavjoshi.com/smbc/">
+  <meta property="og:type" content="website">
+  <meta name="theme-color" content="#f3efe4">
+  <link rel="icon" href="/favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preload" as="image" href="/images/smbc/hero.jpg" fetchpriority="high">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600&family=Space+Mono:wght@400;700&display=swap">
+  <style>
+    :root {
+      --cream:      #f3efe4;
+      --paper:      #faf7ee;
+      --green:      #2e5b34;
+      --green-deep: #1f4024;
+      --green-lit:  #6ee39a;
+      --ink:        #23271f;
+      --ink-soft:   #4e5449;
+      --mono: 'Space Mono', ui-monospace, monospace;
+      --disp: 'Fredoka', system-ui, sans-serif;
+      --serif: 'Fraunces', Georgia, serif;
+      --ease: cubic-bezier(.22, 1, .36, 1);
+      --scrim: 0;                 /* driven by scroll */
+      --panel-max: 560px;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+    body {
+      background: var(--cream);
+      color: var(--ink);
+      font-family: var(--mono);
+      font-size: 15px;
+      line-height: 1.65;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+    ::selection { background: var(--green); color: var(--cream); }
+    :focus-visible { outline: 3px solid var(--green); outline-offset: 3px; border-radius: 3px; }
+
+    /* ══ the photo that never leaves ══════════════════ */
+    .backdrop { position: fixed; inset: 0; z-index: -2; overflow: hidden; background: var(--cream); }
+    .backdrop-inner {
+      position: absolute; top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      /* replicate object-fit:cover, but in a percentage space we can position inside */
+      width: max(100vw, calc(100vh * 0.845));
+      aspect-ratio: 1200 / 1420;
+    }
+    .backdrop-inner img { width: 100%; height: 100%; object-fit: fill; display: block; }
+    /* on wide screens shift down so the TV stays in frame */
+    @media (min-aspect-ratio: 1/1) {
+      .backdrop-inner { transform: translate(-50%, -40%); }
+    }
+    /* scrim: transparent over the hero, tints in as you scroll so glass reads */
+    .backdrop::after {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(to bottom, rgba(35,39,31,.10), rgba(35,39,31,.30));
+      opacity: var(--scrim); transition: opacity .25s linear;
+    }
+
+    /* ══ the TV is on ═════════════════════════════════ */
+    /* coordinates are % of the image box, so they survive every crop */
+    .tv-fx {
+      position: absolute; left: 35.3%; top: 28.6%; width: 32.2%; height: 17.6%;
+      pointer-events: none;
+    }
+    .tv-scan {
+      position: absolute; inset: 0; mix-blend-mode: multiply; opacity: .5;
+      background: repeating-linear-gradient(
+        to bottom,
+        rgba(20,40,25,.30) 0px, rgba(20,40,25,.30) 1px,
+        transparent 1px, transparent 3px);
+    }
+    .tv-glow {
+      position: absolute; inset: -42%;
+      background: radial-gradient(ellipse at center, rgba(120,240,160,.34), transparent 68%);
+      mix-blend-mode: screen;
+    }
+    @media (prefers-reduced-motion: no-preference) {
+      .tv-glow  { animation: breathe 5.2s ease-in-out infinite; }
+      .tv-fx    { animation: flicker 9s steps(1, end) infinite; }
+      .tv-scan  { animation: roll 7s linear infinite; }
+    }
+    @keyframes breathe { 0%,100% { opacity: .68; } 50% { opacity: 1; } }
+    @keyframes roll    { to { background-position-y: 3px; } }
+    /* irregular on purpose — a steady blink reads as a broken GIF */
+    @keyframes flicker {
+      0%, 41%, 43%, 61%, 62.4%, 87%, 100% { opacity: 1; }
+      42%   { opacity: .58; }
+      61.7% { opacity: .74; }
+      87.6% { opacity: .5; }
+    }
+
+    /* ══ hero ═════════════════════════════════════════ */
+    .hero {
+      min-height: 100svh; display: flex; flex-direction: column;
+      justify-content: flex-end; align-items: center; text-align: center;
+      padding: 0 22px clamp(38px, 8vh, 74px);
+    }
+    .hero-meta {
+      font-size: clamp(11.5px, 3.1vw, 13px); font-weight: 700;
+      letter-spacing: .2em; text-transform: uppercase; color: var(--green);
+    }
+    .hero-cap {
+      margin-top: 12px; font-family: var(--disp); font-weight: 600;
+      font-size: clamp(21px, 6vw, 29px); line-height: 1.15; color: var(--green-deep);
+    }
+    .hero .cta { margin-top: 24px; }
+    .hero-scrolldown {
+      margin-top: 30px; font-size: 11px; letter-spacing: .22em;
+      text-transform: uppercase; color: var(--ink-soft); opacity: .62;
+    }
+    @media (prefers-reduced-motion: no-preference) {
+      .hero > * { opacity: 0; transform: translateY(15px); animation: rise .75s var(--ease) forwards; }
+      .hero > :nth-child(1) { animation-delay: .10s; }
+      .hero > :nth-child(2) { animation-delay: .22s; }
+      .hero > :nth-child(3) { animation-delay: .36s; }
+      .hero > :nth-child(4) { animation-delay: .52s; }
+      .hero-scrolldown { animation: rise .75s var(--ease) .52s forwards, bob 2.6s ease-in-out 1.4s infinite; }
+    }
+    @keyframes rise { to { opacity: 1; transform: none; } }
+    @keyframes bob  { 0%,100% { transform: translateY(0); } 50% { transform: translateY(5px); } }
+
+    /* ══ buttons ══════════════════════════════════════ */
+    .cta {
+      display: inline-block; font-family: var(--mono); font-size: 15px; font-weight: 700;
+      color: var(--paper); background: var(--green); text-decoration: none;
+      border: 2px solid var(--green-deep); border-radius: 999px;
+      padding: 14px 28px; box-shadow: 0 4px 0 var(--green-deep); cursor: pointer;
+      transition: transform .16s var(--ease), box-shadow .16s var(--ease), background .16s ease;
+    }
+    .cta:hover  { background: var(--green-deep); transform: translateY(-2px); box-shadow: 0 6px 0 var(--green-deep); }
+    .cta:active { transform: translateY(4px); box-shadow: 0 0 0 var(--green-deep); }
+    .cta[disabled] { opacity: .6; pointer-events: none; }
+
+    /* ══ glass panels ═════════════════════════════════ */
+    main { padding: 0 clamp(14px, 4vw, 24px) 40px; }
+    .panel {
+      max-width: var(--panel-max); margin: 0 auto clamp(16px, 4vw, 26px);
+      padding: clamp(30px, 7vw, 46px) clamp(24px, 6vw, 40px);
+      border-radius: 22px;
+      background: rgba(250, 247, 238, .60);
+      backdrop-filter: blur(22px) saturate(155%);
+      -webkit-backdrop-filter: blur(22px) saturate(155%);
+      border: 1px solid rgba(255, 255, 255, .40);
+      box-shadow:
+        inset 0 1px 0 rgba(255,255,255,.62),
+        inset 1px 0 0 rgba(255,255,255,.26),
+        0 8px 40px rgba(28, 40, 24, .17);
+    }
+    @supports not (backdrop-filter: blur(4px)) {
+      .panel { background: rgba(250, 247, 238, .93); }
+    }
+    .tag {
+      display: block; font-size: 11.5px; font-weight: 700;
+      letter-spacing: .24em; color: var(--green); margin-bottom: 16px;
+    }
+
+    /* the mirror */
+    .mirror p {
+      font-family: var(--disp); font-weight: 500;
+      font-size: clamp(23px, 6.2vw, 31px); line-height: 1.28;
+      color: var(--green-deep); letter-spacing: -.005em;
+    }
+    .mirror .turn { display: block; margin-top: 16px; color: var(--ink); }
+
+    /* the room */
+    .lede {
+      font-family: var(--disp); font-weight: 500;
+      font-size: clamp(19px, 5vw, 24px); line-height: 1.34; color: var(--green-deep);
+    }
+    .steps { list-style: none; margin-top: 26px; }
+    .steps li {
+      display: flex; gap: 13px; align-items: baseline; padding: 13px 0;
+      font-size: clamp(14.5px, 3.9vw, 16px); line-height: 1.55;
+    }
+    .steps li + li { border-top: 1px dashed rgba(46, 91, 52, .26); }
+    .steps .gg { font-weight: 700; color: var(--green); flex: none; }
+
+    /* the ask */
+    .audit {
+      display: flex; flex-wrap: wrap; gap: 8px 10px; margin-bottom: 26px;
+    }
+    .audit span {
+      font-size: 12.5px; font-weight: 700; letter-spacing: .04em;
+      color: var(--green-deep); background: rgba(46, 91, 52, .11);
+      border: 1px solid rgba(46, 91, 52, .22); border-radius: 999px; padding: 6px 13px;
+    }
+    .ask-head {
+      font-family: var(--disp); font-weight: 600;
+      font-size: clamp(24px, 6.4vw, 32px); line-height: 1.16; color: var(--green-deep);
+    }
+    .ask-sub { margin-top: 9px; margin-bottom: 30px; color: var(--ink-soft); }
+
+    .field { margin-bottom: 24px; }
+    .field label {
+      display: block; font-size: 11.5px; font-weight: 700;
+      letter-spacing: .17em; text-transform: uppercase; margin-bottom: 8px;
+    }
+    .field .hint { text-transform: none; letter-spacing: 0; font-weight: 400; color: var(--ink-soft); }
+    input[type=text], input[type=tel], textarea {
+      width: 100%; font-family: var(--mono); font-size: 16px; color: var(--ink);
+      background: rgba(255,255,255,.34); border: 0;
+      border-bottom: 2px solid rgba(35,39,31,.45);
+      padding: 9px 10px; border-radius: 8px 8px 0 0;
+      transition: border-color .2s ease, background .2s ease;
+    }
+    textarea { resize: vertical; min-height: 86px; line-height: 1.6; }
+    input:focus, textarea:focus { outline: none; border-color: var(--green); background: rgba(255,255,255,.62); }
+    input::placeholder, textarea::placeholder { color: #9c9a8c; }
+
+    .check { display: flex; gap: 13px; align-items: flex-start; cursor: pointer; padding: 9px 0; }
+    .check input { position: absolute; opacity: 0; pointer-events: none; }
+    .box {
+      flex: none; width: 23px; height: 23px; margin-top: 2px;
+      border: 2px solid rgba(35,39,31,.55); border-radius: 7px;
+      background: rgba(255,255,255,.42); display: grid; place-items: center;
+      transition: background .18s ease, border-color .18s ease;
+    }
+    .box svg {
+      width: 14px; height: 14px; stroke: var(--paper); stroke-width: 3.2; fill: none;
+      stroke-linecap: round; stroke-linejoin: round;
+      stroke-dasharray: 22; stroke-dashoffset: 22;
+    }
+    .check input:checked + .box { background: var(--green); border-color: var(--green-deep); }
+    .check input:checked + .box svg { stroke-dashoffset: 0; transition: stroke-dashoffset .3s var(--ease) .05s; }
+    .check input:focus-visible + .box { outline: 3px solid var(--green); outline-offset: 3px; }
+    @media (prefers-reduced-motion: no-preference) {
+      .check input:checked + .box { animation: stampish .4s var(--ease); }
+    }
+    @keyframes stampish { 0% { transform: scale(.8) rotate(-7deg); } 55% { transform: scale(1.11) rotate(3deg); } 100% { transform: none; } }
+
+    .form-foot { margin-top: 28px; }
+    .form-note { display: none; margin-top: 13px; color: #a3402a; font-size: 14px; }
+    .form-note.on { display: block; }
+
+    .sent { display: none; text-align: center; padding: 22px 0 6px; }
+    .sent.on { display: block; }
+    .stamp {
+      display: inline-block; font-weight: 700; font-size: clamp(18px, 5vw, 23px);
+      color: var(--green); border: 3px solid var(--green); border-radius: 12px;
+      padding: 12px 22px; transform: rotate(-3deg);
+    }
+    @media (prefers-reduced-motion: no-preference) {
+      .stamp { animation: stampIn .5s cubic-bezier(.18, 1.4, .4, 1) both; }
+    }
+    @keyframes stampIn { 0% { opacity: 0; transform: rotate(-15deg) scale(1.75); } 100% { opacity: 1; transform: rotate(-3deg) scale(1); } }
+    .sent p { margin-top: 18px; color: var(--ink-soft); }
+
+    /* questions */
+    details { border-bottom: 1px dashed rgba(46, 91, 52, .28); }
+    details:last-of-type { border-bottom: 0; }
+    summary {
+      list-style: none; cursor: pointer; padding: 17px 0; gap: 16px;
+      display: flex; justify-content: space-between; align-items: baseline;
+      font-family: var(--serif); font-weight: 600;
+      font-size: clamp(16.5px, 4.3vw, 19px); line-height: 1.35; color: var(--green-deep);
+    }
+    summary::-webkit-details-marker { display: none; }
+    summary .pm { font-family: var(--mono); font-weight: 700; color: var(--green); flex: none; transition: transform .28s var(--ease); }
+    details[open] summary .pm { transform: rotate(45deg); }
+    .ans { display: grid; grid-template-rows: 0fr; transition: grid-template-rows .32s var(--ease); }
+    details[open] .ans { grid-template-rows: 1fr; }
+    .ans > div { min-height: 0; overflow: hidden; }
+    .ans p { padding: 0 0 19px; color: var(--ink-soft); max-width: 44ch; }
+
+    /* reveal */
+    .rv { opacity: 0; transform: translateY(20px); transition: opacity .65s var(--ease), transform .65s var(--ease); }
+    .rv.on { opacity: 1; transform: none; }
+
+    footer { text-align: center; padding: 6px 22px 46px; }
+    footer p { font-size: 12.5px; color: var(--ink-soft); }
+    footer a { color: var(--green); text-decoration-color: rgba(46,91,52,.4); text-underline-offset: 3px; }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .hero > *, .rv { opacity: 1; transform: none; animation: none; transition: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="backdrop" aria-hidden="true">
+    <div class="backdrop-inner">
+      <img src="/images/smbc/hero.jpg" alt="" fetchpriority="high"
+           onerror="this.style.display='none'">
+      <div class="tv-fx">
+        <div class="tv-glow"></div>
+        <div class="tv-scan"></div>
+      </div>
+    </div>
+  </div>
+
+  <header class="hero">
+    <p class="hero-meta" id="heroMeta">every sunday &middot; 10 am – 1 pm &middot; ahmedabad</p>
+    <p class="hero-cap">Ten invites a week.</p>
+    <a class="cta" href="#apply">[ Request an invite ]</a>
+    <p class="hero-scrolldown">what this is &darr;</p>
+  </header>
+
+  <main>
+
+    <section class="panel mirror rv">
+      <p>
+        Most people don't have anyone to challenge their ideas and push their audacity.
+        <span class="turn">We're building that space.</span>
+      </p>
+    </section>
+
+    <section class="panel rv">
+      <span class="tag">[ WHAT ]</span>
+      <p class="lede">Ten believers in a room working on their most ambitious projects.</p>
+      <ul class="steps">
+        <li><span class="gg">&gt;&gt;</span> Enter with a defined goal</li>
+        <li><span class="gg">&gt;&gt;</span> Focus work hour</li>
+        <li><span class="gg">&gt;&gt;</span> Let other builders break your idea over coffee</li>
+        <li><span class="gg">&gt;&gt;</span> Go back with fresh perspectives and a bunch of people who hold them :)</li>
+      </ul>
+    </section>
+
+    <section class="panel rv" id="apply">
+      <div class="audit">
+        <span id="auditDate">Sunday, 10 – 1</span>
+        <span>Ahmedabad</span>
+        <span>&#8377;449 &middot; coffee's on us</span>
+        <span>Ten invites</span>
+      </div>
+
+      <h2 class="ask-head">Tell us what you're building.</h2>
+      <p class="ask-sub">Ten people get an invite.</p>
+
+      <form id="applyForm" novalidate>
+        <div class="field">
+          <label for="fName">Name</label>
+          <input type="text" id="fName" name="name" autocomplete="name" required>
+        </div>
+        <div class="field">
+          <label for="fPhone">WhatsApp <span class="hint">(your invite lands here)</span></label>
+          <input type="tel" id="fPhone" name="phone" autocomplete="tel" inputmode="tel" required>
+        </div>
+        <div class="field">
+          <label for="fWork">What do you do?</label>
+          <input type="text" id="fWork" name="work" placeholder="founder / writer / filmmaker / student / ..." required>
+        </div>
+        <div class="field">
+          <label for="fWhy">The ambitious project you're stuck with</label>
+          <textarea id="fWhy" name="why" placeholder="Two lines. What is it, where is it stuck?" required></textarea>
+        </div>
+
+        <input type="text" name="website" id="fHp" tabindex="-1" autocomplete="off"
+               style="position:absolute;left:-5000px" aria-hidden="true">
+
+        <label class="check">
+          <input type="checkbox" id="cCity" required>
+          <span class="box"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M2.5 8.5 6 12 13.5 4"/></svg></span>
+          <span>I can be in Ahmedabad on <b id="dateLine">Sunday</b>, 10 AM to 1 PM.</span>
+        </label>
+        <label class="check">
+          <input type="checkbox" id="cFee" required>
+          <span class="box"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M2.5 8.5 6 12 13.5 4"/></svg></span>
+          <span>I know it's &#8377;449 if I get an invite.</span>
+        </label>
+
+        <div class="form-foot">
+          <button class="cta" type="submit" id="sendBtn">[ Send request ]</button>
+          <p class="form-note" id="formNote">Fill everything above, and tick both boxes.</p>
+        </div>
+      </form>
+
+      <div class="sent" id="sentBox" role="status">
+        <span class="stamp">[ REQUEST SENT ]</span>
+        <p>Ten people hear back before Sunday.</p>
+      </div>
+    </section>
+
+    <section class="panel rv">
+      <span class="tag">[ QUESTIONS ]</span>
+
+      <details>
+        <summary>My project isn't that ambitious. Should I still apply? <span class="pm">+</span></summary>
+        <div class="ans"><div><p>The bar is that you're actually building it. Not how big it looks.</p></div></div>
+      </details>
+      <details>
+        <summary>I'm not building an app. Does this count? <span class="pm">+</span></summary>
+        <div class="ans"><div><p>Builders are not just coders. Writers, filmmakers, founders, students. If you're making something, this is for you.</p></div></div>
+      </details>
+      <details>
+        <summary>What actually happens? <span class="pm">+</span></summary>
+        <div class="ans"><div><p>You come in with a goal and work, heads down. Then coffee, where the room takes your idea apart. Nobody's swapping business cards.</p></div></div>
+      </details>
+      <details>
+        <summary>How long, and where? <span class="pm">+</span></summary>
+        <div class="ans"><div><p>10 AM to 1 PM. You get the address with your invite.</p></div></div>
+      </details>
+      <details>
+        <summary>I applied. Then what? <span class="pm">+</span></summary>
+        <div class="ans"><div><p>We read every one. Ten people hear back before Sunday.</p></div></div>
+      </details>
+    </section>
+
+  </main>
+
+  <footer>
+    <p>Ten invites go out every week. If it wasn't you this time, <a href="#apply">ask for the next one</a>.</p>
+  </footer>
+
+  <script>
+    var ENDPOINT = 'https://script.google.com/macros/s/AKfycbyIdrCDzYTx7XQQ5l8ByaFW6FsGuSIJJvwTkN449Fhq20HrZjIYTnZpOWI4qs8-2uP5gw/exec';
+    var $ = function (id) { return document.getElementById(id); };
+
+    /* ── upcoming Sunday; today counts if it is Sunday ── */
+    var now = new Date();
+    var sunday = new Date(now);
+    sunday.setDate(now.getDate() + ((7 - now.getDay()) % 7));
+    var MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+    var dateShort = MONTHS[sunday.getMonth()] + ' ' + sunday.getDate();
+
+    /* local ISO, not toISOString() — UTC conversion rolls IST back a day */
+    var pad = function (n) { return (n < 10 ? '0' : '') + n; };
+    var sundayISO = sunday.getFullYear() + '-' + pad(sunday.getMonth() + 1) + '-' + pad(sunday.getDate());
+
+    $('dateLine').textContent  = 'Sunday, ' + dateShort;
+    $('auditDate').textContent = dateShort + ', 10 – 1';
+
+    /* ── scrim tracks scroll so glass keeps contrast past the hero ── */
+    var ticking = false;
+    function paintScrim() {
+      var t = Math.min(1, window.scrollY / (window.innerHeight * 0.8));
+      document.documentElement.style.setProperty('--scrim', t.toFixed(3));
+      ticking = false;
+    }
+    window.addEventListener('scroll', function () {
+      if (!ticking) { ticking = true; requestAnimationFrame(paintScrim); }
+    }, { passive: true });
+    paintScrim();
+
+    /* ── reveal ── */
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) { e.target.classList.add('on'); io.unobserve(e.target); }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
+    document.querySelectorAll('.rv').forEach(function (el) { io.observe(el); });
+
+    /* ── submit ── */
+    $('applyForm').addEventListener('submit', function (ev) {
+      ev.preventDefault();
+      var name  = $('fName').value.trim(),
+          phone = $('fPhone').value.trim(),
+          work  = $('fWork').value.trim(),
+          why   = $('fWhy').value.trim();
+
+      if (!name || !phone || !work || !why || !$('cCity').checked || !$('cFee').checked) {
+        $('formNote').classList.add('on');
+        return;
+      }
+      $('formNote').classList.remove('on');
+      if ($('fHp').value) return;                    /* bot */
+
+      $('sendBtn').disabled = true;
+      $('sendBtn').textContent = '[ Sending... ]';
+
+      var data = {
+        form: 'smbc',
+        name: name, phone: phone, work: work,
+        why: 'smbc · ' + why,
+        city: 'Ahmedabad',
+        date: sundayISO,
+        fee_ok: 'yes'
+      };
+
+      fetch(ENDPOINT, { method: 'POST', mode: 'no-cors', body: new URLSearchParams(data) })
+        .catch(function () { /* opaque by design; the row still lands */ })
+        .finally(function () {
+          $('applyForm').style.display = 'none';
+          $('sentBox').classList.add('on');
+          $('sentBox').scrollIntoView({ block: 'center', behavior: 'smooth' });
+        });
+    });
+  </script>
+</body>
+</html>
