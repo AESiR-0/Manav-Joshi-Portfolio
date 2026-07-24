@@ -16,6 +16,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="preload" as="image" href="/images/smbc/hero.jpg" fetchpriority="high">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600&family=Space+Mono:wght@400;700&display=swap">
+  <script>document.documentElement.className += ' js';</script>
   <style>
     :root {
       --cream:      #f3efe4;
@@ -50,16 +51,16 @@
     .backdrop { position: fixed; inset: 0; z-index: -2; overflow: hidden; background: var(--cream); }
     .backdrop-inner {
       position: absolute; top: 50%; left: 50%;
-      transform: translate(-50%, -50%);
-      /* replicate object-fit:cover, but in a percentage space we can position inside */
-      width: max(100vw, calc(100vh * 0.845));
-      aspect-ratio: 1200 / 1420;
+      /* cover, but in a percentage space we can position inside.
+         the 0.92 factor keeps the image taller than the viewport so there is
+         always slack to shift it without exposing an edge. */
+      width: max(100vw, calc(100vh * 0.92));
+      aspect-ratio: 1100 / 1971;
+      /* the TV sits at 58.3% of the image; this parks it at 38% of the
+         viewport on every screen size, leaving the lower half for type. */
+      transform: translate(-50%, calc(-58.3% - 12vh));
     }
     .backdrop-inner img { width: 100%; height: 100%; object-fit: fill; display: block; }
-    /* on wide screens shift down so the TV stays in frame */
-    @media (min-aspect-ratio: 1/1) {
-      .backdrop-inner { transform: translate(-50%, -40%); }
-    }
     /* scrim: transparent over the hero, tints in as you scroll so glass reads */
     .backdrop::after {
       content: ''; position: absolute; inset: 0;
@@ -70,7 +71,7 @@
     /* ══ the TV is on ═════════════════════════════════ */
     /* coordinates are % of the image box, so they survive every crop */
     .tv-fx {
-      position: absolute; left: 35.3%; top: 28.6%; width: 32.2%; height: 17.6%;
+      position: absolute; left: 38%; top: 53.5%; width: 24.5%; height: 9.6%;
       pointer-events: none;
     }
     .tv-scan {
@@ -102,9 +103,22 @@
 
     /* ══ hero ═════════════════════════════════════════ */
     .hero {
+      position: relative;
       min-height: 100svh; display: flex; flex-direction: column;
       justify-content: flex-end; align-items: center; text-align: center;
       padding: 0 22px clamp(38px, 8vh, 74px);
+    }
+    /* contrast layer: cream rises from the floor so type sits on solid ground
+       while the TV and the wall above it stay untouched. */
+    .hero::before {
+      content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 62%;
+      pointer-events: none; z-index: -1;
+      background: linear-gradient(to top,
+        var(--cream) 0%,
+        rgba(243,239,228,.97) 22%,
+        rgba(243,239,228,.80) 42%,
+        rgba(243,239,228,.34) 70%,
+        rgba(243,239,228,0) 100%);
     }
     .hero-meta {
       font-size: clamp(11.5px, 3.1vw, 13px); font-weight: 700;
@@ -116,11 +130,13 @@
     }
     .hero .cta { margin-top: 24px; }
     .hero-scrolldown {
-      margin-top: 30px; font-size: 11px; letter-spacing: .22em;
+      display: inline-block; margin-top: 30px; font-size: 11px; letter-spacing: .22em;
       text-transform: uppercase; color: var(--ink-soft); opacity: .62;
+      text-decoration: none; transition: opacity .25s ease, color .25s ease;
     }
+    .hero-scrolldown:hover { opacity: 1; color: var(--green); }
     @media (prefers-reduced-motion: no-preference) {
-      .hero > * { opacity: 0; transform: translateY(15px); animation: rise .75s var(--ease) forwards; }
+      .js .hero > * { opacity: 0; transform: translateY(15px); animation: rise .75s var(--ease) forwards; }
       .hero > :nth-child(1) { animation-delay: .10s; }
       .hero > :nth-child(2) { animation-delay: .22s; }
       .hero > :nth-child(3) { animation-delay: .36s; }
@@ -141,6 +157,15 @@
     .cta:hover  { background: var(--green-deep); transform: translateY(-2px); box-shadow: 0 6px 0 var(--green-deep); }
     .cta:active { transform: translateY(4px); box-shadow: 0 0 0 var(--green-deep); }
     .cta[disabled] { opacity: .6; pointer-events: none; }
+    /* a light sweeps across the button on hover */
+    .cta { position: relative; overflow: hidden; }
+    .cta::after {
+      content: ''; position: absolute; top: 0; left: -70%; width: 45%; height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,.30), transparent);
+      transform: skewX(-18deg); transition: left .6s var(--ease);
+    }
+    .cta:hover::after { left: 130%; }
+    @media (prefers-reduced-motion: reduce) { .cta::after { display: none; } }
 
     /* ══ glass panels ═════════════════════════════════ */
     main { padding: 0 clamp(14px, 4vw, 24px) 40px; }
@@ -159,6 +184,19 @@
     }
     @supports not (backdrop-filter: blur(4px)) {
       .panel { background: rgba(250, 247, 238, .93); }
+    }
+    /* glass lifts a little under the cursor — desktop only, and never the
+       form panel, where a moving surface while typing is just annoying */
+    @media (hover: hover) and (min-width: 760px) {
+      .panel { transition: transform .45s var(--ease), box-shadow .45s var(--ease), background .45s ease; }
+      .panel:not(#apply):hover {
+        transform: translateY(-3px);
+        background: rgba(250, 247, 238, .66);
+        box-shadow:
+          inset 0 1px 0 rgba(255,255,255,.75),
+          inset 1px 0 0 rgba(255,255,255,.32),
+          0 16px 52px rgba(28, 40, 24, .22);
+      }
     }
     .tag {
       display: block; font-size: 11.5px; font-weight: 700;
@@ -185,6 +223,17 @@
     }
     .steps li + li { border-top: 1px dashed rgba(46, 91, 52, .26); }
     .steps .gg { font-weight: 700; color: var(--green); flex: none; }
+    /* the chain arrives one link at a time, arrow first */
+    @media (prefers-reduced-motion: no-preference) {
+      .js .steps li {
+        opacity: 0; transform: translateX(-12px);
+        transition: opacity .55s var(--ease), transform .55s var(--ease);
+        transition-delay: calc(var(--i) * 110ms + 180ms);
+      }
+      .js .panel.on .steps li { opacity: 1; transform: none; }
+      .steps .gg { transition: transform .3s var(--ease); }
+      .steps li:hover .gg { transform: translateX(4px); }
+    }
 
     /* the ask */
     .audit {
@@ -201,11 +250,20 @@
     }
     .ask-sub { margin-top: 9px; margin-bottom: 30px; color: var(--ink-soft); }
 
-    .field { margin-bottom: 24px; }
+    .field { margin-bottom: 24px; position: relative; }
+    /* a green rule draws itself under the field you're in */
+    .field::after {
+      content: ''; position: absolute; left: 0; bottom: 0; height: 2px; width: 100%;
+      background: var(--green); transform: scaleX(0); transform-origin: left;
+      transition: transform .38s var(--ease);
+    }
+    .field:focus-within::after { transform: scaleX(1); }
     .field label {
       display: block; font-size: 11.5px; font-weight: 700;
       letter-spacing: .17em; text-transform: uppercase; margin-bottom: 8px;
+      transition: color .25s ease;
     }
+    .field:focus-within label { color: var(--green); }
     .field .hint { text-transform: none; letter-spacing: 0; font-weight: 400; color: var(--ink-soft); }
     input[type=text], input[type=tel], textarea {
       width: 100%; font-family: var(--mono); font-size: 16px; color: var(--ink);
@@ -271,11 +329,20 @@
     .ans { display: grid; grid-template-rows: 0fr; transition: grid-template-rows .32s var(--ease); }
     details[open] .ans { grid-template-rows: 1fr; }
     .ans > div { min-height: 0; overflow: hidden; }
-    .ans p { padding: 0 0 19px; color: var(--ink-soft); max-width: 44ch; }
+    .ans p {
+      padding: 0 0 19px; color: var(--ink-soft); max-width: 44ch;
+      opacity: 0; transform: translateY(-4px);
+      transition: opacity .3s ease .08s, transform .3s var(--ease) .08s;
+    }
+    details[open] .ans p { opacity: 1; transform: none; }
+    summary { transition: color .22s ease; }
+    summary:hover { color: var(--green); }
+    summary:hover .pm { transform: scale(1.18); }
+    details[open] summary:hover .pm { transform: rotate(45deg) scale(1.18); }
 
-    /* reveal */
-    .rv { opacity: 0; transform: translateY(20px); transition: opacity .65s var(--ease), transform .65s var(--ease); }
-    .rv.on { opacity: 1; transform: none; }
+    /* reveal — gated on .js so a script failure can never leave the page blank */
+    .js .rv { opacity: 0; transform: translateY(20px); transition: opacity .65s var(--ease), transform .65s var(--ease); }
+    .js .rv.on { opacity: 1; transform: none; }
 
     footer { text-align: center; padding: 6px 22px 46px; }
     footer p { font-size: 12.5px; color: var(--ink-soft); }
@@ -304,7 +371,7 @@
     <p class="hero-meta" id="heroMeta">every sunday &middot; 10 am – 1 pm &middot; ahmedabad</p>
     <p class="hero-cap">Ten invites a week.</p>
     <a class="cta" href="#apply">[ Request an invite ]</a>
-    <p class="hero-scrolldown">what this is &darr;</p>
+    <a class="hero-scrolldown" href="#what">what this is &darr;</a>
   </header>
 
   <main>
@@ -316,14 +383,14 @@
       </p>
     </section>
 
-    <section class="panel rv">
+    <section class="panel rv" id="what">
       <span class="tag">[ WHAT ]</span>
       <p class="lede">Ten believers in a room working on their most ambitious projects.</p>
       <ul class="steps">
-        <li><span class="gg">&gt;&gt;</span> Enter with a defined goal</li>
-        <li><span class="gg">&gt;&gt;</span> Focus work hour</li>
-        <li><span class="gg">&gt;&gt;</span> Let other builders break your idea over coffee</li>
-        <li><span class="gg">&gt;&gt;</span> Go back with fresh perspectives and a bunch of people who hold them :)</li>
+        <li style="--i:0"><span class="gg">&gt;&gt;</span> Enter with a defined goal</li>
+        <li style="--i:1"><span class="gg">&gt;&gt;</span> Focus work hour</li>
+        <li style="--i:2"><span class="gg">&gt;&gt;</span> Let other builders break your idea over coffee</li>
+        <li style="--i:3"><span class="gg">&gt;&gt;</span> Go back with fresh perspectives and a bunch of people who hold them :)</li>
       </ul>
     </section>
 
@@ -443,13 +510,25 @@
     }, { passive: true });
     paintScrim();
 
-    /* ── reveal ── */
-    var io = new IntersectionObserver(function (entries) {
-      entries.forEach(function (e) {
-        if (e.isIntersecting) { e.target.classList.add('on'); io.unobserve(e.target); }
-      });
-    }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
-    document.querySelectorAll('.rv').forEach(function (el) { io.observe(el); });
+    /* ── reveal (never let a failure here hide the page) ── */
+    var reveal = document.querySelectorAll('.rv');
+    function revealAll() { Array.prototype.forEach.call(reveal, function (el) { el.classList.add('on'); }); }
+    if (typeof IntersectionObserver === 'function') {
+      try {
+        var io = new IntersectionObserver(function (entries) {
+          entries.forEach(function (e) {
+            if (e.isIntersecting) { e.target.classList.add('on'); io.unobserve(e.target); }
+          });
+        }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
+        Array.prototype.forEach.call(reveal, function (el) { io.observe(el); });
+        /* last resort: if nothing has revealed after 4s, show everything */
+        setTimeout(function () {
+          if (!document.querySelector('.rv.on')) { revealAll(); }
+        }, 4000);
+      } catch (err) { revealAll(); }
+    } else {
+      revealAll();
+    }
 
     /* ── submit ── */
     $('applyForm').addEventListener('submit', function (ev) {
