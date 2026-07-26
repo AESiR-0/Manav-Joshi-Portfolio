@@ -1,0 +1,383 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Sunday Morning Build Club — debrief</title>
+  <meta name="description" content="The room's done for the week. Tell us what worked. 90 seconds.">
+  <meta name="theme-color" content="#f3efe4">
+  <meta name="robots" content="noindex">
+  <link rel="icon" href="/favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600&family=Space+Mono:wght@400;700&display=swap">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    [hidden] { display: none !important; }
+    :root {
+      --cream: #f3efe4; --paper: #faf7ee;
+      --green: #2e5b34; --green-deep: #1f4024;
+      --ink: #23271f; --ink-soft: #4e5449; --ink-faint: rgba(35,39,31,.5);
+      --rule: rgba(35,39,31,.22); --placeholder: #a09d8e;
+      --error: #b4562f;
+      --mono: 'Space Mono', ui-monospace, monospace;
+      --disp: 'Fredoka', system-ui, sans-serif;
+      --serif: 'Fraunces', Georgia, serif;
+      --ease: cubic-bezier(.22, 1, .36, 1);
+    }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--cream); color: var(--ink); font-family: var(--mono);
+      font-size: 15px; line-height: 1.62; -webkit-font-smoothing: antialiased;
+    }
+    ::selection { background: var(--green); color: var(--cream); }
+    :focus-visible { outline: 3px solid var(--green); outline-offset: 3px; border-radius: 3px; }
+
+    .scrollbar { position: fixed; top: 0; left: 0; height: 3px; width: 0; z-index: 70; background: var(--green); pointer-events: none; transition: width .08s linear; }
+
+    .sheet {
+      position: relative; max-width: 620px; width: calc(100% - clamp(16px,6vw,64px));
+      margin: clamp(28px,6vw,64px) auto; background: var(--paper);
+      border-radius: 24px; border: 1px solid rgba(255,255,255,.5);
+      box-shadow: 0 1px 0 rgba(255,255,255,.6) inset, 0 20px 60px -18px rgba(35,39,31,.28);
+      overflow: hidden;
+    }
+    /* a quiet echo of the TV glow from the main page — no photo needed to earn it here */
+    .sheet::before {
+      content: ''; position: absolute; top: -120px; right: -80px; width: 280px; height: 280px;
+      background: radial-gradient(circle, rgba(110,227,154,.22), transparent 70%);
+      pointer-events: none;
+    }
+    .doc { position: relative; padding: clamp(30px,6vw,52px) clamp(24px,6vw,48px) clamp(40px,7vw,56px); }
+
+    .wordmark { font-family: var(--disp); font-weight: 700; font-size: 15px; color: var(--green-deep); margin-bottom: clamp(22px,5vw,32px); }
+    .wordmark a { color: inherit; text-decoration: none; }
+
+    .eyebrow { font-size: 11.5px; font-weight: 700; letter-spacing: .2em; text-transform: uppercase; color: var(--green); margin-bottom: 10px; }
+    h1 { font-family: var(--disp); font-weight: 600; font-size: clamp(1.7rem,7vw,2.3rem); line-height: 1.08; color: var(--green-deep); letter-spacing: -.01em; }
+    .intro { color: var(--ink-soft); margin: 14px 0 4px; max-width: 46ch; }
+    .intro b { color: var(--green-deep); }
+
+    .sec-head {
+      display: block; font-size: 11.5px; font-weight: 700; letter-spacing: .22em; text-transform: uppercase;
+      color: var(--green); padding-bottom: 11px; margin: clamp(32px,6vw,46px) 0 20px;
+      border-bottom: 1px solid var(--rule);
+    }
+    .scale-hint { font-size: 12.5px; color: var(--ink-faint); margin-bottom: 18px; }
+
+    .rate { padding: 13px 0; border-bottom: 1px dashed var(--rule); display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px 16px; }
+    .rate:first-of-type { border-top: 1px dashed var(--rule); }
+    .rate-name { font-size: 15px; color: var(--ink); }
+    .stars { display: flex; gap: 3px; }
+    .star {
+      width: clamp(32px,8.5vw,40px); height: clamp(32px,8.5vw,40px); border: none; background: transparent;
+      color: rgba(35,39,31,.22); font-size: clamp(20px,6vw,26px); line-height: 1; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: transform .12s var(--ease), color .15s ease;
+    }
+    .star:hover { color: rgba(46,91,52,.55); }
+    .star:active { transform: scale(.8); }
+    .star.on { color: var(--green); }
+    @media (prefers-reduced-motion: no-preference) {
+      .star.on { animation: pop .3s var(--ease); }
+    }
+    @keyframes pop { 0% { transform: scale(.7) rotate(-8deg); } 60% { transform: scale(1.18) rotate(4deg); } 100% { transform: none; } }
+    .rate-err .stars .star { color: var(--error); }
+
+    .field { margin: 22px 0; }
+    .field label { display: block; font-size: 13.5px; color: var(--ink); margin-bottom: 9px; }
+    .field label small { display: block; color: var(--ink-faint); font-size: 12.5px; margin-top: 3px; }
+    .field input[type=text], .field input[type=url], .field input[type=tel] {
+      width: 100%; font-family: var(--mono); font-size: 16px; color: var(--ink);
+      background: rgba(255,255,255,.55); border: 1.5px solid var(--rule); border-radius: 12px;
+      padding: 12px 14px; transition: border-color .2s ease, background .2s ease;
+    }
+    .field input:focus { outline: none; border-color: var(--green); background: rgba(255,255,255,.85); }
+    .field input::placeholder { color: var(--placeholder); }
+
+    .phone-row { display: flex; gap: 10px; }
+    .phone-row .prefix {
+      display: flex; align-items: center; font-size: 16px; color: var(--ink-soft);
+      border: 1.5px solid var(--rule); border-radius: 12px; padding: 0 13px; background: rgba(255,255,255,.4);
+    }
+    .phone-row input { flex: 1; }
+
+    .chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 2px; }
+    .chip { position: relative; }
+    .chip input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+    .chip span {
+      display: block; font-family: var(--mono); font-size: 13.5px; color: var(--ink-soft);
+      background: rgba(255,255,255,.4); border: 1.5px solid var(--rule); border-radius: 999px;
+      padding: 9px 14px; cursor: pointer; user-select: none;
+      transition: background .16s ease, color .16s ease, border-color .16s ease, transform .16s var(--ease);
+    }
+    .chip span:hover { border-color: var(--green); color: var(--green); }
+    .chip span:active { transform: translateY(1px) scale(.97); }
+    .chip input:checked + span { color: var(--paper); background: var(--green); border-color: var(--green-deep); }
+    @media (prefers-reduced-motion: no-preference) { .chip input:checked + span { animation: pick .3s var(--ease); } }
+    @keyframes pick { 0% { transform: scale(.9); } 55% { transform: scale(1.07); } 100% { transform: none; } }
+    .chip input:focus-visible + span { outline: 3px solid var(--green); outline-offset: 2px; }
+    .chip-other { margin-top: 12px; }
+
+    .field-err { font-size: 13.5px; color: var(--error); margin: -8px 0 14px; }
+
+    .btn {
+      display: block; width: 100%; font-family: var(--mono); font-size: 15.5px; font-weight: 700;
+      text-align: center; color: var(--paper); background: var(--green); border: none;
+      border-radius: 14px; padding: 16px 24px; cursor: pointer;
+      box-shadow: 0 4px 0 var(--green-deep); transition: transform .1s var(--ease), box-shadow .1s var(--ease);
+      margin-top: 10px; position: relative; overflow: hidden;
+    }
+    .btn::after {
+      content: ''; position: absolute; top: 0; left: -70%; width: 45%; height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,.28), transparent);
+      transform: skewX(-18deg); transition: left .6s var(--ease);
+    }
+    .btn:hover::after { left: 130%; }
+    .btn:active { transform: translateY(4px); box-shadow: 0 0 0 var(--green-deep); }
+    @media (prefers-reduced-motion: reduce) { .btn:active { transform: none; box-shadow: 0 4px 0 var(--green-deep); } .btn::after { display: none; } }
+    .micro { font-size: 12.5px; color: var(--ink-faint); margin-top: 14px; text-align: center; }
+
+    #thanks { text-align: left; }
+    #thanks .stamp {
+      display: inline-block; font-family: var(--mono); font-weight: 700; font-size: clamp(16px,4.6vw,20px);
+      color: var(--green); border: 3px solid var(--green); border-radius: 12px; padding: 10px 18px;
+      transform: rotate(-3deg); margin-bottom: 18px;
+    }
+    @media (prefers-reduced-motion: no-preference) { #thanks .stamp { animation: stampIn .5s cubic-bezier(.18,1.4,.4,1) both; } }
+    @keyframes stampIn { 0% { opacity: 0; transform: rotate(-15deg) scale(1.7); } 100% { opacity: 1; transform: rotate(-3deg) scale(1); } }
+    #thanks p { color: var(--ink-soft); max-width: 44ch; }
+    #thanks p + p { margin-top: 8px; }
+
+    footer { max-width: 620px; margin: 0 auto; padding: 0 clamp(24px,6vw,48px) clamp(40px,8vw,64px); }
+    footer a { color: var(--green); text-decoration-color: rgba(46,91,52,.4); text-underline-offset: 3px; }
+    footer p { font-size: 12px; color: var(--ink-faint); margin-top: 6px; }
+    .card-note { display: block; font-size: 14px; color: var(--ink-soft); margin-top: 16px; }
+  </style>
+</head>
+<body>
+
+<div class="scrollbar" id="scrollbar" aria-hidden="true"></div>
+
+<div class="sheet">
+  <div class="doc">
+    <p class="wordmark"><a href="/smbc/">Sunday Morning Build Club</a></p>
+
+    <p class="eyebrow" id="eyebrow">debrief</p>
+    <h1>How was your Sunday?</h1>
+    <p class="intro">The room's done for the week. Tell us what worked. <b>Honest beats nice.</b> Takes 90 seconds.</p>
+
+    <form id="fbForm" novalidate>
+
+      <p class="sec-head">the readings</p>
+      <p class="scale-hint">Tap 1 (meh) to 5 (loved it).</p>
+      <div id="ratings"></div>
+
+      <p class="sec-head">field notes</p>
+
+      <div class="field">
+        <label>What did you leave with?</label>
+        <div class="chips" id="leftChips">
+          <label class="chip"><input type="checkbox" value="a tool or prototype"><span>a tool or prototype</span></label>
+          <label class="chip"><input type="checkbox" value="real progress on my work"><span>real progress on my work</span></label>
+          <label class="chip"><input type="checkbox" value="a relationship worth keeping"><span>a relationship worth keeping</span></label>
+          <label class="chip"><input type="checkbox" value="honestly, none of that"><span>honestly, none of that</span></label>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>What worked best?</label>
+        <div class="chips" id="bestChips">
+          <label class="chip"><input type="checkbox" value="the goal-setting"><span>the goal-setting</span></label>
+          <label class="chip"><input type="checkbox" value="the focus hour"><span>the focus hour</span></label>
+          <label class="chip"><input type="checkbox" value="the coffee round"><span>the coffee round</span></label>
+          <label class="chip"><input type="checkbox" value="the room"><span>the room</span></label>
+          <label class="chip"><input type="checkbox" value="__other" id="bestOtherToggle"><span>something else</span></label>
+        </div>
+        <input class="chip-other" id="bestOther" type="text" placeholder="say it your way" hidden>
+      </div>
+
+      <div class="field">
+        <label>What could be better?</label>
+        <div class="chips" id="betterChips">
+          <label class="chip"><input type="checkbox" value="the goal-setting"><span>the goal-setting</span></label>
+          <label class="chip"><input type="checkbox" value="the focus hour"><span>the focus hour</span></label>
+          <label class="chip"><input type="checkbox" value="the coffee round"><span>the coffee round</span></label>
+          <label class="chip"><input type="checkbox" value="the room"><span>the room</span></label>
+          <label class="chip"><input type="checkbox" value="__other" id="betterOtherToggle"><span>something else</span></label>
+        </div>
+        <input class="chip-other" id="betterOther" type="text" placeholder="say it your way" hidden>
+      </div>
+
+      <div class="field">
+        <label for="link">link to what you built <small>optional</small></label>
+        <input id="link" type="url" inputmode="url" placeholder="https://…" autocomplete="off">
+      </div>
+
+      <div class="field">
+        <label for="oneline">one line to sum up your Sunday</label>
+        <input id="oneline" type="text" autocomplete="off">
+      </div>
+
+      <p class="sec-head">sign off</p>
+
+      <div class="field">
+        <label for="phone">WhatsApp number
+          <small>so we can send you photos from the room</small>
+        </label>
+        <div class="phone-row">
+          <span class="prefix">+91</span>
+          <input id="phone" type="tel" inputmode="numeric" maxlength="10" autocomplete="tel-national">
+        </div>
+      </div>
+
+      <p class="field-err" id="err" role="alert" hidden></p>
+      <button type="submit" class="btn">[ Send it ]</button>
+      <p class="micro">No sugarcoating. That's how the next Sunday gets better.</p>
+
+      <noscript><span class="card-note">This form needs JavaScript. WhatsApp your feedback to <a href="https://wa.me/+919925978977">+91 99259 78977</a> instead.</span></noscript>
+    </form>
+
+    <div id="thanks" hidden tabindex="-1">
+      <span class="stamp">[ FILED ]</span>
+      <p>Thanks for being honest.</p>
+      <p>The honest bits are exactly how the next room gets better. See you Sunday.</p>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <p><a href="/smbc/">&larr; back to Sunday Morning Build Club</a></p>
+</footer>
+
+<script>
+const SHEET_ENDPOINT = 'https://script.google.com/macros/s/AKfycbyIdrCDzYTx7XQQ5l8ByaFW6FsGuSIJJvwTkN449Fhq20HrZjIYTnZpOWI4qs8-2uP5gw/exec';
+const $ = id => document.getElementById(id);
+
+/* scroll progress */
+addEventListener('scroll', () => {
+  const h = document.documentElement.scrollHeight - innerHeight;
+  $('scrollbar').style.width = (h > 0 ? Math.min(100, scrollY / h * 100) : 0) + '%';
+}, { passive: true });
+
+/* ── the edition this debrief is for: most recent Sunday, including today ── */
+const now = new Date();
+const lastSunday = new Date(now);
+lastSunday.setDate(now.getDate() - now.getDay());
+const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+const pad = n => (n < 10 ? '0' : '') + n;
+const editionISO = lastSunday.getFullYear() + '-' + pad(lastSunday.getMonth() + 1) + '-' + pad(lastSunday.getDate());
+$('eyebrow').textContent = 'debrief · ' + MONTHS[lastSunday.getMonth()] + ' ' + lastSunday.getDate();
+
+/* ── the 5 rating rows ── */
+const PARAMS = [
+  { k: 'goal',   name: 'the goal-setting' },
+  { k: 'focus',  name: 'the focus hour' },
+  { k: 'coffee', name: 'the coffee round' },
+  { k: 'room',   name: 'the room' },
+  { k: 'again',  name: 'would you come back?' },
+];
+const ratings = {};
+const ratingsWrap = $('ratings');
+PARAMS.forEach(p => {
+  const row = document.createElement('div');
+  row.className = 'rate'; row.dataset.k = p.k;
+  const lab = document.createElement('span');
+  lab.className = 'rate-name'; lab.textContent = p.name;
+  const stars = document.createElement('div');
+  stars.className = 'stars'; stars.setAttribute('role', 'radiogroup'); stars.setAttribute('aria-label', 'rate ' + p.name);
+  for (let v = 1; v <= 5; v++) {
+    const b = document.createElement('button');
+    b.type = 'button'; b.className = 'star'; b.dataset.v = v; b.textContent = '★';
+    b.setAttribute('role', 'radio'); b.setAttribute('aria-label', v + ' of 5'); b.setAttribute('aria-checked', 'false');
+    b.addEventListener('click', () => setRating(p.k, v));
+    stars.appendChild(b);
+  }
+  row.appendChild(lab); row.appendChild(stars);
+  ratingsWrap.appendChild(row);
+});
+function setRating(k, v) {
+  ratings[k] = v;
+  const row = ratingsWrap.querySelector('.rate[data-k="' + k + '"]');
+  row.classList.remove('rate-err');
+  row.querySelectorAll('.star').forEach((d, i) => {
+    const on = (i + 1) <= v;
+    d.classList.toggle('on', on);
+    d.setAttribute('aria-checked', (i + 1) === v ? 'true' : 'false');
+  });
+}
+
+/* ── chip groups: "something else" reveals a field ── */
+function wireChipOther(toggleId, otherId) {
+  const toggle = $(toggleId), other = $(otherId);
+  if (!toggle) return;
+  toggle.addEventListener('change', () => {
+    other.hidden = !toggle.checked;
+    if (toggle.checked) other.focus(); else other.value = '';
+  });
+}
+wireChipOther('bestOtherToggle', 'bestOther');
+wireChipOther('betterOtherToggle', 'betterOther');
+function collectChips(chipsId, otherToggleId, otherId) {
+  const picked = [...document.querySelectorAll('#' + chipsId + ' input:checked')]
+    .map(i => i.value).filter(v => v !== '__other');
+  if (otherToggleId) {
+    const other = $(otherId).value.trim();
+    if ($(otherToggleId).checked && other) picked.push(other);
+  }
+  return picked.join(', ');
+}
+
+/* ── submit ── */
+function postRow(data) {
+  if (!SHEET_ENDPOINT || SHEET_ENDPOINT.startsWith('PASTE')) { console.warn('SHEET_ENDPOINT not set:', JSON.stringify(data)); return; }
+  fetch(SHEET_ENDPOINT, { method: 'POST', mode: 'no-cors', body: new URLSearchParams(data) }).catch(() => {});
+}
+
+$('fbForm').addEventListener('submit', e => {
+  e.preventDefault();
+  const err = $('err');
+  const missing = PARAMS.filter(p => !ratings[p.k]);
+  if (missing.length) {
+    missing.forEach(p => ratingsWrap.querySelector('.rate[data-k="' + p.k + '"]').classList.add('rate-err'));
+    err.textContent = 'Rate all five first — one tap each, that’s it.'; err.hidden = false;
+    ratingsWrap.querySelector('.rate.rate-err').scrollIntoView({ behavior: 'smooth', block: 'center' });
+    return;
+  }
+  const digits = $('phone').value.replace(/\D/g, '');
+  if (digits.length !== 10) { err.textContent = 'We need your 10-digit number to send your photos.'; err.hidden = false; $('phone').focus(); return; }
+  err.hidden = true;
+
+  const left   = collectChips('leftChips', null, null);
+  const best   = collectChips('bestChips', 'bestOtherToggle', 'bestOther');
+  const better = collectChips('betterChips', 'betterOtherToggle', 'betterOther');
+  const oneline = $('oneline').value.trim();
+  const link = $('link').value.trim();
+
+  /* readable bundle for the interim, before the feedback tab is routed —
+     mirrors the "smbc · " fallback used on the invite form */
+  const bundle = 'smbc-feedback · edition ' + editionISO
+    + ' | goal ' + ratings.goal + '/5, focus ' + ratings.focus + '/5, coffee ' + ratings.coffee + '/5, room ' + ratings.room + '/5, again ' + ratings.again + '/5'
+    + (left ? ' | left with: ' + left : '')
+    + (best ? ' | best: ' + best : '')
+    + (better ? ' | better: ' + better : '')
+    + (oneline ? ' | "' + oneline + '"' : '')
+    + (link ? ' | ' + link : '');
+
+  postRow({
+    form: 'smbc-feedback',
+    edition: editionISO,
+    phone: '+91' + digits,
+    goal: ratings.goal, focus: ratings.focus, coffee: ratings.coffee, room: ratings.room, again: ratings.again,
+    left_with: left, best, better, oneline, link,
+    why: bundle,
+  });
+
+  $('fbForm').hidden = true;
+  const t = $('thanks'); t.hidden = false; t.focus();
+  t.scrollIntoView({ behavior: 'smooth', block: 'center' });
+});
+</script>
+
+</body>
+</html>
