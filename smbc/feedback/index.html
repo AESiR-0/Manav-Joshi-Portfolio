@@ -51,7 +51,10 @@
       position: absolute; top: 50%; left: 50%;
       width: max(100vw, calc(100vh * 0.92));
       aspect-ratio: 1100 / 1971;
-      transform: translate(-50%, calc(-58.3% - 12vh));
+      /* pushed higher than the invite page's hero crop: this page's intro is
+         much shorter, so the TV needs to sit nearer the top of frame to leave
+         the intro's text zone clear */
+      transform: translate(-50%, calc(-58.3% - 34vh));
     }
     .backdrop-inner img { width: 100%; height: 100%; object-fit: fill; display: block; }
     .backdrop::after {
@@ -83,16 +86,18 @@
 
     /* ══ intro — a short hero, not full height: this page has one job ══ */
     .intro {
-      position: relative; min-height: 100svh; display: flex; flex-direction: column;
+      position: relative; min-height: 52svh; display: flex; flex-direction: column;
       justify-content: flex-end; align-items: center; text-align: center;
-      padding: 0 22px clamp(38px, 8vh, 74px);
+      padding: 0 22px clamp(26px, 5vh, 42px);
     }
+    /* solid the whole way up, not a long fade — the TV is pushed further off
+       the top of frame below (see .backdrop-inner), so a short opaque band
+       is enough to clear it without the 100vh runway the invite page uses */
     .intro::before {
-      content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 62%;
+      content: ''; position: absolute; left: 0; right: 0; bottom: 0; top: 0;
       pointer-events: none; z-index: -1;
       background: linear-gradient(to top,
-        var(--cream) 0%, rgba(243,239,228,.97) 22%, rgba(243,239,228,.80) 42%,
-        rgba(243,239,228,.34) 70%, rgba(243,239,228,0) 100%);
+        var(--cream) 0%, var(--cream) 58%, rgba(243,239,228,.75) 76%, rgba(243,239,228,0) 100%);
     }
     .wordmark {
       font-size: 11px; font-weight: 700; letter-spacing: .2em; text-transform: uppercase;
@@ -116,10 +121,10 @@
     @keyframes rise { to { opacity: 1; transform: none; } }
 
     /* ══ glass panels — identical component to the invite page ══ */
-    main { padding: 0 clamp(14px, 4vw, 24px) 40px; }
+    main { padding: 0 clamp(14px, 4vw, 24px) 24px; }
     .panel {
-      max-width: var(--panel-max); margin: 0 auto clamp(16px, 4vw, 26px);
-      padding: clamp(28px, 6.5vw, 42px) clamp(22px, 5.5vw, 36px);
+      max-width: var(--panel-max); margin: 0 auto clamp(12px, 3vw, 18px);
+      padding: clamp(20px, 4.5vw, 30px) clamp(20px, 5vw, 30px);
       border-radius: 22px;
       background: rgba(250, 247, 238, .60);
       backdrop-filter: blur(22px) saturate(155%);
@@ -142,9 +147,9 @@
     .js .rv.on { opacity: 1; transform: none; }
 
     /* ══ ratings ══ */
-    .scale-hint { font-size: 12.5px; color: var(--ink-faint); margin-bottom: 4px; }
-    .rate { padding: 13px 0; border-bottom: 1px dashed var(--rule); display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px 16px; }
-    .rate:first-of-type { border-top: 1px dashed var(--rule); margin-top: 14px; }
+    .scale-hint { font-size: 12.5px; color: var(--ink-faint); margin-bottom: 2px; }
+    .rate { padding: 9px 0; border-bottom: 1px dashed var(--rule); display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 16px; }
+    .rate:first-of-type { border-top: 1px dashed var(--rule); margin-top: 8px; }
     .rate-name { font-size: 15px; color: var(--ink); max-width: 30ch; }
     .stars { display: flex; gap: 3px; }
     .star {
@@ -161,7 +166,7 @@
     .rate-err .stars .star { color: var(--error); }
 
     /* ══ fields ══ */
-    .field { margin: 22px 0; }
+    .field { margin: 15px 0; }
     .field:first-child { margin-top: 0; }
     .field label { display: block; font-size: 13.5px; color: var(--ink); margin-bottom: 9px; }
     .field label small { display: block; color: var(--ink-faint); font-size: 12.5px; margin-top: 3px; }
@@ -229,7 +234,7 @@
     #thanks p { color: var(--ink-soft); max-width: 44ch; }
     #thanks p + p { margin-top: 8px; }
 
-    footer { max-width: var(--panel-max); margin: 0 auto; padding: 0 clamp(14px,4vw,24px) clamp(40px,8vw,64px); text-align: center; }
+    footer { max-width: var(--panel-max); margin: 0 auto; padding: 0 clamp(14px,4vw,24px) clamp(24px,5vw,36px); text-align: center; }
     footer a { color: var(--green); text-decoration-color: rgba(46,91,52,.4); text-underline-offset: 3px; }
 
     @media (prefers-reduced-motion: reduce) {
