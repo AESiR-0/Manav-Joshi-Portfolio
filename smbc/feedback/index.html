@@ -11,8 +11,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="preload" as="image" href="/images/smbc/hero.jpg" fetchpriority="high">
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600&family=Space+Mono:wght@400;700&display=swap">
-  <script>document.documentElement.className += ' js';</script>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Space+Mono:wght@400;700&display=swap">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     [hidden] { display: none !important; }
@@ -24,137 +23,73 @@
       --ink:        #23271f;
       --ink-soft:   #4e5449;
       --ink-faint:  rgba(35,39,31,.5);
-      --rule:       rgba(35,39,31,.22);
+      --rule:       rgba(35,39,31,.20);
       --error:      #b4562f;
       --placeholder:#a09d8e;
       --mono: 'Space Mono', ui-monospace, monospace;
       --disp: 'Fredoka', system-ui, sans-serif;
-      --serif: 'Fraunces', Georgia, serif;
       --ease: cubic-bezier(.22, 1, .36, 1);
-      --scrim: 0;
-      --panel-max: 560px;
     }
-    html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
     body {
       background: var(--cream); color: var(--ink); font-family: var(--mono);
-      font-size: 15px; line-height: 1.62; -webkit-font-smoothing: antialiased;
-      overflow-x: hidden;
+      font-size: 15px; line-height: 1.55; -webkit-font-smoothing: antialiased;
     }
     ::selection { background: var(--green); color: var(--cream); }
     :focus-visible { outline: 3px solid var(--green); outline-offset: 3px; border-radius: 3px; }
 
     .scrollbar { position: fixed; top: 0; left: 0; height: 3px; width: 0; z-index: 70; background: var(--green); pointer-events: none; transition: width .08s linear; }
 
-    /* ══ the photo that never leaves — identical system to the invite page ══ */
-    .backdrop { position: fixed; inset: 0; z-index: -2; overflow: hidden; background: var(--cream); }
-    .backdrop-inner {
-      position: absolute; top: 50%; left: 50%;
-      width: max(100vw, calc(100vh * 0.92));
-      aspect-ratio: 1100 / 1971;
-      /* pushed higher than the invite page's hero crop: this page's intro is
-         much shorter, so the TV needs to sit nearer the top of frame to leave
-         the intro's text zone clear */
-      transform: translate(-50%, calc(-58.3% - 34vh));
+    /* ══ a strip, not a screen ══════════════════════════
+       The invite page earns a full-viewport photo because it's selling
+       a room you haven't seen yet. This page is a 60-second utility for
+       people who were already in it — the photo's job here is just to
+       say "same place," in passing, not to perform. */
+    .banner {
+      position: relative; height: clamp(120px, 22vh, 180px); overflow: hidden;
     }
-    .backdrop-inner img { width: 100%; height: 100%; object-fit: fill; display: block; }
-    .backdrop::after {
+    .banner img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 28%; display: block; }
+    .banner::after {
       content: ''; position: absolute; inset: 0;
-      background: linear-gradient(to bottom, rgba(35,39,31,.10), rgba(35,39,31,.30));
-      opacity: var(--scrim); transition: opacity .25s linear;
-    }
-    .tv-fx { position: absolute; left: 38%; top: 53.5%; width: 24.5%; height: 9.6%; pointer-events: none; }
-    .tv-scan {
-      position: absolute; inset: 0; mix-blend-mode: multiply; opacity: .5;
-      background: repeating-linear-gradient(to bottom, rgba(20,40,25,.30) 0px, rgba(20,40,25,.30) 1px, transparent 1px, transparent 3px);
-    }
-    .tv-glow {
-      position: absolute; inset: -42%;
-      background: radial-gradient(ellipse at center, rgba(120,240,160,.34), transparent 68%);
-      mix-blend-mode: screen;
-    }
-    @media (prefers-reduced-motion: no-preference) {
-      .tv-glow  { animation: breathe 5.2s ease-in-out infinite; }
-      .tv-fx    { animation: flicker 9s steps(1, end) infinite; }
-      .tv-scan  { animation: roll 7s linear infinite; }
-    }
-    @keyframes breathe { 0%,100% { opacity: .68; } 50% { opacity: 1; } }
-    @keyframes roll    { to { background-position-y: 3px; } }
-    @keyframes flicker {
-      0%, 41%, 43%, 61%, 62.4%, 87%, 100% { opacity: 1; }
-      42%   { opacity: .58; } 61.7% { opacity: .74; } 87.6% { opacity: .5; }
+      background: linear-gradient(to bottom, transparent 60%, var(--cream) 100%);
     }
 
-    /* ══ intro — a short hero, not full height: this page has one job ══ */
-    .intro {
-      position: relative; min-height: 52svh; display: flex; flex-direction: column;
-      justify-content: flex-end; align-items: center; text-align: center;
-      padding: 0 22px clamp(26px, 5vh, 42px);
-    }
-    /* solid the whole way up, not a long fade — the TV is pushed further off
-       the top of frame below (see .backdrop-inner), so a short opaque band
-       is enough to clear it without the 100vh runway the invite page uses */
-    .intro::before {
-      content: ''; position: absolute; left: 0; right: 0; bottom: 0; top: 0;
-      pointer-events: none; z-index: -1;
-      background: linear-gradient(to top,
-        var(--cream) 0%, var(--cream) 58%, rgba(243,239,228,.75) 76%, rgba(243,239,228,0) 100%);
-    }
-    .wordmark {
-      font-size: 11px; font-weight: 700; letter-spacing: .2em; text-transform: uppercase;
-      color: var(--ink-soft); margin-bottom: 14px;
-    }
+    .lead { padding: 18px 22px 6px; text-align: center; }
+    .wordmark { font-size: 11px; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; color: var(--ink-soft); }
     .wordmark a { color: inherit; text-decoration: none; }
-    .eyebrow { font-size: 11.5px; font-weight: 700; letter-spacing: .2em; text-transform: uppercase; color: var(--green); margin-bottom: 10px; }
+    .eyebrow { font-size: 11px; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; color: var(--green); margin-top: 8px; }
     h1 {
-      font-family: var(--disp); font-weight: 600; font-size: clamp(1.9rem,7vw,2.6rem);
-      line-height: 1.08; color: var(--green-deep); letter-spacing: -.01em;
+      font-family: var(--disp); font-weight: 600; font-size: clamp(1.5rem,6vw,1.9rem);
+      line-height: 1.1; color: var(--green-deep); letter-spacing: -.01em; margin-top: 6px;
     }
-    .intro-sub { margin-top: 12px; max-width: 34ch; color: var(--ink-soft); }
-    .intro-sub b { color: var(--green-deep); }
-    @media (prefers-reduced-motion: no-preference) {
-      .js .intro > * { opacity: 0; transform: translateY(15px); animation: rise .75s var(--ease) forwards; }
-      .intro > :nth-child(1) { animation-delay: .06s; }
-      .intro > :nth-child(2) { animation-delay: .16s; }
-      .intro > :nth-child(3) { animation-delay: .28s; }
-      .intro > :nth-child(4) { animation-delay: .40s; }
-    }
-    @keyframes rise { to { opacity: 1; transform: none; } }
+    .lead p { margin-top: 8px; color: var(--ink-soft); font-size: 14px; }
+    .lead p b { color: var(--green-deep); }
 
-    /* ══ glass panels — identical component to the invite page ══ */
-    main { padding: 0 clamp(14px, 4vw, 24px) 24px; }
-    .panel {
-      max-width: var(--panel-max); margin: 0 auto clamp(12px, 3vw, 18px);
-      padding: clamp(20px, 4.5vw, 30px) clamp(20px, 5vw, 30px);
-      border-radius: 22px;
-      background: rgba(250, 247, 238, .60);
-      backdrop-filter: blur(22px) saturate(155%);
-      -webkit-backdrop-filter: blur(22px) saturate(155%);
-      border: 1px solid rgba(255, 255, 255, .40);
-      box-shadow: inset 0 1px 0 rgba(255,255,255,.62), inset 1px 0 0 rgba(255,255,255,.26), 0 8px 40px rgba(28, 40, 24, .17);
+    /* ══ one sheet, not three floating panels ══════════════
+       Nothing sits behind this to blur, so glass would be a plain box
+       pretending to be something — a solid paper card is the honest
+       version of the same material. */
+    .sheet {
+      max-width: 520px; margin: 14px auto 0; background: var(--paper);
+      border-radius: 20px; border: 1px solid rgba(255,255,255,.6);
+      box-shadow: 0 1px 0 rgba(255,255,255,.5) inset, 0 14px 40px -14px rgba(35,39,31,.22);
     }
-    @supports not (backdrop-filter: blur(4px)) { .panel { background: rgba(250, 247, 238, .93); } }
-    @media (hover: hover) and (min-width: 760px) {
-      .panel { transition: transform .45s var(--ease), box-shadow .45s var(--ease), background .45s ease; }
-      .panel:not(#signoff):hover {
-        transform: translateY(-3px); background: rgba(250, 247, 238, .66);
-        box-shadow: inset 0 1px 0 rgba(255,255,255,.75), inset 1px 0 0 rgba(255,255,255,.32), 0 16px 52px rgba(28, 40, 24, .22);
-      }
+    .doc { padding: clamp(22px, 5vw, 30px) clamp(20px, 5vw, 28px); }
+    .sec {
+      padding-top: 20px; margin-top: 20px; border-top: 1px dashed var(--rule);
     }
-    .tag { display: block; font-size: 11.5px; font-weight: 700; letter-spacing: .24em; color: var(--green); margin-bottom: 16px; }
+    .sec:first-child { padding-top: 0; margin-top: 0; border-top: 0; }
+    .tag { display: block; font-size: 11px; font-weight: 700; letter-spacing: .2em; color: var(--green); margin-bottom: 12px; }
+    .sub-tag { font-size: 12px; font-weight: 700; color: var(--ink-soft); margin: 12px 0 7px; }
 
-    /* reveal — gated on .js so a script failure can never leave the page blank */
-    .js .rv { opacity: 0; transform: translateY(20px); transition: opacity .65s var(--ease), transform .65s var(--ease); }
-    .js .rv.on { opacity: 1; transform: none; }
-
-    /* ══ ratings ══ */
-    .scale-hint { font-size: 12.5px; color: var(--ink-faint); margin-bottom: 2px; }
-    .rate { padding: 9px 0; border-bottom: 1px dashed var(--rule); display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 16px; }
-    .rate:first-of-type { border-top: 1px dashed var(--rule); margin-top: 8px; }
-    .rate-name { font-size: 15px; color: var(--ink); max-width: 30ch; }
-    .stars { display: flex; gap: 3px; }
+    /* ══ ratings — a compact grid, not four full-width rows ══ */
+    .scale-hint { font-size: 12px; color: var(--ink-faint); margin-bottom: 12px; }
+    .rating-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px 12px; }
+    .rating-cell.span { grid-column: 1 / -1; }
+    .rate-name { display: block; font-size: 13.5px; color: var(--ink); margin-bottom: 7px; }
+    .stars { display: flex; gap: 2px; }
     .star {
-      width: clamp(32px,8.5vw,40px); height: clamp(32px,8.5vw,40px); border: none; background: transparent;
-      color: rgba(35,39,31,.22); font-size: clamp(20px,6vw,26px); line-height: 1; cursor: pointer;
+      width: 30px; height: 30px; border: none; background: transparent;
+      color: rgba(35,39,31,.22); font-size: 20px; line-height: 1; cursor: pointer;
       display: flex; align-items: center; justify-content: center;
       transition: transform .12s var(--ease), color .15s ease;
     }
@@ -163,36 +98,38 @@
     .star.on { color: var(--green); }
     @media (prefers-reduced-motion: no-preference) { .star.on { animation: pop .3s var(--ease); } }
     @keyframes pop { 0% { transform: scale(.7) rotate(-8deg); } 60% { transform: scale(1.18) rotate(4deg); } 100% { transform: none; } }
-    .rate-err .stars .star { color: var(--error); }
+    .rating-cell.err .star { color: var(--error); }
 
     /* ══ fields ══ */
-    .field { margin: 15px 0; }
+    .field { margin: 14px 0; }
     .field:first-child { margin-top: 0; }
-    .field label { display: block; font-size: 13.5px; color: var(--ink); margin-bottom: 9px; }
-    .field label small { display: block; color: var(--ink-faint); font-size: 12.5px; margin-top: 3px; }
+    .field label { display: block; font-size: 13px; color: var(--ink); margin-bottom: 7px; }
+    .field label small { display: block; color: var(--ink-faint); font-size: 11.5px; margin-top: 2px; }
     .field input[type=text], .field input[type=url], .field input[type=tel] {
       width: 100%; font-family: var(--mono); font-size: 16px; color: var(--ink);
-      background: rgba(255,255,255,.5); border: 1.5px solid var(--rule); border-radius: 12px;
-      padding: 12px 14px; transition: border-color .2s ease, background .2s ease;
+      background: rgba(255,255,255,.7); border: 1.5px solid var(--rule); border-radius: 11px;
+      padding: 10px 13px; transition: border-color .2s ease, background .2s ease;
     }
-    .field input:focus { outline: none; border-color: var(--green); background: rgba(255,255,255,.85); }
+    .field input:focus { outline: none; border-color: var(--green); background: #fff; }
     .field input::placeholder { color: var(--placeholder); }
+    .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 12px; }
+    @media (max-width: 420px) { .row2 { grid-template-columns: 1fr; } }
 
-    .phone-row { display: flex; gap: 10px; }
+    .phone-row { display: flex; gap: 8px; }
     .phone-row .prefix {
       display: flex; align-items: center; font-size: 16px; color: var(--ink-soft);
-      border: 1.5px solid var(--rule); border-radius: 12px; padding: 0 13px; background: rgba(255,255,255,.35);
+      border: 1.5px solid var(--rule); border-radius: 11px; padding: 0 11px; background: rgba(255,255,255,.5);
     }
     .phone-row input { flex: 1; }
 
-    /* ══ pick-one / pick-many pills — identical component to the invite page ══ */
-    .chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 2px; }
+    /* ══ pills ══ */
+    .chips { display: flex; flex-wrap: wrap; gap: 7px; }
     .chip { position: relative; }
     .chip input { position: absolute; opacity: 0; width: 1px; height: 1px; }
     .chip span {
-      display: block; font-family: var(--mono); font-size: 13.5px; color: var(--ink-soft);
-      background: rgba(255,255,255,.35); border: 1.5px solid var(--rule); border-radius: 999px;
-      padding: 9px 14px; cursor: pointer; user-select: none;
+      display: block; font-family: var(--mono); font-size: 13px; color: var(--ink-soft);
+      background: rgba(255,255,255,.5); border: 1.5px solid var(--rule); border-radius: 999px;
+      padding: 7px 12px; cursor: pointer; user-select: none;
       transition: background .16s ease, color .16s ease, border-color .16s ease, transform .16s var(--ease);
     }
     .chip span:hover { border-color: var(--green); color: var(--green); }
@@ -201,17 +138,17 @@
     @media (prefers-reduced-motion: no-preference) { .chip input:checked + span { animation: pick .3s var(--ease); } }
     @keyframes pick { 0% { transform: scale(.9); } 55% { transform: scale(1.07); } 100% { transform: none; } }
     .chip input:focus-visible + span { outline: 3px solid var(--green); outline-offset: 2px; }
-    .chip-other { margin-top: 12px; }
+    .chip-other { margin-top: 8px; }
 
-    .field-err { font-size: 13.5px; color: var(--error); margin: -8px 0 14px; }
+    .field-err { font-size: 13px; color: var(--error); margin: -4px 0 10px; }
 
-    /* ══ buttons — identical component to the invite page ══ */
+    /* ══ button ══ */
     .cta {
-      display: block; width: 100%; font-family: var(--mono); font-size: 15.5px; font-weight: 700;
+      display: block; width: 100%; font-family: var(--mono); font-size: 15px; font-weight: 700;
       text-align: center; color: var(--paper); background: var(--green); border: none;
-      border-radius: 999px; padding: 16px 24px; cursor: pointer;
+      border-radius: 999px; padding: 15px 24px; cursor: pointer;
       box-shadow: 0 4px 0 var(--green-deep); transition: transform .1s var(--ease), box-shadow .1s var(--ease);
-      margin-top: 8px; position: relative; overflow: hidden;
+      margin-top: 4px; position: relative; overflow: hidden;
     }
     .cta::after {
       content: ''; position: absolute; top: 0; left: -70%; width: 45%; height: 100%;
@@ -221,73 +158,62 @@
     .cta:hover::after { left: 130%; }
     .cta:active { transform: translateY(4px); box-shadow: 0 0 0 var(--green-deep); }
     @media (prefers-reduced-motion: reduce) { .cta:active { transform: none; } .cta::after { display: none; } }
-    .micro { font-size: 12.5px; color: var(--ink-faint); margin-top: 14px; text-align: center; }
+    .micro { font-size: 12px; color: var(--ink-faint); margin-top: 12px; text-align: center; }
 
-    #thanks { text-align: left; }
     #thanks .stamp {
-      display: inline-block; font-family: var(--mono); font-weight: 700; font-size: clamp(16px,4.6vw,20px);
-      color: var(--green); border: 3px solid var(--green); border-radius: 12px; padding: 10px 18px;
-      transform: rotate(-3deg); margin-bottom: 18px;
+      display: inline-block; font-family: var(--mono); font-weight: 700; font-size: 19px;
+      color: var(--green); border: 3px solid var(--green); border-radius: 12px; padding: 9px 16px;
+      transform: rotate(-3deg); margin-bottom: 14px;
     }
     @media (prefers-reduced-motion: no-preference) { #thanks .stamp { animation: stampIn .5s cubic-bezier(.18,1.4,.4,1) both; } }
     @keyframes stampIn { 0% { opacity: 0; transform: rotate(-15deg) scale(1.7); } 100% { opacity: 1; transform: rotate(-3deg) scale(1); } }
-    #thanks p { color: var(--ink-soft); max-width: 44ch; }
-    #thanks p + p { margin-top: 8px; }
+    #thanks p { color: var(--ink-soft); }
+    #thanks p + p { margin-top: 6px; }
 
-    footer { max-width: var(--panel-max); margin: 0 auto; padding: 0 clamp(14px,4vw,24px) clamp(24px,5vw,36px); text-align: center; }
-    footer a { color: var(--green); text-decoration-color: rgba(46,91,52,.4); text-underline-offset: 3px; }
-
-    @media (prefers-reduced-motion: reduce) {
-      html { scroll-behavior: auto; }
-      .intro > *, .rv { opacity: 1; transform: none; animation: none; transition: none; }
-    }
+    footer { max-width: 520px; margin: 0 auto; padding: 20px 22px 34px; text-align: center; }
+    footer a { color: var(--green); text-decoration-color: rgba(46,91,52,.4); text-underline-offset: 3px; font-size: 13px; }
   </style>
 </head>
 <body>
 
 <div class="scrollbar" id="scrollbar" aria-hidden="true"></div>
 
-<div class="backdrop" aria-hidden="true">
-  <div class="backdrop-inner">
-    <img src="/images/smbc/hero.jpg" alt="" fetchpriority="high" onerror="this.style.display='none'">
-    <div class="tv-fx"><div class="tv-glow"></div><div class="tv-scan"></div></div>
-  </div>
-</div>
+<div class="banner"><img src="/images/smbc/hero.jpg" alt="" fetchpriority="high" onerror="this.parentElement.style.display='none'"></div>
 
-<header class="intro">
+<div class="lead">
   <p class="wordmark"><a href="/smbc/">Sunday Morning Build Club</a></p>
   <p class="eyebrow" id="eyebrow">debrief</p>
   <h1>How was your Sunday?</h1>
-  <p class="intro-sub">Take 60 seconds to share your honest thoughts.</p>
-</header>
+  <p><b>Take 60 seconds</b> to share your honest thoughts.</p>
+</div>
 
-<main>
-  <form id="fbForm" novalidate>
+<div class="sheet">
+  <div class="doc">
+    <form id="fbForm" novalidate>
 
-    <section class="panel rv">
-      <span class="tag">[ THE READINGS ]</span>
-      <p class="scale-hint">Tap 1 (meh) to 5 (loved it).</p>
-      <div id="ratings"></div>
-    </section>
-
-    <section class="panel rv">
-      <span class="tag">[ FIELD NOTES ]</span>
-
-      <div class="field" style="margin-top:0">
-        <label>What did you leave with?</label>
-        <div class="chips" id="leftChips">
-          <label class="chip"><input type="checkbox" value="clarity"><span>clarity</span></label>
-          <label class="chip"><input type="checkbox" value="an action plan"><span>an action plan</span></label>
-          <label class="chip"><input type="checkbox" value="potential collaboration"><span>potential collaboration</span></label>
-          <label class="chip"><input type="checkbox" value="a new friend"><span>a new friend</span></label>
-          <label class="chip"><input type="checkbox" value="__other" id="leftOtherToggle"><span>something else</span></label>
-          <label class="chip"><input type="checkbox" value="none"><span>none</span></label>
-        </div>
-        <input class="chip-other" id="leftOther" type="text" placeholder="say it your way" hidden>
+      <div class="sec">
+        <span class="tag">[ THE READINGS ]</span>
+        <p class="scale-hint">Tap 1 (meh) to 5 (loved it).</p>
+        <div class="rating-grid" id="ratings"></div>
       </div>
 
-      <div class="field">
-        <label>What worked best?</label>
+      <div class="sec">
+        <span class="tag">[ FIELD NOTES ]</span>
+
+        <div class="field" style="margin-top:0">
+          <label>What did you leave with?</label>
+          <div class="chips" id="leftChips">
+            <label class="chip"><input type="checkbox" value="clarity"><span>clarity</span></label>
+            <label class="chip"><input type="checkbox" value="an action plan"><span>an action plan</span></label>
+            <label class="chip"><input type="checkbox" value="potential collaboration"><span>potential collaboration</span></label>
+            <label class="chip"><input type="checkbox" value="a new friend"><span>a new friend</span></label>
+            <label class="chip"><input type="checkbox" value="__other" id="leftOtherToggle"><span>something else</span></label>
+            <label class="chip"><input type="checkbox" value="none"><span>none</span></label>
+          </div>
+          <input class="chip-other" id="leftOther" type="text" placeholder="say it your way" hidden>
+        </div>
+
+        <p class="sub-tag">what worked</p>
         <div class="chips" id="bestChips">
           <label class="chip"><input type="checkbox" value="the process"><span>the process</span></label>
           <label class="chip"><input type="checkbox" value="the people"><span>the people</span></label>
@@ -296,10 +222,8 @@
           <label class="chip"><input type="checkbox" value="__other" id="bestOtherToggle"><span>something else</span></label>
         </div>
         <input class="chip-other" id="bestOther" type="text" placeholder="say it your way" hidden>
-      </div>
 
-      <div class="field">
-        <label>What could be better?</label>
+        <p class="sub-tag">what's next</p>
         <div class="chips" id="betterChips">
           <label class="chip"><input type="checkbox" value="the process"><span>the process</span></label>
           <label class="chip"><input type="checkbox" value="the people"><span>the people</span></label>
@@ -308,49 +232,50 @@
           <label class="chip"><input type="checkbox" value="__other" id="betterOtherToggle"><span>something else</span></label>
         </div>
         <input class="chip-other" id="betterOther" type="text" placeholder="say it your way" hidden>
-      </div>
 
-      <div class="field">
-        <label for="link">link to what you built <small>optional</small></label>
-        <input id="link" type="url" inputmode="url" placeholder="https://…" autocomplete="off">
-      </div>
-
-      <div class="field">
-        <label for="oneline">One line to sum up your experience</label>
-        <input id="oneline" type="text" autocomplete="off">
-      </div>
-    </section>
-
-    <section class="panel rv" id="signoff">
-      <span class="tag">[ SIGN OFF ]</span>
-
-      <div class="field" style="margin-top:0">
-        <label for="name">your name <small>optional</small></label>
-        <input id="name" type="text" autocomplete="name">
-      </div>
-
-      <div class="field">
-        <label for="phone">WhatsApp number</label>
-        <div class="phone-row">
-          <span class="prefix">+91</span>
-          <input id="phone" type="tel" inputmode="numeric" maxlength="10" autocomplete="tel-national">
+        <div class="row2" style="margin-top:16px">
+          <div class="field" style="margin:0">
+            <label for="oneline">One line to sum it up</label>
+            <input id="oneline" type="text" autocomplete="off">
+          </div>
+          <div class="field" style="margin:0">
+            <label for="link">what you built <small>optional</small></label>
+            <input id="link" type="url" inputmode="url" placeholder="https://…" autocomplete="off">
+          </div>
         </div>
       </div>
 
-      <p class="field-err" id="err" role="alert" hidden></p>
-      <button type="submit" class="cta">[ Send it ]</button>
-      <p class="micro">No sugarcoating. That's how the next Sunday gets better.</p>
+      <div class="sec">
+        <span class="tag">[ SIGN OFF ]</span>
+        <div class="row2">
+          <div class="field" style="margin:0">
+            <label for="name">your name <small>optional</small></label>
+            <input id="name" type="text" autocomplete="name">
+          </div>
+          <div class="field" style="margin:0">
+            <label for="phone">WhatsApp number</label>
+            <div class="phone-row">
+              <span class="prefix">+91</span>
+              <input id="phone" type="tel" inputmode="numeric" maxlength="10" autocomplete="tel-national">
+            </div>
+          </div>
+        </div>
 
-      <noscript><span class="micro" style="display:block;margin-top:16px">This form needs JavaScript. WhatsApp your feedback to <a href="https://wa.me/+919925978977">+91 99259 78977</a> instead.</span></noscript>
-    </section>
+        <p class="field-err" id="err" role="alert" hidden style="margin-top:14px"></p>
+        <button type="submit" class="cta" style="margin-top:16px">[ Send it ]</button>
+        <p class="micro">No sugarcoating. That's how the next Sunday gets better.</p>
 
-    <div id="thanks" class="panel" hidden tabindex="-1">
-      <span class="stamp">[ FILED ]</span>
-      <p>Thanks for being honest.</p>
-      <p>The honest bits are exactly how the next room gets better. See you Sunday.</p>
-    </div>
-  </form>
-</main>
+        <noscript><span class="micro" style="display:block;margin-top:14px">This form needs JavaScript. WhatsApp your feedback to <a href="https://wa.me/+919925978977">+91 99259 78977</a> instead.</span></noscript>
+      </div>
+
+      <div id="thanks" hidden tabindex="-1">
+        <span class="stamp">[ FILED ]</span>
+        <p>Thanks for being honest.</p>
+        <p>The honest bits are exactly how the next room gets better. See you Sunday.</p>
+      </div>
+    </form>
+  </div>
+</div>
 
 <footer>
   <p><a href="/smbc/">&larr; back to Sunday Morning Build Club</a></p>
@@ -360,13 +285,12 @@
 const SHEET_ENDPOINT = 'https://script.google.com/macros/s/AKfycbyIdrCDzYTx7XQQ5l8ByaFW6FsGuSIJJvwTkN449Fhq20HrZjIYTnZpOWI4qs8-2uP5gw/exec';
 const $ = id => document.getElementById(id);
 
-/* scroll progress */
 addEventListener('scroll', () => {
   const h = document.documentElement.scrollHeight - innerHeight;
   $('scrollbar').style.width = (h > 0 ? Math.min(100, scrollY / h * 100) : 0) + '%';
 }, { passive: true });
 
-/* ── the edition this debrief is for: most recent Sunday, including today ── */
+/* the edition this debrief is for: most recent Sunday, including today */
 const now = new Date();
 const lastSunday = new Date(now);
 lastSunday.setDate(now.getDate() - now.getDay());
@@ -375,18 +299,19 @@ const pad = n => (n < 10 ? '0' : '') + n;
 const editionISO = lastSunday.getFullYear() + '-' + pad(lastSunday.getMonth() + 1) + '-' + pad(lastSunday.getDate());
 $('eyebrow').textContent = 'debrief · ' + MONTHS[lastSunday.getMonth()] + ' ' + lastSunday.getDate();
 
-/* ── the 4 rating rows ── */
+/* the 4 rating cells — 2x2 grid, "recommend" spans full width since its
+   label is long and would cramp a half column */
 const PARAMS = [
   { k: 'process',   name: 'the process' },
   { k: 'people',    name: 'the people' },
   { k: 'vibe',      name: 'the vibe' },
-  { k: 'recommend', name: 'would you recommend this to someone you love?' },
+  { k: 'recommend', name: 'would you recommend this to someone you love?', span: true },
 ];
 const ratings = {};
-const ratingsWrap = $('ratings');
+const grid = $('ratings');
 PARAMS.forEach(p => {
-  const row = document.createElement('div');
-  row.className = 'rate'; row.dataset.k = p.k;
+  const cell = document.createElement('div');
+  cell.className = 'rating-cell' + (p.span ? ' span' : ''); cell.dataset.k = p.k;
   const lab = document.createElement('span');
   lab.className = 'rate-name'; lab.textContent = p.name;
   const stars = document.createElement('div');
@@ -398,21 +323,20 @@ PARAMS.forEach(p => {
     b.addEventListener('click', () => setRating(p.k, v));
     stars.appendChild(b);
   }
-  row.appendChild(lab); row.appendChild(stars);
-  ratingsWrap.appendChild(row);
+  cell.appendChild(lab); cell.appendChild(stars);
+  grid.appendChild(cell);
 });
 function setRating(k, v) {
   ratings[k] = v;
-  const row = ratingsWrap.querySelector('.rate[data-k="' + k + '"]');
-  row.classList.remove('rate-err');
-  row.querySelectorAll('.star').forEach((d, i) => {
+  const cell = grid.querySelector('.rating-cell[data-k="' + k + '"]');
+  cell.classList.remove('err');
+  cell.querySelectorAll('.star').forEach((d, i) => {
     const on = (i + 1) <= v;
     d.classList.toggle('on', on);
     d.setAttribute('aria-checked', (i + 1) === v ? 'true' : 'false');
   });
 }
 
-/* ── chip groups: "something else" reveals a field ── */
 function wireChipOther(toggleId, otherId) {
   const toggle = $(toggleId), other = $(otherId);
   if (!toggle) return;
@@ -434,7 +358,6 @@ function collectChips(chipsId, otherToggleId, otherId) {
   return picked.join(', ');
 }
 
-/* ── submit ── */
 function postRow(data) {
   if (!SHEET_ENDPOINT || SHEET_ENDPOINT.startsWith('PASTE')) { console.warn('SHEET_ENDPOINT not set:', JSON.stringify(data)); return; }
   fetch(SHEET_ENDPOINT, { method: 'POST', mode: 'no-cors', body: new URLSearchParams(data) }).catch(() => {});
@@ -445,9 +368,9 @@ $('fbForm').addEventListener('submit', e => {
   const err = $('err');
   const missing = PARAMS.filter(p => !ratings[p.k]);
   if (missing.length) {
-    missing.forEach(p => ratingsWrap.querySelector('.rate[data-k="' + p.k + '"]').classList.add('rate-err'));
+    missing.forEach(p => grid.querySelector('.rating-cell[data-k="' + p.k + '"]').classList.add('err'));
     err.textContent = 'Rate all four first — one tap each, that’s it.'; err.hidden = false;
-    ratingsWrap.querySelector('.rate.rate-err').scrollIntoView({ behavior: 'smooth', block: 'center' });
+    grid.querySelector('.rating-cell.err').scrollIntoView({ behavior: 'smooth', block: 'center' });
     return;
   }
   const digits = $('phone').value.replace(/\D/g, '');
@@ -461,7 +384,6 @@ $('fbForm').addEventListener('submit', e => {
   const link = $('link').value.trim();
   const name = $('name').value.trim();
 
-  /* readable bundle for the interim, before the feedback tab is routed */
   const bundle = 'smbc-feedback · edition ' + editionISO
     + (name ? ' | ' + name : '')
     + ' | process ' + ratings.process + '/5, people ' + ratings.people + '/5, vibe ' + ratings.vibe + '/5, recommend ' + ratings.recommend + '/5'
@@ -472,48 +394,17 @@ $('fbForm').addEventListener('submit', e => {
     + (link ? ' | ' + link : '');
 
   postRow({
-    form: 'smbc-feedback',
-    edition: editionISO,
-    name,
+    form: 'smbc-feedback', edition: editionISO, name,
     phone: '+91' + digits,
     process: ratings.process, people: ratings.people, vibe: ratings.vibe, recommend: ratings.recommend,
     left_with: left, best, better, oneline, link,
     why: bundle,
   });
 
-  $('fbForm').querySelectorAll('.panel:not(#thanks)').forEach(p => p.hidden = true);
+  $('fbForm').querySelectorAll('.sec').forEach(s => s.hidden = true);
   const t = $('thanks'); t.hidden = false; t.focus();
   t.scrollIntoView({ behavior: 'smooth', block: 'center' });
 });
-
-/* ── scrim tracks scroll so glass keeps contrast past the intro ── */
-var ticking = false;
-function paintScrim() {
-  var t = Math.min(1, window.scrollY / (window.innerHeight * 0.7));
-  document.documentElement.style.setProperty('--scrim', t.toFixed(3));
-  ticking = false;
-}
-window.addEventListener('scroll', function () {
-  if (!ticking) { ticking = true; requestAnimationFrame(paintScrim); }
-}, { passive: true });
-paintScrim();
-
-/* ── reveal (never let a failure here hide the page) ── */
-var reveal = document.querySelectorAll('.rv');
-function revealAll() { Array.prototype.forEach.call(reveal, function (el) { el.classList.add('on'); }); }
-if (typeof IntersectionObserver === 'function') {
-  try {
-    var io = new IntersectionObserver(function (entries) {
-      entries.forEach(function (e) {
-        if (e.isIntersecting) { e.target.classList.add('on'); io.unobserve(e.target); }
-      });
-    }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
-    Array.prototype.forEach.call(reveal, function (el) { io.observe(el); });
-    setTimeout(function () { if (!document.querySelector('.rv.on')) { revealAll(); } }, 4000);
-  } catch (err) { revealAll(); }
-} else {
-  revealAll();
-}
 </script>
 
 </body>
