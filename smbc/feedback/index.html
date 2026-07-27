@@ -11,7 +11,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="preload" as="image" href="/images/smbc/hero.jpg" fetchpriority="high">
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Space+Mono:wght@400;700&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600&family=Space+Mono:wght@400;700&display=swap">
+  <script>document.documentElement.className += ' js';</script>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     [hidden] { display: none !important; }
@@ -23,73 +24,163 @@
       --ink:        #23271f;
       --ink-soft:   #4e5449;
       --ink-faint:  rgba(35,39,31,.5);
-      --rule:       rgba(35,39,31,.20);
+      --rule:       rgba(35,39,31,.22);
+      --dash:       rgba(46,91,52,.26);
       --error:      #b4562f;
       --placeholder:#a09d8e;
       --mono: 'Space Mono', ui-monospace, monospace;
       --disp: 'Fredoka', system-ui, sans-serif;
+      --serif: 'Fraunces', Georgia, serif;
       --ease: cubic-bezier(.22, 1, .36, 1);
+      --scrim: 0;
+      --panel-max: 560px;
     }
+    html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
     body {
       background: var(--cream); color: var(--ink); font-family: var(--mono);
-      font-size: 15px; line-height: 1.55; -webkit-font-smoothing: antialiased;
+      font-size: 15px; line-height: 1.6; -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
     }
     ::selection { background: var(--green); color: var(--cream); }
     :focus-visible { outline: 3px solid var(--green); outline-offset: 3px; border-radius: 3px; }
 
     .scrollbar { position: fixed; top: 0; left: 0; height: 3px; width: 0; z-index: 70; background: var(--green); pointer-events: none; transition: width .08s linear; }
 
-    /* ══ a strip, not a screen ══════════════════════════
-       The invite page earns a full-viewport photo because it's selling
-       a room you haven't seen yet. This page is a 60-second utility for
-       people who were already in it — the photo's job here is just to
-       say "same place," in passing, not to perform. */
-    .banner {
-      position: relative; height: clamp(120px, 22vh, 180px); overflow: hidden;
+    /* ══ backdrop — same system as the invite page ══ */
+    .backdrop { position: fixed; inset: 0; z-index: -2; overflow: hidden; background: var(--cream); }
+    .backdrop-inner {
+      position: absolute; top: 50%; left: 50%;
+      width: max(100vw, calc(100vh * 0.92));
+      aspect-ratio: 1100 / 1971;
+      transform: translate(-50%, calc(-58.3% - 12vh));
     }
-    .banner img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 28%; display: block; }
-    .banner::after {
+    .backdrop-inner img { width: 100%; height: 100%; object-fit: fill; display: block; }
+    .backdrop::after {
       content: ''; position: absolute; inset: 0;
-      background: linear-gradient(to bottom, transparent 60%, var(--cream) 100%);
+      background: linear-gradient(to bottom, rgba(35,39,31,.10), rgba(35,39,31,.30));
+      opacity: var(--scrim); transition: opacity .25s linear;
+    }
+    .tv-fx { position: absolute; left: 38%; top: 53.5%; width: 24.5%; height: 9.6%; pointer-events: none; }
+    .tv-scan {
+      position: absolute; inset: 0; mix-blend-mode: multiply; opacity: .5;
+      background: repeating-linear-gradient(to bottom, rgba(20,40,25,.30) 0px, rgba(20,40,25,.30) 1px, transparent 1px, transparent 3px);
+    }
+    .tv-glow {
+      position: absolute; inset: -42%;
+      background: radial-gradient(ellipse at center, rgba(120,240,160,.34), transparent 68%);
+      mix-blend-mode: screen;
+    }
+    @media (prefers-reduced-motion: no-preference) {
+      .tv-glow  { animation: breathe 5.2s ease-in-out infinite; }
+      .tv-fx    { animation: flicker 9s steps(1, end) infinite; }
+      .tv-scan  { animation: roll 7s linear infinite; }
+    }
+    @keyframes breathe { 0%,100% { opacity: .68; } 50% { opacity: 1; } }
+    @keyframes roll    { to { background-position-y: 3px; } }
+    @keyframes flicker {
+      0%, 41%, 43%, 61%, 62.4%, 87%, 100% { opacity: 1; }
+      42%   { opacity: .58; } 61.7% { opacity: .74; } 87.6% { opacity: .5; }
     }
 
-    .lead { padding: 18px 22px 6px; text-align: center; }
-    .wordmark { font-size: 11px; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; color: var(--ink-soft); }
+    /* ══ masthead — compact. the reader was in the room yesterday; they
+       do not need a full screen re-introducing the event to them. ══ */
+    .masthead {
+      position: relative; text-align: center;
+      padding: clamp(22px, 5vh, 34px) 22px clamp(16px, 3vh, 22px);
+    }
+    /* a cream wash so type reads on the wall without touching the TV below */
+    .masthead::before {
+      content: ''; position: absolute; inset: -10px 0 0 0; z-index: -1; pointer-events: none;
+      background: linear-gradient(to bottom,
+        var(--cream) 0%, rgba(243,239,228,.94) 55%, rgba(243,239,228,.62) 82%, rgba(243,239,228,0) 100%);
+    }
+    .wordmark { font-size: 10.5px; font-weight: 700; letter-spacing: .2em; text-transform: uppercase; color: var(--ink-soft); }
     .wordmark a { color: inherit; text-decoration: none; }
-    .eyebrow { font-size: 11px; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; color: var(--green); margin-top: 8px; }
+    .eyebrow { font-size: 11px; font-weight: 700; letter-spacing: .2em; text-transform: uppercase; color: var(--green); margin-top: 9px; }
     h1 {
-      font-family: var(--disp); font-weight: 600; font-size: clamp(1.5rem,6vw,1.9rem);
-      line-height: 1.1; color: var(--green-deep); letter-spacing: -.01em; margin-top: 6px;
+      font-family: var(--disp); font-weight: 600; font-size: clamp(1.65rem,6.4vw,2.1rem);
+      line-height: 1.06; color: var(--green-deep); letter-spacing: -.01em; margin-top: 6px;
     }
-    .lead p { margin-top: 8px; color: var(--ink-soft); font-size: 14px; }
-    .lead p b { color: var(--green-deep); }
+    .masthead-sub { margin-top: 7px; font-size: 13.5px; color: var(--ink-soft); }
+    /* past the entry point the masthead stops re-introducing the event */
+    .masthead.compact { padding-top: clamp(11px, 2.2vh, 16px); padding-bottom: 7px; }
+    .masthead.compact h1, .masthead.compact .masthead-sub { display: none; }
+    @media (prefers-reduced-motion: no-preference) {
+      .js .masthead > * { opacity: 0; transform: translateY(12px); animation: rise .6s var(--ease) forwards; }
+      .masthead > :nth-child(1) { animation-delay: .04s; }
+      .masthead > :nth-child(2) { animation-delay: .12s; }
+      .masthead > :nth-child(3) { animation-delay: .20s; }
+      .masthead > :nth-child(4) { animation-delay: .30s; }
+    }
+    @keyframes rise { to { opacity: 1; transform: none; } }
 
-    /* ══ one sheet, not three floating panels ══════════════
-       Nothing sits behind this to blur, so glass would be a plain box
-       pretending to be something — a solid paper card is the honest
-       version of the same material. */
-    .sheet {
-      max-width: 520px; margin: 14px auto 0; background: var(--paper);
-      border-radius: 20px; border: 1px solid rgba(255,255,255,.6);
-      box-shadow: 0 1px 0 rgba(255,255,255,.5) inset, 0 14px 40px -14px rgba(35,39,31,.22);
+    /* ══ one panel — three sections of chrome became one ══ */
+    main { padding: 0 clamp(12px, 3.5vw, 24px) 20px; }
+    .panel {
+      max-width: var(--panel-max); margin: 0 auto;
+      padding: clamp(18px, 4.4vw, 30px) clamp(18px, 4.6vw, 30px);
+      border-radius: 22px;
+      background: rgba(250, 247, 238, .62);
+      backdrop-filter: blur(22px) saturate(155%);
+      -webkit-backdrop-filter: blur(22px) saturate(155%);
+      border: 1px solid rgba(255, 255, 255, .40);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.62), inset 1px 0 0 rgba(255,255,255,.26), 0 8px 40px rgba(28, 40, 24, .17);
     }
-    .doc { padding: clamp(22px, 5vw, 30px) clamp(20px, 5vw, 28px); }
-    .sec {
-      padding-top: 20px; margin-top: 20px; border-top: 1px dashed var(--rule);
-    }
-    .sec:first-child { padding-top: 0; margin-top: 0; border-top: 0; }
-    .tag { display: block; font-size: 11px; font-weight: 700; letter-spacing: .2em; color: var(--green); margin-bottom: 12px; }
-    .sub-tag { font-size: 12px; font-weight: 700; color: var(--ink-soft); margin: 12px 0 7px; }
+    @supports not (backdrop-filter: blur(4px)) { .panel { background: rgba(250, 247, 238, .93); } }
 
-    /* ══ ratings — a compact grid, not four full-width rows ══ */
-    .scale-hint { font-size: 12px; color: var(--ink-faint); margin-bottom: 12px; }
-    .rating-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px 12px; }
-    .rating-cell.span { grid-column: 1 / -1; }
-    .rate-name { display: block; font-size: 13.5px; color: var(--ink); margin-bottom: 7px; }
-    .stars { display: flex; gap: 2px; }
+    .tag {
+      display: flex; align-items: center; gap: 8px;
+      font-size: 11px; font-weight: 700; letter-spacing: .22em; color: var(--green);
+    }
+    .tag .done {
+      font-size: 12px; opacity: 0; transform: scale(.5);
+      transition: opacity .3s var(--ease), transform .3s var(--ease);
+    }
+    .tag .done.on { opacity: 1; transform: none; }
+    .rule { border: 0; border-top: 1px dashed var(--dash); margin: 15px 0 11px; }
+
+    /* ══ two steps, each sized to fit one screen — the point is that
+       nothing scrolls, not that the form got shorter ══ */
+    .steps-bar { display: flex; gap: 6px; max-width: var(--panel-max); margin: 0 auto 10px; padding: 0 clamp(12px, 3.5vw, 24px); }
+    .steps-bar i {
+      flex: 1; height: 3px; border-radius: 2px; background: rgba(35,39,31,.16);
+      transition: background .35s var(--ease);
+    }
+    .steps-bar i.on { background: var(--green); }
+    .step { display: none; }
+    .step.on { display: block; }
+    @media (prefers-reduced-motion: no-preference) {
+      .step.on { animation: stepIn .38s var(--ease) both; }
+    }
+    @keyframes stepIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+    .step-foot { display: flex; align-items: center; gap: 12px; margin-top: 16px; }
+    .step-foot .cta { margin-top: 0; }
+    .back {
+      flex: none; font-family: var(--mono); font-size: 13px; color: var(--ink-soft);
+      background: none; border: 0; cursor: pointer; padding: 8px 2px;
+      text-decoration: underline; text-underline-offset: 3px; text-decoration-color: var(--rule);
+      transition: color .2s ease;
+    }
+    .back:hover { color: var(--green); }
+
+    /* ══ ratings — one row each, no wasted line ══ */
+    .scale-hint { font-size: 12px; color: var(--ink-faint); margin-top: 6px; }
+    .rate {
+      padding: 8px 0; border-bottom: 1px dashed var(--dash);
+      display: flex; align-items: center; justify-content: space-between; gap: 10px;
+    }
+    .rate:first-of-type { border-top: 1px dashed var(--dash); margin-top: 10px; }
+    .rate:last-of-type { border-bottom: 0; }
+    .rate-name { font-size: 14px; color: var(--ink); line-height: 1.35; }
+    /* a question too long to sit beside its stars takes its own line, so the
+       stars keep a full-size tap target instead of being squeezed */
+    .rate.wide { flex-wrap: wrap; gap: 2px; }
+    .rate.wide .rate-name { width: 100%; }
+    .rate.wide .stars { margin-left: -6px; }
+    .stars { display: flex; gap: 1px; flex: none; }
     .star {
-      width: 30px; height: 30px; border: none; background: transparent;
-      color: rgba(35,39,31,.22); font-size: 20px; line-height: 1; cursor: pointer;
+      width: clamp(38px,10vw,44px); height: clamp(38px,10vw,44px); border: none; background: transparent;
+      color: rgba(35,39,31,.22); font-size: clamp(20px,5.6vw,24px); line-height: 1; cursor: pointer;
       display: flex; align-items: center; justify-content: center;
       transition: transform .12s var(--ease), color .15s ease;
     }
@@ -98,38 +189,35 @@
     .star.on { color: var(--green); }
     @media (prefers-reduced-motion: no-preference) { .star.on { animation: pop .3s var(--ease); } }
     @keyframes pop { 0% { transform: scale(.7) rotate(-8deg); } 60% { transform: scale(1.18) rotate(4deg); } 100% { transform: none; } }
-    .rating-cell.err .star { color: var(--error); }
+    .rate-err .stars .star { color: var(--error); }
 
     /* ══ fields ══ */
-    .field { margin: 14px 0; }
-    .field:first-child { margin-top: 0; }
-    .field label { display: block; font-size: 13px; color: var(--ink); margin-bottom: 7px; }
-    .field label small { display: block; color: var(--ink-faint); font-size: 11.5px; margin-top: 2px; }
-    .field input[type=text], .field input[type=url], .field input[type=tel] {
+    .field { margin-top: 12px; }
+    .field > label { display: block; font-size: 13px; color: var(--ink); margin-bottom: 6px; }
+    .field > label small { color: var(--ink-faint); font-size: 12px; }
+    .field input[type=text], .field input[type=tel] {
       width: 100%; font-family: var(--mono); font-size: 16px; color: var(--ink);
-      background: rgba(255,255,255,.7); border: 1.5px solid var(--rule); border-radius: 11px;
-      padding: 10px 13px; transition: border-color .2s ease, background .2s ease;
+      background: rgba(255,255,255,.5); border: 1.5px solid var(--rule); border-radius: 11px;
+      padding: 11px 13px; transition: border-color .2s ease, background .2s ease;
     }
-    .field input:focus { outline: none; border-color: var(--green); background: #fff; }
+    .field input:focus { outline: none; border-color: var(--green); background: rgba(255,255,255,.88); }
     .field input::placeholder { color: var(--placeholder); }
-    .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 12px; }
-    @media (max-width: 420px) { .row2 { grid-template-columns: 1fr; } }
 
     .phone-row { display: flex; gap: 8px; }
     .phone-row .prefix {
-      display: flex; align-items: center; font-size: 16px; color: var(--ink-soft);
-      border: 1.5px solid var(--rule); border-radius: 11px; padding: 0 11px; background: rgba(255,255,255,.5);
+      display: flex; align-items: center; font-size: 15px; color: var(--ink-soft);
+      border: 1.5px solid var(--rule); border-radius: 11px; padding: 0 11px; background: rgba(255,255,255,.35);
     }
     .phone-row input { flex: 1; }
 
-    /* ══ pills ══ */
-    .chips { display: flex; flex-wrap: wrap; gap: 7px; }
+    /* ══ pills — same component, tighter ══ */
+    .chips { display: flex; flex-wrap: wrap; gap: 6px; }
     .chip { position: relative; }
     .chip input { position: absolute; opacity: 0; width: 1px; height: 1px; }
     .chip span {
-      display: block; font-family: var(--mono); font-size: 13px; color: var(--ink-soft);
-      background: rgba(255,255,255,.5); border: 1.5px solid var(--rule); border-radius: 999px;
-      padding: 7px 12px; cursor: pointer; user-select: none;
+      display: block; font-family: var(--mono); font-size: 12px; color: var(--ink-soft);
+      background: rgba(255,255,255,.4); border: 1.5px solid var(--rule); border-radius: 999px;
+      padding: 7px 10px; cursor: pointer; user-select: none;
       transition: background .16s ease, color .16s ease, border-color .16s ease, transform .16s var(--ease);
     }
     .chip span:hover { border-color: var(--green); color: var(--green); }
@@ -138,17 +226,17 @@
     @media (prefers-reduced-motion: no-preference) { .chip input:checked + span { animation: pick .3s var(--ease); } }
     @keyframes pick { 0% { transform: scale(.9); } 55% { transform: scale(1.07); } 100% { transform: none; } }
     .chip input:focus-visible + span { outline: 3px solid var(--green); outline-offset: 2px; }
-    .chip-other { margin-top: 8px; }
+    .chip-other { margin-top: 9px; }
 
-    .field-err { font-size: 13px; color: var(--error); margin: -4px 0 10px; }
+    .field-err { font-size: 13px; color: var(--error); margin-top: 12px; }
 
-    /* ══ button ══ */
+    /* ══ button — same component ══ */
     .cta {
-      display: block; width: 100%; font-family: var(--mono); font-size: 15px; font-weight: 700;
+      display: block; width: 100%; font-family: var(--mono); font-size: 15.5px; font-weight: 700;
       text-align: center; color: var(--paper); background: var(--green); border: none;
       border-radius: 999px; padding: 15px 24px; cursor: pointer;
       box-shadow: 0 4px 0 var(--green-deep); transition: transform .1s var(--ease), box-shadow .1s var(--ease);
-      margin-top: 4px; position: relative; overflow: hidden;
+      margin-top: 18px; position: relative; overflow: hidden;
     }
     .cta::after {
       content: ''; position: absolute; top: 0; left: -70%; width: 45%; height: 100%;
@@ -158,128 +246,140 @@
     .cta:hover::after { left: 130%; }
     .cta:active { transform: translateY(4px); box-shadow: 0 0 0 var(--green-deep); }
     @media (prefers-reduced-motion: reduce) { .cta:active { transform: none; } .cta::after { display: none; } }
-    .micro { font-size: 12px; color: var(--ink-faint); margin-top: 12px; text-align: center; }
+    .micro { font-size: 12px; color: var(--ink-faint); margin-top: 11px; text-align: center; }
+    .micro a { color: var(--green); text-underline-offset: 3px; }
 
+    #thanks { text-align: center; padding: 12px 0; }
     #thanks .stamp {
-      display: inline-block; font-family: var(--mono); font-weight: 700; font-size: 19px;
-      color: var(--green); border: 3px solid var(--green); border-radius: 12px; padding: 9px 16px;
-      transform: rotate(-3deg); margin-bottom: 14px;
+      display: inline-block; font-family: var(--mono); font-weight: 700; font-size: clamp(16px,4.6vw,20px);
+      color: var(--green); border: 3px solid var(--green); border-radius: 12px; padding: 10px 18px;
+      transform: rotate(-3deg); margin-bottom: 16px;
     }
     @media (prefers-reduced-motion: no-preference) { #thanks .stamp { animation: stampIn .5s cubic-bezier(.18,1.4,.4,1) both; } }
     @keyframes stampIn { 0% { opacity: 0; transform: rotate(-15deg) scale(1.7); } 100% { opacity: 1; transform: rotate(-3deg) scale(1); } }
-    #thanks p { color: var(--ink-soft); }
-    #thanks p + p { margin-top: 6px; }
+    #thanks p { color: var(--ink-soft); max-width: 40ch; margin: 0 auto; }
+    #thanks p + p { margin-top: 8px; }
 
-    footer { max-width: 520px; margin: 0 auto; padding: 20px 22px 34px; text-align: center; }
-    footer a { color: var(--green); text-decoration-color: rgba(46,91,52,.4); text-underline-offset: 3px; font-size: 13px; }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .masthead > * { opacity: 1; transform: none; animation: none; }
+    }
   </style>
 </head>
 <body>
 
 <div class="scrollbar" id="scrollbar" aria-hidden="true"></div>
 
-<div class="banner"><img src="/images/smbc/hero.jpg" alt="" fetchpriority="high" onerror="this.parentElement.style.display='none'"></div>
+<div class="backdrop" aria-hidden="true">
+  <div class="backdrop-inner">
+    <img src="/images/smbc/hero.jpg" alt="" fetchpriority="high" onerror="this.style.display='none'">
+    <div class="tv-fx"><div class="tv-glow"></div><div class="tv-scan"></div></div>
+  </div>
+</div>
 
-<div class="lead">
+<header class="masthead">
   <p class="wordmark"><a href="/smbc/">Sunday Morning Build Club</a></p>
   <p class="eyebrow" id="eyebrow">debrief</p>
   <h1>How was your Sunday?</h1>
-  <p><b>Take 60 seconds</b> to share your honest thoughts.</p>
-</div>
+  <p class="masthead-sub">Take 60 seconds to share your honest thoughts.</p>
+</header>
 
-<div class="sheet">
-  <div class="doc">
-    <form id="fbForm" novalidate>
+<main>
+  <div class="steps-bar" aria-hidden="true"><i class="on" id="bar1"></i><i id="bar2"></i></div>
 
-      <div class="sec">
-        <span class="tag">[ THE READINGS ]</span>
+  <form id="fbForm" novalidate>
+    <div class="panel">
+
+      <!-- ═══ step 1 ═══ -->
+      <div class="step on" id="step1">
+        <p class="tag">[ THE READINGS ]<span class="done" id="readDone">&#10003;</span></p>
         <p class="scale-hint">Tap 1 (meh) to 5 (loved it).</p>
-        <div class="rating-grid" id="ratings"></div>
-      </div>
+        <div id="ratings"></div>
 
-      <div class="sec">
-        <span class="tag">[ FIELD NOTES ]</span>
+        <hr class="rule">
 
         <div class="field" style="margin-top:0">
-          <label>What did you leave with?</label>
-          <div class="chips" id="leftChips">
-            <label class="chip"><input type="checkbox" value="clarity"><span>clarity</span></label>
-            <label class="chip"><input type="checkbox" value="an action plan"><span>an action plan</span></label>
-            <label class="chip"><input type="checkbox" value="potential collaboration"><span>potential collaboration</span></label>
-            <label class="chip"><input type="checkbox" value="a new friend"><span>a new friend</span></label>
-            <label class="chip"><input type="checkbox" value="__other" id="leftOtherToggle"><span>something else</span></label>
-            <label class="chip"><input type="checkbox" value="none"><span>none</span></label>
-          </div>
-          <input class="chip-other" id="leftOther" type="text" placeholder="say it your way" hidden>
+          <label for="oneline">One line to sum up your experience</label>
+          <input id="oneline" type="text" autocomplete="off">
         </div>
 
-        <p class="sub-tag">what worked</p>
+        <p class="field-err" id="err1" role="alert" hidden></p>
+        <button type="button" class="cta" id="toStep2">[ Next ]</button>
+        <p class="micro">No sugarcoating. That's how the next Sunday gets better.</p>
+      </div>
+
+      <!-- ═══ step 2 ═══ -->
+      <div class="step" id="step2">
+      <p class="tag">[ FIELD NOTES ]</p>
+
+      <div class="field">
+        <label>What did you leave with?</label>
+        <div class="chips" id="leftChips">
+          <label class="chip"><input type="checkbox" value="clarity"><span>clarity</span></label>
+          <label class="chip"><input type="checkbox" value="action plan"><span>action plan</span></label>
+          <label class="chip"><input type="checkbox" value="potential collaboration"><span>collaboration</span></label>
+          <label class="chip"><input type="checkbox" value="a new friend"><span>a new friend</span></label>
+          <label class="chip"><input type="checkbox" value="__other" id="leftOtherToggle"><span>something else</span></label>
+          <label class="chip"><input type="checkbox" value="none"><span>none</span></label>
+        </div>
+        <input class="chip-other" id="leftOther" type="text" placeholder="say it your way" hidden>
+      </div>
+
+      <div class="field">
+        <label>What worked best?</label>
         <div class="chips" id="bestChips">
           <label class="chip"><input type="checkbox" value="the process"><span>the process</span></label>
           <label class="chip"><input type="checkbox" value="the people"><span>the people</span></label>
           <label class="chip"><input type="checkbox" value="the vibe"><span>the vibe</span></label>
-          <label class="chip"><input type="checkbox" value="recommending it"><span>recommending it</span></label>
           <label class="chip"><input type="checkbox" value="__other" id="bestOtherToggle"><span>something else</span></label>
         </div>
         <input class="chip-other" id="bestOther" type="text" placeholder="say it your way" hidden>
+      </div>
 
-        <p class="sub-tag">what's next</p>
+      <div class="field">
+        <label>What could be better?</label>
         <div class="chips" id="betterChips">
           <label class="chip"><input type="checkbox" value="the process"><span>the process</span></label>
           <label class="chip"><input type="checkbox" value="the people"><span>the people</span></label>
           <label class="chip"><input type="checkbox" value="the vibe"><span>the vibe</span></label>
-          <label class="chip"><input type="checkbox" value="recommending it"><span>recommending it</span></label>
           <label class="chip"><input type="checkbox" value="__other" id="betterOtherToggle"><span>something else</span></label>
         </div>
         <input class="chip-other" id="betterOther" type="text" placeholder="say it your way" hidden>
+      </div>
 
-        <div class="row2" style="margin-top:16px">
-          <div class="field" style="margin:0">
-            <label for="oneline">One line to sum it up</label>
-            <input id="oneline" type="text" autocomplete="off">
-          </div>
-          <div class="field" style="margin:0">
-            <label for="link">what you built <small>optional</small></label>
-            <input id="link" type="url" inputmode="url" placeholder="https://…" autocomplete="off">
-          </div>
+      <hr class="rule">
+
+      <p class="tag">[ SIGN OFF ]</p>
+
+      <div class="field">
+        <label for="name">your name <small>optional</small></label>
+        <input id="name" type="text" autocomplete="name">
+      </div>
+
+      <div class="field">
+        <label for="phone">WhatsApp number</label>
+        <div class="phone-row">
+          <span class="prefix">+91</span>
+          <input id="phone" type="tel" inputmode="numeric" maxlength="10" autocomplete="tel-national">
         </div>
       </div>
 
-      <div class="sec">
-        <span class="tag">[ SIGN OFF ]</span>
-        <div class="row2">
-          <div class="field" style="margin:0">
-            <label for="name">your name <small>optional</small></label>
-            <input id="name" type="text" autocomplete="name">
-          </div>
-          <div class="field" style="margin:0">
-            <label for="phone">WhatsApp number</label>
-            <div class="phone-row">
-              <span class="prefix">+91</span>
-              <input id="phone" type="tel" inputmode="numeric" maxlength="10" autocomplete="tel-national">
-            </div>
-          </div>
-        </div>
-
-        <p class="field-err" id="err" role="alert" hidden style="margin-top:14px"></p>
-        <button type="submit" class="cta" style="margin-top:16px">[ Send it ]</button>
-        <p class="micro">No sugarcoating. That's how the next Sunday gets better.</p>
-
-        <noscript><span class="micro" style="display:block;margin-top:14px">This form needs JavaScript. WhatsApp your feedback to <a href="https://wa.me/+919925978977">+91 99259 78977</a> instead.</span></noscript>
+      <p class="field-err" id="err" role="alert" hidden></p>
+      <div class="step-foot">
+        <button type="button" class="back" id="toStep1">&larr; back</button>
+        <button type="submit" class="cta">[ Send it ]</button>
       </div>
-
-      <div id="thanks" hidden tabindex="-1">
-        <span class="stamp">[ FILED ]</span>
-        <p>Thanks for being honest.</p>
-        <p>The honest bits are exactly how the next room gets better. See you Sunday.</p>
+      <noscript><p class="micro">This form needs JavaScript. WhatsApp your feedback to <a href="https://wa.me/+919925978977">+91 99259 78977</a> instead.</p></noscript>
       </div>
-    </form>
-  </div>
-</div>
+    </div>
 
-<footer>
-  <p><a href="/smbc/">&larr; back to Sunday Morning Build Club</a></p>
-</footer>
+    <div class="panel" id="thanks" hidden tabindex="-1">
+      <span class="stamp">[ FILED ]</span>
+      <p>Thanks for being honest.</p>
+      <p>The honest bits are exactly how the next room gets better. See you Sunday.</p>
+    </div>
+  </form>
+</main>
 
 <script>
 const SHEET_ENDPOINT = 'https://script.google.com/macros/s/AKfycbyIdrCDzYTx7XQQ5l8ByaFW6FsGuSIJJvwTkN449Fhq20HrZjIYTnZpOWI4qs8-2uP5gw/exec';
@@ -290,7 +390,7 @@ addEventListener('scroll', () => {
   $('scrollbar').style.width = (h > 0 ? Math.min(100, scrollY / h * 100) : 0) + '%';
 }, { passive: true });
 
-/* the edition this debrief is for: most recent Sunday, including today */
+/* ── the edition this debrief is for: most recent Sunday, including today ── */
 const now = new Date();
 const lastSunday = new Date(now);
 lastSunday.setDate(now.getDate() - now.getDay());
@@ -299,23 +399,23 @@ const pad = n => (n < 10 ? '0' : '') + n;
 const editionISO = lastSunday.getFullYear() + '-' + pad(lastSunday.getMonth() + 1) + '-' + pad(lastSunday.getDate());
 $('eyebrow').textContent = 'debrief · ' + MONTHS[lastSunday.getMonth()] + ' ' + lastSunday.getDate();
 
-/* the 4 rating cells — 2x2 grid, "recommend" spans full width since its
-   label is long and would cramp a half column */
+/* ── the 4 rating rows ── */
 const PARAMS = [
   { k: 'process',   name: 'the process' },
   { k: 'people',    name: 'the people' },
   { k: 'vibe',      name: 'the vibe' },
-  { k: 'recommend', name: 'would you recommend this to someone you love?', span: true },
+  { k: 'recommend', name: 'would you recommend this to someone you love?', wide: true },
 ];
 const ratings = {};
-const grid = $('ratings');
+const ratingsWrap = $('ratings');
 PARAMS.forEach(p => {
-  const cell = document.createElement('div');
-  cell.className = 'rating-cell' + (p.span ? ' span' : ''); cell.dataset.k = p.k;
+  const row = document.createElement('div');
+  row.className = 'rate' + (p.wide ? ' wide' : ''); row.dataset.k = p.k;
   const lab = document.createElement('span');
-  lab.className = 'rate-name'; lab.textContent = p.name;
+  lab.className = 'rate-name'; lab.innerHTML = p.name;
   const stars = document.createElement('div');
-  stars.className = 'stars'; stars.setAttribute('role', 'radiogroup'); stars.setAttribute('aria-label', 'rate ' + p.name);
+  stars.className = 'stars'; stars.setAttribute('role', 'radiogroup');
+  stars.setAttribute('aria-label', 'rate ' + p.name.replace(/<br>/g, ' '));
   for (let v = 1; v <= 5; v++) {
     const b = document.createElement('button');
     b.type = 'button'; b.className = 'star'; b.dataset.v = v; b.textContent = '★';
@@ -323,20 +423,22 @@ PARAMS.forEach(p => {
     b.addEventListener('click', () => setRating(p.k, v));
     stars.appendChild(b);
   }
-  cell.appendChild(lab); cell.appendChild(stars);
-  grid.appendChild(cell);
+  row.appendChild(lab); row.appendChild(stars);
+  ratingsWrap.appendChild(row);
 });
 function setRating(k, v) {
   ratings[k] = v;
-  const cell = grid.querySelector('.rating-cell[data-k="' + k + '"]');
-  cell.classList.remove('err');
-  cell.querySelectorAll('.star').forEach((d, i) => {
-    const on = (i + 1) <= v;
-    d.classList.toggle('on', on);
+  const row = ratingsWrap.querySelector('.rate[data-k="' + k + '"]');
+  row.classList.remove('rate-err');
+  row.querySelectorAll('.star').forEach((d, i) => {
+    d.classList.toggle('on', (i + 1) <= v);
     d.setAttribute('aria-checked', (i + 1) === v ? 'true' : 'false');
   });
+  /* quiet confirmation that this section is done — no scrolling back to check */
+  $('readDone').classList.toggle('on', PARAMS.every(p => ratings[p.k]));
 }
 
+/* ── chip groups: "something else" reveals a field ── */
 function wireChipOther(toggleId, otherId) {
   const toggle = $(toggleId), other = $(otherId);
   if (!toggle) return;
@@ -363,26 +465,42 @@ function postRow(data) {
   fetch(SHEET_ENDPOINT, { method: 'POST', mode: 'no-cors', body: new URLSearchParams(data) }).catch(() => {});
 }
 
+/* ── steps ── */
+function showStep(n) {
+  $('step1').classList.toggle('on', n === 1);
+  $('step2').classList.toggle('on', n === 2);
+  $('bar1').classList.toggle('on', true);
+  $('bar2').classList.toggle('on', n === 2);
+  document.querySelector('.masthead').classList.toggle('compact', n === 2);
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+$('toStep2').addEventListener('click', () => {
+  const err1 = $('err1');
+  const missing = PARAMS.filter(p => !ratings[p.k]);
+  if (missing.length) {
+    missing.forEach(p => ratingsWrap.querySelector('.rate[data-k="' + p.k + '"]').classList.add('rate-err'));
+    err1.textContent = 'Rate all four first — one tap each, that’s it.'; err1.hidden = false;
+    return;
+  }
+  err1.hidden = true;
+  showStep(2);
+});
+$('toStep1').addEventListener('click', () => showStep(1));
+
 $('fbForm').addEventListener('submit', e => {
   e.preventDefault();
   const err = $('err');
   const missing = PARAMS.filter(p => !ratings[p.k]);
-  if (missing.length) {
-    missing.forEach(p => grid.querySelector('.rating-cell[data-k="' + p.k + '"]').classList.add('err'));
-    err.textContent = 'Rate all four first — one tap each, that’s it.'; err.hidden = false;
-    grid.querySelector('.rating-cell.err').scrollIntoView({ behavior: 'smooth', block: 'center' });
-    return;
-  }
+  if (missing.length) { showStep(1); $('err1').textContent = 'Rate all four first — one tap each, that’s it.'; $('err1').hidden = false; return; }
   const digits = $('phone').value.replace(/\D/g, '');
   if (digits.length !== 10) { err.textContent = 'We need your 10-digit WhatsApp number.'; err.hidden = false; $('phone').focus(); return; }
   err.hidden = true;
 
-  const left   = collectChips('leftChips', 'leftOtherToggle', 'leftOther');
-  const best   = collectChips('bestChips', 'bestOtherToggle', 'bestOther');
-  const better = collectChips('betterChips', 'betterOtherToggle', 'betterOther');
+  const left    = collectChips('leftChips', 'leftOtherToggle', 'leftOther');
+  const best    = collectChips('bestChips', 'bestOtherToggle', 'bestOther');
+  const better  = collectChips('betterChips', 'betterOtherToggle', 'betterOther');
   const oneline = $('oneline').value.trim();
-  const link = $('link').value.trim();
-  const name = $('name').value.trim();
+  const name    = $('name').value.trim();
 
   const bundle = 'smbc-feedback · edition ' + editionISO
     + (name ? ' | ' + name : '')
@@ -390,21 +508,35 @@ $('fbForm').addEventListener('submit', e => {
     + (left ? ' | left with: ' + left : '')
     + (best ? ' | best: ' + best : '')
     + (better ? ' | better: ' + better : '')
-    + (oneline ? ' | "' + oneline + '"' : '')
-    + (link ? ' | ' + link : '');
+    + (oneline ? ' | "' + oneline + '"' : '');
 
   postRow({
-    form: 'smbc-feedback', edition: editionISO, name,
+    form: 'smbc-feedback',
+    edition: editionISO,
+    name,
     phone: '+91' + digits,
     process: ratings.process, people: ratings.people, vibe: ratings.vibe, recommend: ratings.recommend,
-    left_with: left, best, better, oneline, link,
+    left_with: left, best, better, oneline,
     why: bundle,
   });
 
-  $('fbForm').querySelectorAll('.sec').forEach(s => s.hidden = true);
+  $('fbForm').querySelector('.panel').hidden = true;
+  document.querySelector('.steps-bar').hidden = true;
   const t = $('thanks'); t.hidden = false; t.focus();
-  t.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  window.scrollTo({ top: 0, behavior: 'smooth' });
 });
+
+/* ── scrim tracks scroll so glass keeps contrast ── */
+var ticking = false;
+function paintScrim() {
+  var t = Math.min(1, window.scrollY / (window.innerHeight * 0.5));
+  document.documentElement.style.setProperty('--scrim', t.toFixed(3));
+  ticking = false;
+}
+window.addEventListener('scroll', function () {
+  if (!ticking) { ticking = true; requestAnimationFrame(paintScrim); }
+}, { passive: true });
+paintScrim();
 </script>
 
 </body>
