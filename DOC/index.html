@@ -655,11 +655,41 @@
     clearTimeout(el._t); el._t = setTimeout(() => el.classList.remove("show"), 1500);
   }
 
+  // ---------- anonymous session stats ----------
+  // No IPs, no raw device strings, and the free-text note is never sent —
+  // only whether one was used and how long it was.
+  const API = "https://chemistry-notes.manavjoshi01.workers.dev";
+  let sid = null, sidDone = true;
+  function trackStart(mode){
+    sid = crypto.randomUUID(); sidDone = false;
+    fetch(API + "/api/track", {
+      method: "POST", headers: {"content-type":"application/json"}, keepalive: true,
+      body: JSON.stringify({
+        phase: "start", id: sid, mode,
+        room: S.room, people: S.people, known: S.known, why: S.why,
+        noteProvided: !!S.note, noteLength: S.note ? S.note.length : 0,
+        deckLength: deck.length, theme: document.documentElement.dataset.theme,
+      }),
+    }).catch(() => {});
+  }
+  function trackEnd(cardsSeen, completed){
+    if (!sid || sidDone) return;
+    sidDone = true;
+    // fetch+keepalive survives page unload and, unlike sendBeacon, actually
+    // reaches a cross-origin endpoint reliably (verified — sendBeacon with a
+    // JSON body silently failed to arrive cross-origin here).
+    fetch(API + "/api/track", {
+      method: "POST", headers: {"content-type":"application/json"}, keepalive: true,
+      body: JSON.stringify({ phase: "end", id: sid, cardsSeen, completed }),
+    }).catch(() => {});
+  }
+  addEventListener("pagehide", () => trackEnd(idx + 1, false));
+
   // ---------- flow ----------
-  const start = cards => { deck = cards; idx = 0; busy = false; show("game"); paint(); };
+  function start(cards, mode){ deck = cards; idx = 0; busy = false; show("game"); paint(); trackStart(mode); }
   function go(dir){
     if (busy) return;
-    if (dir > 0 && idx >= deck.length-1){ show("end"); document.body.dataset.depth = "1"; return; }
+    if (dir > 0 && idx >= deck.length-1){ show("end"); document.body.dataset.depth = "1"; trackEnd(deck.length, true); return; }
     if (dir < 0 && idx === 0) return;
     busy = true;
     const top = $("table").lastElementChild;
@@ -695,8 +725,8 @@
   $("skipBtn").addEventListener("click", swap);
   $("gateDeep").addEventListener("click", () => go(1));
   $("gateWrap").addEventListener("click", () => { deck.splice(idx+1, deck.length-idx-2); go(1); });
-  $("quitBtn").addEventListener("click", () => { show("end"); document.body.dataset.depth = "1"; });
-  $("againBtn").addEventListener("click", () => { if (lastAI !== null) cook(lastAI); else start(buildDeck()); });
+  $("quitBtn").addEventListener("click", () => { trackEnd(idx + 1, false); show("end"); document.body.dataset.depth = "1"; });
+  $("againBtn").addEventListener("click", () => { if (lastAI !== null) cook(lastAI); else start(buildDeck(), "house"); });
   $("homeBtn").addEventListener("click", () => { show("setup"); document.body.dataset.depth = "1"; });
   document.addEventListener("keydown", e => {
     if (sheetOpen && e.key === "Escape") return closeSheet();
@@ -732,7 +762,7 @@
     el.addEventListener("pointercancel", up);
   }
 
-  const doDeal = () => { save(); aiOn ? cook(S.note) : (lastAI = null, start(buildDeck())); };
+  const doDeal = () => { save(); aiOn ? cook(S.note) : (lastAI = null, start(buildDeck(), "house")); };
   $("dealBtn").addEventListener("click", doDeal);
   $("peek").addEventListener("click", doDeal);
 
@@ -748,8 +778,8 @@
       const fd = cards.findIndex(c => c.lvl === 3);
       if (fd > 0) cards.splice(fd, 0, GATE());
       cards.push({q:d.closer, lvl:9, closer:true});
-      lastAI = note; start(cards);
-    } catch { lastAI = null; toast("Used the house deck"); start(buildDeck()); }
+      lastAI = note; start(cards, "ai");
+    } catch { lastAI = null; toast("Used the house deck"); start(buildDeck(), "ai_fallback"); }
   }
 
   // ---------- boot ----------
