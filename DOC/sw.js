@@ -1,4 +1,4 @@
-const CACHE = "deck-of-chem-v3";
+const CACHE = "deck-of-chem-v4";
 // paths are relative to this script's own URL (/DOC/sw.js) — a leading "/"
 // would resolve to the domain root, one level above where this app actually lives.
 const SHELL = ["./", "cards.js", "icon.svg", "manifest.json", "bg.jpg"];

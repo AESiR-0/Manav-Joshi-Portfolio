@@ -96,15 +96,15 @@
   [data-theme="dark"] .bg::after{background:radial-gradient(125% 78% at 50% 42%, hsl(var(--bg)/.28) 20%, hsl(var(--bg)/.8) 100%)}
 
   /* the photograph. drop any bg.jpg into public/ and it takes over automatically. */
-  .photo{position:absolute; inset:-8%; background:center/cover no-repeat url("/bg.jpg");
-    filter:blur(48px) saturate(126%); transform:scale(1.14);
+  .photo{position:absolute; inset:-8%; background:center/cover no-repeat url("bg.jpg");
+    filter:blur(18px) saturate(126%); transform:scale(1.14);
     opacity:0; transition:opacity .9s var(--ease)}
   body.has-photo .photo{opacity:1}
   body.has-photo .ink{opacity:.2}                  /* colour still shifts with depth, softly */
   body.has-photo .grain{opacity:.26}
-  body.has-photo .photo{filter:blur(48px) saturate(148%) contrast(106%)}
+  body.has-photo .photo{filter:blur(18px) saturate(140%) contrast(104%)}
   body.has-photo .bg::after{background:radial-gradient(130% 82% at 50% 42%, hsl(var(--bg)/.06) 20%, hsl(var(--bg)/.5) 100%)}
-  [data-theme="dark"] body.has-photo .photo{filter:blur(48px) saturate(118%) brightness(.34)}
+  [data-theme="dark"] body.has-photo .photo{filter:blur(20px) saturate(122%) brightness(.5)}
   [data-theme="dark"] body.has-photo .bg::after{background:radial-gradient(130% 82% at 50% 42%, hsl(var(--bg)/.4) 16%, hsl(var(--bg)/.88) 100%)}
   .grain{
     position:absolute; inset:0; opacity:.42; mix-blend-mode:overlay;
@@ -265,6 +265,7 @@
   .cardf .q{flex:1; display:flex; align-items:center; font-size:31px; font-weight:600;
     line-height:1.16; letter-spacing:-.042em; text-wrap:balance; padding:14px 0;
     position:relative; z-index:1; text-shadow:0 1px 20px hsl(var(--ink)/.4)}
+  body.has-photo .cardf .q{text-shadow:0 2px 14px hsl(var(--ink)/.55), 0 1px 2px hsl(var(--ink)/.4)}
   .cardf.long .q{font-size:26px}
   .cardf.xlong .q{font-size:22px}
   .cardf .bot{font-size:13.5px; font-weight:600; opacity:.55; position:relative; z-index:1; min-height:17px}
@@ -272,7 +273,7 @@
   /* a bright photo behind translucent cards washes out white text.
      with a photo present the panes get denser — glass still reads from the
      blur, rim and specular sweep, not from being see-through. */
-  body.has-photo .cardf{--c-a1:.93; --c-a2:.82; --c-a3:.89}
+  body.has-photo .cardf{--c-a1:.95; --c-a2:.9; --c-a3:.93}
   [data-theme="dark"] body.has-photo .cardf{--c-a1:.66; --c-a2:.5; --c-a3:.6}
   body.has-photo .peek i{backdrop-filter:blur(20px) saturate(180%) brightness(.92)}
 
@@ -776,7 +777,7 @@
   // if a photograph exists, it takes over the background. no code change needed.
   const probe = new Image();
   probe.onload = () => document.body.classList.add("has-photo");
-  probe.src = "/bg.jpg";
+  probe.src = "bg.jpg";
 
   (() => { let n=0,t;
     $("heroTube").addEventListener("click", () => {
