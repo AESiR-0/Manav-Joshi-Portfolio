@@ -97,14 +97,14 @@
 
   /* the photograph. drop any bg.jpg into public/ and it takes over automatically. */
   .photo{position:absolute; inset:-8%; background:center/cover no-repeat url("bg.jpg");
-    filter:blur(18px) saturate(126%); transform:scale(1.14);
+    filter:blur(9px) saturate(126%); transform:scale(1.14);
     opacity:0; transition:opacity .9s var(--ease)}
   body.has-photo .photo{opacity:1}
   body.has-photo .ink{opacity:.2}                  /* colour still shifts with depth, softly */
   body.has-photo .grain{opacity:.26}
-  body.has-photo .photo{filter:blur(18px) saturate(140%) contrast(104%)}
+  body.has-photo .photo{filter:blur(9px) saturate(134%) contrast(103%)}
   body.has-photo .bg::after{background:radial-gradient(130% 82% at 50% 42%, hsl(var(--bg)/.06) 20%, hsl(var(--bg)/.5) 100%)}
-  [data-theme="dark"] body.has-photo .photo{filter:blur(20px) saturate(122%) brightness(.5)}
+  [data-theme="dark"] body.has-photo .photo{filter:blur(11px) saturate(118%) brightness(.52)}
   [data-theme="dark"] body.has-photo .bg::after{background:radial-gradient(130% 82% at 50% 42%, hsl(var(--bg)/.4) 16%, hsl(var(--bg)/.88) 100%)}
   .grain{
     position:absolute; inset:0; opacity:.42; mix-blend-mode:overlay;
