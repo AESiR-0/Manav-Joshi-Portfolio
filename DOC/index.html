@@ -1,0 +1,792 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Deck of Chemistry</title>
+<meta name="description" content="A deck of conversation cards, written for the exact room you're in. From Chemistry Lab.">
+<meta property="og:title" content="Deck of Chemistry">
+<meta property="og:description" content="A deck of cards for the room you're in.">
+<meta name="theme-color" content="#eef2ea" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#08120c" media="(prefers-color-scheme: dark)">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700&display=swap">
+<script>
+  // resolve the theme before first paint so there's no flash
+  try {
+    document.documentElement.dataset.theme =
+      localStorage.getItem("cn:theme") ||
+      (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+  } catch { document.documentElement.dataset.theme = "light"; }
+</script>
+<style>
+  /* ==========================================================
+     Deck of Chemistry
+     One typeface (real SF on Apple hardware). One material: glass.
+     Behind the glass, ink in water. Nothing decorative.
+     ========================================================== */
+  :root{
+    --ink:150 26% 8%;
+    --paper:100 24% 96%;
+
+    --bg:100 24% 95%;
+    --fg:var(--ink);
+    --fg-dim:150 8% 40%;
+
+    --g-tint:0 0% 100%;
+    --g-a:.5;
+    --g-edge:.6;
+    --g-rim:0 0% 100%;
+
+    --c-a1:.76; --c-a2:.62; --c-a3:.70;
+
+    --font:-apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text",
+           "Inter Tight", "Segoe UI", system-ui, sans-serif;
+    --r:30px;
+    --spring:cubic-bezier(.34,1.4,.5,1);
+    --ease:cubic-bezier(.22,1,.36,1);
+  }
+  /* theme is an attribute, not a media query, so the toggle can override the OS */
+  :root[data-theme="dark"]{
+    --bg:150 30% 5%;
+    --fg:var(--paper);
+    --fg-dim:140 8% 60%;
+    --g-tint:140 20% 84%;
+    --g-a:.15;
+    --g-edge:.28;
+    --c-a1:.54; --c-a2:.36; --c-a3:.48;
+  }
+
+  *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html,body{height:100%}
+  body{
+    background:hsl(var(--bg)); color:hsl(var(--fg));
+    font-family:var(--font); font-weight:500; letter-spacing:-.017em;
+    display:flex; flex-direction:column; overflow:hidden;
+    padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+    -webkit-font-smoothing:antialiased;
+  }
+
+  /* ---------- ink in water ---------- */
+  .bg{position:fixed; inset:0; z-index:0; overflow:hidden; pointer-events:none; background:hsl(var(--bg))}
+  .bg .ink{position:absolute; left:-12%; top:-12%; width:124%; height:124%}
+  .ly{opacity:0; transition:opacity 1.3s var(--ease)}
+  body[data-depth="1"] .l1,
+  body[data-depth="2"] .l2,
+  body[data-depth="3"] .l3,
+  body[data-depth="w"] .lw{opacity:1}
+  /* light: pale watercolour. dark: deep pigment. */
+  .l1 .a{fill:#4fb86e}.l1 .b{fill:#1fa8a0}.l1 .c{fill:#a9d95e}
+  .l2 .a{fill:#1f9a72}.l2 .b{fill:#127a6e}.l2 .c{fill:#4fbe86}
+  .l3 .a{fill:#125c58}.l3 .b{fill:#0d4644}.l3 .c{fill:#1c7a64}
+  .lw .a{fill:#f0b25a}.lw .b{fill:#e08a3c}.lw .c{fill:#f7d074}
+  [data-theme="dark"] .l1 .a{fill:#2f8f5e}[data-theme="dark"] .l1 .b{fill:#1f7a76}[data-theme="dark"] .l1 .c{fill:#4aa35a}
+  [data-theme="dark"] .l2 .a{fill:#1f7d63}[data-theme="dark"] .l2 .b{fill:#155e57}[data-theme="dark"] .l2 .c{fill:#2c9268}
+  [data-theme="dark"] .l3 .a{fill:#0f4a48}[data-theme="dark"] .l3 .b{fill:#0c3a3c}[data-theme="dark"] .l3 .c{fill:#155d52}
+  [data-theme="dark"] .lw .a{fill:#b8752a}[data-theme="dark"] .lw .b{fill:#8f5218}[data-theme="dark"] .lw .c{fill:#d19a3c}
+  /* keeps the ink from flooding the screen — the card has to stay the brightest object */
+  .bg::after{content:""; position:absolute; inset:0; pointer-events:none;
+    background:radial-gradient(125% 78% at 50% 42%, transparent 26%, hsl(var(--bg)/.62) 100%)}
+  [data-theme="dark"] body[data-depth="1"] .l1, [data-theme="dark"] body[data-depth="2"] .l2,
+  [data-theme="dark"] body[data-depth="3"] .l3, [data-theme="dark"] body[data-depth="w"] .lw{opacity:.6}
+  [data-theme="dark"] .bg::after{background:radial-gradient(125% 78% at 50% 42%, hsl(var(--bg)/.28) 20%, hsl(var(--bg)/.8) 100%)}
+
+  /* the photograph. drop any bg.jpg into public/ and it takes over automatically. */
+  .photo{position:absolute; inset:-8%; background:center/cover no-repeat url("/bg.jpg");
+    filter:blur(48px) saturate(126%); transform:scale(1.14);
+    opacity:0; transition:opacity .9s var(--ease)}
+  body.has-photo .photo{opacity:1}
+  body.has-photo .ink{opacity:.2}                  /* colour still shifts with depth, softly */
+  body.has-photo .grain{opacity:.26}
+  body.has-photo .photo{filter:blur(48px) saturate(148%) contrast(106%)}
+  body.has-photo .bg::after{background:radial-gradient(130% 82% at 50% 42%, hsl(var(--bg)/.06) 20%, hsl(var(--bg)/.5) 100%)}
+  [data-theme="dark"] body.has-photo .photo{filter:blur(48px) saturate(118%) brightness(.34)}
+  [data-theme="dark"] body.has-photo .bg::after{background:radial-gradient(130% 82% at 50% 42%, hsl(var(--bg)/.4) 16%, hsl(var(--bg)/.88) 100%)}
+  .grain{
+    position:absolute; inset:0; opacity:.42; mix-blend-mode:overlay;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  main{position:relative; z-index:1; flex:1; display:flex; flex-direction:column;
+       max-width:460px; width:100%; margin:0 auto; padding:16px 18px 22px; min-height:0}
+  section{flex:1; display:flex; flex-direction:column; min-height:0}
+  [hidden]{display:none!important}
+  button{font:inherit; color:inherit; background:none; border:none; cursor:pointer; letter-spacing:inherit}
+
+  /* ---------- glass ---------- */
+  .glass{
+    background:linear-gradient(140deg, hsl(var(--g-tint)/calc(var(--g-a) + .16)) 0%,
+                                       hsl(var(--g-tint)/var(--g-a)) 44%,
+                                       hsl(var(--g-tint)/calc(var(--g-a) - .1)) 100%);
+    backdrop-filter:blur(26px) saturate(190%); -webkit-backdrop-filter:blur(26px) saturate(190%);
+    border:.5px solid hsl(var(--g-rim)/var(--g-edge));
+    box-shadow:inset 0 1px 0 hsl(var(--g-rim)/.5), inset 0 -1px 1px hsl(var(--g-rim)/.14),
+               0 18px 44px -22px hsl(var(--ink)/.5);
+  }
+  @supports not (backdrop-filter: blur(1px)){ .glass{background:hsl(var(--g-tint)/.9)} }
+
+  /* ---------- the tube ---------- */
+  .tube{flex:none; display:block}
+  .tube .liquid{animation:hue 16s linear infinite}
+  @keyframes hue{to{filter:hue-rotate(360deg)}}
+  .tube .body{stroke:currentColor}
+
+  /* ---------- setup ---------- */
+  .hero{flex:none; display:flex; align-items:center; gap:14px; padding:10px 2px 0}
+  .theme{margin-left:auto; align-self:flex-start; width:42px; height:42px; border-radius:50%; flex:none;
+    display:flex; align-items:center; justify-content:center; transition:transform .24s var(--spring)}
+  .theme:active{transform:scale(.88)}
+  .theme svg{width:19px; height:19px; stroke:currentColor; fill:none; stroke-width:1.8; stroke-linecap:round}
+  .theme .moon{display:none}
+  [data-theme="dark"] .theme .moon{display:block}
+  [data-theme="dark"] .theme .sun{display:none}
+  .hero .tube{width:43px; height:62px}
+  .hero h1{font-size:33px; font-weight:700; letter-spacing:-.045em; line-height:1.04}
+
+  .sentence{
+    flex:none; margin:26px 0 0; font-size:27px; font-weight:600;
+    line-height:53px; letter-spacing:-.035em;
+  }
+  .blank{
+    display:inline-block; padding:6px 15px 8px; margin:0 2px; border-radius:999px;
+    font-size:25px; font-weight:600; line-height:1.1; letter-spacing:-.035em;
+    background:hsl(var(--g-tint)/calc(var(--g-a) + .12));
+    backdrop-filter:blur(18px) saturate(180%); -webkit-backdrop-filter:blur(18px) saturate(180%);
+    border:.5px solid hsl(var(--g-rim)/var(--g-edge));
+    box-shadow:inset 0 1px 0 hsl(var(--g-rim)/.45), 0 6px 16px -10px hsl(var(--ink)/.45);
+    transition:transform .24s var(--spring);
+  }
+  .blank:active{transform:scale(.94)}
+  .blank.bump{animation:bump .42s var(--spring)}
+  @keyframes bump{0%{transform:scale(1)}38%{transform:scale(1.1)}100%{transform:scale(1)}}
+
+  .peek{flex:1; position:relative; min-height:96px; margin:10px 0 4px;
+        transition:transform .3s var(--spring); cursor:pointer}
+  .peek:active{transform:scale(.965)}
+  .peek i{
+    position:absolute; left:50%; top:50%; width:190px; height:118px; margin:-59px 0 0 -95px;
+    border-radius:22px; border:.5px solid hsl(0 0% 100%/.3);
+    backdrop-filter:blur(20px) saturate(180%); -webkit-backdrop-filter:blur(20px) saturate(180%);
+    box-shadow:inset 0 1px 0 hsl(0 0% 100%/.4), 0 16px 34px -20px hsl(var(--ink)/.7);
+    animation:float 6s var(--ease) infinite;
+  }
+  .peek .p3{background:hsl(168 44% 17%/.3); transform:rotate(8.5deg) translateY(-7px); animation-delay:.5s}
+  .peek .p2{background:hsl(150 48% 27%/.32); transform:rotate(1deg); animation-delay:.25s}
+  .peek .p1{background:hsl(104 40% 40%/.36); transform:rotate(-7deg) translateY(7px)}
+  @keyframes float{0%,100%{margin-top:-59px}50%{margin-top:-64px}}
+
+  .extra{flex:none; margin-bottom:12px}
+  .extra button{
+    width:100%; text-align:left; padding:14px 17px; border-radius:18px;
+    font-size:15px; font-weight:500; color:hsl(var(--fg));
+    display:block; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
+    transition:transform .2s var(--spring);
+  }
+  .extra button:active{transform:scale(.985)}
+  .extra .empty{opacity:.6}
+
+  .cta{flex:none; width:100%; padding:18px; border-radius:999px;
+       font-size:17px; font-weight:600; letter-spacing:-.022em; color:hsl(var(--fg));
+       transition:transform .2s var(--spring)}
+  .cta:active{transform:scale(.97)}
+  .cta.solid{
+    background:linear-gradient(160deg, hsl(158 46% 34%), hsl(168 44% 21%));
+    color:#fff; border:.5px solid hsl(var(--g-rim)/.34);
+    box-shadow:inset 0 1px 0 hsl(var(--g-rim)/.42), 0 16px 34px -18px hsl(168 44% 21%/.9);
+  }
+  .credit{flex:none; text-align:center; font-size:12px; color:hsl(var(--fg-dim)); padding-top:13px}
+  .credit a{color:inherit}
+
+  /* ---------- sheet ---------- */
+  .scrim{position:fixed; inset:0; z-index:20; background:hsl(var(--ink)/.36);
+         backdrop-filter:blur(3px); -webkit-backdrop-filter:blur(3px);
+         opacity:0; pointer-events:none; transition:opacity .32s var(--ease)}
+  .scrim.on{opacity:1; pointer-events:auto}
+  .sheet{position:fixed; z-index:21; left:8px; right:8px; bottom:8px; max-width:444px; margin:0 auto;
+         padding:18px 18px calc(18px + env(safe-area-inset-bottom)); border-radius:34px;
+         transform:translateY(120%); transition:transform .46s var(--spring)}
+  .sheet.on{transform:translateY(0)}
+  .sheet .grip{width:38px; height:5px; border-radius:3px; background:hsl(var(--fg)/.22); margin:0 auto 15px}
+  .sheet h3{font-size:20px; font-weight:600; letter-spacing:-.032em; margin-bottom:14px; padding:0 4px}
+  .choices{display:flex; flex-wrap:wrap; gap:8px}
+  .choice{padding:12px 16px; border-radius:999px; font-size:15.5px; font-weight:500; letter-spacing:-.022em;
+          background:hsl(var(--g-tint)/calc(var(--g-a) - .18)); border:.5px solid hsl(var(--g-rim)/.22);
+          transition:transform .2s var(--spring)}
+  .choice:active{transform:scale(.94)}
+  .choice.on{background:linear-gradient(160deg, hsl(158 46% 34%), hsl(168 44% 21%)); color:#fff; border-color:transparent}
+  .choices.nums .choice{width:56px; padding:14px 0; text-align:center; font-variant-numeric:tabular-nums}
+  .sheet textarea{width:100%; min-height:84px; resize:none; font:inherit; font-size:17px; font-weight:500;
+    letter-spacing:-.022em; line-height:1.35; color:hsl(var(--fg)); background:transparent; outline:none;
+    border:none; padding:2px 4px}
+  .sheet textarea::placeholder{color:hsl(var(--fg-dim)/.8)}
+  .sheet .note-help{padding:0 4px; font-size:13px; color:hsl(var(--fg-dim)); margin-bottom:12px; line-height:1.4}
+  .sheet .done{margin-top:14px; width:100%; padding:15px; border-radius:999px; font-size:16px; font-weight:600;
+    background:linear-gradient(160deg, hsl(158 46% 34%), hsl(168 44% 21%)); color:#fff;
+    transition:transform .2s var(--spring)}
+  .sheet .done:active{transform:scale(.97)}
+
+  /* ---------- game ---------- */
+  .bar{flex:none; display:flex; align-items:center; gap:11px; padding:2px 2px 0}
+  .bar .tube{width:17px; height:25px}
+  .bar .nm{font-size:14px; font-weight:600; letter-spacing:-.03em}
+  .bar .nm b{font-weight:600; opacity:.45}
+  .bar .sp{flex:1}
+  .bar .n{font-size:13px; font-weight:600; color:hsl(var(--fg-dim)); font-variant-numeric:tabular-nums}
+  .bar .end{padding:7px 13px; border-radius:999px; font-size:13px; font-weight:600;
+            transition:transform .2s var(--spring)}
+  .bar .end:active{transform:scale(.93)}
+  .track{flex:none; height:3px; border-radius:2px; background:hsl(var(--fg)/.14); overflow:hidden; margin-top:11px}
+  .track i{display:block; height:100%; border-radius:2px; background:hsl(var(--fg)/.6); width:0;
+           transition:width .5s var(--ease)}
+
+  .table{flex:1; position:relative; margin:14px 0 12px; min-height:0; touch-action:pan-y}
+  .cardf{
+    position:absolute; inset:0; margin:auto; max-height:452px;
+    border-radius:var(--r); overflow:hidden;
+    display:flex; flex-direction:column; justify-content:space-between;
+    padding:24px 24px 22px; color:#fff;
+    user-select:none; -webkit-user-select:none; will-change:transform;
+    background:linear-gradient(150deg, hsl(var(--tint)/var(--c-a1)) 0%,
+                                       hsl(var(--tint)/var(--c-a2)) 52%,
+                                       hsl(var(--tint)/var(--c-a3)) 100%);
+    backdrop-filter:blur(34px) saturate(200%); -webkit-backdrop-filter:blur(34px) saturate(200%);
+    border:.5px solid hsl(0 0% 100%/.34);
+    box-shadow:inset 0 1.5px 0 hsl(0 0% 100%/.46), inset 0 -1px 2px hsl(0 0% 100%/.12),
+               0 26px 54px -26px hsl(var(--ink)/.72);
+  }
+  .cardf::after{content:""; position:absolute; left:-30%; right:-30%; top:-62%; height:78%;
+    background:linear-gradient(to bottom, hsl(0 0% 100%/.2), hsl(0 0% 100%/0));
+    transform:rotate(-13deg); pointer-events:none}
+  .cardf .top{font-size:13.5px; font-weight:600; opacity:.72; position:relative; z-index:1}
+  .cardf .q{flex:1; display:flex; align-items:center; font-size:31px; font-weight:600;
+    line-height:1.16; letter-spacing:-.042em; text-wrap:balance; padding:14px 0;
+    position:relative; z-index:1; text-shadow:0 1px 20px hsl(var(--ink)/.4)}
+  .cardf.long .q{font-size:26px}
+  .cardf.xlong .q{font-size:22px}
+  .cardf .bot{font-size:13.5px; font-weight:600; opacity:.55; position:relative; z-index:1; min-height:17px}
+
+  /* a bright photo behind translucent cards washes out white text.
+     with a photo present the panes get denser — glass still reads from the
+     blur, rim and specular sweep, not from being see-through. */
+  body.has-photo .cardf{--c-a1:.93; --c-a2:.82; --c-a3:.89}
+  [data-theme="dark"] body.has-photo .cardf{--c-a1:.66; --c-a2:.5; --c-a3:.6}
+  body.has-photo .peek i{backdrop-filter:blur(20px) saturate(180%) brightness(.92)}
+
+  .cardf.lv1{--tint:104 46% 32%}
+  .cardf.lv2{--tint:150 48% 27%}
+  .cardf.lv3{--tint:168 44% 17%}
+  .cardf.is-wild{--tint:36 84% 46%}
+  .cardf.is-gate,.cardf.is-closer{--tint:150 30% 11%; border-color:hsl(0 0% 100%/.24)}
+
+  .under{transform:translateY(13px) scale(.952); opacity:.62}
+  .under2{transform:translateY(24px) scale(.906); opacity:.3}
+  .under,.under2{pointer-events:none}
+  .dealt{animation:dealt .56s var(--spring) both}
+  @keyframes dealt{from{opacity:0; transform:translateY(34px) scale(.92)} to{opacity:1; transform:none}}
+
+  .hint{flex:none; text-align:center; font-size:13.5px; color:hsl(var(--fg-dim)); margin-bottom:12px; min-height:17px}
+  .acts{flex:none; display:flex; gap:9px}
+  .act{padding:16px 14px; border-radius:999px; font-size:15.5px; font-weight:600; letter-spacing:-.022em;
+       color:hsl(var(--fg)); display:flex; align-items:center; justify-content:center;
+       transition:transform .2s var(--spring), opacity .2s}
+  .act:active{transform:scale(.94)}
+  .act.icon{width:54px; flex:none; padding:16px 0; font-size:17px}
+  .act.icon:disabled{opacity:.26; pointer-events:none}
+  .act.wide{flex:1}
+  .act.primary{flex:1.6; background:linear-gradient(160deg, hsl(156 68% 46%), hsl(168 62% 28%)); color:#fff;
+    border:.5px solid hsl(var(--g-rim)/.34);
+    box-shadow:inset 0 1px 0 hsl(var(--g-rim)/.48), 0 14px 30px -16px hsl(160 62% 28%/.95)}
+
+  .toast{position:fixed; left:50%; top:13%; z-index:30;
+    transform:translateX(-50%) translateY(-12px) scale(.94);
+    padding:11px 20px; border-radius:999px; font-size:14px; font-weight:600;
+    color:hsl(var(--fg)); opacity:0; pointer-events:none; transition:all .44s var(--spring)}
+  .toast.show{opacity:1; transform:translateX(-50%) translateY(0) scale(1)}
+
+  /* ---------- middles ---------- */
+  .mid{margin:auto; text-align:center; padding:0 6px}
+  .mid .tube{width:44px; height:66px; margin:0 auto 22px}
+  .mid h2{font-size:30px; font-weight:700; letter-spacing:-.045em; line-height:1.08}
+  .mid p{margin-top:10px; font-size:15px; color:hsl(var(--fg-dim))}
+  .mid .cta{margin-top:28px}
+  .mid .ghost{margin-top:9px; width:100%; padding:16px; border-radius:999px; font-size:15.5px;
+    font-weight:600; color:hsl(var(--fg)); transition:transform .2s var(--spring)}
+  .mid .ghost:active{transform:scale(.97)}
+
+  @media (max-height:690px){
+    .hero h1{font-size:28px} .hero .tube{width:32px;height:48px}
+    .sentence{font-size:23px; line-height:46px; margin-top:20px} .blank{font-size:21px; padding:5px 13px 7px}
+    .cardf .q{font-size:27px}
+  }
+  @media (prefers-reduced-motion: reduce){ *{animation-duration:.01ms!important; transition-duration:.08s!important} }
+</style>
+</head>
+<body data-depth="1">
+
+<div class="bg" aria-hidden="true">
+  <div class="photo"></div>
+  <svg class="ink" viewBox="0 0 400 800" preserveAspectRatio="xMidYMid slice">
+    <defs>
+      <filter id="swirl" x="-30%" y="-30%" width="160%" height="160%" color-interpolation-filters="sRGB">
+        <feTurbulence type="fractalNoise" baseFrequency="0.0042 0.0075" numOctaves="3" seed="14" result="n"/>
+        <feDisplacementMap in="SourceGraphic" in2="n" scale="190" xChannelSelector="R" yChannelSelector="G"/>
+        <feGaussianBlur stdDeviation="16"/>
+      </filter>
+    </defs>
+    <g class="ly l1" filter="url(#swirl)">
+      <circle class="a" cx="118" cy="168" r="196"/><circle class="b" cx="316" cy="430" r="210"/><circle class="c" cx="150" cy="676" r="192"/>
+    </g>
+    <g class="ly l2" filter="url(#swirl)">
+      <circle class="a" cx="292" cy="196" r="206"/><circle class="b" cx="104" cy="452" r="198"/><circle class="c" cx="300" cy="690" r="186"/>
+    </g>
+    <g class="ly l3" filter="url(#swirl)">
+      <circle class="a" cx="140" cy="238" r="214"/><circle class="b" cx="318" cy="530" r="216"/><circle class="c" cx="120" cy="716" r="180"/>
+    </g>
+    <g class="ly lw" filter="url(#swirl)">
+      <circle class="a" cx="200" cy="240" r="212"/><circle class="b" cx="300" cy="560" r="200"/><circle class="c" cx="96" cy="640" r="188"/>
+    </g>
+  </svg>
+  <div class="grain"></div>
+</div>
+
+<!-- the tube, drawn once and reused -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+  <clipPath id="tubeClip" clipPathUnits="userSpaceOnUse">
+    <path d="M16 4 L16 21.5 A15 15 0 1 0 24 21.5 L24 4 Z"/>
+  </clipPath>
+  <linearGradient id="sheen" x1="0" y1="0" x2="1" y2="0">
+    <stop offset="0" stop-color="#fff" stop-opacity=".5"/>
+    <stop offset=".4" stop-color="#fff" stop-opacity="0"/>
+    <stop offset="1" stop-color="#fff" stop-opacity=".16"/>
+  </linearGradient>
+</defs></svg>
+
+<main>
+
+  <!-- ============ setup ============ -->
+  <section id="setup">
+    <div class="hero">
+      <svg class="tube" viewBox="0 0 40 58" id="heroTube">
+        <g clip-path="url(#tubeClip)">
+          <path class="liquid" d="M0 27 Q20 23 40 27 L40 58 L0 58 Z" fill="#25d08c"/>
+          <rect x="0" y="0" width="40" height="58" fill="url(#sheen)"/>
+        </g>
+        <path class="body" d="M16 4 L16 21.5 A15 15 0 1 0 24 21.5 L24 4"
+              fill="none" stroke-width="2.7" stroke-linecap="round" opacity=".92"/>
+        <path class="body" d="M12.8 3.1 L27.2 3.1" stroke-width="2.7" stroke-linecap="round" opacity=".92"/>
+      </svg>
+      <h1>Deck of<br>Chemistry</h1>
+      <button class="theme glass" id="themeBtn" aria-label="Switch between light and dark">
+        <svg class="sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4.6"/><path d="M12 2.4v2.2M12 19.4v2.2M2.4 12h2.2M19.4 12h2.2M5.2 5.2l1.6 1.6M17.2 17.2l1.6 1.6M18.8 5.2l-1.6 1.6M6.8 17.2l-1.6 1.6"/></svg>
+        <svg class="moon" viewBox="0 0 24 24"><path d="M20 14.2A8.4 8.4 0 0 1 9.8 4a8.4 8.4 0 1 0 10.2 10.2z"/></svg>
+      </button>
+    </div>
+
+    <div class="sentence" id="sentence">
+      Tonight it's <button class="blank" data-f="room" id="bRoom">friends</button>,
+      <button class="blank" data-f="people" id="bPeople">4</button> of us,
+      we've known each other <button class="blank" data-f="known" id="bKnown">years</button>,
+      and it's <button class="blank" data-f="why" id="bWhy">just hanging</button>.
+    </div>
+
+    <div class="peek" id="peek" aria-hidden="true"><i class="p3"></i><i class="p2"></i><i class="p1"></i></div>
+
+    <div class="extra" id="extra" hidden>
+      <button class="glass" id="bNote"><span id="noteVal" class="empty">Anything I should know about tonight?</span></button>
+    </div>
+
+    <button class="cta solid" id="dealBtn">Deal the deck</button>
+    <div class="credit">A <a href="https://chemistrylab.irl" target="_blank" rel="noopener">Chemistry Lab</a> object</div>
+  </section>
+
+  <!-- ============ making ============ -->
+  <section id="cooking" hidden>
+    <div class="mid">
+      <svg class="tube" viewBox="0 0 40 58">
+        <g clip-path="url(#tubeClip)">
+          <path class="liquid" d="M0 27 Q20 23 40 27 L40 58 L0 58 Z" fill="#25d08c"/>
+          <rect x="0" y="0" width="40" height="58" fill="url(#sheen)"/>
+        </g>
+        <path class="body" d="M16 4 L16 21.5 A15 15 0 1 0 24 21.5 L24 4"
+              fill="none" stroke-width="2.7" stroke-linecap="round" opacity=".92"/>
+        <path class="body" d="M12.8 3.1 L27.2 3.1" stroke-width="2.7" stroke-linecap="round" opacity=".92"/>
+      </svg>
+      <h2>Writing your deck</h2>
+      <p id="cookNote">Made for this exact room.</p>
+    </div>
+  </section>
+
+  <!-- ============ game ============ -->
+  <section id="game" hidden>
+    <div class="bar">
+      <svg class="tube" viewBox="0 0 40 58">
+        <g clip-path="url(#tubeClip)">
+          <path class="liquid" d="M0 27 Q20 23 40 27 L40 58 L0 58 Z" fill="#25d08c"/>
+        </g>
+        <path class="body" d="M16 4 L16 21.5 A15 15 0 1 0 24 21.5 L24 4"
+              fill="none" stroke-width="3.2" stroke-linecap="round" opacity=".9"/>
+        <path class="body" d="M12.8 3.1 L27.2 3.1" stroke-width="3.2" stroke-linecap="round" opacity=".9"/>
+      </svg>
+      <span class="nm">Deck of <b>Chemistry</b></span>
+      <span class="sp"></span>
+      <span class="n" id="count"></span>
+      <button class="end glass" id="quitBtn">End</button>
+    </div>
+    <div class="track"><i id="trackFill"></i></div>
+    <div class="table" id="table"></div>
+    <div class="hint" id="hint"></div>
+    <div class="acts" id="playActs">
+      <button class="act icon glass" id="prevBtn" aria-label="Previous card">&#8249;</button>
+      <button class="act glass wide" id="skipBtn">Swap</button>
+      <button class="act primary" id="nextBtn">Next</button>
+    </div>
+    <div class="acts" id="gateActs" hidden>
+      <button class="act glass wide" id="gateWrap">Wrap up</button>
+      <button class="act primary" id="gateDeep">Go deeper</button>
+    </div>
+  </section>
+
+  <!-- ============ end ============ -->
+  <section id="end" hidden>
+    <div class="mid">
+      <h2>That's the deck.</h2>
+      <p>Hope it got somewhere real.</p>
+      <button class="cta solid" id="againBtn">Deal again</button>
+      <button class="ghost glass" id="homeBtn">Change the room</button>
+    </div>
+  </section>
+</main>
+
+<div class="toast glass" id="toast"></div>
+<div class="scrim" id="scrim"></div>
+<div class="sheet glass" id="sheet">
+  <div class="grip"></div>
+  <h3 id="sheetTitle"></h3>
+  <div id="sheetBody"></div>
+</div>
+
+<script src="cards.js"></script>
+<script>
+(() => {
+  const $ = id => document.getElementById(id);
+  const screens = ["setup","cooking","game","end"];
+  const show = n => screens.forEach(s => $(s).hidden = s !== n);
+  const buzz = ms => { try { navigator.vibrate && navigator.vibrate(ms); } catch {} };
+
+  const S = { room:"friends", people:4, known:"years", why:"hanging", note:"" };
+  let deck = [], idx = 0, busy = false, aiOn = false, lastAI = null;
+
+  const ROOMS = {new:"people I just met",friends:"friends",date:"a date",family:"family",work:"work"};
+  const KNOWN = {today:"since today",months:"a few months",years:"years",forever:"forever"};
+  const WHY   = {hanging:"just hanging",catchup:"catching up",celebrating:"a celebration",
+                 goodbye:"a goodbye",clearing:"clearing the air",first:"our first time together"};
+  const DEPTH = {1:"Light",2:"Real",3:"Deep"};
+
+  const ENDINGS = {
+    goodbye:  {grp:"say the thing you'd regret not saying.", two:"say the thing you'd regret not saying."},
+    clearing: {grp:"what do you want us to do differently?", two:"what do you want us to do differently?"},
+    celebrating:{grp:"raise something. toast the one who earned it.", two:"toast each other. out loud."},
+    first:    {grp:"one thing you'll remember about tonight. everyone answers.", two:"one thing you'll remember about tonight. both answer."},
+  };
+
+  // ---------- the sentence ----------
+  function paintSentence(){
+    $("bRoom").textContent   = ROOMS[S.room];
+    $("bPeople").textContent = S.people;
+    $("bKnown").textContent  = KNOWN[S.known];
+    $("bWhy").textContent    = WHY[S.why];
+    const v = $("noteVal");
+    v.textContent = S.note || "Anything I should know about tonight?";
+    v.classList.toggle("empty", !S.note);
+  }
+
+  const FIELDS = {
+    room:  {title:"Who's in the room?", opts:ROOMS},
+    known: {title:"How long have you known each other?", opts:KNOWN},
+    why:   {title:"What is tonight?", opts:WHY},
+  };
+
+  let sheetOpen = null;
+  function openSheet(f){
+    sheetOpen = f;
+    const body = $("sheetBody"); body.innerHTML = "";
+    if (f === "people"){
+      $("sheetTitle").textContent = "How many of you?";
+      const w = document.createElement("div"); w.className = "choices nums";
+      for (let n=2;n<=12;n++){
+        const b = document.createElement("button");
+        b.className = "choice" + (n===S.people?" on":""); b.textContent = n; b.dataset.v = n;
+        w.appendChild(b);
+      }
+      body.appendChild(w);
+      w.addEventListener("click", e => {
+        const b = e.target.closest(".choice"); if (!b) return;
+        S.people = +b.dataset.v; chose(); });
+    } else if (f === "note"){
+      $("sheetTitle").textContent = "Anything I should know about tonight?";
+      body.innerHTML =
+        `<div class="note-help">One line is enough. It shapes the questions without becoming the subject of them.</div>`+
+        `<textarea id="noteIn" maxlength="140" rows="3" placeholder="Two of us haven't spoken since last year."></textarea>`+
+        `<button class="done" id="noteDone">Done</button>`;
+      $("noteIn").value = S.note;
+      setTimeout(() => $("noteIn").focus(), 320);
+      $("noteDone").addEventListener("click", () => { S.note = $("noteIn").value.trim(); chose(); });
+    } else {
+      const cfg = FIELDS[f];
+      $("sheetTitle").textContent = cfg.title;
+      const w = document.createElement("div"); w.className = "choices";
+      Object.entries(cfg.opts).forEach(([k,label]) => {
+        const b = document.createElement("button");
+        b.className = "choice" + (k===S[f]?" on":""); b.textContent = label; b.dataset.v = k;
+        w.appendChild(b);
+      });
+      body.appendChild(w);
+      w.addEventListener("click", e => {
+        const b = e.target.closest(".choice"); if (!b) return;
+        S[f] = b.dataset.v;
+        if (f === "room" && S.room === "date") S.people = 2;
+        chose(); });
+    }
+    $("scrim").classList.add("on"); $("sheet").classList.add("on");
+  }
+  const closeSheet = () => { $("scrim").classList.remove("on"); $("sheet").classList.remove("on"); sheetOpen = null; };
+  function chose(){
+    buzz(9);
+    const map = {room:"bRoom", people:"bPeople", known:"bKnown", why:"bWhy"};
+    const el = map[sheetOpen] && $(map[sheetOpen]);
+    closeSheet(); paintSentence(); save();
+    if (el){ el.classList.remove("bump"); void el.offsetWidth; el.classList.add("bump"); }
+  }
+  $("sentence").addEventListener("click", e => {
+    const b = e.target.closest(".blank"); if (b) openSheet(b.dataset.f);
+  });
+  $("bNote").addEventListener("click", () => openSheet("note"));
+  $("scrim").addEventListener("click", closeSheet);
+  const save = () => { try { localStorage.setItem("cn:setup", JSON.stringify(S)); } catch {} };
+
+  // ---------- deck ----------
+  const shuffle = a => { for (let i=a.length-1;i>0;i--){const j=Math.random()*(i+1)|0;[a[i],a[j]]=[a[j],a[i]];} return a; };
+  const fits = (c,r,n) => c.tags.includes(r) && n >= (c.min||2) && n <= (c.max||99);
+  const sKey = r => "cn:seen:" + r;
+  const seenOf = r => { try { return new Set(JSON.parse(localStorage.getItem(sKey(r))||"[]")); } catch { return new Set(); } };
+  const remember = (r,qs) => { try {
+    const s = seenOf(r); qs.forEach(q => s.add(q)); localStorage.setItem(sKey(r), JSON.stringify([...s]));
+  } catch {} };
+  function take(pool,n,seen){
+    let fresh = pool.filter(c => !seen.has(c.q));
+    if (fresh.length < n){ try { localStorage.removeItem(sKey(S.room)); } catch {}; fresh = pool; }
+    return shuffle([...fresh]).slice(0,n);
+  }
+  function recipe(){
+    const n = S.people;
+    let r = n<=4 ? {l1:5,l2:5,l3:4,w:n===2?1:2} : n<=6 ? {l1:6,l2:6,l3:5,w:2} : {l1:7,l2:7,l3:5,w:2};
+    if (S.known === "today"){ r.l1+=1; r.l3=Math.max(2,r.l3-2); }
+    if (S.known === "forever"){ r.l1=Math.max(3,r.l1-1); r.l3+=1; }
+    if (S.why === "goodbye" || S.why === "clearing"){ r.l3+=1; r.l1=Math.max(3,r.l1-1); }
+    if (S.why === "celebrating"){ r.l1+=1; r.l3=Math.max(2,r.l3-1); }
+    return r;
+  }
+  const GATE = () => ({gate:true, q:"It can go deeper from here.", lvl:2.5});
+  const ending = () => {
+    const k = S.people === 2 ? "two" : "grp";
+    return (ENDINGS[S.why] && ENDINGS[S.why][k]) || CLOSERS[S.room][k];
+  };
+  function buildDeck(){
+    const r = S.room, n = S.people, seen = seenOf(r), rec = recipe();
+    const of = l => BANK.filter(c => !c.wild && c.lvl === l && fits(c,r,n));
+    let pre = [...take(of(1),rec.l1,seen), ...take(of(2),rec.l2,seen)];
+    shuffle(BANK.filter(c => c.wild && fits(c,r,n))).slice(0,rec.w).forEach((w,i) => {
+      pre.splice(Math.min(pre.length-1, 3 + i*5 + (Math.random()*3|0)), 0, {...w, lvl:0});
+    });
+    const cards = [...pre, GATE(), ...take(of(3),rec.l3,seen), {q:ending(), lvl:9, closer:true}];
+    remember(r, cards.filter(c => !c.closer && !c.wild && !c.gate).map(c => c.q));
+    return cards;
+  }
+
+  // ---------- render ----------
+  function cardEl(card, layer){
+    const el = document.createElement("div");
+    let cls = "cardf";
+    if (card.wild) cls += " is-wild";
+    else if (card.gate) cls += " is-gate";
+    else if (card.closer) cls += " is-closer";
+    else cls += " lv" + card.lvl;
+    if (card.q.length > 76) cls += " xlong"; else if (card.q.length > 48) cls += " long";
+    if (layer === 1) cls += " under"; if (layer === 2) cls += " under2";
+    if (layer === 0) cls += " dealt";
+    el.className = cls;
+    // cards under the top one are glass too, so any text in them reads straight
+    // through the pane above. They exist to show depth — shape only, no content.
+    if (layer > 0) return el;
+    const tag = card.closer ? "Last card" : card.gate ? "Checkpoint" : card.wild ? "Wildcard" : DEPTH[card.lvl];
+    const bot = card.gate ? "You decide together" : "";
+    el.innerHTML = `<div class="top">${tag}</div><div class="q">${card.q}</div><div class="bot">${bot}</div>`;
+    return el;
+  }
+  const depthKey = c => c.wild ? "w" : (c.gate || c.closer) ? "3" : String(Math.min(3, c.lvl || 1));
+
+  function paint(){
+    const t = $("table"); t.innerHTML = "";
+    for (let l=2;l>=0;l--){ const c = deck[idx+l]; if (c) t.appendChild(cardEl(c,l)); }
+    const cur = deck[idx];
+    document.body.dataset.depth = depthKey(cur);
+    $("count").textContent = (idx+1) + " / " + deck.length;
+    $("trackFill").style.width = ((idx+1)/deck.length*100) + "%";
+    $("playActs").hidden = !!cur.gate;
+    $("gateActs").hidden = !cur.gate;
+    $("prevBtn").disabled = idx === 0;
+    $("skipBtn").disabled = !!cur.closer;
+    $("skipBtn").style.opacity = cur.closer ? .3 : 1;
+    $("nextBtn").textContent = cur.closer ? "Finish" : "Next";
+    $("hint").textContent = cur.gate ? "Decide together"
+      : cur.closer ? "Land it"
+      : cur.wild ? "Do it, don't discuss it"
+      : S.people === 2 ? "Read it out loud, then pass the phone"
+      : "Read it out loud, then pass it left";
+    if (!cur.gate) swipeOn(t.lastElementChild);
+  }
+  function toast(m){
+    const el = $("toast"); el.textContent = m; el.classList.add("show");
+    clearTimeout(el._t); el._t = setTimeout(() => el.classList.remove("show"), 1500);
+  }
+
+  // ---------- flow ----------
+  const start = cards => { deck = cards; idx = 0; busy = false; show("game"); paint(); };
+  function go(dir){
+    if (busy) return;
+    if (dir > 0 && idx >= deck.length-1){ show("end"); document.body.dataset.depth = "1"; return; }
+    if (dir < 0 && idx === 0) return;
+    busy = true;
+    const top = $("table").lastElementChild;
+    top.style.transition = "transform .34s var(--ease), opacity .34s var(--ease)";
+    top.style.transform = `translateX(${dir*130}%) rotate(${dir*8}deg)`;
+    top.style.opacity = 0;
+    const wasGate = !!deck[idx].gate;
+    buzz(7);
+    setTimeout(() => {
+      idx += dir; busy = false; paint();
+      const c = deck[idx];
+      if (dir > 0){
+        if (wasGate && c.lvl === 3) toast("Going deep");
+        else if (c.closer) toast("Last card");
+      }
+    }, 300);
+  }
+  function swap(){
+    const cur = deck[idx];
+    if (cur.closer || cur.gate) return;
+    if (cur.wild){ deck.splice(idx,1); paint(); return; }
+    const inDeck = new Set(deck.map(c => c.q));
+    const ok = c => !c.wild && c.lvl === cur.lvl && fits(c,S.room,S.people) && !inDeck.has(c.q);
+    const seen = seenOf(S.room);
+    const pool = BANK.filter(c => ok(c) && !seen.has(c.q));
+    const alt = pool.length ? pool[Math.random()*pool.length|0] : BANK.filter(ok)[0];
+    if (alt){ deck[idx] = alt; remember(S.room,[alt.q]); paint(); buzz(6); }
+    else toast("Nothing left to swap");
+  }
+
+  $("nextBtn").addEventListener("click", () => go(1));
+  $("prevBtn").addEventListener("click", () => go(-1));
+  $("skipBtn").addEventListener("click", swap);
+  $("gateDeep").addEventListener("click", () => go(1));
+  $("gateWrap").addEventListener("click", () => { deck.splice(idx+1, deck.length-idx-2); go(1); });
+  $("quitBtn").addEventListener("click", () => { show("end"); document.body.dataset.depth = "1"; });
+  $("againBtn").addEventListener("click", () => { if (lastAI !== null) cook(lastAI); else start(buildDeck()); });
+  $("homeBtn").addEventListener("click", () => { show("setup"); document.body.dataset.depth = "1"; });
+  document.addEventListener("keydown", e => {
+    if (sheetOpen && e.key === "Escape") return closeSheet();
+    if ($("game").hidden) return;
+    if ((e.key === "ArrowRight" || e.key === " ") && !deck[idx].gate){ e.preventDefault(); go(1); }
+    if (e.key === "ArrowLeft") go(-1);
+  });
+
+  function swipeOn(el){
+    if (!el) return;
+    let x0=0, dx=0, drag=false;
+    el.addEventListener("pointerdown", e => {
+      if (busy) return;
+      drag = true; x0 = e.clientX; dx = 0;
+      el.setPointerCapture(e.pointerId); el.style.transition = "none";
+    });
+    el.addEventListener("pointermove", e => {
+      if (!drag) return;
+      dx = e.clientX - x0;
+      if (dx > 0 && idx === 0) dx *= .28;
+      el.style.transform = `translateX(${dx}px) rotate(${dx/26}deg)`;
+      const b = el.previousElementSibling;
+      if (b){ const t = Math.min(Math.abs(dx)/120,1);
+        b.style.transform = `translateY(${13-13*t}px) scale(${.952+.048*t})`; b.style.opacity = .5+.5*t; }
+    });
+    const up = () => {
+      if (!drag) return; drag = false;
+      if (Math.abs(dx) > 72) go(dx > 0 ? -1 : 1);
+      else if (Math.abs(dx) < 6) go(1);
+      else { el.style.transition = "transform .34s var(--spring)"; el.style.transform = ""; paint(); }
+    };
+    el.addEventListener("pointerup", up);
+    el.addEventListener("pointercancel", up);
+  }
+
+  const doDeal = () => { save(); aiOn ? cook(S.note) : (lastAI = null, start(buildDeck())); };
+  $("dealBtn").addEventListener("click", doDeal);
+  $("peek").addEventListener("click", doDeal);
+
+  async function cook(note){
+    show("cooking");
+    $("cookNote").textContent = note ? "Reading the room. A few seconds." : "Made for this exact room.";
+    try {
+      const r = await fetch("https://chemistry-notes.manavjoshi01.workers.dev/api/cook", { method:"POST", headers:{"content-type":"application/json"},
+        body: JSON.stringify({ room:S.room, people:S.people, known:S.known, why:S.why, note }) });
+      if (!r.ok) throw 0;
+      const d = await r.json();
+      const cards = d.cards.map(c => c.wild ? {q:c.q,lvl:0,wild:true} : {q:c.q,lvl:Math.min(3,Math.max(1,c.lvl))});
+      const fd = cards.findIndex(c => c.lvl === 3);
+      if (fd > 0) cards.splice(fd, 0, GATE());
+      cards.push({q:d.closer, lvl:9, closer:true});
+      lastAI = note; start(cards);
+    } catch { lastAI = null; toast("Used the house deck"); start(buildDeck()); }
+  }
+
+  // ---------- boot ----------
+  try {
+    const s = JSON.parse(localStorage.getItem("cn:setup") || "{}");
+    if (ROOMS[s.room]) S.room = s.room;
+    if (s.people >= 2 && s.people <= 12) S.people = s.people;
+    if (KNOWN[s.known]) S.known = s.known;
+    if (WHY[s.why]) S.why = s.why;
+    if (typeof s.note === "string") S.note = s.note;
+  } catch {}
+  paintSentence();
+  fetch("https://chemistry-notes.manavjoshi01.workers.dev/api/health").then(r => r.json()).then(h => { aiOn = !!h.ai; $("extra").hidden = !h.ai; }).catch(() => {});
+
+  // theme toggle — overrides the OS setting and remembers the choice
+  $("themeBtn").addEventListener("click", () => {
+    const next = document.documentElement.dataset.theme === "dark" ? "light" : "dark";
+    document.documentElement.dataset.theme = next;
+    try { localStorage.setItem("cn:theme", next); } catch {}
+    const m = document.querySelector('meta[name="theme-color"]:not([media])');
+    if (m) m.content = next === "dark" ? "#08120c" : "#eef2ea";
+    buzz(8);
+  });
+
+  // if a photograph exists, it takes over the background. no code change needed.
+  const probe = new Image();
+  probe.onload = () => document.body.classList.add("has-photo");
+  probe.src = "/bg.jpg";
+
+  (() => { let n=0,t;
+    $("heroTube").addEventListener("click", () => {
+      clearTimeout(t); t = setTimeout(() => n=0, 900);
+      if (++n === 5){ n=0; toast("Do not drink the reagents"); buzz(22); }
+    });
+  })();
+
+  if ("serviceWorker" in navigator) navigator.serviceWorker.register("sw.js").catch(() => {});
+})();
+</script>
+</body>
+</html>

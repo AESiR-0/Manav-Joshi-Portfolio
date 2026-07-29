@@ -1,0 +1,13 @@
+{
+  "name": "Deck of Chemistry",
+  "short_name": "Deck of Chem",
+  "description": "A deck of cards for the room you're in.",
+  "start_url": "/DOC/",
+  "scope": "/DOC/",
+  "display": "standalone",
+  "background_color": "#eef2ea",
+  "theme_color": "#1d7a5f",
+  "icons": [
+    { "src": "icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }
+  ]
+}
