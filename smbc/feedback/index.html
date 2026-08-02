@@ -259,6 +259,7 @@
     @keyframes stampIn { 0% { opacity: 0; transform: rotate(-15deg) scale(1.7); } 100% { opacity: 1; transform: rotate(-3deg) scale(1); } }
     #thanks p { color: var(--ink-soft); max-width: 40ch; margin: 0 auto; }
     #thanks p + p { margin-top: 8px; }
+    #thanks .cta { text-decoration: none; max-width: 320px; margin: 20px auto 0; }
 
     @media (prefers-reduced-motion: reduce) {
       html { scroll-behavior: auto; }
@@ -375,14 +376,20 @@
 
     <div class="panel" id="thanks" hidden tabindex="-1">
       <span class="stamp">[ FILED ]</span>
-      <p>Thanks for being honest.</p>
-      <p>The honest bits are exactly how the next room gets better. See you Sunday.</p>
+      <p>Thank you for sharing your thoughts. You just helped us get closer to make the best accelerator out there &#9728;&#65039;</p>
+      <div id="joinWrap" hidden>
+        <a class="cta" id="joinCommunity" href="#" target="_blank" rel="noopener">Join our WhatsApp community</a>
+      </div>
     </div>
   </form>
 </main>
 
 <script>
 const SHEET_ENDPOINT = 'https://script.google.com/macros/s/AKfycbyIdrCDzYTx7XQQ5l8ByaFW6FsGuSIJJvwTkN449Fhq20HrZjIYTnZpOWI4qs8-2uP5gw/exec';
+/* COMMUNITY_URL — the open WhatsApp group invite link (chat.whatsapp.com/…).
+   It appears on the thank-you screen the moment feedback is sent.
+   Leave it blank and the join block hides itself. */
+const COMMUNITY_URL = 'https://chat.whatsapp.com/DTMSCINfd09F5gMjuxipZ1';
 const $ = id => document.getElementById(id);
 
 addEventListener('scroll', () => {
@@ -486,6 +493,9 @@ $('toStep2').addEventListener('click', () => {
   showStep(2);
 });
 $('toStep1').addEventListener('click', () => showStep(1));
+
+/* ── the community link waits inside the (hidden) thank-you panel ── */
+if (COMMUNITY_URL) { $('joinCommunity').href = COMMUNITY_URL; $('joinWrap').hidden = false; }
 
 $('fbForm').addEventListener('submit', e => {
   e.preventDefault();
