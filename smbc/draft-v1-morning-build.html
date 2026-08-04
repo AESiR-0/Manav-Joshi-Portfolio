@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>sunday morning build</title>
+  <link rel="icon" href="/buildhouse/favicon.svg" type="image/svg+xml">
+  <meta name="description" content="every sunday, 9 to 1, at manav's place in ahmedabad. four hours on your most ambitious work. 8 seats, ₹300.">
+  <meta property="og:title" content="sunday morning build">
+  <meta property="og:description" content="every sunday, 9 to 1. four hours on your most ambitious work, next to people doing the same. 8 seats.">
+  <meta name="theme-color" content="#0b0d10">
+
+  <!-- Type: Helvetica Now Display is the brand face (self-hosted). Schoolbell = the hand notes. -->
+  <link rel="preload" href="/assets/fonts/HelveticaNowDisplay-Regular.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/assets/fonts/HelveticaNowDisplay-Black.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;900&family=Schoolbell&display=swap">
+
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    [hidden] { display: none !important; }
+
+    @font-face {
+      font-family: 'Helvetica Now Display';
+      src: url('/assets/fonts/HelveticaNowDisplay-Regular.woff2') format('woff2');
+      font-weight: 400; font-style: normal; font-display: swap;
+    }
+    @font-face {
+      font-family: 'Helvetica Now Display';
+      src: url('/assets/fonts/HelveticaNowDisplay-Medium.woff2') format('woff2');
+      font-weight: 500; font-style: normal; font-display: swap;
+    }
+    @font-face {
+      font-family: 'Helvetica Now Display';
+      src: url('/assets/fonts/HelveticaNowDisplay-Black.woff2') format('woff2');
+      font-weight: 900; font-style: normal; font-display: swap;
+    }
+
+    :root {
+      /* the house at night: one window still lit */
+      --night: #0b0d10;
+      --night-soft: #11141a;
+      --warm: #f2b544;          /* the lit window */
+      --warm-press: #c98f26;
+      --bone: #f4efe6;          /* warm off-white text */
+      --bone-soft: rgba(244, 239, 230, .72);
+      --bone-faint: rgba(244, 239, 230, .45);
+      --rule: rgba(244, 239, 230, .16);
+      --font: 'Helvetica Now Display', 'Inter', 'Helvetica Neue', -apple-system, BlinkMacSystemFont, sans-serif;
+      --hand: 'Schoolbell', cursive;
+    }
+
+    html { scroll-behavior: smooth; }
+    @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+
+    body {
+      background: var(--night);
+      color: var(--bone);
+      font-family: var(--font);
+      font-size: 17px;
+      line-height: 1.55;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+    a { color: var(--warm); }
+    ::selection { background: rgba(242, 181, 68, .28); }
+    :focus-visible { outline: 3px solid var(--warm); outline-offset: 3px; border-radius: 2px; }
+
+    /* top nav: back ‹ left, signature right (site convention) */
+    .topbar {
+      position: absolute; top: 0; left: 0; right: 0; z-index: 5;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: clamp(18px, 4vw, 30px) clamp(20px, 5vw, 48px);
+    }
+    .back {
+      color: var(--bone-soft); text-decoration: none; font-size: 15px; letter-spacing: .02em;
+    }
+    .back:hover { color: var(--bone); }
+    .sig { display: block; }
+    .sig img { height: clamp(30px, 6vw, 40px); width: auto; display: block; opacity: .92; filter: brightness(0) invert(1); }
+
+    /* ─── hero: night, one window lit ─── */
+    .hero {
+      position: relative; min-height: 100vh; min-height: 100svh;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      text-align: center; overflow: hidden;
+      padding: clamp(90px, 16vh, 140px) clamp(22px, 6vw, 56px) clamp(64px, 10vh, 100px);
+    }
+    /* the window glow */
+    .hero::before {
+      content: ''; position: absolute; z-index: 0;
+      width: min(76vw, 560px); height: min(76vw, 560px);
+      top: 50%; left: 50%; transform: translate(-50%, -58%);
+      background: radial-gradient(closest-side, rgba(242,181,68,.16), rgba(242,181,68,.05) 55%, transparent 75%);
+      pointer-events: none;
+    }
+    .hero > * { position: relative; z-index: 1; }
+
+    .hook {
+      font-size: clamp(15px, 4.2vw, 19px); color: var(--bone-soft);
+      max-width: 24ch; margin-bottom: clamp(18px, 3.5vw, 26px);
+    }
+    .house-mark { margin-bottom: clamp(14px, 3vw, 22px); }
+    .house-mark svg { width: clamp(52px, 12vw, 72px); height: auto; display: block; margin: 0 auto; }
+    h1 {
+      font-weight: 900; letter-spacing: -.03em; line-height: .92;
+      font-size: clamp(44px, 13vw, 96px); text-transform: lowercase;
+    }
+    .sub {
+      margin-top: clamp(16px, 3vw, 24px);
+      font-size: clamp(16px, 4.4vw, 20px); color: var(--bone);
+      max-width: 30ch;
+    }
+    .meta {
+      margin-top: clamp(14px, 2.6vw, 20px);
+      font-size: clamp(13px, 3.6vw, 15px); letter-spacing: .12em; text-transform: uppercase;
+      color: var(--bone-faint);
+    }
+    .meta .next { color: var(--warm); }
+    .hero .cta { margin-top: clamp(26px, 5vw, 38px); }
+
+    @media (prefers-reduced-motion: no-preference) {
+      .hero > * { opacity: 0; transform: translateY(14px); animation: rise .7s cubic-bezier(.22,1,.36,1) forwards; }
+      .house-mark { animation-delay: .04s; }
+      h1 { animation-delay: .1s; }
+      .sub { animation-delay: .2s; }
+      .meta { animation-delay: .3s; }
+      .hero .cta { animation-delay: .42s; }
+    }
+    @keyframes rise { to { opacity: 1; transform: none; } }
+
+    /* buttons */
+    .cta, .btn {
+      display: inline-block; font-family: var(--font); font-size: 17px; font-weight: 500;
+      letter-spacing: .01em; text-align: center; text-decoration: none; cursor: pointer;
+      color: #14100a; background: var(--warm); border: none; border-radius: 13px;
+      padding: 15px 30px; box-shadow: 0 4px 0 var(--warm-press);
+      transition: transform .08s, box-shadow .08s;
+    }
+    .btn { display: block; width: 100%; }
+    .cta:active, .btn:active { transform: translateY(4px); box-shadow: 0 0 0 var(--warm-press); }
+    @media (prefers-reduced-motion: reduce) { .cta:active, .btn:active { transform: none; box-shadow: 0 4px 0 var(--warm-press); } }
+
+    /* ─── sections ─── */
+    main { max-width: 640px; margin: 0 auto; padding: 0 clamp(22px, 6vw, 40px) 40px; }
+    section { padding: clamp(44px, 9vw, 76px) 0; border-top: 1px solid var(--rule); }
+    .k {
+      font-size: 12px; letter-spacing: .18em; text-transform: uppercase;
+      color: var(--warm); margin-bottom: clamp(18px, 4vw, 26px);
+    }
+    .big {
+      font-size: clamp(1.35rem, 5.6vw, 1.9rem); line-height: 1.28; letter-spacing: -.015em;
+      max-width: 26ch;
+    }
+    .big + .big { margin-top: 18px; }
+    .em { font-weight: 900; }
+
+    /* the morning list */
+    ul.deal { list-style: none; margin-top: 6px; }
+    ul.deal li {
+      padding: 16px 0; border-bottom: 1px dotted var(--rule);
+      font-size: clamp(1.05rem, 4.2vw, 1.25rem); line-height: 1.45;
+    }
+    ul.deal li:last-child { border-bottom: none; }
+    ul.deal .lead { font-weight: 900; }
+
+    /* price */
+    .price { font-weight: 900; font-size: clamp(3rem, 13vw, 4.6rem); line-height: 1; letter-spacing: -.02em; margin: 4px 0 10px; }
+    .price small { font-size: .32em; font-weight: 400; letter-spacing: 0; color: var(--bone-soft); }
+    .price-sub { color: var(--bone-soft); max-width: 36ch; }
+    .housebox {
+      margin-top: 26px; padding: 18px 20px; border: 1px solid rgba(242,181,68,.4); border-radius: 14px;
+      font-size: clamp(1rem, 3.8vw, 1.15rem); line-height: 1.5; max-width: 44ch;
+      background: rgba(242,181,68,.05);
+    }
+
+    /* hand notes: the joke in the corner */
+    .handnote {
+      font-family: var(--hand); color: var(--warm);
+      font-size: clamp(1.05rem, 4.2vw, 1.25rem); line-height: 1.2;
+      transform: rotate(-2deg); max-width: 18ch; margin-top: 22px;
+    }
+
+    /* ─── form ─── */
+    .field { margin-bottom: 24px; }
+    .field > label { display: block; font-size: 13.5px; letter-spacing: .05em; color: var(--bone-soft); margin-bottom: 4px; }
+    .field > label small { color: var(--bone-faint); letter-spacing: 0; }
+    .field input[type="text"], .field input[type="tel"] {
+      width: 100%; font-family: var(--font); font-size: 18px; color: var(--bone);
+      background: transparent; border: none; border-bottom: 2px solid var(--rule); border-radius: 0;
+      padding: 8px 2px 10px; -webkit-appearance: none; appearance: none;
+    }
+    .field input:focus { outline: none; border-bottom-color: var(--warm); }
+
+    .field-err { color: #ff9d7a; font-size: 14.5px; margin: 10px 0 16px; }
+    .micro { font-size: 13.5px; color: var(--bone-faint); margin-top: 16px; line-height: 1.5; }
+    .micro a { color: var(--bone-soft); }
+
+    /* pay step */
+    #pay { padding-top: 10px; }
+    #pay h3 { font-weight: 900; font-size: clamp(1.5rem, 6vw, 2rem); letter-spacing: -.02em; margin-bottom: 12px; }
+    #pay p { color: var(--bone-soft); max-width: 40ch; }
+    #pay .btn { margin-top: 22px; }
+    .upirow {
+      display: flex; align-items: center; justify-content: space-between; gap: 14px;
+      margin-top: 18px; padding: 14px 16px; border: 1px dotted var(--rule); border-radius: 12px;
+    }
+    .upirow code { font-size: 16px; color: var(--bone); }
+    .upirow button {
+      font-family: var(--font); font-size: 14px; color: var(--warm);
+      background: none; border: 1px solid rgba(242,181,68,.4); border-radius: 8px;
+      padding: 6px 12px; cursor: pointer;
+    }
+
+    /* proof footer */
+    footer {
+      max-width: 640px; margin: 0 auto;
+      padding: clamp(40px, 8vw, 60px) clamp(22px, 6vw, 40px) clamp(60px, 10vw, 90px);
+      border-top: 1px solid var(--rule);
+      color: var(--bone-faint); font-size: 15px; line-height: 1.6;
+    }
+    footer .who { color: var(--bone-soft); max-width: 44ch; }
+    footer .links { margin-top: 18px; display: flex; gap: 18px; flex-wrap: wrap; }
+    footer .links a { color: var(--bone-faint); text-decoration: none; border-bottom: 1px solid var(--rule); padding-bottom: 1px; }
+    footer .links a:hover { color: var(--bone); }
+  </style>
+</head>
+<body>
+
+  <div class="topbar">
+    <a href="/" class="back" aria-label="Back to home">‹ home</a>
+    <a href="/" class="sig" aria-label="Manav Joshi">
+      <img src="/assets/signature.gif" alt="Manav Joshi" onerror="this.closest('.sig').style.display='none'">
+    </a>
+  </div>
+
+  <!-- ─── hero ─── -->
+  <header class="hero">
+    <p class="hook">it's been "next weekend" for months.</p>
+    <div class="house-mark" aria-hidden="true">
+      <!-- the house at night, one window lit -->
+      <svg viewBox="0 0 72 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M8 30 36 8l28 22v26H8V30z" stroke="rgba(244,239,230,.5)" stroke-width="2.5" stroke-linejoin="round"/>
+        <rect x="40" y="34" width="12" height="12" rx="1.5" fill="#f2b544"/>
+        <rect x="20" y="34" width="12" height="12" rx="1.5" stroke="rgba(244,239,230,.3)" stroke-width="2"/>
+      </svg>
+    </div>
+    <h1>sunday<br>morning build</h1>
+    <p class="sub">four hours at my place, on the thing you actually want to build, next to people doing the same.</p>
+    <p class="meta">every sunday · 9am to 1pm · ahmedabad · 8 seats<br><span class="next">next one: <span id="nextDate">this sunday</span></span></p>
+    <a href="#seat" class="cta">claim a seat</a>
+  </header>
+
+  <main>
+
+    <!-- ─── the morning ─── -->
+    <section>
+      <p class="k">the morning</p>
+      <ul class="deal">
+        <li><span class="lead">9am. doors open.</span> chai's on. you say the one thing you're building today.</li>
+        <li><span class="lead">then we build.</span> no talks, no networking hour. the work is the meeting.</li>
+        <li><span class="lead">1pm. show what happened.</span> that part gets loud.</li>
+      </ul>
+      <p class="handnote">phones face down. mostly.</p>
+    </section>
+
+    <!-- ─── who it's for ─── -->
+    <section>
+      <p class="k">who it's for</p>
+      <p class="big">bring the work you keep postponing. a product, a script, a business, a book.</p>
+      <p class="big">the only bar: <span class="em">you build the whole morning.</span></p>
+    </section>
+
+    <!-- ─── the money ─── -->
+    <section>
+      <p class="k">the money</p>
+      <p class="price">₹300 <small>/ sunday</small></p>
+      <p class="price-sub">not the business. it's how i know you'll actually show up.</p>
+      <div class="housebox">
+        this is <a href="/buildhouse">the build house</a> warming up. the residency opens in august. sundays are its doors, open early.
+      </div>
+    </section>
+
+    <!-- ─── the seat ─── -->
+    <section id="seat">
+      <p class="k">claim a seat</p>
+
+      <form id="seatForm" novalidate>
+        <div class="field">
+          <label for="name">your name</label>
+          <input id="name" name="name" type="text" autocomplete="name">
+        </div>
+        <div class="field">
+          <label for="phone">whatsapp number <small>(10 digits)</small></label>
+          <input id="phone" name="phone" type="tel" inputmode="numeric" autocomplete="tel">
+        </div>
+        <div class="field">
+          <label for="building">what will you build this sunday?</label>
+          <input id="building" name="building" type="text" autocomplete="off">
+        </div>
+
+        <!-- honeypot: humans never see this -->
+        <div class="field" style="position:absolute;left:-5000px;" aria-hidden="true">
+          <label for="company">company</label>
+          <input id="company" name="company" type="text" tabindex="-1" autocomplete="off">
+        </div>
+
+        <p class="field-err" id="formErr" role="alert" hidden></p>
+        <button type="submit" class="btn">hold my seat</button>
+        <p class="micro">the address lands on your whatsapp once your seat is paid.<br>
+        form acting up? <a href="https://wa.me/919925978977?text=sunday%20morning%20build%20%2D%20the%20form%20broke%20on%20me">whatsapp me instead</a>.</p>
+      </form>
+
+      <div id="pay" hidden tabindex="-1">
+        <h3>seat held. make it real.</h3>
+        <p>pay ₹300 and whatsapp me the screenshot. you're in, and the address comes back to you.</p>
+        <a class="btn" id="upiBtn" href="#">pay ₹300 on upi</a>
+        <div class="upirow">
+          <code id="upiIdText">upi id</code>
+          <button type="button" id="copyUpi">copy</button>
+        </div>
+        <a class="btn" id="waBtn" href="#" style="margin-top:14px; background:transparent; color:var(--warm); border:1px solid rgba(242,181,68,.5); box-shadow:none;">send the screenshot on whatsapp</a>
+        <p class="handnote">see you sunday, 9am.</p>
+      </div>
+
+      <noscript>
+        <p class="micro">this form needs javascript. whatsapp "sunday build" to <a href="https://wa.me/919925978977">+91 99259 78977</a> and a human will sort it.</p>
+      </noscript>
+    </section>
+
+  </main>
+
+  <footer>
+    <p class="who">run by manav joshi. MICA, ten years of hosting india's rooms, now building <a href="/buildhouse">the build house</a>. sundays are where it starts.</p>
+    <div class="links">
+      <a href="/">manavjoshi.com</a>
+      <a href="https://www.instagram.com/manav.joshii/" target="_blank" rel="noopener noreferrer">instagram</a>
+      <a href="https://wa.me/919925978977?text=saw%20the%20sunday%20morning%20build%20page%2C%20had%20a%20question" target="_blank" rel="noopener noreferrer">whatsapp</a>
+    </div>
+  </footer>
+
+<script>
+/* ════════ EDIT THESE — the only knobs ════════
+   Rows land in the buildandbreak sheet tagged status=sundaybuild
+   (same fallback pattern as /buildhouse; see BUILDANDBREAK-SETUP.md). */
+const UPI_ID         = '9925978977@pz';
+const PRICE          = 300;
+const WHATSAPP       = '919925978977';
+const SHEET_ENDPOINT = 'https://script.google.com/macros/s/AKfycbyIdrCDzYTx7XQQ5l8ByaFW6FsGuSIJJvwTkN449Fhq20HrZjIYTnZpOWI4qs8-2uP5gw/exec';
+/* ═════════════════════════════════════════════ */
+
+const $ = id => document.getElementById(id);
+const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+/* next sunday, self-updating: no weekly hand-edits.
+   on a sunday the morning is already underway, so point at the next one. */
+const now = new Date();
+const daysAhead = ((7 - now.getDay()) % 7) || 7;
+const nextSunday = new Date(now.getFullYear(), now.getMonth(), now.getDate() + daysAhead);
+const dateLabel = nextSunday.toLocaleDateString('en-IN', { day: 'numeric', month: 'long' })
+  .toLowerCase();
+$('nextDate').textContent = 'sunday, ' + dateLabel;
+
+/* pay + confirm links */
+$('upiBtn').href = `upi://pay?pa=${encodeURIComponent(UPI_ID)}&pn=${encodeURIComponent('Manav Joshi')}&am=${PRICE}&cu=INR&tn=${encodeURIComponent('sunday morning build')}`;
+$('upiIdText').textContent = UPI_ID;
+$('copyUpi').addEventListener('click', async () => {
+  try {
+    await navigator.clipboard.writeText(UPI_ID);
+    $('copyUpi').textContent = 'copied';
+    setTimeout(() => { $('copyUpi').textContent = 'copy'; }, 1600);
+  } catch { /* clipboard blocked: the id is visible to copy by hand */ }
+});
+
+/* sheet write: fire and forget, never slow the path */
+function postRow(data) {
+  if (!SHEET_ENDPOINT || SHEET_ENDPOINT.startsWith('PASTE')) {
+    console.warn('SHEET_ENDPOINT not set; row not recorded:', JSON.stringify(data)); return;
+  }
+  fetch(SHEET_ENDPOINT, {
+    method: 'POST', mode: 'no-cors',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    body: new URLSearchParams(data),
+  }).catch(() => {});
+}
+
+$('seatForm').addEventListener('submit', e => {
+  e.preventDefault();
+  if ($('company').value) return; // honeypot: silently drop bots
+
+  const err = $('formErr');
+  const name = $('name').value.trim();
+  const digits = $('phone').value.replace(/\D/g, '');
+  const building = $('building').value.trim();
+
+  const fail = (msg, el) => { err.textContent = msg; err.hidden = false; if (el) el.focus(); };
+  if (!name) return fail('your name, so i know who\'s coming.', $('name'));
+  if (digits.length !== 10) return fail('that whatsapp number needs 10 digits.', $('phone'));
+  if (!building) return fail('one line on what you\'ll build.', $('building'));
+  err.hidden = true;
+
+  const phone = '+91' + digits;
+  postRow({
+    name, phone,
+    work: building,
+    why: '',
+    notes: 'sunday build ' + dateLabel,
+    status: 'sundaybuild',
+  });
+
+  const waText = `paid for sunday morning build (${dateLabel}). i'm ${name}. screenshot incoming.`;
+  $('waBtn').href = `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(waText)}`;
+
+  $('seatForm').hidden = true;
+  const pay = $('pay');
+  pay.hidden = false;
+  pay.scrollIntoView({ behavior: reducedMotion ? 'auto' : 'smooth', block: 'center' });
+  pay.focus({ preventScroll: true });
+});
+</script>
+</body>
+</html>
