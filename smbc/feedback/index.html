@@ -46,40 +46,32 @@
 
     .scrollbar { position: fixed; top: 0; left: 0; height: 3px; width: 0; z-index: 70; background: var(--green); pointer-events: none; transition: width .08s linear; }
 
-    /* ══ backdrop — same system as the invite page ══ */
+    /* ══ backdrop — the dog clocked in at the bottom of the frame. it sits
+       under the glass and dissolves upward into cream, so the photo is never
+       something the form has to fight to be read over ══ */
     .backdrop { position: fixed; inset: 0; z-index: -2; overflow: hidden; background: var(--cream); }
     .backdrop-inner {
-      position: absolute; top: 50%; left: 50%;
-      width: max(100vw, calc(100vh * 0.92));
-      aspect-ratio: 1100 / 1971;
-      transform: translate(-50%, calc(-58.3% - 12vh));
+      position: absolute; bottom: 0; left: 50%; transform: translateX(-50%);
+      width: min(100vw, 900px); height: clamp(300px, 52vh, 600px);
     }
-    .backdrop-inner img { width: 100%; height: 100%; object-fit: fill; display: block; }
+    /* contain, not cover — the dog and the laptop are the whole picture, so the
+       frame is never allowed to crop them off the sides */
+    .backdrop-inner img {
+      width: 100%; height: 100%; object-fit: contain; object-position: 50% 100%; display: block;
+      filter: saturate(.92);
+      -webkit-mask-image: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,.5) 20%, #000 50%);
+      mask-image: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,.5) 20%, #000 50%);
+    }
+    /* wider than the photo, cream closes the side edges rather than a hard seam */
+    .backdrop-inner::after {
+      content: ''; position: absolute; inset: 0; pointer-events: none;
+      background: linear-gradient(to right,
+        var(--cream), rgba(243,239,228,0) 11%, rgba(243,239,228,0) 89%, var(--cream));
+    }
     .backdrop::after {
       content: ''; position: absolute; inset: 0;
       background: linear-gradient(to bottom, rgba(35,39,31,.10), rgba(35,39,31,.30));
       opacity: var(--scrim); transition: opacity .25s linear;
-    }
-    .tv-fx { position: absolute; left: 38%; top: 53.5%; width: 24.5%; height: 9.6%; pointer-events: none; }
-    .tv-scan {
-      position: absolute; inset: 0; mix-blend-mode: multiply; opacity: .5;
-      background: repeating-linear-gradient(to bottom, rgba(20,40,25,.30) 0px, rgba(20,40,25,.30) 1px, transparent 1px, transparent 3px);
-    }
-    .tv-glow {
-      position: absolute; inset: -42%;
-      background: radial-gradient(ellipse at center, rgba(120,240,160,.34), transparent 68%);
-      mix-blend-mode: screen;
-    }
-    @media (prefers-reduced-motion: no-preference) {
-      .tv-glow  { animation: breathe 5.2s ease-in-out infinite; }
-      .tv-fx    { animation: flicker 9s steps(1, end) infinite; }
-      .tv-scan  { animation: roll 7s linear infinite; }
-    }
-    @keyframes breathe { 0%,100% { opacity: .68; } 50% { opacity: 1; } }
-    @keyframes roll    { to { background-position-y: 3px; } }
-    @keyframes flicker {
-      0%, 41%, 43%, 61%, 62.4%, 87%, 100% { opacity: 1; }
-      42%   { opacity: .58; } 61.7% { opacity: .74; } 87.6% { opacity: .5; }
     }
 
     /* ══ masthead — compact. the reader was in the room yesterday; they
@@ -120,9 +112,11 @@
       max-width: var(--panel-max); margin: 0 auto;
       padding: clamp(18px, 4.4vw, 30px) clamp(18px, 4.6vw, 30px);
       border-radius: 22px;
-      background: rgba(250, 247, 238, .62);
-      backdrop-filter: blur(22px) saturate(155%);
-      -webkit-backdrop-filter: blur(22px) saturate(155%);
+      /* lighter frosting than the invite page: there is a photo behind this one
+         and it should still be legible as a photo, not a brown smear */
+      background: rgba(250, 247, 238, .55);
+      backdrop-filter: blur(13px) saturate(150%);
+      -webkit-backdrop-filter: blur(13px) saturate(150%);
       border: 1px solid rgba(255, 255, 255, .40);
       box-shadow: inset 0 1px 0 rgba(255,255,255,.62), inset 1px 0 0 rgba(255,255,255,.26), 0 8px 40px rgba(28, 40, 24, .17);
     }
@@ -163,33 +157,35 @@
     }
     .back:hover { color: var(--green); }
 
-    /* ══ ratings — one row each, no wasted line ══ */
+    /* ══ ratings — 0 to 10. eleven targets can't sit beside a label, so every
+       row gets its own full-width strip and keeps a thumb-sized tap area ══ */
     .scale-hint { font-size: 12px; color: var(--ink-faint); margin-top: 6px; }
-    .rate {
-      padding: 8px 0; border-bottom: 1px dashed var(--dash);
-      display: flex; align-items: center; justify-content: space-between; gap: 10px;
-    }
+    .rate { padding: 11px 0 12px; border-bottom: 1px dashed var(--dash); }
     .rate:first-of-type { border-top: 1px dashed var(--dash); margin-top: 10px; }
     .rate:last-of-type { border-bottom: 0; }
-    .rate-name { font-size: 14px; color: var(--ink); line-height: 1.35; }
-    /* a question too long to sit beside its stars takes its own line, so the
-       stars keep a full-size tap target instead of being squeezed */
-    .rate.wide { flex-wrap: wrap; gap: 2px; }
-    .rate.wide .rate-name { width: 100%; }
-    .rate.wide .stars { margin-left: -6px; }
-    .stars { display: flex; gap: 1px; flex: none; }
-    .star {
-      width: clamp(38px,10vw,44px); height: clamp(38px,10vw,44px); border: none; background: transparent;
-      color: rgba(35,39,31,.22); font-size: clamp(20px,5.6vw,24px); line-height: 1; cursor: pointer;
+    .rate-name { display: block; font-size: 14px; color: var(--ink); line-height: 1.35; }
+    .scale { display: grid; grid-template-columns: repeat(11, 1fr); gap: 3px; margin-top: 9px; }
+    .dot {
+      height: clamp(36px, 9vw, 42px); padding: 0;
+      border: 1.5px solid var(--rule); border-radius: 9px;
+      background: rgba(255,255,255,.42); color: var(--ink-soft);
+      font-family: var(--mono); font-size: clamp(11px, 3vw, 13px); line-height: 1; cursor: pointer;
       display: flex; align-items: center; justify-content: center;
-      transition: transform .12s var(--ease), color .15s ease;
+      transition: transform .12s var(--ease), background .16s ease, color .16s ease, border-color .16s ease;
     }
-    .star:hover { color: rgba(46,91,52,.55); }
-    .star:active { transform: scale(.8); }
-    .star.on { color: var(--green); }
-    @media (prefers-reduced-motion: no-preference) { .star.on { animation: pop .3s var(--ease); } }
+    .dot:hover { border-color: rgba(46,91,52,.5); color: var(--green); }
+    .dot:active { transform: scale(.88); }
+    /* everything below the pick tints, so the row still reads as a level at a glance */
+    .dot.trail { background: rgba(46,91,52,.12); border-color: rgba(46,91,52,.28); color: var(--green); }
+    .dot.on { background: var(--green); border-color: var(--green-deep); color: var(--paper); font-weight: 700; }
+    @media (prefers-reduced-motion: no-preference) { .dot.on { animation: pop .3s var(--ease); } }
     @keyframes pop { 0% { transform: scale(.7) rotate(-8deg); } 60% { transform: scale(1.18) rotate(4deg); } 100% { transform: none; } }
-    .rate-err .stars .star { color: var(--error); }
+    .rate-err .scale .dot { border-color: var(--error); }
+    /* a bare 0-10 means nothing without its ends named */
+    .scale-ends {
+      display: flex; justify-content: space-between; gap: 10px;
+      margin-top: 6px; font-size: 11px; color: var(--ink-faint);
+    }
 
     /* ══ fields ══ */
     .field { margin-top: 12px; }
@@ -273,8 +269,7 @@
 
 <div class="backdrop" aria-hidden="true">
   <div class="backdrop-inner">
-    <img src="/images/smbc/hero.jpg" alt="" fetchpriority="high" onerror="this.style.display='none'">
-    <div class="tv-fx"><div class="tv-glow"></div><div class="tv-scan"></div></div>
+    <img src="/images/smbc/feedback-dog.jpg" alt="" fetchpriority="high" onerror="this.style.display='none'">
   </div>
 </div>
 
@@ -294,7 +289,7 @@
       <!-- ═══ step 1 ═══ -->
       <div class="step on" id="step1">
         <p class="tag">[ THE READINGS ]<span class="done" id="readDone">&#10003;</span></p>
-        <p class="scale-hint">Tap 1 (meh) to 5 (loved it).</p>
+        <p class="scale-hint">Tap one number on each row.</p>
         <div id="ratings"></div>
 
         <hr class="rule">
@@ -331,7 +326,7 @@
         <div class="chips" id="bestChips">
           <label class="chip"><input type="checkbox" value="the process"><span>the process</span></label>
           <label class="chip"><input type="checkbox" value="the people"><span>the people</span></label>
-          <label class="chip"><input type="checkbox" value="the vibe"><span>the vibe</span></label>
+          <label class="chip"><input type="checkbox" value="the space and vibe"><span>the space and vibe</span></label>
           <label class="chip"><input type="checkbox" value="__other" id="bestOtherToggle"><span>something else</span></label>
         </div>
         <input class="chip-other" id="bestOther" type="text" placeholder="say it your way" hidden>
@@ -342,7 +337,7 @@
         <div class="chips" id="betterChips">
           <label class="chip"><input type="checkbox" value="the process"><span>the process</span></label>
           <label class="chip"><input type="checkbox" value="the people"><span>the people</span></label>
-          <label class="chip"><input type="checkbox" value="the vibe"><span>the vibe</span></label>
+          <label class="chip"><input type="checkbox" value="the space and vibe"><span>the space and vibe</span></label>
           <label class="chip"><input type="checkbox" value="__other" id="betterOtherToggle"><span>something else</span></label>
         </div>
         <input class="chip-other" id="betterOther" type="text" placeholder="say it your way" hidden>
@@ -408,41 +403,50 @@ $('eyebrow').textContent = 'debrief · ' + MONTHS[lastSunday.getMonth()] + ' ' +
 
 /* ── the 4 rating rows ── */
 const PARAMS = [
-  { k: 'process',   name: 'the process' },
-  { k: 'people',    name: 'the people' },
-  { k: 'vibe',      name: 'the vibe' },
-  { k: 'recommend', name: 'would you recommend this to someone you love?', wide: true },
+  { k: 'process',   name: 'the process',        lo: 'meh',        hi: 'loved it' },
+  { k: 'people',    name: 'the people',         lo: 'meh',        hi: 'loved it' },
+  { k: 'vibe',      name: 'the space and vibe', lo: 'meh',        hi: 'loved it' },
+  { k: 'recommend', name: 'How likely are you to recommend SMBC to someone you love?',
+                                                lo: 'not likely', hi: 'absolutely' },
 ];
 const ratings = {};
+/* 0 is a real answer, so presence — not truthiness — is what counts as rated */
+const rated = k => ratings[k] !== undefined;
 const ratingsWrap = $('ratings');
 PARAMS.forEach(p => {
   const row = document.createElement('div');
-  row.className = 'rate' + (p.wide ? ' wide' : ''); row.dataset.k = p.k;
+  row.className = 'rate'; row.dataset.k = p.k;
   const lab = document.createElement('span');
   lab.className = 'rate-name'; lab.innerHTML = p.name;
-  const stars = document.createElement('div');
-  stars.className = 'stars'; stars.setAttribute('role', 'radiogroup');
-  stars.setAttribute('aria-label', 'rate ' + p.name.replace(/<br>/g, ' '));
-  for (let v = 1; v <= 5; v++) {
+  const scale = document.createElement('div');
+  scale.className = 'scale'; scale.setAttribute('role', 'radiogroup');
+  scale.setAttribute('aria-label', p.name.replace(/<br>/g, ' '));
+  for (let v = 0; v <= 10; v++) {
     const b = document.createElement('button');
-    b.type = 'button'; b.className = 'star'; b.dataset.v = v; b.textContent = '★';
-    b.setAttribute('role', 'radio'); b.setAttribute('aria-label', v + ' of 5'); b.setAttribute('aria-checked', 'false');
+    b.type = 'button'; b.className = 'dot'; b.dataset.v = v; b.textContent = v;
+    b.setAttribute('role', 'radio'); b.setAttribute('aria-label', v + ' out of 10'); b.setAttribute('aria-checked', 'false');
     b.addEventListener('click', () => setRating(p.k, v));
-    stars.appendChild(b);
+    scale.appendChild(b);
   }
-  row.appendChild(lab); row.appendChild(stars);
+  const ends = document.createElement('div');
+  ends.className = 'scale-ends';
+  const lo = document.createElement('span'); lo.textContent = '0 · ' + p.lo;
+  const hi = document.createElement('span'); hi.textContent = p.hi + ' · 10';
+  ends.appendChild(lo); ends.appendChild(hi);
+  row.appendChild(lab); row.appendChild(scale); row.appendChild(ends);
   ratingsWrap.appendChild(row);
 });
 function setRating(k, v) {
   ratings[k] = v;
   const row = ratingsWrap.querySelector('.rate[data-k="' + k + '"]');
   row.classList.remove('rate-err');
-  row.querySelectorAll('.star').forEach((d, i) => {
-    d.classList.toggle('on', (i + 1) <= v);
-    d.setAttribute('aria-checked', (i + 1) === v ? 'true' : 'false');
+  row.querySelectorAll('.dot').forEach((d, i) => {
+    d.classList.toggle('on', i === v);
+    d.classList.toggle('trail', i < v);
+    d.setAttribute('aria-checked', i === v ? 'true' : 'false');
   });
   /* quiet confirmation that this section is done — no scrolling back to check */
-  $('readDone').classList.toggle('on', PARAMS.every(p => ratings[p.k]));
+  $('readDone').classList.toggle('on', PARAMS.every(p => rated(p.k)));
 }
 
 /* ── chip groups: "something else" reveals a field ── */
@@ -483,7 +487,7 @@ function showStep(n) {
 }
 $('toStep2').addEventListener('click', () => {
   const err1 = $('err1');
-  const missing = PARAMS.filter(p => !ratings[p.k]);
+  const missing = PARAMS.filter(p => !rated(p.k));
   if (missing.length) {
     missing.forEach(p => ratingsWrap.querySelector('.rate[data-k="' + p.k + '"]').classList.add('rate-err'));
     err1.textContent = 'Rate all four first — one tap each, that’s it.'; err1.hidden = false;
@@ -500,7 +504,7 @@ if (COMMUNITY_URL) { $('joinCommunity').href = COMMUNITY_URL; $('joinWrap').hidd
 $('fbForm').addEventListener('submit', e => {
   e.preventDefault();
   const err = $('err');
-  const missing = PARAMS.filter(p => !ratings[p.k]);
+  const missing = PARAMS.filter(p => !rated(p.k));
   if (missing.length) { showStep(1); $('err1').textContent = 'Rate all four first — one tap each, that’s it.'; $('err1').hidden = false; return; }
   const digits = $('phone').value.replace(/\D/g, '');
   if (digits.length !== 10) { err.textContent = 'We need your 10-digit WhatsApp number.'; err.hidden = false; $('phone').focus(); return; }
@@ -514,7 +518,7 @@ $('fbForm').addEventListener('submit', e => {
 
   const bundle = 'smbc-feedback · edition ' + editionISO
     + (name ? ' | ' + name : '')
-    + ' | process ' + ratings.process + '/5, people ' + ratings.people + '/5, vibe ' + ratings.vibe + '/5, recommend ' + ratings.recommend + '/5'
+    + ' | process ' + ratings.process + '/10, people ' + ratings.people + '/10, space and vibe ' + ratings.vibe + '/10, recommend ' + ratings.recommend + '/10'
     + (left ? ' | left with: ' + left : '')
     + (best ? ' | best: ' + best : '')
     + (better ? ' | better: ' + better : '')
