@@ -200,7 +200,7 @@
     .fee p { font-size: 15.5px; line-height: 1.5; }
 
     .form { margin-top: 38px; display: grid; gap: 28px; }
-    .fld label { display: block; font-family: var(--disp); font-weight: 600; font-size: clamp(16px, 4vw, 18.5px); line-height: 1.25; margin-bottom: 10px; }
+    .fld label, .fld .lbl { display: block; font-family: var(--disp); font-weight: 600; font-size: clamp(16px, 4vw, 18.5px); line-height: 1.25; margin-bottom: 10px; }
     .fld input, .fld textarea {
       width: 100%; font-family: var(--sans); font-size: 16.5px; color: hsl(var(--ink));
       background: hsl(var(--card)); border: 1.5px solid hsl(var(--line));
@@ -225,6 +225,24 @@
     .soc:active { transform: translateY(1px); box-shadow: 0 0 0 hsl(var(--sun-deep)); }
     .fld .opt2 { margin-top: 10px; }
     .fld .opt2 input { font-size: 15px; padding: 12px 15px; }
+
+    /* pick-one rows (gender, age) — taps, not typing, so two extra fields
+       cost the form almost nothing. Same chip language as .idc above. */
+    .pick { display: flex; flex-wrap: wrap; gap: 9px; }
+    .pick input { position: absolute; opacity: 0; pointer-events: none; }
+    .pick label {
+      display: inline-block; margin: 0; cursor: pointer;
+      font-family: var(--mono); font-weight: 400; font-size: clamp(12px, 3vw, 13.5px);
+      white-space: nowrap; color: hsl(var(--ink)); background: hsl(var(--card));
+      border: 1.5px solid hsl(var(--line)); border-radius: 999px;
+      padding: 10px 15px; box-shadow: 0 2px 0 hsl(var(--line)); user-select: none;
+      transition: background .18s ease, border-color .18s ease, transform .18s ease, box-shadow .18s ease;
+    }
+    .pick label:hover { border-color: hsl(var(--sun-deep)); transform: translateY(-1px); box-shadow: 0 3px 0 hsl(var(--sun-deep)); }
+    .pick input:checked + label { background: hsl(var(--sun)); border-color: hsl(var(--sun-deep)); box-shadow: 0 2px 0 hsl(var(--sun-deep)); font-weight: 700; }
+    .pick input:focus-visible + label { outline: 3px solid hsl(var(--sun-deep)); outline-offset: 3px; }
+    .pick.bad label { border-color: hsl(12 60% 45%); }
+    .fld .opt2[hidden] { display: none; }
 
     .talk-wrap { position: relative; }
     .mic {
@@ -424,6 +442,29 @@
       </div>
 
       <div class="fld">
+        <span class="lbl" id="lblG">Gender</span>
+        <div class="pick" id="gPick" role="radiogroup" aria-labelledby="lblG">
+          <input type="radio" name="gender" id="g1" value="Woman"><label for="g1">Woman</label>
+          <input type="radio" name="gender" id="g2" value="Man"><label for="g2">Man</label>
+          <input type="radio" name="gender" id="g3" value="Transgender"><label for="g3">Transgender</label>
+          <input type="radio" name="gender" id="g4" value="Other"><label for="g4">Other</label>
+          <input type="radio" name="gender" id="g5" value="Prefer not to say"><label for="g5">Prefer not to say</label>
+        </div>
+      </div>
+
+      <div class="fld">
+        <span class="lbl" id="lblA">Age</span>
+        <div class="pick" id="aPick" role="radiogroup" aria-labelledby="lblA">
+          <input type="radio" name="age_group" id="a1" value="Under 18"><label for="a1">Under 18</label>
+          <input type="radio" name="age_group" id="a2" value="18-21"><label for="a2">18&ndash;21</label>
+          <input type="radio" name="age_group" id="a3" value="22-26"><label for="a3">22&ndash;26</label>
+          <input type="radio" name="age_group" id="a4" value="27-34"><label for="a4">27&ndash;34</label>
+          <input type="radio" name="age_group" id="a5" value="35-44"><label for="a5">35&ndash;44</label>
+          <input type="radio" name="age_group" id="a6" value="45+"><label for="a6">45+</label>
+        </div>
+      </div>
+
+      <div class="fld">
         <label for="fLink">Social link</label>
         <div class="socials" aria-label="tap one to start the link">
           <button type="button" class="soc" data-base="instagram.com/" aria-label="Instagram">
@@ -463,6 +504,20 @@
           <button type="button" class="mic" data-for="fWhy" hidden aria-label="speak your answer">
             <svg viewBox="0 0 24 24"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5.5 11.5a6.5 6.5 0 0 0 13 0M12 18v3"/></svg>
           </button>
+        </div>
+      </div>
+
+      <div class="fld">
+        <span class="lbl" id="lblF">How did you find us?</span>
+        <div class="pick" id="fPick" role="radiogroup" aria-labelledby="lblF">
+          <input type="radio" name="found" id="s1" value="Instagram"><label for="s1">Instagram</label>
+          <input type="radio" name="found" id="s2" value="LinkedIn"><label for="s2">LinkedIn</label>
+          <input type="radio" name="found" id="s3" value="A friend"><label for="s3">A friend</label>
+          <input type="radio" name="found" id="s4" value="Chemistry Lab"><label for="s4">Chemistry Lab</label>
+          <input type="radio" name="found" id="s5" value="Somewhere else"><label for="s5">Somewhere else</label>
+        </div>
+        <div class="opt2" id="refWho" hidden>
+          <input type="text" id="fRef" maxlength="60" placeholder="their name &mdash; we&rsquo;ll thank them">
         </div>
       </div>
 
@@ -904,29 +959,58 @@
     });
   }
 
+  /* ── "a friend" opens a box for their name ── */
+  Array.prototype.forEach.call(document.querySelectorAll('input[name="found"]'), function (r) {
+    r.addEventListener('change', function () {
+      var friend = r.value === 'A friend';
+      $('refWho').hidden = !friend;
+      if (friend) $('fRef').focus();
+    });
+  });
+
   /* ── submit ── */
   var FLDS = [
     { el: 'fName',    msg: 'Your name first.' },
     { el: 'fPhone',   msg: 'A number we can reach you on. The invite has nowhere to land without it.', test: function (v) { return v.replace(/\D/g, '').length >= 10; } },
     { el: 'fEmail',   msg: 'An email that reaches you.', test: function (v) { return /^\S+@\S+\.\S+$/.test(v); } },
+    { el: 'gPick',    msg: 'Pick one. “Prefer not to say” is a real answer.', pick: 'gender' },
+    { el: 'aPick',    msg: 'Which bracket are you in?', pick: 'age_group' },
     { el: 'fLink',    msg: 'One link. Anywhere you exist.' },
     { el: 'fProject', msg: 'This is the one we read closest.' },
-    { el: 'fWhy',     msg: 'Your honest first thoughts.' }
+    { el: 'fWhy',     msg: 'Your honest first thoughts.' },
+    { el: 'fPick',    msg: 'How did this reach you?', pick: 'found' }
   ];
   $('f').addEventListener('submit', function (ev) {
     ev.preventDefault();
     var note = $('note');
     note.classList.remove('on');
     FLDS.forEach(function (f) { $(f.el).classList.remove('bad'); });
+    $('fRef').classList.remove('bad');
+    var picked = {};
     for (var i = 0; i < FLDS.length; i++) {
-      var f = FLDS[i], v = $(f.el).value.trim();
-      if (!v || (f.test && !f.test(v))) {
+      var f = FLDS[i], ok, hit;
+      if (f.pick) {
+        hit = $('f').querySelector('input[name="' + f.pick + '"]:checked');
+        ok = !!hit;
+        if (ok) picked[f.pick] = hit.value;
+      } else {
+        var v = $(f.el).value.trim();
+        ok = !!v && (!f.test || f.test(v));
+      }
+      if (!ok) {
         $(f.el).classList.add('bad');
         note.textContent = f.msg; note.classList.add('on');
-        $(f.el).focus({ preventScroll: false });
+        if (!f.pick) $(f.el).focus({ preventScroll: false });
         $(f.el).scrollIntoView({ block: 'center', behavior: 'smooth' });
         return;
       }
+    }
+    if (picked.found === 'A friend' && !$('fRef').value.trim()) {
+      $('fRef').classList.add('bad');
+      note.textContent = 'Their name — it’s how we thank them.'; note.classList.add('on');
+      $('fRef').focus({ preventScroll: false });
+      $('fRef').scrollIntoView({ block: 'center', behavior: 'smooth' });
+      return;
     }
     if (!$('cOk').checked || !$('cFee').checked) { note.textContent = 'Tick both boxes if they’re true.'; note.classList.add('on'); return; }
     if ($('fHp').value) return;
@@ -940,6 +1024,9 @@
       name: $('fName').value.trim(), phone: $('fPhone').value.trim(), email: $('fEmail').value.trim(),
       work: links,
       why: 'smbc · ' + $('fProject').value.trim() + ' | why: ' + $('fWhy').value.trim(),
+      gender: picked.gender, age_group: picked.age_group,
+      found: picked.found,
+      ref_name: picked.found === 'A friend' ? $('fRef').value.trim() : '',
       city: 'Ahmedabad', date: chosenISO, fee_ok: 'yes'
     };
     fetch(ENDPOINT, { method: 'POST', mode: 'no-cors', body: new URLSearchParams(data) })
