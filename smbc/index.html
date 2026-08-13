@@ -513,6 +513,7 @@
           <input type="radio" name="found" id="s1" value="Instagram"><label for="s1">Instagram</label>
           <input type="radio" name="found" id="s2" value="LinkedIn"><label for="s2">LinkedIn</label>
           <input type="radio" name="found" id="s3" value="A friend"><label for="s3">A friend</label>
+          <input type="radio" name="found" id="s6" value="A community member"><label for="s6">A community member</label>
           <input type="radio" name="found" id="s4" value="Chemistry Lab"><label for="s4">Chemistry Lab</label>
           <input type="radio" name="found" id="s5" value="Somewhere else"><label for="s5">Somewhere else</label>
         </div>
@@ -959,12 +960,13 @@
     });
   }
 
-  /* ── "a friend" opens a box for their name ── */
+  /* ── "a friend" / "a community member" opens a box for their name ── */
+  var NAMED_REF = { 'A friend': 1, 'A community member': 1 };
   Array.prototype.forEach.call(document.querySelectorAll('input[name="found"]'), function (r) {
     r.addEventListener('change', function () {
-      var friend = r.value === 'A friend';
-      $('refWho').hidden = !friend;
-      if (friend) $('fRef').focus();
+      var named = !!NAMED_REF[r.value];
+      $('refWho').hidden = !named;
+      if (named) $('fRef').focus();
     });
   });
 
@@ -1005,7 +1007,7 @@
         return;
       }
     }
-    if (picked.found === 'A friend' && !$('fRef').value.trim()) {
+    if (NAMED_REF[picked.found] && !$('fRef').value.trim()) {
       $('fRef').classList.add('bad');
       note.textContent = 'Their name — it’s how we thank them.'; note.classList.add('on');
       $('fRef').focus({ preventScroll: false });
@@ -1026,7 +1028,7 @@
       why: 'smbc · ' + $('fProject').value.trim() + ' | why: ' + $('fWhy').value.trim(),
       gender: picked.gender, age_group: picked.age_group,
       found: picked.found,
-      ref_name: picked.found === 'A friend' ? $('fRef').value.trim() : '',
+      ref_name: NAMED_REF[picked.found] ? $('fRef').value.trim() : '',
       city: 'Ahmedabad', date: chosenISO, fee_ok: 'yes'
     };
     fetch(ENDPOINT, { method: 'POST', mode: 'no-cors', body: new URLSearchParams(data) })
