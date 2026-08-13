@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Your seat, Sunday Morning Build Club</title>
+<meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#070c08">
+<meta name="color-scheme" content="dark">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Fraunces:opsz,wght@9..144,400&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+/* the seat page. one screen, one decision, a clock running on it.
+   Liquid glass, dark: the ground is near-black lit by the club's own mint, and
+   every panel is a translucent sheet floating on it. Ships dark for everyone —
+   there is no light variant, on purpose, so the page looks the same in the
+   hand of whoever opens it. Type stays the club's. */
+:root{
+  --cream:#eaf2ea;--ink:#06110a;--mint:#7df0a8;--sun:#eeb020;
+  /* the glass system */
+  --glass:rgba(255,255,255,.055);
+  --glass-strong:rgba(255,255,255,.085);
+  --sheen:linear-gradient(180deg,rgba(255,255,255,.10),rgba(255,255,255,0) 46%);
+  --hairline:rgba(255,255,255,.11);
+  --hairline-mint:rgba(125,240,168,.26);
+  --lift:0 26px 60px -30px rgba(0,0,0,.9);
+  --inner:inset 0 1px 0 rgba(255,255,255,.14);
+  --blur:blur(22px) saturate(170%);
+  --font-club:"Fredoka",system-ui,sans-serif;
+  --font-truth:"Fraunces",Georgia,serif;
+  --font-fact:"Space Mono",ui-monospace,monospace;
+  --ease:cubic-bezier(.16,1,.3,1);
+}
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;background:#070c08}
+body{
+  margin:0;min-height:100svh;color:var(--cream);
+  /* the light sources the glass has something to refract */
+  background:
+    radial-gradient(72% 54% at 12% -6%, rgba(125,240,168,.20), transparent 62%),
+    radial-gradient(58% 46% at 98% 6%, rgba(238,176,32,.13), transparent 58%),
+    radial-gradient(90% 62% at 50% 108%, rgba(46,91,52,.50), transparent 64%),
+    #070c08;
+  background-attachment:fixed;
+  font-family:var(--font-club);font-weight:500;font-size:17px;line-height:1.5;
+  -webkit-font-smoothing:antialiased;
+  display:flex;flex-direction:column;
+  padding:clamp(22px,5vw,44px) clamp(20px,5vw,44px) max(28px,env(safe-area-inset-bottom));
+}
+h1,h2,p,ul{margin:0}
+.fact{font-family:var(--font-fact);font-size:.72rem;letter-spacing:.12em;text-transform:uppercase}
+.truth{font-family:var(--font-truth);font-style:italic;font-weight:400}
+.wrap{width:100%;max-width:520px;margin:auto}
+
+.mark{display:flex;align-items:baseline;gap:9px;color:var(--mint);opacity:.8;margin-bottom:clamp(20px,4.5vh,34px);padding-left:2px}
+.mark b{font-weight:700;letter-spacing:.14em}
+.mark span{opacity:.55}
+
+/* every state is its own sheet of glass */
+.state{display:none}
+.state.on{
+  display:block;
+  padding:clamp(24px,5.5vw,34px);
+  border-radius:28px;
+  background:var(--sheen),var(--glass);
+  -webkit-backdrop-filter:var(--blur);backdrop-filter:var(--blur);
+  border:1px solid var(--hairline);
+  box-shadow:var(--lift),var(--inner);
+}
+/* Safari on old iOS has no backdrop-filter; without it the sheet is nearly
+   invisible against the ground, so it falls back to an opaque pane. */
+@supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){
+  .state.on{background:var(--sheen),rgba(18,28,20,.92)}
+}
+
+.tag{font-family:var(--font-fact);font-size:.72rem;letter-spacing:.16em;color:var(--mint)}
+h1{margin-top:12px;font-weight:600;letter-spacing:-.03em;line-height:1.05;font-size:clamp(1.9rem,7.4vw,2.9rem);text-wrap:balance}
+h1 em{font-style:normal;color:var(--mint);display:block}
+.lead{margin-top:16px;opacity:.78;max-width:38ch}
+
+/* the running clock. the one piece of pressure on this page. */
+.clock{
+  margin-top:24px;display:flex;align-items:center;gap:12px;
+  border:1px solid rgba(238,176,32,.24);border-radius:16px;
+  padding:13px 16px;background:rgba(238,176,32,.07);box-shadow:var(--inner);
+}
+.clock .dot{width:7px;height:7px;border-radius:50%;background:var(--sun);box-shadow:0 0 12px var(--sun);animation:pulse 2s infinite;flex:none}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.25}}
+.clock b{font-family:var(--font-fact);font-weight:700;font-size:1.05rem;color:var(--sun);letter-spacing:-.02em}
+.clock span{font-family:var(--font-fact);font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;opacity:.55;margin-left:auto;text-align:right}
+
+.facts{margin-top:24px;border-top:1px solid var(--hairline);border-bottom:1px solid var(--hairline);display:flex;flex-wrap:wrap}
+/* 84px, not 108: the card's own padding took the width that used to let three
+   of these sit on one row, and a wrapped third column reads as a mistake. */
+.facts div{flex:1 1 84px;padding:16px 0;border-right:1px solid var(--hairline)}
+.facts div:last-child{border-right:0}
+.facts b{display:block;font-family:var(--font-fact);font-weight:700;font-size:1rem;letter-spacing:-.02em;white-space:nowrap}
+/* direct children only — the price lives in a <span class="amtv"> inside the
+   <b>, and a bare `.facts span` was making the number block-level and muted,
+   which is what split "₹" from "499" onto two lines. */
+.facts>div>span{display:block;margin-top:4px;opacity:.55;font-size:.71rem;font-family:var(--font-fact);letter-spacing:.1em;text-transform:uppercase}
+
+/* pay */
+.pay{margin-top:26px}
+.upi{
+  display:flex;align-items:center;gap:12px;flex-wrap:wrap;
+  border:1px dashed var(--hairline-mint);border-radius:16px;padding:14px 16px;
+  background:rgba(125,240,168,.055);
+}
+.upi .id{font-family:var(--font-fact);font-size:1rem;color:var(--mint);letter-spacing:-.02em;word-break:break-all}
+.upi .amt{margin-left:auto;font-family:var(--font-fact);font-weight:700;font-size:1.1rem}
+.copy{
+  border:1px solid var(--hairline-mint);background:var(--glass);color:var(--mint);
+  font-family:var(--font-fact);font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;
+  padding:7px 12px;border-radius:999px;cursor:pointer;transition:background .25s var(--ease);
+}
+.copy:hover{background:rgba(125,240,168,.16)}
+
+.btns{margin-top:20px;display:flex;flex-direction:column;gap:10px}
+.cta{
+  display:inline-flex;align-items:center;justify-content:center;gap:10px;
+  background:linear-gradient(180deg,#a6f7c4,var(--mint));
+  color:var(--ink);text-decoration:none;border:0;cursor:pointer;
+  font-family:var(--font-club);font-weight:600;font-size:1.02rem;
+  padding:17px 26px;border-radius:999px;
+  transition:transform .3s var(--ease),filter .3s var(--ease);
+  box-shadow:0 14px 34px -16px rgba(125,240,168,.85),inset 0 1px 0 rgba(255,255,255,.5);
+}
+.cta:hover{filter:brightness(1.07);transform:translateY(-2px)}
+.cta[disabled]{opacity:.45;cursor:default;transform:none;filter:none}
+.ghost{
+  display:inline-flex;align-items:center;justify-content:center;gap:9px;text-decoration:none;
+  border:1px solid var(--hairline);color:var(--mint);cursor:pointer;
+  background:var(--sheen),var(--glass);
+  -webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);
+  font-family:var(--font-club);font-weight:600;font-size:.98rem;padding:16px 24px;border-radius:999px;
+  box-shadow:var(--inner);transition:background .3s var(--ease),border-color .3s var(--ease);
+}
+.ghost:hover{background:var(--sheen),var(--glass-strong);border-color:var(--hairline-mint)}
+
+/* the three named apps. `upi://` is an Android intent scheme and opens nothing
+   at all on iOS, so on an iPhone this row IS the pay button — see hold(). */
+.apps{display:flex;gap:8px}
+.apps a{
+  flex:1;display:inline-flex;align-items:center;justify-content:center;text-decoration:none;
+  border:1px solid var(--hairline);color:var(--mint);
+  background:var(--sheen),var(--glass);
+  -webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);
+  font-family:var(--font-club);font-weight:600;font-size:.86rem;
+  padding:14px 6px;border-radius:999px;box-shadow:var(--inner);
+  transition:background .3s var(--ease),border-color .3s var(--ease);
+}
+.apps a:hover{background:var(--sheen),var(--glass-strong);border-color:var(--hairline-mint)}
+.apps.lead a{
+  background:linear-gradient(180deg,#a6f7c4,var(--mint));color:var(--ink);
+  border-color:transparent;font-size:.94rem;padding:16px 6px;
+  box-shadow:0 12px 30px -18px rgba(125,240,168,.9),inset 0 1px 0 rgba(255,255,255,.5);
+}
+
+/* scanning is the laptop path, so the encoder is only fetched if asked for */
+.scan{margin-top:14px;text-align:center}
+.scan button{
+  background:none;border:0;color:var(--mint);opacity:.6;cursor:pointer;
+  font-family:var(--font-fact);font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;padding:7px;
+}
+.scan button:hover{opacity:1}
+/* stays light: a QR needs the contrast, and glass would eat it */
+.qrbox{display:none;margin:6px auto 0;width:200px;padding:13px;background:#f4f8f3;border-radius:18px;box-shadow:0 18px 40px -22px rgba(0,0,0,.85)}
+.qrbox.on{display:block}
+.qrbox svg{display:block;width:100%;height:auto;shape-rendering:crispEdges}
+
+.hint{margin-top:16px;font-size:.85rem;opacity:.55;line-height:1.45;max-width:38ch}
+.err{color:var(--sun);font-size:.9rem;margin-top:14px;min-height:1.2em}
+
+/* the address, only after paying */
+.addr{
+  margin-top:24px;border:1px solid var(--hairline-mint);border-radius:20px;padding:18px;
+  background:rgba(125,240,168,.06);box-shadow:var(--inner);
+}
+.addr .fact{color:var(--mint);opacity:.8}
+.addr p{margin-top:9px;font-size:1.05rem;line-height:1.45}
+.addr a{color:var(--mint);text-underline-offset:3px;display:inline-block;margin-top:10px;font-size:.92rem}
+
+.foot{margin-top:clamp(22px,4.5vh,34px);padding:0 4px;opacity:.4;font-size:.82rem;display:flex;gap:14px;flex-wrap:wrap;align-items:baseline}
+.foot a{color:inherit}
+.spin{opacity:.6}
+</style>
+</head>
+<body>
+<main class="wrap">
+  <p class="mark fact"><b>Sunday Morning Build Club</b><span>Ahmedabad</span></p>
+
+  <!-- loading -->
+  <section class="state on" id="sLoad"><p class="fact spin">Checking your seat…</p></section>
+
+  <!-- 1. seat is held, not yet paid -->
+  <section class="state" id="sHold">
+    <p class="tag">[ YOU'RE IN ]</p>
+    <h1>Seat held for <em id="hName">you</em></h1>
+    <p class="lead">One thing left. Pay the &#8377;<span class="amtv">449</span> and the seat is yours, along with the address.</p>
+
+    <div class="clock">
+      <span class="dot"></span>
+      <b id="hLeft">24h 00m</b>
+      <span>left on<br>this link</span>
+    </div>
+
+    <div class="facts">
+      <div><b id="hSunday">Sunday</b><span>10 to 1</span></div>
+      <div><b>Vastrapur</b><span>Ahmedabad</span></div>
+      <div><b>&#8377;<span class="amtv">449</span></b><span>One seat</span></div>
+    </div>
+
+    <div class="pay">
+      <div class="upi">
+        <span class="id" id="hUpi">loading</span>
+        <button class="copy" id="hCopy" type="button">Copy</button>
+        <span class="amt">&#8377;<span class="amtv">449</span></span>
+      </div>
+      <div class="btns">
+        <a class="cta" id="hPayBtn" href="#">Pay &#8377;<span class="amtv">449</span> &rarr;</a>
+        <div class="apps" id="hApps">
+          <a id="hGpay" href="#">GPay</a>
+          <a id="hPhonePe" href="#">PhonePe</a>
+          <a id="hPaytm" href="#">Paytm</a>
+        </div>
+        <button class="ghost" id="hPaid" type="button">I've paid</button>
+      </div>
+      <p class="hint" id="hHint">The button opens your UPI app with the amount filled in. On a laptop, scan the code below. Tap <b>I've paid</b> after, and the address appears here.</p>
+      <div class="scan"><button id="hScan" type="button">Scan the code instead</button></div>
+      <div class="qrbox" id="hQr"></div>
+      <p class="err" id="hErr" role="status"></p>
+    </div>
+  </section>
+
+  <!-- 2. confirmed -->
+  <section class="state" id="sDone">
+    <p class="tag">[ SEAT CONFIRMED ]</p>
+    <h1>See you <em id="dSunday">Sunday</em></h1>
+    <p class="lead">Bring whatever you build with, and the one project you've been avoiding.</p>
+
+    <div class="addr">
+      <p class="fact">Where</p>
+      <p id="dAddr">Vastrapur, Ahmedabad</p>
+      <a id="dMap" href="#" target="_blank" rel="noopener">Open in Maps &rarr;</a>
+    </div>
+
+    <div class="facts" style="margin-top:22px">
+      <div><b>10:00</b><span>Starts on time</span></div>
+      <div><b>1:00</b><span>Ends, then open</span></div>
+      <div><b>8</b><span>In the room</span></div>
+    </div>
+
+    <div class="btns">
+      <a class="ghost" id="dSave" href="/smbc/manav.vcf">Save my number</a>
+    </div>
+    <p class="hint">If something comes up, tell me before Sunday and the seat rolls to a later one.</p>
+  </section>
+
+  <!-- 3. link ran out -->
+  <section class="state" id="sGone">
+    <p class="tag">[ LINK EXPIRED ]</p>
+    <h1>The 24 hours ran out.</h1>
+    <p class="lead">The seat went to the next person in line. Your request stays with us and you don't have to apply again, so you're already in for the Sunday after.</p>
+    <div class="btns"><a class="ghost" href="/smbc/">Back to the club</a></div>
+  </section>
+
+  <!-- 4. that Sunday filled -->
+  <section class="state" id="sFull">
+    <p class="tag">[ SUNDAY FULL ]</p>
+    <h1>This Sunday is full.</h1>
+    <p class="lead">It filled before you got here, and I'm sorry you had to find out this way. Your request carries forward on its own, ahead of anyone new, so you're in line for the next Sunday without doing anything at all.</p>
+    <div class="btns"><a class="ghost" href="/smbc/">Back to the club</a></div>
+  </section>
+
+  <!-- 5. bad link -->
+  <section class="state" id="sBad">
+    <p class="tag">[ LINK NOT RECOGNISED ]</p>
+    <h1>This link doesn't open anything.</h1>
+    <p class="lead">It may have been retyped or cut short. Open the original message and tap the link there, or reply to it and I'll send a new one.</p>
+    <div class="btns"><a class="ghost" href="/smbc/">Back to the club</a></div>
+  </section>
+
+  <div class="foot">
+    <span>Sunday Morning Build Club</span>
+    <a href="/smbc/">manavjoshi.com/smbc</a>
+  </div>
+</main>
+
+<script>
+(function () {
+  'use strict';
+
+  /* No community link here on purpose. The group is gated behind having
+     been on a Sunday; a confirmed seat is not the same thing. The only
+     invite lives on /smbc/feedback/. */
+
+  var ENDPOINT = 'https://script.google.com/macros/s/AKfycbyIdrCDzYTx7XQQ5l8ByaFW6FsGuSIJJvwTkN449Fhq20HrZjIYTnZpOWI4qs8-2uP5gw/exec';
+  var UPI_ID   = '9925978977@pz';
+  var UPI_NAME = 'Manav Joshi';
+  var PRICE    = 449;            // fallback only; the seat response carries the real one
+
+  /* `upi://` is an Android intent scheme. On iOS it resolves to nothing and the
+     tap dies silently, so iPhones are given the named app schemes instead. */
+  var IOS = /iPad|iPhone|iPod/.test(navigator.userAgent) ||
+            (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+  var payUrl = '';
+
+  var $ = function (id) { return document.getElementById(id); };
+  var key = (location.search.match(/[?&]k=([^&]+)/) || [])[1] || '';
+
+  function show(id) {
+    ['sLoad','sHold','sDone','sGone','sFull','sBad'].forEach(function (s) {
+      $(s).classList.toggle('on', s === id);
+    });
+  }
+
+  /* Apps Script can't answer a cross-origin fetch with readable headers,
+     so every read goes out as JSONP. One callback per call, cleaned up after. */
+  var n = 0;
+  function call(params, then) {
+    var cb = '__smbc' + (++n);
+    var done = false;
+    var t = setTimeout(function () { if (!done) { done = true; then(null); } }, 12000);
+    window[cb] = function (data) {
+      if (done) return;
+      done = true; clearTimeout(t);
+      try { delete window[cb]; } catch (e) { window[cb] = undefined; }
+      then(data);
+    };
+    var q = [];
+    for (var k in params) q.push(encodeURIComponent(k) + '=' + encodeURIComponent(params[k]));
+    q.push('callback=' + cb);
+    var s = document.createElement('script');
+    s.src = ENDPOINT + '?' + q.join('&');
+    s.onerror = function () { if (!done) { done = true; clearTimeout(t); then(null); } };
+    document.head.appendChild(s);
+  }
+
+  if (!key) { show('sBad'); return; }
+
+  /* ── load the seat ──────────────────────────────────────────────────── */
+  call({ action: 'seat', k: key }, function (d) {
+    if (!d)          return show('sBad');
+    if (d.status === 'confirmed') return confirmed(d);
+    if (!d.ok) {
+      if (d.reason === 'expired') return show('sGone');
+      if (d.reason === 'full')    return show('sFull');
+      return show('sBad');
+    }
+    hold(d);
+  });
+
+  var expiresAt = 0, ticker = null;
+
+  function hold(d) {
+    /* The sheet is the authority on price — a seat can be priced by hand.
+       Hardcoding it here meant a changed price silently disagreed with itself. */
+    PRICE = Number(d.price) || PRICE;
+    Array.prototype.forEach.call(document.querySelectorAll('.amtv'), function (el) {
+      el.textContent = PRICE;
+    });
+
+    $('hName').textContent   = d.name || 'you';
+    $('hSunday').textContent = d.sundayPretty || 'Sunday';
+    $('hUpi').textContent    = UPI_ID;
+
+    var note = 'SMBC ' + (d.sunday || '');
+    var q = 'pa=' + encodeURIComponent(UPI_ID) +
+            '&pn=' + encodeURIComponent(UPI_NAME) +
+            '&am=' + PRICE + '&cu=INR&tn=' + encodeURIComponent(note);
+
+    payUrl = 'upi://pay?' + q;
+    $('hPayBtn').href  = payUrl;
+    $('hGpay').href    = 'tez://upi/pay?' + q;
+    $('hPhonePe').href = 'phonepe://pay?' + q;
+    $('hPaytm').href   = 'paytmmp://pay?' + q;
+
+    if (IOS) {
+      $('hPayBtn').style.display = 'none';
+      $('hApps').classList.add('lead');
+      $('hHint').innerHTML = 'Tap your UPI app — the amount is already filled in. ' +
+        'Then tap <b>I\'ve paid</b> and the address appears here.';
+    }
+
+    expiresAt = Number(d.expiresAt || 0);
+    countdown();
+    ticker = setInterval(countdown, 30000);
+    show('sHold');
+  }
+
+  function countdown() {
+    var ms = expiresAt - Date.now();
+    if (ms <= 0) { clearInterval(ticker); return show('sGone'); }
+    var mins = Math.floor(ms / 60000);
+    var h = Math.floor(mins / 60), m = mins % 60;
+    $('hLeft').textContent = h + 'h ' + (m < 10 ? '0' : '') + m + 'm';
+  }
+
+  function confirmed(d) {
+    if (ticker) clearInterval(ticker);
+    $('dSunday').textContent = d.sundayPretty || 'Sunday';
+    if (d.address) $('dAddr').textContent = d.address;
+    if (d.map) $('dMap').href = d.map; else $('dMap').style.display = 'none';
+    show('sDone');
+  }
+
+  /* ── copy the UPI id ────────────────────────────────────────────────── */
+  $('hCopy').addEventListener('click', function () {
+    var btn = this;
+    var write = navigator.clipboard && navigator.clipboard.writeText
+      ? navigator.clipboard.writeText(UPI_ID)
+      : Promise.reject();
+    write.then(ok, function () {
+      /* older mobile browsers with no clipboard API: select it instead */
+      var r = document.createRange();
+      r.selectNodeContents($('hUpi'));
+      var sel = window.getSelection(); sel.removeAllRanges(); sel.addRange(r);
+      btn.textContent = 'Select & copy';
+    });
+    function ok() { btn.textContent = 'Copied'; setTimeout(function () { btn.textContent = 'Copy'; }, 2200); }
+  });
+
+  /* ── scan instead ───────────────────────────────────────────────────────
+     The encoder is 56KB and the phone path never needs it, so it is fetched
+     on the first tap rather than on every page load. */
+  var qrReady = false;
+  $('hScan').addEventListener('click', function () {
+    var btn = this, box = $('hQr');
+    if (box.classList.contains('on')) {
+      box.classList.remove('on');
+      btn.textContent = 'Scan the code instead';
+      return;
+    }
+    if (!payUrl) return;
+    btn.textContent = 'Loading…';
+    loadQr(function (ok) {
+      if (!ok) { btn.textContent = 'Code unavailable — copy the ID above'; return; }
+      if (!box.innerHTML) {
+        var qr = qrcode(0, 'M');
+        qr.addData(payUrl);
+        qr.make();
+        box.innerHTML = qr.createSvgTag({ cellSize: 4, margin: 0, scalable: true });
+      }
+      box.classList.add('on');
+      btn.textContent = 'Hide the code';
+    });
+  });
+
+  function loadQr(then) {
+    if (qrReady) return then(true);
+    var s = document.createElement('script');
+    s.src = 'qrcode.js';
+    s.onload  = function () { qrReady = true; then(true); };
+    s.onerror = function () { then(false); };
+    document.head.appendChild(s);
+  }
+
+  /* ── "I've paid" ────────────────────────────────────────────────────── */
+  $('hPaid').addEventListener('click', function () {
+    var btn = this;
+    btn.disabled = true;
+    btn.textContent = 'Confirming…';
+    $('hErr').textContent = '';
+
+    call({ action: 'paid', k: key }, function (d) {
+      if (d && d.ok) return confirmed(d);
+      btn.disabled = false;
+      btn.textContent = "I've paid";
+      if (d && d.reason === 'expired') return show('sGone');
+      if (d && d.reason === 'full')    return show('sFull');
+      $('hErr').textContent = "That didn't go through. Try once more, or just reply on WhatsApp and I'll mark it.";
+    });
+  });
+})();
+</script>
+</body>
+</html>
