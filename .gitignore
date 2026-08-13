@@ -3,3 +3,27 @@ host/Videos/
 
 .DS_Store
 **/.DS_Store
+
+# ── Working docs must never ship ──────────────────────────────────────────────
+# This repo is public and GitHub Pages serves every file in it verbatim, so
+# anything committed here is readable by anyone who guesses the filename.
+# Until 2026-08-13 the SMBC message copy, retention masterplan and design doc
+# were all live at manavjoshi.com/smbc/*.md. Only real site content belongs in
+# git; notes, drafts, backups and Apps Script sources stay local.
+
+# Apps Script sources and setup docs (contain endpoints and deployment steps)
+/SMBC-*.md
+/apps-script-Code.gs
+
+# SMBC notes, message copy, briefs, design docs
+smbc/*.md
+
+# Test harnesses and dev scratch pages
+smbc/scripts/
+smbc/test-clock.js
+smbc/_preview-rhythm.html
+
+# Superseded page versions — the live page is smbc/index.html and nothing else
+smbc/archive-*.html
+smbc/draft-*.html
+*.bak-*
