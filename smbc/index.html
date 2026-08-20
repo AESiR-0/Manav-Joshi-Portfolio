@@ -1025,7 +1025,11 @@
       form: 'smbc',
       name: $('fName').value.trim(), phone: $('fPhone').value.trim(), email: $('fEmail').value.trim(),
       work: links,
-      why: 'smbc · ' + $('fProject').value.trim() + ' | why: ' + $('fWhy').value.trim(),
+      // Two questions, two fields. They used to travel as one packed string,
+      // which meant the sheet could not sort on either one and the CRM had to
+      // guess where the first answer ended.
+      project: $('fProject').value.trim(),
+      why: $('fWhy').value.trim(),
       gender: picked.gender, age_group: picked.age_group,
       found: picked.found,
       ref_name: NAMED_REF[picked.found] ? $('fRef').value.trim() : '',
