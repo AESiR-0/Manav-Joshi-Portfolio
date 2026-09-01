@@ -375,7 +375,7 @@
     <h1>Sunday Morning Build&nbsp;Club</h1>
     <p class="say">Eight people in a room, and a morning of your most ambitious work.</p>
     <a class="cta" href="#apply">Request invite <span class="arw">&rarr;</span></a>
-    <p class="home-facts">Eight invites. <span id="homeDate">Sunday</span>, 10 AM to 1 PM, Ahmedabad.</p>
+    <p class="home-facts">Eight invites. Every Sunday, 10 AM to 1 PM, Ahmedabad.</p>
   </div>
 </header>
 
@@ -639,7 +639,6 @@
   var pad = function (n) { return (n < 10 ? '0' : '') + n; };
   var sundayISO = sunday.getFullYear() + '-' + pad(sunday.getMonth() + 1) + '-' + pad(sunday.getDate());
 
-  $('homeDate').textContent   = 'Sunday ' + dateShort;
   $('tickDate').textContent   = 'Sunday, ' + dateLong;
   $('stickyDate').textContent = 'Sun ' + dateShort;
 
