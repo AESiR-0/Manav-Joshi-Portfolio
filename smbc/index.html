@@ -229,7 +229,7 @@
     /* pick-one rows (gender, age) — taps, not typing, so two extra fields
        cost the form almost nothing. Same chip language as .idc above. */
     .pick { display: flex; flex-wrap: wrap; gap: 9px; }
-    .pick input { position: absolute; opacity: 0; pointer-events: none; }
+    .pick input { position: absolute; opacity: 0; pointer-events: none; width: 1px; height: 1px; }
     .pick label {
       display: inline-block; margin: 0; cursor: pointer;
       font-family: var(--mono); font-weight: 400; font-size: clamp(12px, 3vw, 13.5px);
@@ -242,6 +242,14 @@
     .pick input:checked + label { background: hsl(var(--sun)); border-color: hsl(var(--sun-deep)); box-shadow: 0 2px 0 hsl(var(--sun-deep)); font-weight: 700; }
     .pick input:focus-visible + label { outline: 3px solid hsl(var(--sun-deep)); outline-offset: 3px; }
     .pick.bad label { border-color: hsl(12 60% 45%); }
+    .pick-d label { display: flex; flex-direction: column; align-items: flex-start; gap: 1px; line-height: 1.25; }
+    .pick-d label i { font-style: normal; font-family: var(--mono); font-size: 10.5px; letter-spacing: .05em;
+      text-transform: uppercase; font-weight: 700; line-height: 1.5; border-radius: 999px; }
+    .pick-d label i.plain { color: transparent; border: 1px solid transparent; padding: 0 6px; }
+    .pick-d label i.warm { background: hsl(36 90% 50%); color: hsl(28 60% 16%); padding: 0 6px; border: 1px solid hsl(28 55% 26%); }
+    .pick-d label i.hot  { background: hsl(10 64% 36%); color: hsl(40 60% 97%); padding: 0 6px; border: 1px solid hsl(10 64% 26%); }
+    .pick-d label i.gone { background: hsl(28 12% 22%); color: hsl(40 30% 92%); padding: 0 6px; border: 1px solid hsl(28 12% 14%); }
+    .pick-d input:disabled + label { opacity: .55; cursor: not-allowed; }
     .fld .opt2[hidden] { display: none; }
 
     .talk-wrap { position: relative; }
@@ -295,6 +303,8 @@
     .sent.on { display: block; }
     .sent h3 { font-family: var(--disp); font-weight: 800; font-size: clamp(24px, 5.6vw, 34px); letter-spacing: -.03em; }
     .sent p { margin-top: 14px; color: hsl(var(--ink-soft)); max-width: 34ch; margin-left: auto; margin-right: auto; }
+    .sent-door { margin-top: 26px; }
+    .sent-door .cta { margin-top: 16px; }
 
     .qgrid { max-width: 980px; margin: 0 auto; display: grid; gap: 0 clamp(32px, 5vw, 64px); grid-template-columns: 1fr; }
     @media (min-width: 880px) { .qgrid { grid-template-columns: 1fr 1fr; } }
@@ -419,11 +429,6 @@
     <span class="tag">The ask</span>
     <h2 class="h2c">Tell us what you're building.</h2>
 
-    <div class="fee">
-      <span class="amt">&#8377;699</span>
-      <p>for the first 100 members. Pay after you're invited.</p>
-    </div>
-
     <form class="form" id="f" novalidate>
       <div class="duo">
         <div class="fld">
@@ -522,6 +527,11 @@
         </div>
       </div>
 
+      <div class="fld">
+        <span class="lbl" id="lblD">Which Sunday?</span>
+        <div class="pick pick-d" id="dPick" role="radiogroup" aria-labelledby="lblD"></div>
+      </div>
+
       <div class="checks">
         <label class="check">
           <input type="checkbox" id="cOk">
@@ -531,17 +541,10 @@
         <label class="check">
           <input type="checkbox" id="cFee">
           <span class="box"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M2.5 8.5 6 12 13.5 4"/></svg></span>
-          <span>I know the fee is &#8377;699 for the first 100 members</span>
+          <span>I know the fee is &#8377;999, paid after I'm invited</span>
         </label>
       </div>
 
-      <div>
-        <button type="button" class="later-link" id="laterLink">I can't attend this Sunday</button>
-        <div class="later-box" id="laterBox" hidden>
-          <label for="fLater">Which Sunday works?</label>
-          <select id="fLater"></select>
-        </div>
-      </div>
 
       <input type="text" name="website" id="fHp" tabindex="-1" autocomplete="off" style="position:absolute;left:-5000px" aria-hidden="true">
 
@@ -554,7 +557,11 @@
     <div class="sent" id="sent" role="status">
       <span class="emo">&#128640;</span>
       <h3>Request sent.</h3>
-      <p>You'll know either way within 48 hours. If it's you, the invite lands on WhatsApp &#9728;&#65039;</p>
+      <p>There are eight seats and a lot more than eight of you. Your request stays open and moves up every week, so you never have to ask twice.</p>
+      <div class="sent-door" id="sentDoor" hidden>
+        <p>I'd rather you didn't wait for a Sunday to meet the room. Most of the people you'd have sat with are already in here.</p>
+        <a class="cta" id="sentDoorLink" href="#" target="_blank" rel="noopener">Come in <span class="arw">&rarr;</span></a>
+      </div>
     </div>
   </div>
 </section>
@@ -584,7 +591,7 @@
     </details>
     <details>
       <summary>I applied. Then what? <span class="pm">+</span></summary>
-      <div class="ans"><div><p>We read every one. Eight people get an invite, and you'll know either way within 48 hours.</p></div></div>
+      <div class="ans"><div><p>We read every one. Eight people get an invite that week. If it isn't you, your request doesn't die, it carries to the next Sunday and sits above the new ones. You never have to apply twice.</p></div></div>
     </details>
   </div>
 </section>
@@ -616,6 +623,8 @@
 (function () {
   'use strict';
   var ENDPOINT = 'https://script.google.com/macros/s/AKfycbyIdrCDzYTx7XQQ5l8ByaFW6FsGuSIJJvwTkN449Fhq20HrZjIYTnZpOWI4qs8-2uP5gw/exec';
+  // Paste the WhatsApp community invite link here. Blank = the door stays hidden.
+  var COMMUNITY_URL = '';
   var $ = function (id) { return document.getElementById(id); };
 
   var now = new Date();
@@ -895,36 +904,49 @@
     }, 500);
   })();
 
-  /* ── a later Sunday ── */
+  /* ── which Sunday ── */
+  /* EDIT WEEKLY. Applications received per Sunday, straight off the sheet.
+     Eight seats a Sunday, so: 'full' once the seats are gone, over 20 is
+     "Almost full", over 10 is "Filling fast", anything else shows nothing.
+     Keys are ISO dates. Stale keys are ignored. Put real counts here. */
+  var SUNDAY_LOAD = {
+    '2026-09-06': 0,
+    '2026-09-13': 0,
+    '2026-09-20': 0,
+    '2026-09-27': 0
+  };
   var chosenISO = sundayISO;
-  (function later() {
-    var sel = $('fLater'), link = $('laterLink'), boxEl = $('laterBox');
-    for (var k = 1; k <= 6; k++) {
+  (function dates() {
+    var wrap = $('dPick');
+    for (var k = 0; k < 4; k++) {
       var d = new Date(sunday); d.setDate(sunday.getDate() + 7 * k);
-      var o = document.createElement('option');
-      o.value = d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate());
-      o.textContent = 'Sunday, ' + d.getDate() + ' ' + MONTHS[d.getMonth()];
-      sel.appendChild(o);
+      var iso = d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate());
+      var n = SUNDAY_LOAD[iso] || 0;
+      var full = n === 'full';
+      var state = full ? 'Full' : (n > 20 ? 'Almost full' : (n > 10 ? 'Filling fast' : ''));
+      var tone  = full ? 'gone' : (n > 20 ? 'hot' : (n > 10 ? 'warm' : 'plain'));
+      var id = 'd' + k;
+      var inp = document.createElement('input');
+      inp.type = 'radio'; inp.name = 'sunday_pick'; inp.id = id; inp.value = iso;
+      if (full) inp.disabled = true;
+      if (k === 0 && !full) inp.checked = true;
+      var lab = document.createElement('label');
+      lab.setAttribute('for', id);
+      lab.innerHTML = '<b>' + d.getDate() + ' ' + MONTHS[d.getMonth()] + '</b>' +
+                      '<i class="' + tone + '">' + (state || '&nbsp;') + '</i>';
+      wrap.appendChild(inp); wrap.appendChild(lab);
     }
-    link.addEventListener('click', function () {
-      var opening = boxEl.hidden;
-      boxEl.hidden = !opening;
-      link.textContent = opening ? 'Actually, this Sunday works' : "I can't attend this Sunday";
-      if (opening) {
-        /* browsers restore a previously selected index across reloads, so
-           pin it to the first Sunday and let the tick agree with it */
-        sel.selectedIndex = 0;
-        chosenISO = sel.value;
-        $('tickDate').textContent = sel.options[0].textContent;
-        sel.focus();
-      } else {
-        chosenISO = sundayISO;
-        $('tickDate').textContent = 'Sunday, ' + dateLong;
-      }
-    });
-    sel.addEventListener('change', function () {
-      chosenISO = sel.value;
-      $('tickDate').textContent = sel.options[sel.selectedIndex].textContent;
+    if (!wrap.querySelector('input:checked')) {
+      var first = wrap.querySelector('input:not(:disabled)');
+      if (first) { first.checked = true; chosenISO = first.value;
+        var fd = new Date(chosenISO + 'T12:00:00');
+        $('tickDate').textContent = 'Sunday, ' + fd.getDate() + ' ' + MONTHS[fd.getMonth()]; }
+    }
+    wrap.addEventListener('change', function (e) {
+      if (!e.target || !e.target.value) return;
+      chosenISO = e.target.value;
+      var dd = new Date(chosenISO + 'T12:00:00');
+      $('tickDate').textContent = 'Sunday, ' + dd.getDate() + ' ' + MONTHS[dd.getMonth()];
     });
   })();
 
@@ -1033,12 +1055,16 @@
       gender: picked.gender, age_group: picked.age_group,
       found: picked.found,
       ref_name: NAMED_REF[picked.found] ? $('fRef').value.trim() : '',
-      city: 'Ahmedabad', date: chosenISO, fee_ok: 'yes'
+      city: 'Ahmedabad', date: chosenISO, fee_ok: 'yes', fee: '999'
     };
     fetch(ENDPOINT, { method: 'POST', mode: 'no-cors', body: new URLSearchParams(data) })
       .catch(function () { /* opaque by design; the row still lands */ })
       .finally(function () {
         $('f').style.display = 'none';
+        if (COMMUNITY_URL) {
+          $('sentDoorLink').href = COMMUNITY_URL;
+          $('sentDoor').hidden = false;
+        }
         $('sent').classList.add('on');
         $('sent').scrollIntoView({ block: 'center', behavior: 'smooth' });
       });
