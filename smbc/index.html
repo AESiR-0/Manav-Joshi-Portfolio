@@ -28,16 +28,43 @@
        Signature the slow crossfade + emoji at real size
        Copy      Manav's own sentences. No em dashes.
     ════════════════════════════════════════════════════════════════ */
+    /* ═══════════════════════════════════════════════════════════════
+       DESIGN BRIEF — the lab bench.  Ruling: SecondBrain
+       rules/chemistry-lab-design.md (2026-08-27), which names this page
+       the standard for copy and the calendar page the standard for look.
+
+       1 · Eight builders, one room, Sunday morning in Ahmedabad. For
+           someone whose ambitious project keeps losing to their week.
+       2 · Tone: CERTAIN, ALIVE.  ("bright" from the 2026-07-31 poster
+           lock does not survive the ground moving from cream paper to a
+           lab at night; "certain" does, and is the one that matters.)
+       3 · Direction: you are standing in a chemistry lab. Four materials
+           and nothing else — ground, glass, steel, one reagent.
+       4 · Type unchanged, three fonts one job each: Bricolage display,
+           Inter body, Space Mono every fact and every steel label.
+       5 · Signature: the element tile. Periodic-table cells in glass with
+           the sun rim down the left edge, carrying the four Sundays.
+
+       Glass only ever sits over photography. Glass over flat colour is a
+       grey box and is the fastest way to make this look cheap.
+       ═══════════════════════════════════════════════════════════════ */
     :root {
-      --bg:        44 58% 94%;
-      --card:      44 60% 97%;
-      --ink:       36 16% 14%;
-      --ink-soft:  36 10% 36%;
+      /* ground — the lab at night */
+      --bg:        100 39% 12%;
+      --desk-deep: 100 44%  8%;
+      --card:      104 24% 17%;
+      --ink:       44 40% 96%;
+      --ink-soft:  120  9% 70%;
+
+      /* the one reagent this room is allowed: 01 · sunday morning */
       --sun:       40 86% 53%;
-      --sun-deep:  36 85% 40%;
+      --sun-deep:  38 88% 62%;
       --sun-soft:  42 90% 88%;
-      --line:      40 25% 80%;
-      --paper:     44 58% 96%;
+
+      /* steel — the equipment, not the chemicals */
+      --steel:     118 12% 75%;
+      --line:      112 11% 27%;
+      --paper:     44 40% 96%;
 
       --disp: 'Bricolage Grotesque', system-ui, sans-serif;
       --sans: 'Inter', system-ui, sans-serif;
@@ -46,6 +73,8 @@
       --rail: clamp(24px, 6vw, 88px);
     }
     * { margin: 0; padding: 0; box-sizing: border-box; }
+
+
     html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
     body {
       background: hsl(var(--bg)); color: hsl(var(--ink));
@@ -209,8 +238,8 @@
     }
     .fld textarea { resize: vertical; min-height: 104px; line-height: 1.55; }
     .fld input:focus, .fld textarea:focus { outline: none; border-color: hsl(var(--sun-deep)); box-shadow: 0 0 0 3px hsl(var(--sun) / .25); }
-    .fld input::placeholder, .fld textarea::placeholder { color: hsl(36 10% 58%); }
-    .fld input.bad, .fld textarea.bad { border-color: hsl(12 60% 45%); }
+    .fld input::placeholder, .fld textarea::placeholder { color: hsl(var(--steel) / .8); }
+    .fld input.bad, .fld textarea.bad { border-color: hsl(8 72% 62%); }
     .duo { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
     @media (max-width: 560px) { .duo { grid-template-columns: 1fr; gap: 28px; } }
 
@@ -239,17 +268,42 @@
       transition: background .18s ease, border-color .18s ease, transform .18s ease, box-shadow .18s ease;
     }
     .pick label:hover { border-color: hsl(var(--sun-deep)); transform: translateY(-1px); box-shadow: 0 3px 0 hsl(var(--sun-deep)); }
-    .pick input:checked + label { background: hsl(var(--sun)); border-color: hsl(var(--sun-deep)); box-shadow: 0 2px 0 hsl(var(--sun-deep)); font-weight: 700; }
+        .pick input:checked + label {
+      background: hsl(var(--paper) / .1); border-color: hsl(var(--sun) / .6);
+      box-shadow: inset 2px 0 0 hsl(var(--sun)), 0 2px 0 hsl(var(--desk-deep) / .6); font-weight: 700; color: hsl(var(--ink));
+    }
     .pick input:focus-visible + label { outline: 3px solid hsl(var(--sun-deep)); outline-offset: 3px; }
-    .pick.bad label { border-color: hsl(12 60% 45%); }
-    .pick-d label { display: flex; flex-direction: column; align-items: flex-start; gap: 1px; line-height: 1.25; }
-    .pick-d label i { font-style: normal; font-family: var(--mono); font-size: 10.5px; letter-spacing: .05em;
-      text-transform: uppercase; font-weight: 700; line-height: 1.5; border-radius: 999px; }
-    .pick-d label i.plain { color: transparent; border: 1px solid transparent; padding: 0 6px; }
-    .pick-d label i.warm { background: hsl(36 90% 50%); color: hsl(28 60% 16%); padding: 0 6px; border: 1px solid hsl(28 55% 26%); }
-    .pick-d label i.hot  { background: hsl(10 64% 36%); color: hsl(40 60% 97%); padding: 0 6px; border: 1px solid hsl(10 64% 26%); }
-    .pick-d label i.gone { background: hsl(28 12% 22%); color: hsl(40 30% 92%); padding: 0 6px; border: 1px solid hsl(28 12% 14%); }
-    .pick-d input:disabled + label { opacity: .55; cursor: not-allowed; }
+    .pick.bad label { border-color: hsl(8 72% 62%); }
+    .pick-d { gap: 11px; }
+    .pick-d label {
+      position: relative; overflow: hidden; display: flex; flex-direction: column;
+      align-items: flex-start; justify-content: space-between; gap: 9px;
+      width: 108px; min-height: 108px; padding: 13px 12px 11px; border-radius: 13px;
+      background: hsl(var(--paper) / .045); border: 1px solid hsl(var(--paper) / .14);
+      backdrop-filter: blur(14px) saturate(125%); -webkit-backdrop-filter: blur(14px) saturate(125%);
+      transform: none;
+    }
+    .pick-d label:hover { border-color: hsl(var(--sun) / .45); transform: translateY(-2px); box-shadow: none; }
+    .pick-d label s { position: absolute; top: 10px; right: 12px; text-decoration: none;
+      font-family: var(--mono); font-size: 10px; color: hsl(var(--steel) / .85); }
+    .pick-d label b { font-family: var(--disp); font-weight: 800; font-size: 31px;
+      letter-spacing: -.045em; line-height: .88; }
+    .pick-d label u { text-decoration: none; font-family: var(--mono); font-size: 10.5px;
+      letter-spacing: .11em; text-transform: uppercase; color: hsl(var(--steel)); margin-top: -5px; }
+    .pick-d label i { font-style: normal; font-family: var(--mono); font-size: 9.5px; letter-spacing: .04em; white-space: nowrap;
+      text-transform: uppercase; font-weight: 700; line-height: 1.4; }
+    /* One reagent, escalating: the scarcer the Sunday, the more it lights. */
+    .pick-d label i.plain { visibility: hidden; }
+    .pick-d label i.warm  { color: hsl(var(--sun) / .78); }
+    .pick-d label i.hot   { color: hsl(var(--sun)); }
+    .pick-d label i.gone  { color: hsl(var(--steel)); }
+    .pick-d input:checked + label { box-shadow: none; background: hsl(var(--paper) / .1); }
+    .pick-d input:checked + label::before {
+      content: ''; position: absolute; left: 0; top: 14%; bottom: 14%; width: 2px; border-radius: 2px;
+      background: linear-gradient(180deg, transparent, hsl(var(--sun)) 30%, hsl(var(--sun)) 70%, transparent);
+    }
+    .pick-d input:disabled + label { opacity: .48; cursor: not-allowed; }
+    .pick-d input:disabled + label b { text-decoration: line-through; text-decoration-thickness: 2px; }
     .fld .opt2[hidden] { display: none; }
 
     .talk-wrap { position: relative; }
@@ -268,7 +322,7 @@
 
     .checks { display: grid; gap: 14px; }
     .check { display: flex; gap: 14px; align-items: flex-start; cursor: pointer; }
-    .check input { position: absolute; opacity: 0; pointer-events: none; }
+    .check input { position: absolute; opacity: 0; pointer-events: none; width: 1px; height: 1px; }
     .box { flex: none; width: 24px; height: 24px; margin-top: 2px; border: 2px solid hsl(var(--ink-soft)); border-radius: 8px; background: hsl(var(--card)); display: grid; place-items: center; transition: background .18s ease, border-color .18s ease; }
     .box svg { width: 13px; height: 13px; stroke: hsl(var(--ink)); stroke-width: 3.2; fill: none; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 22; stroke-dashoffset: 22; }
     .check input:checked + .box { background: hsl(var(--sun)); border-color: hsl(var(--sun-deep)); }
@@ -297,7 +351,7 @@
     }
     .later-box select:focus { outline: none; border-color: hsl(var(--sun-deep)); box-shadow: 0 0 0 3px hsl(var(--sun) / .25); }
 
-    .form-note { display: none; font-size: 14px; color: hsl(12 60% 38%); }
+    .form-note { display: none; font-size: 14px; color: hsl(8 78% 70%); }
     .form-note.on { display: block; }
     .sent { display: none; text-align: center; padding: 28px 0 8px; }
     .sent.on { display: block; }
@@ -351,13 +405,141 @@
     .sticky .when { font-family: var(--mono); font-size: 12px; font-weight: 700; letter-spacing: .06em; white-space: nowrap; }
     .sticky .cta { padding: 11px 20px; font-size: 13px; }
 
-    .js .rv { opacity: 0; transform: translateY(20px); transition: opacity .65s var(--ease), transform .65s var(--ease); }
-    .js .rv.on { opacity: 1; transform: none; }
+    .js .rv { transform: translateY(22px); transition: transform .7s var(--ease); }
+    .js .rv.on { transform: none; }
 
     @media (prefers-reduced-motion: reduce) {
       html { scroll-behavior: auto; }
       .js .home-inner > *, .js .rv { opacity: 1; transform: none; animation: none; transition: none; }
     }
+    /* ══ THE LAB ══ ground · glass · steel · one reagent ══ */
+
+    /* Bench. Graph paper at 26px, plus a slow vertical gradient so the
+       page is never a flat field of one dark colour. */
+    section.cream {
+      position: relative; isolation: isolate; color: hsl(var(--ink));
+      background-color: hsl(var(--bg));
+      background-image:
+        /* the wash — desk green over the room, 88-95%, so the photograph
+           is felt and never read. Text legibility is the wash's job. */
+        linear-gradient(180deg, hsl(var(--desk-deep) / .95) 0%, hsl(var(--bg) / .89) 34%,
+                                hsl(var(--bg) / .89) 66%, hsl(var(--desk-deep) / .95) 100%),
+        var(--shot, none);
+      background-size: cover, cover;
+      background-position: center, center;
+      background-repeat: no-repeat, no-repeat;
+    }
+    #happens { --shot: url('../images/smbc/full/room.jpg'); }
+    #room    { --shot: url('../images/smbc/room-circle.jpg'); }
+    #apply   { --shot: url('../images/smbc/pair-laptop.jpg'); }
+    section.cream:not([id]) { --shot: url('../images/smbc/helping.jpg'); }
+    footer {
+      position: relative; isolation: isolate;
+      background-image:
+        linear-gradient(180deg, hsl(var(--desk-deep) / .93), hsl(var(--desk-deep) / .97)),
+        url('../images/smbc/table-wide.jpg');
+      background-size: cover; background-position: center 62%;
+    }
+    /* Graduations up the outside edge, the way measure marks run up a
+       cylinder. Decorative — hidden from anyone who is not getting the
+       picture anyway. */
+    section.cream::before {
+      content: ''; position: absolute; left: 0; top: 12%; bottom: 12%; width: 9px;
+      background-image: repeating-linear-gradient(180deg, hsl(var(--paper) / .17) 0 1px, transparent 1px 15px);
+      pointer-events: none;
+    }
+    @media (min-width: 720px) { section.cream::before { width: 13px; } }
+
+    /* Steel label — the etching on a piece of apparatus. */
+    .tag {
+      font-family: var(--mono); display: inline-flex; align-items: center; gap: .55rem;
+      font-size: 11px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase;
+      color: hsl(var(--steel));
+    }
+    .tag::before { content: ''; width: 20px; height: 1px; background: currentColor; opacity: .6; }
+
+    /* Glass — the one piece of glassware on the page carries the one
+       rule. It sits over photography, never over flat colour. */
+    .rule {
+      position: relative; overflow: hidden; isolation: isolate;
+      background: hsl(var(--paper) / .055);
+      backdrop-filter: blur(18px) saturate(130%);
+      -webkit-backdrop-filter: blur(18px) saturate(130%);
+      border: 1px solid hsl(var(--paper) / .14);
+      border-radius: 20px;
+      box-shadow: inset 0 1px 0 hsl(0 0% 100% / .16), inset 1px 0 0 hsl(0 0% 100% / .06),
+                  0 8px 40px hsl(var(--desk-deep) / .5);
+    }
+    /* No image of its own — backdrop-filter blurs the section's own
+       photograph through it, which is what a piece of glass actually does.
+       The sweep is the specular highlight crossing the curve on hover. */
+    .rule::after {
+      content: ''; position: absolute; top: 0; bottom: 0; left: -60%; width: 45%;
+      pointer-events: none; transform: skewX(-14deg);
+      background: linear-gradient(90deg, transparent, hsl(0 0% 100% / .07) 40%,
+                                  hsl(0 0% 100% / .14) 52%, transparent);
+      transition: left .95s var(--ease);
+    }
+    .rule:hover::after { left: 130%; }
+    /* The rim light down the left edge is what makes a flat rectangle
+       read as a curved piece of glassware. Do not remove it. */
+    .rule::before {
+      content: ''; position: absolute; left: 0; top: 12%; bottom: 12%; width: 2px; border-radius: 2px;
+      background: linear-gradient(180deg, transparent, hsl(var(--sun)) 35%, hsl(var(--sun)) 65%, transparent);
+      opacity: .9;
+    }
+
+    /* Meniscus — a hairline that thins at both ends, the way a liquid
+       surface pulls away from glass. Sits between sections. */
+    /* ── micro-interactions ───────────────────────────────────────
+       Every one is a transition or a keyframe, never a frame loop, so a
+       throttled tab cannot leave a control mid-state. ── */
+    @media (prefers-reduced-motion: no-preference) {
+      /* Element tile: presses like a key, and the reagent rim fills like
+         liquid rising rather than blinking on. */
+      .pick-d label { transition: transform .2s var(--ease), border-color .2s var(--ease), background .2s var(--ease); }
+      .pick-d label:active { transform: translateY(2px) scale(.982); }
+      .pick-d input:checked + label { animation: seat .34s var(--ease); }
+      .pick-d input:checked + label::before { animation: rimfill .5s var(--ease) both; }
+      @keyframes rimfill { from { clip-path: inset(100% 0 0 0); } to { clip-path: inset(0 0 0 0); } }
+      @keyframes seat { 0% { transform: translateY(2px) scale(.982); } 60% { transform: translateY(-3px) scale(1.012); } 100% { transform: none; } }
+
+      /* Steel labels: the etched rule draws itself out as the section arrives. */
+      .tag::before { transform: scaleX(0); transform-origin: left center; transition: transform .55s var(--ease) .12s; }
+      .rv.on .tag::before, .rv.on.tag::before { transform: scaleX(1); }
+
+      /* Small chips lift; the sun rim slides in from the left edge. */
+      .pick label { transition: transform .18s var(--ease), border-color .18s var(--ease), box-shadow .22s var(--ease); }
+      .pick label:active { transform: translateY(1px); }
+
+      /* Inputs light in the reagent as they take focus. */
+      .fld input, .fld textarea { transition: border-color .22s var(--ease), box-shadow .28s var(--ease), background .22s var(--ease); }
+      .fld input:focus, .fld textarea:focus { background: hsl(var(--paper) / .07); }
+
+      /* The FAQ marker rotates into a minus instead of swapping glyph. */
+      summary .pm { transition: transform .3s var(--ease), color .2s var(--ease); }
+      details[open] summary .pm { transform: rotate(135deg); }
+
+      /* The button's arrow leads, and the whole thing sits into its shadow. */
+      .cta:active .arw { transform: translateX(1px); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .rule::after { display: none; }
+      .tag::before { transform: none; }
+    }
+
+    .meniscus { height: 1px; border: 0; margin: 0;
+      background: linear-gradient(90deg, transparent, hsl(var(--paper) / .14) 15%, hsl(var(--paper) / .14) 85%, transparent); }
+
+    /* The reagent is a fill only on the button, so the type on it is the
+       ground colour, not the paper. Measured 1.88:1 the other way round. */
+    .cta { color: hsl(var(--desk-deep)); }
+    .cta:hover { background: hsl(42 92% 62%); color: hsl(var(--desk-deep)); }
+    .idc:hover, .idc.lit { color: hsl(var(--desk-deep)); }
+
+    /* Steel has to clear 4.5:1 as 10px type over glass. */
+    .pick-d label s { color: hsl(var(--steel)); }
+    .fee { display: none; }
   </style>
 </head>
 <body>
@@ -931,8 +1113,10 @@
       if (k === 0 && !full) inp.checked = true;
       var lab = document.createElement('label');
       lab.setAttribute('for', id);
-      lab.innerHTML = '<b>' + d.getDate() + ' ' + MONTHS[d.getMonth()] + '</b>' +
-                      '<i class="' + tone + '">' + (state || '&nbsp;') + '</i>';
+      lab.innerHTML = '<s>' + pad(k + 1) + '</s>' +
+                      '<b>' + pad(d.getDate()) + '</b>' +
+                      '<u>' + MONTHS[d.getMonth()].slice(0, 3) + '</u>' +
+                      '<i class="' + tone + '">' + (state || 'Open') + '</i>';
       wrap.appendChild(inp); wrap.appendChild(lab);
     }
     if (!wrap.querySelector('input:checked')) {
