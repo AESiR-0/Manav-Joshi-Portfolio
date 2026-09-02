@@ -1124,11 +1124,12 @@
     '2026-09-27': 1
   };
   var chosenISO = sundayISO;
+  var SEATS = 10;
   function stateFor(n) {
     if (n === 'full') return { state: 'Full', tone: 'gone', full: true };
     n = Number(n) || 0;
-    if (n > 20) return { state: 'Almost full', tone: 'hot',  full: false };
-    if (n > 10) return { state: 'Filling fast', tone: 'warm', full: false };
+    if (n > SEATS)     return { state: 'Almost full',  tone: 'hot',  full: false };
+    if (n > SEATS / 2) return { state: 'Filling fast', tone: 'warm', full: false };
     return { state: '', tone: 'plain', full: false };
   }
 
