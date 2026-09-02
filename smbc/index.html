@@ -278,7 +278,7 @@
     .pick-d label {
       position: relative; overflow: hidden; display: flex; flex-direction: column;
       align-items: flex-start; justify-content: space-between; gap: 9px;
-      width: 108px; min-height: 108px; padding: 13px 12px 11px; border-radius: 13px;
+      flex: 0 0 auto; width: 108px; min-height: 108px; padding: 13px 12px 11px; border-radius: 13px;
       background: hsl(var(--paper) / .045); border: 1px solid hsl(var(--paper) / .14);
       backdrop-filter: blur(14px) saturate(125%); -webkit-backdrop-filter: blur(14px) saturate(125%);
       transform: none;
@@ -1086,26 +1086,32 @@
   })();
 
   /* ── which Sunday ── */
-  /* EDIT WEEKLY. Applications received per Sunday, straight off the sheet.
-     Eight seats a Sunday, so: 'full' once the seats are gone, over 20 is
-     "Almost full", over 10 is "Filling fast", anything else shows nothing.
-     Keys are ISO dates. Stale keys are ignored. Put real counts here. */
-  var SUNDAY_LOAD = {
-    '2026-09-06': 0,
-    '2026-09-13': 0,
-    '2026-09-20': 0,
-    '2026-09-27': 0
-  };
+  /* How busy each Sunday is, read live from the CRM — the same derivation the
+     dashboard uses, so the page and the desk can never disagree. Over 20 shows
+     "Almost full", over 10 "Filling fast", 'full' closes the day. A Sunday the
+     CRM does not answer for shows NOTHING: the page must never be able to
+     render a state it did not receive.
+
+     This object is the manual override and stays empty. Put a number in it only
+     to say something the CRM cannot know yet. */
+  var LOAD_API = 'https://smbc-crm2.manavjoshi01.workers.dev/api/load';
+  var SUNDAY_LOAD = {};
   var chosenISO = sundayISO;
+  function stateFor(n) {
+    if (n === 'full') return { state: 'Full', tone: 'gone', full: true };
+    n = Number(n) || 0;
+    if (n > 20) return { state: 'Almost full', tone: 'hot',  full: false };
+    if (n > 10) return { state: 'Filling fast', tone: 'warm', full: false };
+    return { state: '', tone: 'plain', full: false };
+  }
+
   (function dates() {
     var wrap = $('dPick');
     for (var k = 0; k < 4; k++) {
       var d = new Date(sunday); d.setDate(sunday.getDate() + 7 * k);
       var iso = d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate());
-      var n = SUNDAY_LOAD[iso] || 0;
-      var full = n === 'full';
-      var state = full ? 'Full' : (n > 20 ? 'Almost full' : (n > 10 ? 'Filling fast' : ''));
-      var tone  = full ? 'gone' : (n > 20 ? 'hot' : (n > 10 ? 'warm' : 'plain'));
+      var st = stateFor(SUNDAY_LOAD[iso]);
+      var state = st.state, tone = st.tone, full = st.full;
       var id = 'd' + k;
       var inp = document.createElement('input');
       inp.type = 'radio'; inp.name = 'sunday_pick'; inp.id = id; inp.value = iso;
@@ -1125,6 +1131,32 @@
         var fd = new Date(chosenISO + 'T12:00:00');
         $('tickDate').textContent = 'Sunday, ' + fd.getDate() + ' ' + MONTHS[fd.getMonth()]; }
     }
+    /* Ask the CRM. On any failure — offline, 503, a shape we did not expect —
+       the tiles simply stay as they were built, which is blank. A wrong state
+       is worse than no state, so there is no fallback that guesses. */
+    try {
+      fetch(LOAD_API, { mode: 'cors', cache: 'no-store' })
+        .then(function (r) { return r.ok ? r.json() : null; })
+        .then(function (data) {
+          if (!data || typeof data !== 'object') return;
+          Array.prototype.forEach.call(wrap.querySelectorAll('input'), function (inp) {
+            if (!(inp.value in data)) return;
+            var st = stateFor(data[inp.value]), lab = wrap.querySelector('label[for="' + inp.id + '"]');
+            if (!lab) return;
+            var i = lab.querySelector('i');
+            i.className = st.tone;
+            i.textContent = st.state || 'Open';
+            inp.disabled = st.full;
+            if (st.full && inp.checked) {
+              inp.checked = false;
+              var open = wrap.querySelector('input:not(:disabled)');
+              if (open) { open.checked = true; open.dispatchEvent(new Event('change', { bubbles: true })); }
+            }
+          });
+        })
+        .catch(function () { /* blank is the safe state */ });
+    } catch (err) { /* no fetch, no states, page still works */ }
+
     wrap.addEventListener('change', function (e) {
       if (!e.target || !e.target.value) return;
       chosenISO = e.target.value;
