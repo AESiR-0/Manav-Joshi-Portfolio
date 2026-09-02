@@ -686,7 +686,7 @@
             <svg viewBox="0 0 24 24"><path d="M5 5l14 14M19 5L5 19"/></svg>
           </button>
           <button type="button" class="soc" data-base="youtube.com/@" aria-label="YouTube">
-            <svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="10.5" rx="3.2"/><path d="M10.4 9.6v4.9l4.5-2.45z" fill="currentColor" stroke="none"/></svg>
+            <svg viewBox="0 0 24 24"><path fill-rule="evenodd" fill="currentColor" stroke="none" d="M2 9a4 4 0 0 1 4-4h12a4 4 0 0 1 4 4v6a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4z M10 9.2v5.6l4.8-2.8z"/></svg>
           </button>
           <button type="button" class="soc" data-base="" aria-label="Your website">
             <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.6 3.8 5.7 3.8 9S14.5 18.4 12 21M12 3C9.5 5.6 8.2 8.7 8.2 12s1.3 6.4 3.8 9"/></svg>
@@ -812,7 +812,7 @@
       <svg viewBox="0 0 24 24"><path d="M5 5l14 14M19 5L5 19"/></svg>
     </a>
     <a href="https://www.youtube.com/@manav.joshii" target="_blank" rel="noopener" aria-label="YouTube">
-      <svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="10.5" rx="3.2"/><path d="M10.4 9.6v4.9l4.5-2.45z" fill="currentColor" stroke="none"/></svg>
+      <svg viewBox="0 0 24 24"><path fill-rule="evenodd" fill="currentColor" stroke="none" d="M2 9a4 4 0 0 1 4-4h12a4 4 0 0 1 4 4v6a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4z M10 9.2v5.6l4.8-2.8z"/></svg>
     </a>
   </div>
   <p class="site"><a href="https://manavjoshi.com">manavjoshi.com</a></p>
@@ -1117,7 +1117,12 @@
      This object is the manual override and stays empty. Put a number in it only
      to say something the CRM cannot know yet. */
   var LOAD_API = 'https://smbc-crm2.manavjoshi01.workers.dev/api/load';
-  var SUNDAY_LOAD = {};
+  var SUNDAY_LOAD = {
+    '2026-09-06': 'full',   // 10 invites out against 10 seats, 0 open
+    '2026-09-13': 14,       // 13 awaiting a decision + 1 parked
+    '2026-09-20': 4,
+    '2026-09-27': 1
+  };
   var chosenISO = sundayISO;
   function stateFor(n) {
     if (n === 'full') return { state: 'Full', tone: 'gone', full: true };
