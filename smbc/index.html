@@ -230,6 +230,7 @@
 
     .form { margin-top: 38px; display: grid; gap: 28px; }
     .fld label, .fld .lbl { display: block; font-family: var(--disp); font-weight: 600; font-size: clamp(16px, 4vw, 18.5px); line-height: 1.25; margin-bottom: 10px; }
+    .fld .hint { font-size: 13px; line-height: 1.5; color: hsl(var(--ink-soft)); text-wrap: pretty; margin: -4px 0 12px; }
     .fld input, .fld textarea {
       width: 100%; font-family: var(--sans); font-size: 16.5px; color: hsl(var(--ink));
       background: hsl(var(--card)); border: 1.5px solid hsl(var(--line));
@@ -249,7 +250,7 @@
       background: hsl(var(--card)); border: 1.5px solid hsl(var(--line)); box-shadow: 0 2px 0 hsl(var(--line));
       transition: transform .15s var(--ease), background .2s ease, border-color .2s ease, box-shadow .15s var(--ease);
     }
-    .soc svg { width: 18px; height: 18px; fill: none; stroke: hsl(var(--ink)); stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+    .soc svg { width: 18px; height: 18px; color: hsl(var(--ink)); fill: none; stroke: hsl(var(--ink)); stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
     .soc:hover { background: hsl(var(--sun)); border-color: hsl(var(--sun-deep)); transform: translateY(-2px); box-shadow: 0 4px 0 hsl(var(--sun-deep)); }
     .soc:active { transform: translateY(1px); box-shadow: 0 0 0 hsl(var(--sun-deep)); }
     .fld .opt2 { margin-top: 10px; }
@@ -413,7 +414,7 @@
       background: hsl(var(--card)); border: 1.5px solid hsl(var(--line)); box-shadow: 0 2px 0 hsl(var(--line));
       transition: transform .16s var(--ease), background .2s ease, border-color .2s ease, box-shadow .16s var(--ease);
     }
-    .foot-social svg { width: 18px; height: 18px; fill: none; stroke: hsl(var(--ink)); stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+    .foot-social svg { width: 18px; height: 18px; color: hsl(var(--ink)); fill: none; stroke: hsl(var(--ink)); stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
     .foot-social a:hover { background: hsl(var(--sun)); border-color: hsl(var(--sun-deep)); transform: translateY(-2px); box-shadow: 0 4px 0 hsl(var(--sun-deep)); }
     .foot-social a:active { transform: translateY(1px); box-shadow: 0 0 0 hsl(var(--sun-deep)); }
     footer .site { font-family: var(--mono); font-size: 11px; }
@@ -679,6 +680,7 @@
 
       <div class="fld">
         <label for="fLink">Social link</label>
+        <p class="hint">We open your link before we decide. If it&rsquo;s locked, we see nothing, and nothing is what we decide on.</p>
         <div class="socials" aria-label="tap one to start the link">
           <button type="button" class="soc" data-base="instagram.com/" aria-label="Instagram">
             <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r=".8" fill="currentColor"/></svg>
@@ -702,6 +704,7 @@
 
       <div class="fld">
         <label for="fProject">What are you building?</label>
+        <p class="hint">Insider&rsquo;s note: on an average 38 people ask for each Sunday and about 8 get in. Give us more reasons to say yes, below.</p>
         <div class="talk-wrap">
           <textarea id="fProject" maxlength="600" placeholder="Don't use AI, just tell us what it is."></textarea>
           <button type="button" class="mic" data-for="fProject" hidden aria-label="speak your answer">
