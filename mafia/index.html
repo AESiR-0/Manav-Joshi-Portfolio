@@ -322,11 +322,11 @@ form{margin-top:24px;display:flex;flex-direction:column;gap:16px}
 
     flag('wName', !name);
     flag('wPhone', phone.length < 10);
-    flag('wWhy', text.length < 15);
+    flag('wWhy', !text);
 
     if (!name)             return fail('Your name, first.');
     if (phone.length < 10) return fail('A 10-digit number I can reach you on.');
-    if (text.length < 15)  return fail('Write your first thoughts.');
+    if (!text)             return fail('Write your first thoughts.');
 
     fail('');
     guest = { name: name, phone: phone.slice(-10), why: text };
