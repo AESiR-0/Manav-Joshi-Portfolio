@@ -1,77 +1,55 @@
-# Mafia Supper — RSVP sheet (~3 minutes, all of it yours)
+# Mafia Supper — where submissions go
 
-The page at `/mafia` posts each submission to a Google Apps Script web app,
-which writes a row to a sheet you own. No database, no auth, no vendor. Same
-pattern as `/buildandbreak`, which is the one already proven against Apps Script.
+**Nothing to set up. It is already wired and verified live (8 Sep 2026).**
 
-**The page works without this.** Every submission opens WhatsApp to you prefilled
-with name, number and answer, and that happens whether or not the sheet is wired.
-The sheet is the copy you can sort, not the delivery.
+`/mafia` posts every submission to the single Apps Script endpoint that already
+serves `/buildandbreak` and `/smbc` — the same `/exec` URL, no new deployment,
+no change to `apps-script-Code.gs`.
 
-## The sheet already exists
+## How it lands without a redeploy
 
-**mafia supper rsvps** — https://docs.google.com/spreadsheets/d/1Y25o9AbAkso0FcNjU_Zmma5VaZA0Vyi1JrirP9XiqWE/edit
+Rows go into the shared **`rsvps`** tab, which the script writes by matching the
+sheet's existing header row (`timestamp, step, slug, name, phone, work, why,
+utr, status, notes`). Mafia sends:
 
-Created 8 Sep 2026 on `work@manavjoshi.com`. Empty; the script writes its own
-header row on the first submission.
+| field | value |
+|---|---|
+| `step` | `mafia` |
+| `slug` | `mafia` |
+| `name` / `phone` / `why` | the three form answers |
+| `status` | `new` |
+| `edition` | `01` — no column for it, so the script parks it in `extra` |
 
-## 1. Paste the script
+Filter the tab on **`slug = mafia`** to see only supper submissions.
 
-In that sheet: **Extensions → Apps Script**. Delete whatever is in `Code.gs` and
-paste this:
+## The one trap, and why step is not 'claim'
 
-```js
-const SHEET_NAME = 'rsvps';
+`doGet` computes seats-left for `/buildandbreak` by counting rows where
+**`step === 'claim'`**. `/buildandbreak` sends **no slug of its own**, so the
+script's slug filter cannot separate the two events. A mafia row sent as
+`step: 'claim'` would therefore have silently eaten build-and-break's seats.
 
-function doPost(e) {
-  const lock = LockService.getScriptLock();
-  lock.tryLock(10000);
-  try {
-    const p = e.parameter;
-    const ss = SpreadsheetApp.getActiveSpreadsheet();
-    let sh = ss.getSheetByName(SHEET_NAME);
-    if (!sh) {
-      sh = ss.insertSheet(SHEET_NAME);
-      sh.appendRow(['timestamp', 'edition', 'name', 'phone', 'why', 'seat', 'notes']);
-    }
-    sh.appendRow([new Date(), p.edition || '', p.name || '', p.phone || '',
-                  p.why || '', '', '']);
-    return ContentService.createTextOutput('ok');
-  } finally {
-    lock.releaseLock();
-  }
-}
+`step: 'mafia'` is invisible to that counter. Verified before and after live test
+writes: `?slug=buildandbreak` returned `{"left":15,"total":15}` both times.
 
-// Lets you open the /exec URL in a browser to confirm the deploy is alive.
-function doGet() {
-  return ContentService.createTextOutput('mafia supper: ok');
-}
-```
+**If anyone ever changes mafia's `step` to `claim`, build-and-break's seat count
+starts lying.** That is the only thing on this page that can break something else.
 
-`seat` and `notes` are yours to fill by hand — that's where the tiebreaker call
-gets recorded once more than nine come in.
+## Verified
 
-## 2. Deploy it
+A real POST from the live page returned the script's own `ok` — which
+`doPost` only returns after the row is appended; its failure path returns
+`error`.
 
-**Deploy → New deployment → ⚙ → Web app**, then:
+Note: `curl` cannot test this endpoint. Apps Script answers `/exec` with a
+redirect, and curl either drops the POST body (`-L`) or re-POSTs to the
+googleusercontent echo URL, which refuses the method (`--post302`). Both return
+**405 regardless of whether the payload is correct**. Test from a browser.
 
-- **Execute as:** Me
-- **Who has access:** **Anyone** — this is the one people get wrong. Not "Anyone
-  with a Google account"; the page posts without a login.
+## Leftovers to clear
 
-Authorise when Google asks. Copy the `/exec` URL it gives you.
-
-## 3. Send me the URL
-
-It goes on one line — `ENDPOINT` in the `CFG` block at the bottom of
-`mafia/index.html` — and I push. Until then that field stays empty and the page
-just doesn't call it.
-
-## Checking it works
-
-Open the `/exec` URL in a browser: it should say `mafia supper: ok`. Then submit
-the live form once with your own name and watch the row land.
-
-If rows stop arriving, it is almost always the deployment access setting, or a
-**new deployment** having been created (a new deployment means a new URL — use
-**Manage deployments → edit → New version** instead, which keeps the URL).
+- **Test rows** in the `rsvps` tab named `ZZ Test Claude` and `ZZ Test Claude 3`
+  (phones `9000000001`, `9000000003`). Delete them.
+- The empty spreadsheet **mafia supper rsvps** on `work@manavjoshi.com`
+  (`1Y25o9AbAkso0FcNjU_Zmma5VaZA0Vyi1JrirP9XiqWE`) was created for the abandoned
+  separate-sheet plan and is now unused. Safe to trash.
