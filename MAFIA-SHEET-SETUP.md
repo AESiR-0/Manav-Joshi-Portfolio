@@ -1,6 +1,6 @@
 # Mafia Supper — RSVP sheet (~3 minutes, all of it yours)
 
-The page at `/supper` posts each submission to a Google Apps Script web app,
+The page at `/mafia` posts each submission to a Google Apps Script web app,
 which writes a row to a sheet you own. No database, no auth, no vendor. Same
 pattern as `/buildandbreak`, which is the one already proven against Apps Script.
 
@@ -64,7 +64,7 @@ Authorise when Google asks. Copy the `/exec` URL it gives you.
 ## 3. Send me the URL
 
 It goes on one line — `ENDPOINT` in the `CFG` block at the bottom of
-`supper/index.html` — and I push. Until then that field stays empty and the page
+`mafia/index.html` — and I push. Until then that field stays empty and the page
 just doesn't call it.
 
 ## Checking it works

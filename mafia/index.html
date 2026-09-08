@@ -1,0 +1,349 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Mafia Supper</title>
+<meta name="description" content="Come to play, stay to argue. Nine seats, Thursday, 8pm onwards.">
+<meta name="theme-color" content="#0a0507">
+<link rel="icon" href="../favicon.svg">
+<meta property="og:title" content="Mafia Supper">
+<meta property="og:description" content="Come to play, stay to argue.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600&family=Instrument+Sans:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+/* ─────────────────────────────────────────────────────────────
+   MAFIA SUPPER — nine seats.
+
+   DESIGN BRIEF
+   1. Product    a one-page ask-for-a-seat form for a nine-hand table
+   2. Tone       conspiratorial + warm
+   3. Direction  crimson noir — one red light source in a dark room; glass
+                 sheets the way the SMBC seat page does them, re-lit amber
+                 so this never reads as SMBC in a different hat
+   4. Type       Fraunces (display) · Instrument Sans (body)
+                 · Space Mono (facts, the way a receipt speaks)
+   5. Signature  NINE CARDS. Face-down, dealt across a hairline; the taken
+                 ones are lit, the open ones still have their backs on.
+                 MAFIA IS THE HERO, NOT THE SUPPER — Manav, 2026-09-08.
+                 Nothing on this page may be plates, menus or come-hungry.
+   ───────────────────────────────────────────────────────────── */
+:root{
+  --wax:#f2e7e5;--ink:#0a0507;
+  /* crimson, not candle: Mafia is the hero, and amber was the supper talking */
+  --flame:#d9453f;--flame-hi:#ff7a6d;--wine:#7a1f22;
+
+  --glass:rgba(255,255,255,.05);
+  --glass-strong:rgba(255,255,255,.08);
+  --sheen:linear-gradient(180deg,rgba(255,255,255,.10),rgba(255,255,255,0) 46%);
+  --hairline:rgba(255,255,255,.11);
+  --hairline-flame:rgba(217,69,63,.34);
+  --lift:0 26px 60px -30px rgba(0,0,0,.92);
+  --inner:inset 0 1px 0 rgba(255,255,255,.13);
+  --blur:blur(22px) saturate(165%);
+
+  --display:"Fraunces",Georgia,serif;
+  --body:"Instrument Sans",system-ui,sans-serif;
+  --fact:"Space Mono",ui-monospace,monospace;
+  --ease:cubic-bezier(.16,1,.3,1);
+}
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;background:#080406}
+body{
+  margin:0;min-height:100svh;color:var(--wax);
+  /* the candle, the wine, and the dark end of the room */
+  background:
+    radial-gradient(70% 52% at 14% -8%, rgba(217,69,63,.24), transparent 62%),
+    radial-gradient(54% 44% at 96% 4%, rgba(122,31,34,.34), transparent 58%),
+    radial-gradient(92% 60% at 50% 108%, rgba(58,12,20,.72), transparent 66%),
+    #080406;
+  background-attachment:fixed;
+  font-family:var(--body);font-size:17px;line-height:1.5;
+  -webkit-font-smoothing:antialiased;
+  display:flex;flex-direction:column;
+  padding:clamp(22px,5vw,44px) clamp(20px,5vw,44px) max(28px,env(safe-area-inset-bottom));
+}
+h1,h2,p,label{margin:0}
+.wrap{width:100%;max-width:540px;margin:auto}
+
+.mark{display:flex;align-items:baseline;gap:9px;color:var(--flame);opacity:.82;
+  margin-bottom:clamp(18px,4vh,30px);padding-left:2px;
+  font-family:var(--fact);font-size:.72rem;letter-spacing:.16em;text-transform:uppercase}
+.mark b{font-weight:700}
+.mark span{opacity:.5}
+
+/* every state is its own sheet of glass */
+.state{display:none}
+.state.on{
+  display:block;padding:clamp(24px,5.5vw,34px);border-radius:28px;
+  background:var(--sheen),var(--glass);
+  -webkit-backdrop-filter:var(--blur);backdrop-filter:var(--blur);
+  border:1px solid var(--hairline);box-shadow:var(--lift),var(--inner);
+}
+/* older iOS Safari has no backdrop-filter; without it the sheet vanishes */
+@supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){
+  .state.on{background:var(--sheen),rgba(30,13,17,.94)}
+}
+
+.tag{font-family:var(--fact);font-size:.7rem;letter-spacing:.16em;text-transform:uppercase;color:var(--flame)}
+h1{margin-top:12px;font-family:var(--display);font-weight:600;letter-spacing:-.025em;
+   line-height:1.04;font-size:clamp(2rem,7.6vw,2.9rem);text-wrap:balance}
+.lede{margin-top:14px;font-size:1.02rem;line-height:1.5;opacity:.78;max-width:40ch}
+.lede b{font-weight:500;opacity:1;color:var(--wax)}
+
+/* ── the signature: nine hands, dealt ─────────────────────────── */
+.table{margin:28px 0 6px}
+.hands{display:flex;align-items:flex-end;justify-content:space-between;
+  padding:0 2px 16px;border-bottom:1px solid var(--hairline)}
+.card{
+  width:22px;height:31px;border-radius:5px;flex:0 0 auto;
+  border:1px solid rgba(255,255,255,.2);
+  /* still face-down: the back of the card, hatched */
+  background:repeating-linear-gradient(45deg,
+    rgba(255,255,255,.06) 0 3px, rgba(255,255,255,0) 3px 6px);
+}
+.card.set{
+  border-color:transparent;
+  background:linear-gradient(158deg,var(--flame-hi),var(--flame) 56%,#8e1f24);
+  box-shadow:0 5px 16px -4px rgba(217,69,63,.5),inset 0 1px 0 rgba(255,255,255,.55);
+}
+.seats{margin-top:12px;font-family:var(--fact);
+  font-size:.68rem;letter-spacing:.13em;text-transform:uppercase;opacity:.55}
+.seats b{color:var(--flame);opacity:1;font-weight:700}
+
+/* ── the form ─────────────────────────────────────────────────── */
+form{margin-top:24px;display:flex;flex-direction:column;gap:16px}
+.field label{display:block;font-family:var(--fact);font-size:.68rem;letter-spacing:.13em;
+  text-transform:uppercase;opacity:.55;margin-bottom:7px}
+.field input,.field textarea{
+  width:100%;color:var(--wax);font-family:var(--body);font-size:1.02rem;line-height:1.45;
+  background:rgba(0,0,0,.26);border:1px solid var(--hairline);border-radius:15px;
+  padding:15px 16px;outline:none;
+  transition:border-color .25s var(--ease),background .25s var(--ease),box-shadow .25s var(--ease);
+}
+.field textarea{min-height:118px;resize:vertical}
+.field input::placeholder,.field textarea::placeholder{color:rgba(242,231,229,.3)}
+.field input:focus,.field textarea:focus{
+  border-color:var(--hairline-flame);background:rgba(0,0,0,.38);
+  box-shadow:0 0 0 4px rgba(217,69,63,.12);
+}
+.field.bad input,.field.bad textarea{border-color:var(--wine)}
+.ask{margin-top:6px;font-size:.86rem;opacity:.45;line-height:1.4}
+.count{float:right;font-family:var(--fact);font-size:.64rem;letter-spacing:.1em;opacity:.35;
+  transition:color .3s var(--ease),opacity .3s var(--ease)}
+.count.good{color:var(--flame);opacity:.85}
+
+/* ── buttons ──────────────────────────────────────────────────── */
+.cta{
+  display:inline-flex;align-items:center;justify-content:center;gap:10px;width:100%;
+  background:linear-gradient(180deg,var(--flame-hi),var(--flame));
+  color:#280406;text-decoration:none;border:0;cursor:pointer;
+  font-family:var(--body);font-weight:600;font-size:1.02rem;
+  padding:17px 26px;border-radius:999px;
+  transition:transform .3s var(--ease),filter .3s var(--ease);
+  box-shadow:0 14px 34px -16px rgba(217,69,63,.8),inset 0 1px 0 rgba(255,255,255,.55);
+}
+.cta:hover{filter:brightness(1.06);transform:translateY(-2px)}
+.cta:active{transform:translateY(0)}
+.ghost{
+  display:inline-flex;align-items:center;justify-content:center;gap:9px;width:100%;
+  text-decoration:none;border:1px solid var(--hairline);color:var(--flame);cursor:pointer;
+  background:var(--sheen),var(--glass);
+  -webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);
+  font-family:var(--body);font-weight:600;font-size:.98rem;padding:16px 24px;border-radius:999px;
+  box-shadow:var(--inner);transition:background .3s var(--ease),border-color .3s var(--ease);
+}
+.ghost:hover{background:var(--sheen),var(--glass-strong);border-color:var(--hairline-flame)}
+.btns{margin-top:20px;display:flex;flex-direction:column;gap:10px}
+.fine{margin-top:12px;font-size:.85rem;opacity:.5;line-height:1.45}
+.err{color:var(--wine);font-size:.9rem;margin-top:12px;min-height:1.2em}
+
+.recap{margin-top:22px;padding-top:18px;border-top:1px solid var(--hairline);
+  font-family:var(--fact);font-size:.72rem;letter-spacing:.06em;opacity:.42;line-height:1.7}
+.recap b{color:var(--flame);opacity:.9;font-weight:400}
+
+.foot{margin-top:22px;text-align:center;font-family:var(--fact);font-size:.62rem;
+  letter-spacing:.14em;text-transform:uppercase;opacity:.28}
+
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="mark"><b>Mafia Supper</b><span>01</span></div>
+
+  <!-- ── 1 · the table ──────────────────────────────────────── -->
+  <section class="state on" id="sForm">
+    <div class="tag" id="fWhen">Thursday · 8pm onwards · Ahmedabad</div>
+    <h1>Come to play,<br>stay to argue.</h1>
+
+    <div class="table">
+      <div class="hands" id="fHands"></div>
+      <div class="seats"><b id="fLeft">4</b> seats open</div>
+    </div>
+
+    <form id="fForm" novalidate>
+      <div class="field" id="wName">
+        <label for="iName">Your name</label>
+        <input id="iName" name="name" type="text" autocomplete="name" placeholder="First and last">
+      </div>
+
+      <div class="field" id="wPhone">
+        <label for="iPhone">WhatsApp number</label>
+        <input id="iPhone" name="phone" type="tel" inputmode="numeric" autocomplete="tel" placeholder="10 digits">
+      </div>
+
+      <div class="field" id="wWhy">
+        <label for="iWhy">Why should you definitely be on the table?
+          <span class="count" id="fCount">0</span></label>
+        <textarea id="iWhy" name="why" placeholder="Say the real thing."></textarea>
+      </div>
+
+      <button class="cta" type="submit">Put me on the table</button>
+      <p class="err" id="fErr"></p>
+      <p class="fine">In case of a full house, someone with a good line here, takes the seat.</p>
+    </form>
+  </section>
+
+  <!-- ── 2 · sent ───────────────────────────────────────────── -->
+  <section class="state" id="sSent">
+    <div class="tag">In</div>
+    <h1>Got it, <span id="dName">you</span>.</h1>
+    <p class="lede">We want to accommodate everyone who applies. Your description
+      plays tiebreaker in case of more than 9 submissions. <b>Happy fighting :)</b></p>
+
+    <div class="btns">
+      <a class="ghost" id="dWa" href="#" target="_blank" rel="noopener">Open the WhatsApp message</a>
+    </div>
+    <p class="fine">The tab should have opened it already. If it didn't, that button does.</p>
+
+    <div class="recap" id="dRecap"></div>
+  </section>
+
+  <div class="foot">May the shrewdest win.</div>
+</div>
+
+<script>
+(function () {
+  'use strict';
+
+  /* ══ SET THESE ═══════════════════════════════════════════════════════
+     Everything Manav owns lives in this block and nowhere else. */
+  var CFG = {
+    EDITION : '01',
+    WHEN    : 'Thursday · 8pm onwards · Ahmedabad', // the eyebrow, verbatim
+    SEATS   : 9,
+    TAKEN   : 5,                                   // bump this as chairs go
+    WA      : '919925978977',                      // where the answers land
+    ENDPOINT: ''                                   // optional Apps Script /exec URL
+  };
+  /* ════════════════════════════════════════════════════════════════════ */
+
+  var $ = function (id) { return document.getElementById(id); };
+  var guest = { name: '', phone: '', why: '' };
+
+  function show(id) {
+    ['sForm', 'sSent'].forEach(function (s) {
+      $(s).classList.toggle('on', s === id);
+    });
+    window.scrollTo(0, 0);
+  }
+
+  /* ── deal the hands ──────────────────────────────────────────── */
+  (function deal() {
+    var row = $('fHands');
+    for (var i = 0; i < CFG.SEATS; i++) {
+      var c = document.createElement('span');
+      c.className = 'card' + (i < CFG.TAKEN ? ' set' : '');
+      row.appendChild(c);
+    }
+    $('fLeft').textContent = Math.max(0, CFG.SEATS - CFG.TAKEN);
+    $('fWhen').textContent = CFG.WHEN;
+    document.querySelector('.mark span').textContent = CFG.EDITION;
+  })();
+
+  /* ── the why counter: dim until it's actually an answer ──────── */
+  var why = $('iWhy'), count = $('fCount');
+  function tick() {
+    var n = why.value.trim().length;
+    count.textContent = n;
+    count.classList.toggle('good', n >= 40);
+  }
+  why.addEventListener('input', tick);
+  tick();   /* a back-navigation can restore the text without firing input */
+
+  /* ── submit ──────────────────────────────────────────────────── */
+  function flag(id, on) { $(id).classList.toggle('bad', on); }
+  function fail(msg) { $('fErr').textContent = msg; }
+
+  $('fForm').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var name  = $('iName').value.trim();
+    var phone = $('iPhone').value.replace(/\D/g, '');
+    var text  = why.value.trim();
+
+    flag('wName', !name);
+    flag('wPhone', phone.length < 10);
+    flag('wWhy', text.length < 15);
+
+    if (!name)             return fail('Your name, first.');
+    if (phone.length < 10) return fail('A 10-digit number I can reach you on.');
+    if (text.length < 15)  return fail('Write your first thoughts.');
+
+    fail('');
+    guest = { name: name, phone: phone.slice(-10), why: text };
+
+    /* The WhatsApp handoff IS the submission — no backend, and it starts the
+       conversation Manav is going to have with them anyway. Opened here inside
+       the click gesture so popup blockers let it through; the button on the
+       next screen is the fallback for the ones that don't. */
+    var link = waLink();
+    $('dWa').href = link;
+    $('dName').textContent = guest.name.split(' ')[0];
+    $('dRecap').innerHTML = '<b>' + esc(guest.name) + '</b> · ' + esc(guest.phone) +
+                            '<br>' + esc(guest.why);
+    record();
+    window.open(link, '_blank', 'noopener');
+    show('sSent');
+  });
+
+  function waLink() {
+    var msg = 'Hi Manav — Mafia Supper ' + CFG.EDITION + '.\n\n' +
+              guest.name + ' · ' + guest.phone + '\n\n' +
+              'Why I should be on the table: ' + guest.why;
+    return 'https://wa.me/' + CFG.WA + '?text=' + encodeURIComponent(msg);
+  }
+
+  /* Keeps the entry if the tab dies before WhatsApp opens, and posts it too if
+     an endpoint is ever wired up. Neither is load-bearing. */
+  function record() {
+    try {
+      localStorage.setItem('supper' + CFG.EDITION, JSON.stringify(
+        { at: new Date().toISOString(), name: guest.name, phone: guest.phone, why: guest.why }));
+    } catch (err) { /* private mode; nothing to do */ }
+
+    if (!CFG.ENDPOINT) return;
+    /* Same shape as /buildandbreak, which is the one that's proven against Apps
+       Script: urlencoded, no-cors, fire-and-forget. Never blocks the handoff. */
+    try {
+      fetch(CFG.ENDPOINT, {
+        method: 'POST', mode: 'no-cors',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams({
+          edition: CFG.EDITION, name: guest.name, phone: guest.phone, why: guest.why
+        })
+      }).catch(function () {});
+    } catch (err) { /* the WhatsApp message still carries everything */ }
+  }
+
+  function esc(s) {
+    return String(s).replace(/[&<>"]/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c];
+    });
+  }
+})();
+</script>
+</body>
+</html>
