@@ -41,7 +41,7 @@
     /* ── Hero: video + Book, instantly visible ── */
     .hero { position:relative; z-index:10; min-height:86svh; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:clamp(88px,14vh,130px) var(--pad-x) clamp(40px,6vh,64px); }
     .cat-label { font-size:clamp(11px,1.2vw,12px); letter-spacing:.22em; text-transform:uppercase; color:rgba(255,255,255,.4); margin-bottom:clamp(10px,1.8vh,18px); opacity:0; animation:fadeIn .5s ease .3s forwards; }
-    .cat-name { font-size:clamp(24px,4.2vw,50px); font-weight:600; letter-spacing:-.02em; line-height:1.12; margin-bottom:clamp(22px,3.6vh,38px); opacity:0; animation:riseIn .65s cubic-bezier(.22,1,.36,1) .35s forwards; }
+    .cat-name { font-size:clamp(32px,6.4vw,54px); font-weight:600; letter-spacing:-.02em; line-height:1.12; margin-bottom:clamp(22px,3.6vh,38px); opacity:0; animation:riseIn .65s cubic-bezier(.22,1,.36,1) .35s forwards; }
 
     .hv { width:100%; opacity:0; animation:riseIn .7s cubic-bezier(.22,1,.36,1) .5s forwards; margin-bottom:clamp(24px,4vh,40px); }
     .hv-land { width:min(560px,90vw); aspect-ratio:16/9; margin:0 auto; border-radius:12px; overflow:hidden; background:#000; }
@@ -154,14 +154,21 @@
 <a href="../index.html" class="home" aria-label="Manav Joshi — home"><img src="../assets/signature.gif" alt="MJ" onerror="this.closest('.home').style.display='none'"></a>
 
 <header class="hero">
-  <p class="cat-label">Weddings</p>
-  <h1 class="cat-name">The room remembers<br>the moments, not the host.</h1>
+  <h1 class="cat-name">Weddings</h1>
   <div class="hv"><div class="hv-vert"><iframe src="https://www.youtube-nocookie.com/embed/tgPvrbvz-AU?rel=0&amp;playsinline=1&amp;modestbranding=1&amp;iv_load_policy=3" loading="lazy" allow="accelerometer; encrypted-media; picture-in-picture" allowfullscreen title="Manav Joshi"></iframe></div></div>
   <a href="https://wa.me/919925978977?text=Hi%20Manav%21%20Found%20you%20on%20manavjoshi.com.%20We%20have%20a%20wedding%20coming%20up%20on%20%5Bdate%5D%20in%20%5Bcity%5D.%20Are%20you%20available%3F" target="_blank" rel="noopener noreferrer" class="book">Chat with me</a>
   <a href="#more" class="scroll-cue" aria-label="More below"><span>More</span><span class="chev" aria-hidden="true">↓</span></a>
 </header>
 
 <div class="content" id="more">
+  <section class="more-work">
+    <p class="label">Some more work</p>
+    <div class="hl-row">
+      <button type="button" class="hl" data-hl="0" aria-label="Abhivyakti Fest"><span class="hl-ring"><img src="../assets/video/weddings-h1.jpg" alt="" loading="lazy"><span class="hl-play" aria-hidden="true"></span></span><span class="hl-name">Abhivyakti Fest</span></button>
+      <button type="button" class="hl" data-hl="1" aria-label="NRI Beach Wedding"><span class="hl-ring"><img src="../assets/video/weddings-h2.jpg" alt="" loading="lazy"><span class="hl-play" aria-hidden="true"></span></span><span class="hl-name">NRI Beach Wedding</span></button>
+      <button type="button" class="hl" data-hl="2" aria-label="Planned For You"><span class="hl-ring"><img src="../assets/video/weddings-h3.jpg" alt="" loading="lazy"><span class="hl-play" aria-hidden="true"></span></span><span class="hl-name">Planned For You</span></button>
+    </div>
+  </section>
   <section>
     <p class="label">Why me</p>
     <div class="copy">
@@ -169,14 +176,6 @@
       <p>A month before, I sit down with the couple. The script, the games, the bits come from your story. No template.</p>
       <p>Then the wedding does what weddings do. The bride breaks the glass tower. An uncle starts a lecture on stage. Someone slips. I&rsquo;ve had all three. A host who can improvise doesn&rsquo;t panic. He plays it.</p>
       <p>I don&rsquo;t ask people to scream. I give them a reason to.</p>
-    </div>
-  </section>
-  <section class="more-work">
-    <p class="label">Some more work</p>
-    <div class="hl-row">
-      <button type="button" class="hl" data-hl="0" aria-label="Abhivyakti Fest"><span class="hl-ring"><img src="../assets/video/weddings-h1.jpg" alt="" loading="lazy"><span class="hl-play" aria-hidden="true"></span></span><span class="hl-name">Abhivyakti Fest</span></button>
-      <button type="button" class="hl" data-hl="1" aria-label="NRI Beach Wedding"><span class="hl-ring"><img src="../assets/video/weddings-h2.jpg" alt="" loading="lazy"><span class="hl-play" aria-hidden="true"></span></span><span class="hl-name">NRI Beach Wedding</span></button>
-      <button type="button" class="hl" data-hl="2" aria-label="Planned For You"><span class="hl-ring"><img src="../assets/video/weddings-h3.jpg" alt="" loading="lazy"><span class="hl-play" aria-hidden="true"></span></span><span class="hl-name">Planned For You</span></button>
     </div>
   </section>
   <section>
@@ -211,7 +210,7 @@
   <a class="sw" href="concerts.html">Concerts</a>
   <span class="sw active" aria-current="page">Weddings</span>
   <a class="sw" href="corporate.html">Corporate</a>
-  <a class="sw" href="shows.html">Shows</a>
+  <a class="sw" href="shows.html">On-camera</a>
   </nav>
 </div>
 
