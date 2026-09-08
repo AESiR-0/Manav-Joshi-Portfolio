@@ -250,11 +250,6 @@ form{margin-top:24px;display:flex;flex-direction:column;gap:16px}
     <p class="lede">We want to accommodate everyone who applies. Your description
       plays tiebreaker in case of more than 9 submissions. <b>Happy fighting :)</b></p>
 
-    <div class="btns">
-      <a class="ghost" id="dWa" href="#" target="_blank" rel="noopener">Open the WhatsApp message</a>
-    </div>
-    <p class="fine">The tab should have opened it already. If it didn't, that button does.</p>
-
     <div class="recap" id="dRecap"></div>
   </section>
 
@@ -272,8 +267,7 @@ form{margin-top:24px;display:flex;flex-direction:column;gap:16px}
     WHEN    : 'Thursday · 8pm onwards · Ahmedabad', // the eyebrow, verbatim
     SEATS   : 9,
     TAKEN   : 5,                                   // bump this as chairs go
-    WA      : '919925978977',                      // where the answers land
-    ENDPOINT: ''                                   // optional Apps Script /exec URL
+    ENDPOINT: ''                                   // Apps Script /exec URL — submissions go nowhere until this is set
   };
   /* ════════════════════════════════════════════════════════════════════ */
 
@@ -331,29 +325,16 @@ form{margin-top:24px;display:flex;flex-direction:column;gap:16px}
     fail('');
     guest = { name: name, phone: phone.slice(-10), why: text };
 
-    /* The WhatsApp handoff IS the submission — no backend, and it starts the
-       conversation Manav is going to have with them anyway. Opened here inside
-       the click gesture so popup blockers let it through; the button on the
-       next screen is the fallback for the ones that don't. */
-    var link = waLink();
-    $('dWa').href = link;
     $('dName').textContent = guest.name.split(' ')[0];
     $('dRecap').innerHTML = '<b>' + esc(guest.name) + '</b> · ' + esc(guest.phone) +
                             '<br>' + esc(guest.why);
     record();
-    window.open(link, '_blank', 'noopener');
     show('sSent');
   });
 
-  function waLink() {
-    var msg = 'Hi Manav — Mafia Supper ' + CFG.EDITION + '.\n\n' +
-              guest.name + ' · ' + guest.phone + '\n\n' +
-              'Why I should be on the table: ' + guest.why;
-    return 'https://wa.me/' + CFG.WA + '?text=' + encodeURIComponent(msg);
-  }
-
-  /* Keeps the entry if the tab dies before WhatsApp opens, and posts it too if
-     an endpoint is ever wired up. Neither is load-bearing. */
+  /* The RSVP sheet is the submission — no WhatsApp handoff. record() posts to
+     CFG.ENDPOINT; until that's a real Apps Script /exec URL this only keeps a
+     local copy, and nothing lands anywhere else. */
   function record() {
     try {
       localStorage.setItem('supper' + CFG.EDITION, JSON.stringify(
