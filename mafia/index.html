@@ -267,7 +267,9 @@ form{margin-top:24px;display:flex;flex-direction:column;gap:16px}
     WHEN    : 'Thursday · 8pm onwards · Ahmedabad', // the eyebrow, verbatim
     SEATS   : 9,
     TAKEN   : 5,                                   // bump this as chairs go
-    ENDPOINT: ''                                   // Apps Script /exec URL — submissions go nowhere until this is set
+    /* The single manavjoshi.com Apps Script, already deployed and already
+       serving /buildandbreak and /smbc. No redeploy was needed — see record(). */
+    ENDPOINT: 'https://script.google.com/macros/s/AKfycbyIdrCDzYTx7XQQ5l8ByaFW6FsGuSIJJvwTkN449Fhq20HrZjIYTnZpOWI4qs8-2uP5gw/exec'
   };
   /* ════════════════════════════════════════════════════════════════════ */
 
@@ -332,9 +334,17 @@ form{margin-top:24px;display:flex;flex-direction:column;gap:16px}
     show('sSent');
   });
 
-  /* The RSVP sheet is the submission — no WhatsApp handoff. record() posts to
-     CFG.ENDPOINT; until that's a real Apps Script /exec URL this only keeps a
-     local copy, and nothing lands anywhere else. */
+  /* The RSVP sheet is the submission — no WhatsApp handoff.
+     
+     Rows land in the shared `rsvps` tab, tagged slug=mafia so they filter out
+     cleanly. step is 'mafia', deliberately NOT 'claim': the script's doGet
+     counts step==='claim' rows to work out seats left for /buildandbreak, and
+     since that page sends no slug of its own, a 'claim' here would eat its
+     seats. 'mafia' is invisible to that counter.
+     
+     The sheet's header row drives the column order, and any field it has no
+     column for (edition) is parked in `extra` rather than dropped — so this
+     needs no change to the deployed script at all. */
   function record() {
     try {
       localStorage.setItem('supper' + CFG.EDITION, JSON.stringify(
@@ -349,7 +359,13 @@ form{margin-top:24px;display:flex;flex-direction:column;gap:16px}
         method: 'POST', mode: 'no-cors',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         body: new URLSearchParams({
-          edition: CFG.EDITION, name: guest.name, phone: guest.phone, why: guest.why
+          step: 'mafia',
+          slug: 'mafia',
+          edition: CFG.EDITION,
+          name: guest.name,
+          phone: guest.phone,
+          why: guest.why,
+          status: 'new'
         })
       }).catch(function () {});
     } catch (err) { /* the WhatsApp message still carries everything */ }
