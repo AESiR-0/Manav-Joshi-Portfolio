@@ -91,10 +91,11 @@ h1 em{font-style:normal;color:var(--mint);display:block}
 .clock span{font-family:var(--font-fact);font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;opacity:.55;margin-left:auto;text-align:right}
 
 .facts{margin-top:24px;border-top:1px solid var(--hairline);border-bottom:1px solid var(--hairline);display:flex;flex-wrap:wrap}
-/* 84px, not 108: the card's own padding took the width that used to let three
-   of these sit on one row, and a wrapped third column reads as a mistake. */
-.facts div{flex:1 1 84px;padding:16px 0;border-right:1px solid var(--hairline)}
-.facts div:last-child{border-right:0}
+/* Two columns clear their own divider at 375px; three could not, and the
+   third was repeating an amount the pay button already carries. */
+.facts div{flex:1 1 50%;padding:16px 14px;border-right:1px solid var(--hairline)}
+.facts div:first-child{padding-left:0}
+.facts div:last-child{padding-right:0;border-right:0}
 .facts b{display:block;font-family:var(--font-fact);font-weight:700;font-size:1rem;letter-spacing:-.02em;white-space:nowrap}
 /* direct children only — the price lives in a <span class="amtv"> inside the
    <b>, and a bare `.facts span` was making the number block-level and muted,
@@ -108,8 +109,7 @@ h1 em{font-style:normal;color:var(--mint);display:block}
   border:1px dashed var(--hairline-mint);border-radius:16px;padding:14px 16px;
   background:rgba(125,240,168,.055);
 }
-.upi .id{font-family:var(--font-fact);font-size:1rem;color:var(--mint);letter-spacing:-.02em;word-break:break-all}
-.upi .amt{margin-left:auto;font-family:var(--font-fact);font-weight:700;font-size:1.1rem}
+.upi .id{flex:1;font-family:var(--font-fact);font-size:1rem;color:var(--mint);letter-spacing:-.02em;word-break:break-all}
 .copy{
   border:1px solid var(--hairline-mint);background:var(--glass);color:var(--mint);
   font-family:var(--font-fact);font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;
@@ -117,7 +117,10 @@ h1 em{font-style:normal;color:var(--mint);display:block}
 }
 .copy:hover{background:rgba(125,240,168,.16)}
 
+/* paying and telling me you paid are two different acts, so a hairline
+   separates them instead of a sentence explaining the difference. */
 .btns{margin-top:20px;display:flex;flex-direction:column;gap:10px}
+.split{height:1px;background:var(--hairline);margin:9px 2px 7px}
 .cta{
   display:inline-flex;align-items:center;justify-content:center;gap:10px;
   background:linear-gradient(180deg,#a6f7c4,var(--mint));
@@ -139,11 +142,13 @@ h1 em{font-style:normal;color:var(--mint);display:block}
 }
 .ghost:hover{background:var(--sheen),var(--glass-strong);border-color:var(--hairline-mint)}
 
-/* the three named apps. `upi://` is an Android intent scheme and opens nothing
-   at all on iOS, so on an iPhone this row IS the pay button — see hold(). */
-.apps{display:flex;gap:8px}
+/* the named apps. `upi://` is an Android intent scheme and opens nothing
+   at all on iOS, so on an iPhone this row IS the pay button — see hold().
+   Four of them wrap to 2x2 on a narrow phone rather than shrinking to
+   unreadable slivers. */
+.apps{display:flex;flex-wrap:wrap;gap:8px}
 .apps a{
-  flex:1;display:inline-flex;align-items:center;justify-content:center;text-decoration:none;
+  flex:1 1 calc(50% - 4px);min-width:0;display:inline-flex;align-items:center;justify-content:center;text-decoration:none;
   border:1px solid var(--hairline);color:var(--mint);
   background:var(--sheen),var(--glass);
   -webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);
@@ -158,15 +163,19 @@ h1 em{font-style:normal;color:var(--mint);display:block}
   box-shadow:0 12px 30px -18px rgba(125,240,168,.9),inset 0 1px 0 rgba(255,255,255,.5);
 }
 
-/* scanning is the laptop path, so the encoder is only fetched if asked for */
-.scan{margin-top:14px;text-align:center}
-.scan button{
-  background:none;border:0;color:var(--mint);opacity:.6;cursor:pointer;
-  font-family:var(--font-fact);font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;padding:7px;
-}
-.scan button:hover{opacity:1}
+/* the one path that cannot fail. A dead VPA kills the button, the app links
+   and the QR all at once — they are all the same address — so a human route
+   is on the page from the start, not only after an error. */
+.rescue{margin-top:16px;text-align:center;font-size:.8rem;opacity:.45}
+.rescue a{color:var(--mint);text-decoration:none;border-bottom:1px solid var(--hairline-mint)}
+.rescue a:hover{opacity:.8}
+
+/* The QR is the only route that works on a laptop, and the only one still
+   standing if a deep link misfires. It was a whispered grey link. It is a
+   button in the stack now, and on a pointer device it opens itself — the
+   56KB encoder is still only fetched when it is going to be shown. */
 /* stays light: a QR needs the contrast, and glass would eat it */
-.qrbox{display:none;margin:6px auto 0;width:200px;padding:13px;background:#f4f8f3;border-radius:18px;box-shadow:0 18px 40px -22px rgba(0,0,0,.85)}
+.qrbox{display:none;margin:12px auto 2px;width:216px;padding:14px;background:#f4f8f3;border-radius:20px;box-shadow:0 18px 40px -22px rgba(0,0,0,.85)}
 .qrbox.on{display:block}
 .qrbox svg{display:block;width:100%;height:auto;shape-rendering:crispEdges}
 
@@ -198,7 +207,6 @@ h1 em{font-style:normal;color:var(--mint);display:block}
   <section class="state" id="sHold">
     <p class="tag">[ YOU'RE IN ]</p>
     <h1>Seat held for <em id="hName">you</em></h1>
-    <p class="lead">One thing left. Pay the &#8377;<span class="amtv">449</span> and the seat is yours, along with the address.</p>
 
     <div class="clock">
       <span class="dot"></span>
@@ -209,27 +217,27 @@ h1 em{font-style:normal;color:var(--mint);display:block}
     <div class="facts">
       <div><b id="hSunday">Sunday</b><span>10 to 1</span></div>
       <div><b>Vastrapur</b><span>Ahmedabad</span></div>
-      <div><b>&#8377;<span class="amtv">449</span></b><span>One seat</span></div>
     </div>
 
     <div class="pay">
       <div class="upi">
         <span class="id" id="hUpi">loading</span>
         <button class="copy" id="hCopy" type="button">Copy</button>
-        <span class="amt">&#8377;<span class="amtv">449</span></span>
       </div>
       <div class="btns">
-        <a class="cta" id="hPayBtn" href="#">Pay &#8377;<span class="amtv">449</span> &rarr;</a>
+        <a class="cta" id="hPayBtn" href="#"><span>Pay &#8377;<span class="amtv">449</span></span><span aria-hidden="true">&rarr;</span></a>
         <div class="apps" id="hApps">
           <a id="hGpay" href="#">GPay</a>
           <a id="hPhonePe" href="#">PhonePe</a>
           <a id="hPaytm" href="#">Paytm</a>
+          <a id="hBhim" href="#">BHIM</a>
         </div>
-        <button class="ghost" id="hPaid" type="button">I've paid</button>
+        <button class="ghost" id="hScan" type="button">Show QR code</button>
+        <div class="qrbox" id="hQr"></div>
+        <div class="split"></div>
+        <button class="ghost" id="hPaid" type="button">I've paid, show the address</button>
       </div>
-      <p class="hint" id="hHint">The button opens your UPI app with the amount filled in. On a laptop, scan the code below. Tap <b>I've paid</b> after, and the address appears here.</p>
-      <div class="scan"><button id="hScan" type="button">Scan the code instead</button></div>
-      <div class="qrbox" id="hQr"></div>
+      <p class="rescue" id="hRescue">Stuck? <a id="hWa" href="#" target="_blank" rel="noopener">WhatsApp me</a></p>
       <p class="err" id="hErr" role="status"></p>
     </div>
   </section>
@@ -297,8 +305,9 @@ h1 em{font-style:normal;color:var(--mint);display:block}
      invite lives on /smbc/feedback/. */
 
   var ENDPOINT = 'https://script.google.com/macros/s/AKfycbyIdrCDzYTx7XQQ5l8ByaFW6FsGuSIJJvwTkN449Fhq20HrZjIYTnZpOWI4qs8-2uP5gw/exec';
-  var UPI_ID   = '9925978977@pz';
+  var UPI_ID   = '9925978977@pz';   // overridable by the seat response — see hold()
   var UPI_NAME = 'Manav Joshi';
+  var WA_NUM   = '919925978977';
   var PRICE    = 699;            // fallback only; the seat response carries the real one
 
   /* `upi://` is an Android intent scheme. On iOS it resolves to nothing and the
@@ -306,6 +315,38 @@ h1 em{font-style:normal;color:var(--mint);display:block}
   var IOS = /iPad|iPhone|iPod/.test(navigator.userAgent) ||
             (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
   var payUrl = '';
+
+  /* ── building a UPI link that every app will actually resolve ────────────
+     Three rules, each one a real failure we hit:
+
+     1. `pa` is written raw. encodeURIComponent escapes `@` to `%40`, and the
+        apps that don't decode it before calling NPCI resolve the literal
+        string `9925978977%40pz` — which is the "cannot verify UPI ID" error.
+        A VPA has no characters that need escaping, so it goes in untouched.
+     2. `am` carries two decimals. Some PSPs reject a bare integer amount.
+     3. `pn` and `tn` are reduced to letters, digits and spaces before they
+        are encoded. Punctuation in the note — the hyphens in an ISO date,
+        most of all — is rejected by parts of the network, and the note is
+        the field that survives into the bank statement, so it has to be
+        both safe and readable. */
+
+  var VPA_RE = /^[A-Za-z0-9.\-_]{2,256}@[A-Za-z][A-Za-z0-9]{1,63}$/;
+
+  function safeText(v, max) {
+    return String(v || '')
+      .replace(/[^A-Za-z0-9 ]+/g, ' ')
+      .replace(/\s+/g, ' ')
+      .trim()
+      .slice(0, max);
+  }
+
+  function upiQuery(vpa, name, amount, note) {
+    return 'pa=' + vpa +
+           '&pn=' + encodeURIComponent(safeText(name, 50) || 'Manav Joshi') +
+           '&am=' + Number(amount).toFixed(2) +
+           '&cu=INR' +
+           '&tn=' + encodeURIComponent(safeText(note, 40) || 'SMBC');
+  }
 
   var $ = function (id) { return document.getElementById(id); };
   var key = (location.search.match(/[?&]k=([^&]+)/) || [])[1] || '';
@@ -364,26 +405,52 @@ h1 em{font-style:normal;color:var(--mint);display:block}
 
     $('hName').textContent   = d.name || 'you';
     $('hSunday').textContent = d.sundayPretty || 'Sunday';
-    $('hUpi').textContent    = UPI_ID;
 
-    var note = 'SMBC ' + (d.sunday || '');
-    var q = 'pa=' + encodeURIComponent(UPI_ID) +
-            '&pn=' + encodeURIComponent(UPI_NAME) +
-            '&am=' + PRICE + '&cu=INR&tn=' + encodeURIComponent(note);
+    /* The sheet can move the collecting address. A UPI handle can be retired
+       by its provider with no warning, and when that happens the button, the
+       app links and the QR all break together — they are one address wearing
+       three coats. Reading it from the seat response means that outage is a
+       cell in a spreadsheet, not a redeploy. */
+    if (d.upi && VPA_RE.test(String(d.upi).trim())) UPI_ID = String(d.upi).trim();
+
+    $('hUpi').textContent = UPI_ID;
+    $('hWa').href = 'https://wa.me/' + WA_NUM + '?text=' + encodeURIComponent(
+      'Hi Manav — trying to pay for ' + (d.sundayPretty || 'Sunday') +
+      ' and UPI is not going through.');
+
+    var q = upiQuery(UPI_ID, UPI_NAME, PRICE, 'SMBC ' + safeText(d.sunday, 20));
 
     payUrl = 'upi://pay?' + q;
     $('hPayBtn').href  = payUrl;
     $('hGpay').href    = 'tez://upi/pay?' + q;
     $('hPhonePe').href = 'phonepe://pay?' + q;
     $('hPaytm').href   = 'paytmmp://pay?' + q;
+    $('hBhim').href    = 'bhim://pay?' + q;
+
+    /* A malformed address would send someone into an app to be told the id
+       cannot be verified. Better to never offer the tap. */
+    if (!VPA_RE.test(UPI_ID)) {
+      $('hPayBtn').style.display = 'none';
+      $('hApps').style.display   = 'none';
+      $('hScan').style.display   = 'none';
+      $('hRescue').innerHTML     = 'Payment address needs fixing at my end. <a href="' +
+        $('hWa').href + '" target="_blank" rel="noopener">WhatsApp me</a>';
+      return finishHold(d);
+    }
 
     if (IOS) {
       $('hPayBtn').style.display = 'none';
       $('hApps').classList.add('lead');
-      $('hHint').innerHTML = 'Tap your UPI app — the amount is already filled in. ' +
-        'Then tap <b>I\'ve paid</b> and the address appears here.';
     }
 
+    /* A laptop can follow none of these schemes, so the code is the only route
+       it has. Open it rather than making someone go looking for the button. */
+    if (!('ontouchstart' in window) && !navigator.maxTouchPoints) openQr();
+
+    return finishHold(d);
+  }
+
+  function finishHold(d) {
     expiresAt = Number(d.expiresAt || 0);
     countdown();
     ticker = setInterval(countdown, 30000);
@@ -422,21 +489,17 @@ h1 em{font-style:normal;color:var(--mint);display:block}
     function ok() { btn.textContent = 'Copied'; setTimeout(function () { btn.textContent = 'Copy'; }, 2200); }
   });
 
-  /* ── scan instead ───────────────────────────────────────────────────────
-     The encoder is 56KB and the phone path never needs it, so it is fetched
-     on the first tap rather than on every page load. */
+  /* ── the QR ─────────────────────────────────────────────────────────────
+     The encoder is 56KB and a phone tapping the pay button never needs it,
+     so it is fetched the first time the code is actually going to be shown. */
   var qrReady = false;
-  $('hScan').addEventListener('click', function () {
-    var btn = this, box = $('hQr');
-    if (box.classList.contains('on')) {
-      box.classList.remove('on');
-      btn.textContent = 'Scan the code instead';
-      return;
-    }
+
+  function openQr() {
+    var btn = $('hScan'), box = $('hQr');
     if (!payUrl) return;
     btn.textContent = 'Loading…';
     loadQr(function (ok) {
-      if (!ok) { btn.textContent = 'Code unavailable — copy the ID above'; return; }
+      if (!ok) { btn.textContent = 'QR unavailable'; return; }
       if (!box.innerHTML) {
         var qr = qrcode(0, 'M');
         qr.addData(payUrl);
@@ -444,8 +507,15 @@ h1 em{font-style:normal;color:var(--mint);display:block}
         box.innerHTML = qr.createSvgTag({ cellSize: 4, margin: 0, scalable: true });
       }
       box.classList.add('on');
-      btn.textContent = 'Hide the code';
+      btn.textContent = 'Hide QR code';
     });
+  }
+
+  $('hScan').addEventListener('click', function () {
+    var box = $('hQr');
+    if (!box.classList.contains('on')) return openQr();
+    box.classList.remove('on');
+    this.textContent = 'Show QR code';
   });
 
   function loadQr(then) {

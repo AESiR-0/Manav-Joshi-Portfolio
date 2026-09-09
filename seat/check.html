@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<title>UPI check</title>
+<style>
+  :root{
+    --ink:#07100b; --paper:#eaf3ec; --mint:#7df0a8; --warn:#ffcf6b;
+    --hair:rgba(234,243,236,.14); --glass:rgba(234,243,236,.05);
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0;padding:28px 18px 64px;background:var(--ink);color:var(--paper);
+    font:15px/1.5 ui-sans-serif,-apple-system,"SF Pro Text",system-ui,sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:520px;margin:0 auto}
+  h1{font-size:1.35rem;margin:0 0 4px;letter-spacing:-.02em}
+  .sub{opacity:.55;font-size:.88rem;margin:0 0 24px}
+  label{display:block;font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;opacity:.5;margin:14px 0 6px}
+  input{
+    width:100%;padding:13px 14px;border-radius:12px;border:1px solid var(--hair);
+    background:var(--glass);color:var(--paper);font:inherit;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
+  }
+  input:focus{outline:none;border-color:var(--mint)}
+  .verdict{
+    margin:18px 0 0;padding:12px 14px;border-radius:12px;border:1px solid var(--hair);
+    background:var(--glass);font-size:.85rem;line-height:1.55;
+  }
+  .verdict.bad{border-color:rgba(255,207,107,.5);color:var(--warn)}
+  h2{font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;opacity:.5;margin:30px 0 4px;font-weight:600}
+  h2 span{display:block;text-transform:none;letter-spacing:0;font-size:.82rem;opacity:.85;margin-top:5px;font-weight:400}
+  code.str{
+    display:block;margin:8px 0 12px;padding:11px 12px;border-radius:10px;
+    background:rgba(0,0,0,.35);border:1px solid var(--hair);
+    font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.72rem;
+    word-break:break-all;line-height:1.5;
+  }
+  .row{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+  .row a{
+    display:flex;align-items:center;justify-content:center;text-decoration:none;
+    padding:13px 8px;border-radius:999px;border:1px solid var(--hair);
+    background:var(--glass);color:var(--mint);font-size:.88rem;font-weight:600;
+  }
+  .row a.wide{grid-column:1/-1;background:var(--mint);color:var(--ink);border-color:transparent}
+  .qr{width:190px;padding:12px;background:#f4f8f3;border-radius:16px;margin:14px auto 0}
+  .qr svg{display:block;width:100%;height:auto;shape-rendering:crispEdges}
+  .read{margin-top:34px;border-top:1px solid var(--hair);padding-top:20px;font-size:.86rem;line-height:1.65}
+  .read p{margin:0 0 12px}
+  .read b{color:var(--mint);font-weight:600}
+  .read .t{font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;opacity:.5;margin-bottom:12px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <h1>UPI check</h1>
+  <p class="sub">Tap both versions on the phone you'd pay from. What fails tells you what's broken.</p>
+
+  <label for="vpa">UPI ID</label>
+  <input id="vpa" value="9925978977@pz" autocapitalize="off" autocorrect="off" spellcheck="false">
+
+  <label for="amt">Amount</label>
+  <input id="amt" value="1" inputmode="decimal">
+
+  <div class="verdict" id="verdict"></div>
+
+  <h2>A · correct<span>The address is written plainly. This is what the seat page now sends.</span></h2>
+  <code class="str" id="strA"></code>
+  <div class="row">
+    <a class="wide" id="a0">Any UPI app</a>
+    <a id="a1">GPay</a><a id="a2">PhonePe</a><a id="a3">Paytm</a><a id="a4">BHIM</a>
+  </div>
+  <div class="qr" id="qr"></div>
+
+  <h2>B · the old link<span>The @ is escaped to %40. This is what the seat page sent before.</span></h2>
+  <code class="str" id="strB"></code>
+  <div class="row">
+    <a class="wide" id="b0">Any UPI app</a>
+    <a id="b1">GPay</a><a id="b2">PhonePe</a><a id="b3">Paytm</a><a id="b4">BHIM</a>
+  </div>
+
+  <div class="read">
+    <p class="t">Reading the result</p>
+    <p><b>A works, B fails.</b> The escaping was the bug and the fix is already live. Nothing else to do.</p>
+    <p><b>Both fail, every app.</b> The UPI ID itself is no longer resolving. Open any UPI app, type the ID in by hand, and you'll get the same refusal. Fix it by collecting on a different ID. Change <b>SMBC_UPI</b> in the Apps Script and redeploy — the seat page reads the address from the seat response, so the page itself needs no change.</p>
+    <p><b>Both fail in one app only.</b> That app is the problem, not the link. The other four are enough.</p>
+    <p><b>Both work.</b> The failure was somewhere else — get a screenshot of the exact screen the payer saw before changing anything.</p>
+  </div>
+
+</div>
+
+<script src="qrcode.js"></script>
+<script>
+(function () {
+  var $ = function (id) { return document.getElementById(id); };
+  var VPA_RE = /^[A-Za-z0-9.\-_]{2,256}@[A-Za-z][A-Za-z0-9]{1,63}$/;
+
+  function safeText(v, max) {
+    return String(v || '').replace(/[^A-Za-z0-9 ]+/g, ' ').replace(/\s+/g, ' ').trim().slice(0, max);
+  }
+
+  var SCHEMES = ['upi://pay?', 'tez://upi/pay?', 'phonepe://pay?', 'paytmmp://pay?', 'bhim://pay?'];
+
+  function render() {
+    var vpa = $('vpa').value.trim();
+    var amt = Number($('amt').value) || 1;
+    var ok  = VPA_RE.test(vpa);
+
+    $('verdict').className = 'verdict' + (ok ? '' : ' bad');
+    $('verdict').textContent = ok
+      ? 'Shape is valid. Whether it resolves is what the taps below decide.'
+      : 'That is not a valid UPI ID — it needs a name, an @, and a handle.';
+
+    var tail = '&pn=' + encodeURIComponent('Manav Joshi') +
+               '&am=' + amt.toFixed(2) + '&cu=INR' +
+               '&tn=' + encodeURIComponent(safeText('SMBC check', 40));
+
+    var qA = 'pa=' + vpa + tail;
+    var qB = 'pa=' + encodeURIComponent(vpa) + tail;  // only pa differs, so a failure is unambiguous
+
+    $('strA').textContent = 'upi://pay?' + qA;
+    $('strB').textContent = 'upi://pay?' + qB;
+
+    SCHEMES.forEach(function (s, i) {
+      $('a' + i).href = s + qA;
+      $('b' + i).href = s + qB;
+    });
+
+    var box = $('qr');
+    box.innerHTML = '';
+    if (ok && window.qrcode) {
+      var qr = qrcode(0, 'M');
+      qr.addData('upi://pay?' + qA);
+      qr.make();
+      box.innerHTML = qr.createSvgTag({ cellSize: 4, margin: 0, scalable: true });
+    }
+  }
+
+  $('vpa').addEventListener('input', render);
+  $('amt').addEventListener('input', render);
+  render();
+})();
+</script>
+</body>
+</html>
