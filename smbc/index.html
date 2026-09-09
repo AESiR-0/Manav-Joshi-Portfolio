@@ -1115,29 +1115,27 @@
   })();
 
   /* ── which Sunday ── */
-  /* How busy each Sunday is, read live from the CRM — the same derivation the
-     dashboard uses, so the page and the desk can never disagree. Over 20 shows
-     "Almost full", over 10 "Filling fast", 'full' closes the day. A Sunday the
-     CRM does not answer for shows NOTHING: the page must never be able to
-     render a state it did not receive.
+  /* How busy each Sunday is, said by the CRM. This page used to be handed a
+     COUNT and work out its own wording from it, which meant the vocabulary and
+     the thresholds lived in a file Manav cannot edit, and a demand figure
+     nobody needed was public. Now the CRM sends the word — computed from how
+     many have applied, or set by his own hand on the Sunday tab — and this only
+     renders it. A Sunday the CRM does not answer for shows NOTHING: the page
+     must never be able to render a state it did not receive.
 
-     This object is the manual override and stays empty. Put a number in it only
+     This object is the manual override and stays empty. Put a word in it only
      to say something the CRM cannot know yet. */
   var LOAD_API = 'https://smbc-crm2.manavjoshi01.workers.dev/api/load';
-  var SUNDAY_LOAD = {
-    '2026-09-06': 'full',   // 10 invites out against 10 seats, 0 open
-    '2026-09-13': 14,       // 13 awaiting a decision + 1 parked
-    '2026-09-20': 4,
-    '2026-09-27': 1
-  };
+  var SUNDAY_LOAD = {};
   var chosenISO = sundayISO;
-  var SEATS = 10;
-  function stateFor(n) {
-    if (n === 'full') return { state: 'Full', tone: 'gone', full: true };
-    n = Number(n) || 0;
-    if (n > SEATS)     return { state: 'Almost full',  tone: 'hot',  full: false };
-    if (n > SEATS / 2) return { state: 'Filling fast', tone: 'warm', full: false };
-    return { state: '', tone: 'plain', full: false };
+  var WORDS = {
+    'sold out':     { state: 'Sold out',     tone: 'gone', full: true  },
+    'almost full':  { state: 'Almost full',  tone: 'hot',  full: false },
+    'filling fast': { state: 'Filling fast', tone: 'warm', full: false }
+  };
+  function stateFor(w) {
+    return WORDS[String(w || '').trim().toLowerCase()] ||
+           { state: '', tone: 'plain', full: false };
   }
 
   /* Four Sundays are the decision; the rest are for people who already know
