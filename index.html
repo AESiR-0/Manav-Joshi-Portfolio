@@ -223,7 +223,43 @@
     @media (prefers-reduced-motion: reduce) {
       .identity, .sig-wrap, .brag, .fun-trigger, .socials { animation-name: fadeIn; animation-duration: .3s; }
     }
+
+    /* ── Intro: the photo blast gets the first two seconds to itself ── */
+    html.intro *, html.intro *::before, html.intro *::after { animation-play-state:paused !important; }
+    .bg-overlay { transition:opacity .9s cubic-bezier(.4,0,.2,1); }
+    html.intro .bg-overlay { opacity:.4; }
+
   </style>
+<script>
+/* ── Intro gate: hold the page back until the photos have had their moment ── */
+(function(){
+  var d=document.documentElement, HOLD=2000, MAX=4200, done=false;
+  if (location.hash || (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches)) return;
+  d.classList.add('intro');
+  var EV=['pointerdown','keydown','wheel','touchstart'];
+  function reveal(){
+    if(done) return; done=true;
+    d.classList.remove('intro');
+    EV.forEach(function(e){ removeEventListener(e,reveal); });
+  }
+  EV.forEach(function(e){ addEventListener(e,reveal,{passive:true}); });  // never make anyone wait
+  setTimeout(reveal, MAX);                                               // never trap the page
+  function watch(){
+    var ls=[document.getElementById('layer1'),document.getElementById('layer2')].filter(Boolean);
+    if(!ls.length){ setTimeout(reveal,HOLD); return; }
+    var mo=new MutationObserver(function(){
+      for(var i=0;i<ls.length;i++){
+        var s=ls[i].style;
+        if(s.backgroundImage && s.backgroundImage!=='none' && parseFloat(s.opacity||0)>0){
+          mo.disconnect(); setTimeout(reveal,HOLD); return;   // count from the first photo, not from load
+        }
+      }
+    });
+    ls.forEach(function(l){ mo.observe(l,{attributes:true,attributeFilter:['style']}); });
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',watch); else watch();
+})();
+</script>
 </head>
 <body>
 
