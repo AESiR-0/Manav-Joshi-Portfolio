@@ -106,6 +106,13 @@
     .story.yt .story-stage video { display:none; }
     .story.yt .story-stage iframe { display:block; }
     .story.yt.yt-portrait .story-stage iframe { width:auto; height:100%; aspect-ratio:9/16; }
+    /* ── Hero: our own poster, YouTube only after a click ── */
+    .hv-facade { position:relative; }
+    .hv-go { position:absolute; inset:0; width:100%; height:100%; padding:0; border:0; background:none; cursor:pointer; display:block; -webkit-tap-highlight-color:transparent; }
+    .hv-go img { width:100%; height:100%; object-fit:cover; display:block; }
+    .hv-btn { position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); width:clamp(58px,12vw,72px); height:clamp(58px,12vw,72px); border-radius:50%; background:rgba(8,8,8,.5); -webkit-backdrop-filter:blur(4px); backdrop-filter:blur(4px); border:1.5px solid rgba(255,255,255,.8); display:flex; align-items:center; justify-content:center; transition:transform .22s,background .22s; }
+    .hv-btn::before { content:''; width:0; height:0; margin-left:4px; border-style:solid; border-width:11px 0 11px 18px; border-color:transparent transparent transparent #fff; }
+    .hv-go:hover .hv-btn, .hv-go:focus-visible .hv-btn { transform:translate(-50%,-50%) scale(1.07); background:rgba(8,8,8,.72); }
     .story-tap { position:absolute; inset:0; display:flex; z-index:3; }
     .story-tap .prev { flex:0 0 22%; } .story-tap .mid { flex:1; } .story-tap .next { flex:0 0 22%; }
     .story-tap button { background:none; border:none; cursor:pointer; -webkit-tap-highlight-color:transparent; }
@@ -155,7 +162,7 @@
 
 <header class="hero">
   <h1 class="cat-name">On-camera</h1>
-  <div class="hv"><div class="hv-land"><iframe src="https://www.youtube-nocookie.com/embed/R34v4OIdkFg?rel=0&amp;playsinline=1&amp;modestbranding=1&amp;iv_load_policy=3" loading="lazy" allow="accelerometer; encrypted-media; picture-in-picture" allowfullscreen title="Manav Joshi"></iframe></div></div>
+  <div class="hv"><div class="hv-land hv-facade"><button type="button" class="hv-go" data-yt="R34v4OIdkFg" data-params="rel=0&amp;playsinline=1&amp;modestbranding=1&amp;iv_load_policy=3" aria-label="Play showreel"><img src="../assets/video/shows-hero.jpg" alt="" width="1280" height="720" fetchpriority="high"><span class="hv-btn" aria-hidden="true"></span></button></div></div>
   <a href="https://wa.me/919925978977?text=Hi%20Manav%21%20Found%20you%20on%20manavjoshi.com.%20We%20have%20a%20show%20/%20on-camera%20project%20in%20mind.%20Can%20we%20talk%3F" target="_blank" rel="noopener noreferrer" class="book">Chat with me</a>
   <a href="#more" class="scroll-cue" aria-label="More below"><span>More</span><span class="chev" aria-hidden="true">↓</span></a>
 </header>
@@ -262,6 +269,17 @@ document.querySelectorAll('[data-hl]').forEach(b=>b.addEventListener('click',()=
 })();
 const PHOTOS=['../assets/video/micanvas-poster.jpg', '../assets/host/concert-3.jpg', '../assets/photos/2.jpg', '../assets/photos/7.jpg'];
 (function(){const l1=document.getElementById('layer1'),l2=document.getElementById('layer2');let front=l1,back=l2;const loaded=[];let pool=[],pidx=0,last=null;function shuffle(a){const b=[...a];for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]];}return b;}function nextSrc(){const av=loaded.length?loaded:PHOTOS;if(pidx>=pool.length){let f=shuffle([...av]);if(last&&f.length>1&&f[0]===last)f=[...f.slice(1),f[0]];pool=f;pidx=0;}last=pool[pidx];return pool[pidx++];}function prime(src){back.style.transition='none';back.style.backgroundImage=`url('${src}')`;back.getBoundingClientRect();}function crossfade(ms,ease){back.style.transition=`opacity ${ms}ms ${ease}`;front.style.transition=`opacity ${ms}ms ${ease}`;back.style.opacity='1';front.style.opacity='0';[front,back]=[back,front];}const SCH=[...Array(12).fill(0).map(()=>[120,90,'ease-in-out']),[200,130,'ease-in-out'],[320,180,'ease-in-out'],[500,280,'cubic-bezier(.4,0,.2,1)'],[750,400,'cubic-bezier(.4,0,.2,1)'],[1300,600,'cubic-bezier(.4,0,.2,1)'],[2600,780,'cubic-bezier(.4,0,.2,1)'],[5200,780,'cubic-bezier(.4,0,.2,1)']];const STEADY=[7000,780,'cubic-bezier(.4,0,.2,1)'];function start(){prime(nextSrc());back.style.transition='opacity 450ms ease-in';back.style.opacity='1';[front,back]=[back,front];let step=0;function tick(){const[hold,fade,ease]=step<SCH.length?SCH[step++]:STEADY;prime(nextSrc());setTimeout(()=>{crossfade(fade,ease);tick();},hold);}setTimeout(tick,500);}function preload(cb){let called=false;PHOTOS.forEach(src=>{const img=new Image();img.onload=()=>{loaded.push(src);if(!called){called=true;cb();}};img.src=src;});}const slow=()=>{const c=navigator.connection||navigator.mozConnection||navigator.webkitConnection;return !!(c&&c.saveData);};const boot=()=>{if(slow()){l1.style.backgroundImage=`url('${PHOTOS[0]}')`;l1.style.opacity='1';}else preload(start);};if(document.readyState==='complete')boot();else window.addEventListener('load',boot);})();
+</script>
+<script>
+document.querySelectorAll('.hv-go').forEach(function(b){
+  b.addEventListener('click', function(){
+    var f = document.createElement('iframe');
+    f.src = 'https://www.youtube-nocookie.com/embed/' + b.dataset.yt + '?autoplay=1&' + b.dataset.params;
+    f.allow = 'accelerometer; autoplay; encrypted-media; picture-in-picture';
+    f.allowFullscreen = true; f.title = 'Manav Joshi';
+    b.parentElement.replaceChildren(f);
+  });
+});
 </script>
 </body>
 </html>
