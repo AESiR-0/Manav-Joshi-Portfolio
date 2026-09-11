@@ -160,7 +160,7 @@
       html { scroll-behavior:auto; }
     }
 
-    /* ── Intro: the photo blast gets the first two seconds to itself ── */
+    /* ── Intro: the photo blast gets the first second to itself ── */
     html.intro *, html.intro *::before, html.intro *::after { animation-play-state:paused !important; }
     .bg-overlay { transition:opacity .9s cubic-bezier(.4,0,.2,1); }
     html.intro .bg-overlay { opacity:.4; }
@@ -169,7 +169,7 @@
 <script>
 /* ── Intro gate: hold the page back until the photos have had their moment ── */
 (function(){
-  var d=document.documentElement, HOLD=2000, MAX=4200, done=false;
+  var d=document.documentElement, HOLD=1000, MAX=3000, done=false;
   if (location.hash || (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches)) return;
   d.classList.add('intro');
   var EV=['pointerdown','keydown','wheel','touchstart'];
