@@ -1,0 +1,777 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Ten seats to the roast</title>
+<meta name="description" content="Soul Sutra sent me ten invites to Pol Khol ft. Mitrata. Sunday, 9 PM, HK Hall. Tell me why one should be yours.">
+<meta name="theme-color" content="#0d0603">
+<link rel="icon" href="../favicon.svg">
+<meta property="og:title" content="Ten seats to the roast">
+<meta property="og:description" content="Pol Khol ft. Mitrata · Sun 13 Sep · 9 PM · HK Hall. Ten invites, free. Tell me why one should be yours.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Shrikhand&family=Instrument+Sans:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+/* ─────────────────────────────────────────────────────────────
+   TEN SEATS TO THE ROAST — Manav → his community
+
+   DESIGN BRIEF
+   1. Product    ten free invites to Pol Khol ft. Mitrata (Soul Sutra),
+                 Sun 13 Sep, 9 PM, HK Hall. The sentence you write is the
+                 whole application; ten people get a yes.
+   2. Tone       LOUD + GENEROUS. Loud is the room. Generous is the register:
+                 these people are already inside the community, so the page
+                 gives more than it asks and never spends the reader's status
+                 (rules/voice.md). Scarcity is stated and paid for in the
+                 same breath — everyone hears back tonight, either way.
+   3. Direction  a dark room with a hot mic. Near-black stage, one ember
+                 light, halftone print dots borrowed from the poster's comic
+                 world — without wearing Soul Sutra's blue, because this page
+                 is Manav's invitation, not a repost of their artwork.
+   4. Type       Shrikhand (display — an Indian poster face that also speaks
+                 Gujarati) · Instrument Sans (body) · Space Mono (facts)
+   5. Signature  A TORN TICKET STUB. The lineup is printed on it, the seat
+                 count is the oversized numeral on the stub, and the notches
+                 are cut with the room's own background so the tear is real.
+
+   HOW IT WORKS
+   · no hash            → the live invite (what the community gets)
+   · #edit=1            → the editor: click any line, one hue re-lights the room
+   · #i=<config>        → a variant table, locked
+   · #i=<config>&edit=1 → the editor on that variant
+   Config is diff-encoded base64url JSON in the hash, so an unedited link is
+   just the bare URL. No backend: the hash never reaches a server.
+   ───────────────────────────────────────────────────────────── */
+:root{
+  /* one hue lights the whole room; JS re-derives all of it on a colour click.
+     The literals are the shipped ember, so a no-JS render is still right. */
+  --h:24;--s:92%;
+  --wax:#fbf1ea;--flame:#f2681f;--flame-hi:#ff9d3d;--gold:#ffc633;
+  --deep:#0d0603;--ash:#3a1a0c;--onflame:#1a0802;
+
+  --halftone:radial-gradient(circle at 1px 1px, rgba(255,255,255,.05) 1px, transparent 0);
+  --room:
+    radial-gradient(118% 60% at 50% -16%, rgba(242,104,31,.34), transparent 66%),
+    radial-gradient(56% 38% at 92% 4%, rgba(255,198,51,.20), transparent 62%),
+    radial-gradient(125% 56% at 50% 112%, rgba(214,58,14,.58), transparent 68%);
+
+  --glass:rgba(255,255,255,.055);
+  --glass-strong:rgba(255,255,255,.08);
+  --sheen:linear-gradient(180deg,rgba(255,255,255,.09),rgba(255,255,255,0) 46%);
+  --hairline:rgba(255,255,255,.12);
+  --hairline-flame:rgba(242,104,31,.36);
+  --perf:rgba(255,255,255,.22);
+  --lift:0 30px 70px -34px rgba(0,0,0,.95);
+  --inner:inset 0 1px 0 rgba(255,255,255,.14);
+  --blur:blur(22px) saturate(160%);
+
+  --display:"Shrikhand",Georgia,serif;
+  --body:"Instrument Sans",system-ui,sans-serif;
+  --fact:"Space Mono",ui-monospace,monospace;
+  --ease:cubic-bezier(.16,1,.3,1);
+}
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;background:#0d0603}
+body{
+  margin:0;min-height:100svh;color:var(--wax);
+  background-image:var(--halftone),var(--room);
+  background-color:var(--deep);
+  background-attachment:fixed,fixed;
+  background-size:4px 4px,auto;
+  font-family:var(--body);font-size:17px;line-height:1.5;
+  -webkit-font-smoothing:antialiased;
+  display:flex;flex-direction:column;
+  padding:clamp(20px,5vw,44px) clamp(18px,5vw,44px) max(26px,env(safe-area-inset-bottom));
+}
+h1,h2,p,label,dl,dd,dt{margin:0}
+.wrap{width:100%;max-width:560px;margin:auto}
+
+/* ── the marquee line ─────────────────────────────────────────── */
+.top{display:flex;align-items:center;justify-content:space-between;gap:12px;
+  margin-bottom:clamp(16px,4vh,28px)}
+.mark{display:flex;align-items:center;gap:8px;color:var(--flame);
+  font-family:var(--fact);font-size:.7rem;letter-spacing:.16em;text-transform:uppercase}
+.mark svg{width:15px;height:15px;flex:0 0 auto;opacity:.9}
+.mark span{opacity:.45}
+.pill{
+  flex:0 0 auto;padding:7px 13px;border-radius:999px;
+  border:1px solid var(--hairline-flame);color:var(--gold);
+  background:var(--sheen),var(--glass);
+  -webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);
+  font-family:var(--fact);font-size:.6rem;letter-spacing:.14em;text-transform:uppercase;
+}
+
+/* every state is its own sheet of glass */
+.state{display:none}
+.state.on{
+  display:block;padding:clamp(22px,5.5vw,34px);border-radius:26px;
+  background:var(--sheen),var(--glass);
+  -webkit-backdrop-filter:var(--blur);backdrop-filter:var(--blur);
+  border:1px solid var(--hairline);box-shadow:var(--lift),var(--inner);
+}
+/* older iOS Safari has no backdrop-filter; without it the sheet vanishes */
+@supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){
+  .state.on{background:var(--sheen),rgba(34,14,6,.95)}
+}
+
+.tag{font-family:var(--fact);font-size:.68rem;letter-spacing:.15em;
+  text-transform:uppercase;color:var(--flame)}
+h1{margin-top:13px;font-family:var(--display);font-weight:400;
+   letter-spacing:-.005em;line-height:1.12;
+   font-size:clamp(1.95rem,7.2vw,2.85rem);text-wrap:balance}
+h1 b{font-weight:400;color:var(--gold)}
+.lede{margin-top:15px;font-size:1.02rem;line-height:1.55;opacity:.8;max-width:44ch}
+.lede b{font-weight:500;opacity:1;color:var(--wax)}
+
+/* ── the signature: a torn ticket ─────────────────────────────── */
+.ticket{
+  display:flex;margin:26px 0 4px;border-radius:18px;
+  border:1px solid var(--hairline);
+  background:var(--sheen),rgba(0,0,0,.26);
+  box-shadow:var(--inner);
+}
+.tk-main{flex:1 1 auto;min-width:0;padding:18px 18px 16px}
+.tk-pre{font-family:var(--fact);font-size:.58rem;letter-spacing:.18em;
+  text-transform:uppercase;opacity:.42}
+.tk-name{margin-top:7px;font-family:var(--display);font-size:1.32rem;line-height:1.15;
+  color:var(--gold)}
+.tk-sub{margin-top:3px;font-size:.92rem;opacity:.72}
+.tk-rule{height:1px;margin:13px 0;background:repeating-linear-gradient(90deg,
+  var(--hairline) 0 4px, transparent 4px 8px)}
+dl{display:grid;grid-template-columns:auto 1fr;gap:5px 12px;align-items:baseline}
+dt{font-family:var(--fact);font-size:.58rem;letter-spacing:.14em;text-transform:uppercase;
+  opacity:.4;white-space:nowrap}
+dd{font-size:.9rem;line-height:1.42}
+dd b{font-weight:600;color:var(--wax)}
+.tk-when{margin-top:13px;font-family:var(--fact);font-size:.68rem;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--flame)}
+/* the stub — notched with the room's own light, so the tear is real */
+.tk-stub{
+  position:relative;flex:0 0 108px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  border-left:2px dashed var(--perf);
+}
+.tk-stub::before,.tk-stub::after{
+  content:'';position:absolute;left:-10px;width:18px;height:18px;border-radius:50%;
+  background-image:var(--halftone),var(--room);
+  background-color:var(--deep);
+  background-attachment:fixed,fixed;
+  background-size:4px 4px,auto;
+}
+.tk-stub::before{top:-10px}
+.tk-stub::after{bottom:-10px}
+.tk-stub b{font-family:var(--display);font-weight:400;font-size:2.5rem;line-height:1;
+  color:var(--flame)}
+.tk-stub span{margin-top:5px;font-family:var(--fact);font-size:.56rem;letter-spacing:.2em;
+  text-transform:uppercase;opacity:.5}
+
+/* ── the form ─────────────────────────────────────────────────── */
+.close{margin-top:24px;font-family:var(--fact);font-size:.66rem;letter-spacing:.13em;
+  text-transform:uppercase;color:var(--gold);opacity:.9}
+form{margin-top:12px;display:flex;flex-direction:column;gap:15px}
+.field label{display:block;font-family:var(--fact);font-size:.66rem;letter-spacing:.13em;
+  text-transform:uppercase;opacity:.55;margin-bottom:7px}
+.field input,.field textarea{
+  width:100%;color:var(--wax);font-family:var(--body);font-size:1.02rem;line-height:1.45;
+  background:rgba(0,0,0,.3);border:1px solid var(--hairline);border-radius:14px;
+  padding:15px 16px;outline:none;
+  transition:border-color .25s var(--ease),background .25s var(--ease),box-shadow .25s var(--ease);
+}
+.field textarea{min-height:124px;resize:vertical}
+.field input::placeholder,.field textarea::placeholder{color:rgba(251,241,234,.28)}
+.field input:focus,.field textarea:focus{
+  border-color:var(--hairline-flame);background:rgba(0,0,0,.42);
+  box-shadow:0 0 0 4px rgba(242,104,31,.13);
+}
+.field.bad input,.field.bad textarea{border-color:#b3341a}
+.count{float:right;font-family:var(--fact);font-size:.62rem;letter-spacing:.1em;opacity:.34;
+  transition:color .3s var(--ease),opacity .3s var(--ease)}
+.count.good{color:var(--gold);opacity:.9}
+
+.cta{
+  display:inline-flex;align-items:center;justify-content:center;gap:10px;width:100%;
+  background:linear-gradient(180deg,var(--flame-hi),var(--flame));
+  color:var(--onflame);text-decoration:none;border:0;cursor:pointer;
+  font-family:var(--body);font-weight:600;font-size:1.04rem;
+  padding:17px 26px;border-radius:999px;
+  transition:transform .3s var(--ease),filter .3s var(--ease);
+  box-shadow:0 16px 36px -18px var(--flame),inset 0 1px 0 rgba(255,255,255,.5);
+}
+.cta:hover{filter:brightness(1.07);transform:translateY(-2px)}
+.cta:active{transform:translateY(0)}
+.fine{margin-top:12px;font-size:.86rem;opacity:.52;line-height:1.5}
+.err{color:#e9603c;font-size:.9rem;margin-top:12px;min-height:1.2em}
+
+.recap{margin-top:22px;padding-top:18px;border-top:1px solid var(--hairline);
+  font-family:var(--fact);font-size:.72rem;letter-spacing:.05em;opacity:.42;line-height:1.7}
+.recap b{color:var(--flame);opacity:.9;font-weight:400}
+
+.foot{margin-top:20px;text-align:center;font-family:var(--fact);font-size:.6rem;
+  letter-spacing:.13em;text-transform:uppercase;opacity:.32;line-height:1.8}
+
+/* ── the editor · only ever at #edit=1 ───────────────────────────
+   The bare URL is the live invite, because that is the link that gets
+   pasted into a community group. Nobody lands in the editor by accident. */
+.bar{display:none}
+body.edit{padding-bottom:clamp(206px,30vh,258px);justify-content:flex-start}
+body.edit .wrap{margin:0 auto auto}
+body.edit .bar{
+  display:block;position:fixed;left:0;right:0;bottom:0;z-index:40;
+  padding:13px clamp(14px,4vw,20px) max(13px,env(safe-area-inset-bottom));
+  background:linear-gradient(180deg,rgba(13,6,3,.5),rgba(13,6,3,.9) 40%);
+  -webkit-backdrop-filter:var(--blur);backdrop-filter:var(--blur);
+  border-top:1px solid var(--hairline);
+}
+.barwrap{width:100%;max-width:560px;margin:0 auto;display:flex;flex-direction:column;gap:10px}
+.row{display:flex;align-items:center;gap:9px;flex-wrap:wrap}
+.row>.lab{font-family:var(--fact);font-size:.58rem;letter-spacing:.14em;text-transform:uppercase;
+  opacity:.42;flex:0 0 46px}
+.sw{width:24px;height:24px;border-radius:999px;padding:0;cursor:pointer;flex:0 0 auto;
+  border:1px solid rgba(255,255,255,.22);
+  transition:transform .25s var(--ease),box-shadow .25s var(--ease)}
+.sw:hover{transform:scale(1.12)}
+.sw.on{box-shadow:0 0 0 2px var(--deep),0 0 0 3.5px currentColor}
+.pick{position:relative;width:24px;height:24px;flex:0 0 auto;border-radius:999px;
+  border:1px solid rgba(255,255,255,.22);overflow:hidden;cursor:pointer;
+  background:conic-gradient(from 0deg,#f2681f,#ffc633,#7ad94f,#3fd9c8,#3f6ad9,#a33fd9,#f2681f)}
+.pick input{position:absolute;inset:-6px;width:150%;height:150%;border:0;padding:0;
+  opacity:0;cursor:pointer}
+.chip{
+  display:inline-flex;align-items:center;gap:7px;cursor:pointer;
+  padding:7px 13px;border-radius:999px;
+  border:1px solid var(--hairline);color:var(--flame);
+  background:var(--sheen),var(--glass);
+  font-family:var(--fact);font-size:.58rem;letter-spacing:.12em;text-transform:uppercase;
+  transition:border-color .3s var(--ease),background .3s var(--ease),opacity .3s var(--ease)}
+.chip:hover{border-color:var(--hairline-flame);background:var(--sheen),var(--glass-strong)}
+.chip.wide{flex:1 1 auto;justify-content:center;padding:11px 14px;font-size:.6rem}
+.chip.key{color:var(--onflame);border-color:transparent;
+  background:linear-gradient(180deg,var(--flame-hi),var(--flame));font-weight:700;
+  box-shadow:0 12px 28px -16px var(--flame)}
+.num{display:inline-flex;align-items:center;gap:2px;border:1px solid var(--hairline);
+  border-radius:999px;background:var(--glass);overflow:hidden}
+.num button{width:28px;height:28px;border:0;background:none;color:var(--flame);cursor:pointer;
+  font-family:var(--fact);font-size:.86rem;line-height:1}
+.num button:hover{background:var(--glass-strong)}
+.num span{min-width:20px;text-align:center;font-family:var(--fact);font-size:.66rem;opacity:.8}
+.hint{font-family:var(--fact);font-size:.56rem;letter-spacing:.07em;opacity:.34;line-height:1.7}
+.hint b{color:var(--gold);font-weight:400;opacity:.85}
+.link{width:100%;display:none;
+  font-family:var(--fact);font-size:.62rem;color:var(--wax);
+  background:rgba(0,0,0,.45);border:1px solid var(--hairline-flame);border-radius:12px;
+  padding:10px 12px;outline:none}
+.link.on{display:block}
+
+/* the dashed hairline that says "this line is yours" */
+body.edit [data-k]{
+  cursor:text;border-radius:7px;
+  outline:1px dashed rgba(255,255,255,0);outline-offset:5px;
+  transition:outline-color .25s var(--ease),background .25s var(--ease)}
+body.edit [data-k]:hover{outline-color:var(--hairline-flame)}
+body.edit [data-k]:focus{outline:1px dashed var(--flame);background:rgba(0,0,0,.26)}
+
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+@media (max-width:430px){
+  .ticket{flex-direction:column}
+  .tk-stub{flex:0 0 auto;flex-direction:row;gap:10px;padding:13px 0;
+    border-left:0;border-top:2px dashed var(--perf)}
+  .tk-stub::before,.tk-stub::after{left:auto;top:-10px;bottom:auto}
+  .tk-stub::before{left:-10px}
+  .tk-stub::after{right:-10px}
+  .tk-stub b{font-size:1.7rem}
+  .tk-stub span{margin-top:0}
+  .row>.lab{flex-basis:100%}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="top">
+    <div class="mark">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+           stroke-linecap="round" aria-hidden="true">
+        <rect x="9" y="2" width="6" height="11" rx="3"></rect>
+        <path d="M5 11a7 7 0 0 0 14 0M12 18v4M8.5 22h7"></path>
+      </svg>
+      <b data-k="ev2" data-one>Pol Khol</b><span data-k="ev3" data-one>ft. Mitrata</span>
+    </div>
+    <div class="pill"><span id="pillN">10</span> <span data-k="pw" data-one>seats</span></div>
+  </div>
+
+  <!-- ── 1 · the invite ─────────────────────────────────────── -->
+  <section class="state on" id="sForm">
+    <div class="tag" data-k="w" data-one>Tomorrow · 9 PM · HK Hall, Ahmedabad</div>
+    <h1 data-k="t">I have **{seats} seats** to the roast.</h1>
+    <p class="lede" data-k="d">Soul Sutra sent me ten invites and I would rather they went
+      to people I actually know. They cost you nothing. Who gets one comes down entirely
+      to the box below, so give me the real reason.</p>
+
+    <div class="ticket">
+      <div class="tk-main">
+        <div class="tk-pre" data-k="pre" data-one>Soul Sutra presents</div>
+        <div class="tk-name" data-k="ev" data-one>Pol Khol ft. Mitrata</div>
+        <div class="tk-sub" data-k="sub" data-one>The Big Fat Gujarati Roast</div>
+        <div class="tk-rule"></div>
+        <dl>
+          <dt data-k="k1" data-one>Roasted</dt>
+          <dd data-k="r1">**Viraj Ghelani** · **Deep Vaidya** · **Vishal Parekh**</dd>
+          <dt data-k="k2" data-one>Panel</dt>
+          <dd data-k="r2">Manasi Parekh · Bhavya Gandhi · Maulik Nayak · Prem Gadhvi · Kenavita</dd>
+        </dl>
+        <div class="tk-when" data-k="when" data-one>Sun 13 Sep · 9 PM · HK Hall</div>
+      </div>
+      <div class="tk-stub">
+        <b id="stubN">10</b><span data-k="sw" data-one>seats</span>
+      </div>
+    </div>
+
+    <div class="close" data-k="cl" data-one>Closes 11 PM tonight</div>
+
+    <form id="fForm" novalidate>
+      <div class="field" id="wName">
+        <label for="iName" data-k="l1" data-one>Your name</label>
+        <input id="iName" name="name" type="text" autocomplete="name" placeholder="First and last">
+      </div>
+
+      <div class="field" id="wPhone">
+        <label for="iPhone" data-k="l2" data-one>WhatsApp number</label>
+        <input id="iPhone" name="phone" type="tel" inputmode="numeric" autocomplete="tel" placeholder="10 digits">
+      </div>
+
+      <div class="field" id="wWhy">
+        <label for="iWhy"><span data-k="q" data-one>Why should you be in that room?</span>
+          <span class="count" id="fCount">0</span></label>
+        <textarea id="iWhy" name="why"></textarea>
+      </div>
+
+      <button class="cta" type="submit"><span data-k="b" data-one>Put me in that room</span></button>
+      <p class="err" id="fErr"></p>
+      <p class="fine" data-k="f">Ten seats, and everyone who writes gets a WhatsApp from me
+        tonight — yes or no. Nobody is left wondering.</p>
+    </form>
+  </section>
+
+  <!-- ── 2 · sent ───────────────────────────────────────────── -->
+  <section class="state" id="sSent">
+    <div class="tag" data-k="g1" data-one>You're in the hat</div>
+    <h1 id="gHead"></h1>
+    <p class="lede" id="gLede"></p>
+    <div class="recap" id="dRecap"></div>
+  </section>
+
+  <div class="foot" data-k="fo">Tickets are on District · Pol Khol ft. Mitrata · HK Hall</div>
+</div>
+
+<!-- ── the editor bar ─────────────────────────────────────────── -->
+<div class="bar" id="bar">
+  <div class="barwrap">
+    <div class="row">
+      <span class="lab">Colour</span>
+      <span id="sws"></span>
+      <span class="pick" id="pickWrap" title="Any colour"><input type="color" id="pick" value="#f2681f" aria-label="Pick any colour"></span>
+      <span style="flex:1"></span>
+      <span class="num" title="Seats you are giving away">
+        <button type="button" id="sDown" aria-label="Fewer seats">−</button>
+        <span id="sNum">10</span>
+        <button type="button" id="sUp" aria-label="More seats">+</button>
+      </span>
+    </div>
+
+    <div class="row">
+      <button class="chip wide key" type="button" id="copyGuest">Copy the invite link</button>
+      <button class="chip wide" type="button" id="copyEdit">Copy my edit link</button>
+      <button class="chip" type="button" id="reset" title="Back to the shipped invite">Reset</button>
+    </div>
+
+    <input class="link" id="out" readonly aria-label="Link">
+    <p class="hint" id="hint">Click any line to rewrite it · <b>**stars**</b> highlight words ·
+      <b>{seats}</b> writes the number in words, <b>{n}</b> in digits, <b>{name}</b> is their first name</p>
+  </div>
+</div>
+
+<script>
+(function () {
+  'use strict';
+
+  /* ══ THE INVITE AS SHIPPED ═══════════════════════════════════════════
+     Written for people already inside the community: the ask stays small,
+     the page hands over more than it asks, and the one line that costs the
+     reader status — ten seats, I choose — is paid for in the same sentence
+     (everyone hears back tonight). See rules/voice.md. */
+  var DEF = {
+    ev2:'Pol Khol', ev3:'ft. Mitrata',
+    pw :'seats',
+    w  :'Tomorrow · 9 PM · HK Hall, Ahmedabad',
+    t  :'I have **{seats} seats** to the roast.',
+    d  :'Soul Sutra sent me ten invites and I would rather they went to people I ' +
+        'actually know. They cost you nothing. Who gets one comes down entirely to ' +
+        'the box below, so give me the real reason.',
+    pre:'Soul Sutra presents',
+    ev :'Pol Khol ft. Mitrata',
+    sub:'The Big Fat Gujarati Roast',
+    k1 :'Roasted',
+    r1 :'**Viraj Ghelani** · **Deep Vaidya** · **Vishal Parekh**',
+    k2 :'Panel',
+    r2 :'Manasi Parekh · Bhavya Gandhi · Maulik Nayak · Prem Gadhvi · Kenavita',
+    when:'Sun 13 Sep · 9 PM · HK Hall',
+    sw :'seats',
+    cl :'Closes 11 PM tonight',
+    l1 :'Your name',
+    l2 :'WhatsApp number',
+    q  :'Why should you be in that room?',
+    ph :'Say the real thing.',
+    b  :'Put me in that room',
+    f  :'Ten seats, and everyone who writes gets a WhatsApp from me tonight — ' +
+        'yes or no. Nobody is left wondering.',
+    g1 :'You’re in the hat',
+    g2 :'Got it, {name}.',
+    g3 :'Ten yeses and every no go out on WhatsApp tonight. Nothing to refresh, ' +
+        'nothing to chase — I come to you. **And if it is a no, the show is still ' +
+        'on District. It is worth the ticket.**',
+    fo :'Tickets are on District · Pol Khol ft. Mitrata · HK Hall',
+    s  :10,    /* seats being given away */
+    h  :24,    /* hue — ember */
+    sa :92     /* saturation */
+  };
+
+  /* The one Apps Script already deployed for manavjoshi.com. Rows land in the
+     shared `rsvps` tab; the reason goes in the `why` column, which already
+     exists. step is 'roast', never 'claim' — doGet counts claim rows as
+     /buildandbreak's remaining seats, so a claim here would eat that page's
+     count. Anything the sheet has no column for is parked in `extra`, so this
+     needs no change to the deployed script. */
+  var ENDPOINT = 'https://script.google.com/macros/s/AKfycbyIdrCDzYTx7XQQ5l8ByaFW6FsGuSIJJvwTkN449Fhq20HrZjIYTnZpOWI4qs8-2uP5gw/exec';
+
+  var SWATCHES = [
+    { n:'Ember',    h:24,  sa:92 },
+    { n:'Chilli',   h:6,   sa:84 },
+    { n:'Gold',     h:44,  sa:88 },
+    { n:'Magenta',  h:330, sa:70 },
+    { n:'Electric', h:210, sa:80 },
+    { n:'Lime',     h:86,  sa:62 }
+  ];
+
+  var WORDS = ['zero','one','two','three','four','five','six','seven','eight','nine','ten',
+               'eleven','twelve','thirteen','fourteen','fifteen','sixteen','seventeen',
+               'eighteen','nineteen','twenty'];
+
+  var $ = function (id) { return document.getElementById(id); };
+  var S = {}, EDIT = false;
+  var guest = { name:'', phone:'', why:'' };
+
+  /* ── config in, config out ───────────────────────────────────────
+     base64url JSON, diff-encoded against DEF: an unedited invite is just
+     the bare URL, and a tweaked one is still short enough to paste. */
+  function b64e(str) {
+    var b = new TextEncoder().encode(str), s = '';
+    for (var i = 0; i < b.length; i++) s += String.fromCharCode(b[i]);
+    return btoa(s).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');
+  }
+  function b64d(str) {
+    var s = atob(str.replace(/-/g,'+').replace(/_/g,'/'));
+    var b = new Uint8Array(s.length);
+    for (var i = 0; i < s.length; i++) b[i] = s.charCodeAt(i);
+    return new TextDecoder().decode(b);
+  }
+  function readHash() {
+    var h = location.hash.replace(/^#/,''), out = {};
+    h.split('&').forEach(function (p) {
+      var i = p.indexOf('='); if (i < 0) return;
+      out[p.slice(0,i)] = p.slice(i+1);
+    });
+    return out;
+  }
+  function diff() {
+    var d = {};
+    Object.keys(DEF).forEach(function (k) { if (S[k] !== DEF[k]) d[k] = S[k]; });
+    return d;
+  }
+  function link(withEdit) {
+    var d = diff(), base = location.origin + location.pathname, hash = '';
+    if (Object.keys(d).length) hash = '#i=' + b64e(JSON.stringify(d));
+    if (withEdit) hash = (hash || '#') + (hash ? '&' : '') + 'edit=1';
+    return base + hash;
+  }
+
+  /* ── the room, re-lit from one hue ───────────────────────────────
+     Legacy comma hsl() on purpose: it renders everywhere, including the
+     older iOS Safari this page already bends over backwards for. */
+  function hsl(h, s, l, a) {
+    h = ((h % 360) + 360) % 360;
+    s = Math.max(0, Math.min(100, s)); l = Math.max(0, Math.min(100, l));
+    return a == null ? 'hsl(' + h + ',' + s + '%,' + l + '%)'
+                     : 'hsla(' + h + ',' + s + '%,' + l + '%,' + a + ')';
+  }
+  function relight() {
+    var h = S.h, s = S.sa, r = document.documentElement.style;
+    r.setProperty('--flame',    hsl(h, s, 53));
+    r.setProperty('--flame-hi', hsl(h + 10, Math.min(98, s + 6), 66));
+    r.setProperty('--gold',     hsl(h + 20, Math.min(99, s + 8), 60));
+    r.setProperty('--wax',      hsl(h, 40, 95));
+    r.setProperty('--onflame',  hsl(h, 80, 7));
+    r.setProperty('--deep',     hsl(h, 44, 4));
+    r.setProperty('--hairline-flame', hsl(h, s, 53, .36));
+    r.setProperty('--room',
+      'radial-gradient(118% 60% at 50% -16%, ' + hsl(h, s, 53, .34) + ', transparent 66%),' +
+      'radial-gradient(56% 38% at 92% 4%, '    + hsl(h + 20, s, 58, .20) + ', transparent 62%),' +
+      'radial-gradient(125% 56% at 50% 112%, ' + hsl(h - 8, s, 45, .58) + ', transparent 68%)');
+    var tc = document.querySelector('meta[name=theme-color]');
+    if (tc) tc.setAttribute('content', hsl(h, 44, 4));
+    $('pick').value = hexOf(h, s, 53);
+    paintSwatches();
+  }
+  function hexOf(h, s, l) {
+    h = (((h % 360) + 360) % 360) / 360; s /= 100; l /= 100;
+    function f(p, q, t) {
+      if (t < 0) t += 1; if (t > 1) t -= 1;
+      if (t < 1/6) return p + (q - p) * 6 * t;
+      if (t < 1/2) return q;
+      if (t < 2/3) return p + (q - p) * (2/3 - t) * 6;
+      return p;
+    }
+    var q = l < .5 ? l * (1 + s) : l + s - l * s, p = 2 * l - q;
+    return '#' + [f(p,q,h+1/3), f(p,q,h), f(p,q,h-1/3)].map(function (v) {
+      return ('0' + Math.round(v * 255).toString(16)).slice(-2);
+    }).join('');
+  }
+  function hueOf(hex) {
+    var m = /^#?([\da-f]{2})([\da-f]{2})([\da-f]{2})$/i.exec(hex);
+    if (!m) return null;
+    var r = parseInt(m[1],16)/255, g = parseInt(m[2],16)/255, b = parseInt(m[3],16)/255;
+    var mx = Math.max(r,g,b), mn = Math.min(r,g,b), d = mx - mn, h = 0;
+    if (d) {
+      h = mx === r ? ((g - b) / d + (g < b ? 6 : 0)) : mx === g ? (b - r) / d + 2 : (r - g) / d + 4;
+      h *= 60;
+    }
+    var l = (mx + mn) / 2, s = d ? d / (1 - Math.abs(2 * l - 1)) * 100 : 0;
+    /* a near-grey or a neon both break the room, so the light keeps a range */
+    return { h: Math.round(h), sa: Math.round(Math.max(46, Math.min(94, s))) };
+  }
+
+  /* ── text ────────────────────────────────────────────────────────
+     **stars** highlight, {seats} writes the count in words, {n} in digits. */
+  function esc(s) {
+    return String(s).replace(/[&<>"]/g, function (c) {
+      return { '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;' }[c];
+    });
+  }
+  function fill(s) {
+    var word = WORDS[S.s] || String(S.s);
+    return String(s).replace(/\{seats\}/g, word).replace(/\{n\}/g, S.s);
+  }
+  function rich(s) {
+    return esc(fill(s)).replace(/\*\*([^*]+)\*\*/g, '<b>$1</b>').replace(/\n/g, '<br>');
+  }
+
+  /* ── paint ───────────────────────────────────────────────────────── */
+  function paintText() {
+    document.querySelectorAll('[data-k]').forEach(function (el) {
+      if (el === document.activeElement) return;   /* never fight the caret */
+      el.innerHTML = rich(S[el.getAttribute('data-k')] || '');
+    });
+    $('stubN').textContent = S.s;
+    $('pillN').textContent = S.s;
+    $('sNum').textContent = S.s;
+    $('iWhy').placeholder = S.ph;
+  }
+  function paintSwatches() {
+    var box = $('sws');
+    if (!box.children.length) {
+      SWATCHES.forEach(function (p, i) {
+        var b = document.createElement('button');
+        b.type = 'button'; b.className = 'sw'; b.title = p.n;
+        b.setAttribute('data-p', i);
+        box.appendChild(b);
+      });
+    }
+    [].forEach.call(box.children, function (b) {
+      var p = SWATCHES[+b.getAttribute('data-p')];
+      b.style.background = 'linear-gradient(158deg,' + hsl(p.h+20, p.sa, 60) + ',' + hsl(p.h, p.sa, 53) + ')';
+      b.style.color = hsl(p.h, p.sa, 53);
+      b.classList.toggle('on', p.h === S.h && p.sa === S.sa);
+    });
+  }
+  function paintAll() { relight(); paintText(); save(); }
+
+  function save() {
+    if (!EDIT) return;
+    try { localStorage.setItem('roastDraft', JSON.stringify(diff())); } catch (e) {}
+  }
+
+  /* ── boot ────────────────────────────────────────────────────────── */
+  (function boot() {
+    var q = readHash(), cfg = {};
+    EDIT = q.edit === '1';
+    if (q.i) {
+      try { cfg = JSON.parse(b64d(q.i)) || {}; } catch (e) { cfg = {}; }
+    } else if (EDIT) {
+      try { cfg = JSON.parse(localStorage.getItem('roastDraft') || '{}'); } catch (e) {}
+    }
+    Object.keys(DEF).forEach(function (k) {
+      S[k] = Object.prototype.hasOwnProperty.call(cfg, k) ? cfg[k] : DEF[k];
+    });
+    /* a link typed by hand could say anything; the page still has to stand */
+    S.s  = Math.max(1, Math.min(20, parseInt(S.s, 10) || DEF.s));
+    S.h  = isFinite(+S.h) ? +S.h : DEF.h;
+    S.sa = Math.max(0, Math.min(100, isFinite(+S.sa) ? +S.sa : DEF.sa));
+    Object.keys(DEF).forEach(function (k) {
+      if (typeof DEF[k] === 'string') S[k] = String(S[k]).slice(0, 480);
+    });
+
+    document.body.classList.toggle('edit', EDIT);
+    if (EDIT) {
+      document.querySelectorAll('[data-k]').forEach(function (el) {
+        el.setAttribute('contenteditable', 'plaintext-only');
+        el.setAttribute('spellcheck', 'false');
+      });
+    }
+    paintAll();
+  })();
+
+  function show(id) {
+    ['sForm','sSent'].forEach(function (s) { $(s).classList.toggle('on', s === id); });
+    window.scrollTo(0, 0);
+  }
+
+  /* ── editing ─────────────────────────────────────────────────────── */
+  if (EDIT) {
+    document.querySelectorAll('[data-k]').forEach(function (el) {
+      var k = el.getAttribute('data-k');
+      el.addEventListener('input', function () {
+        var v = el.innerText.replace(/ /g, ' ');
+        if (el.hasAttribute('data-one')) v = v.replace(/\s*\n+\s*/g, ' ');
+        S[k] = v.slice(0, 480);
+        save();
+      });
+      /* plaintext-only is not everywhere yet, so paste is cleaned by hand */
+      el.addEventListener('paste', function (e) {
+        e.preventDefault();
+        var t = (e.clipboardData || window.clipboardData).getData('text') || '';
+        if (el.hasAttribute('data-one')) t = t.replace(/\s+/g, ' ');
+        document.execCommand('insertText', false, t.slice(0, 480));
+      });
+      el.addEventListener('blur', function () { paintText(); save(); });
+      el.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' && el.hasAttribute('data-one')) { e.preventDefault(); el.blur(); }
+        if (e.key === 'Escape') el.blur();
+      });
+    });
+
+    $('sws').addEventListener('click', function (e) {
+      var b = e.target.closest('.sw'); if (!b) return;
+      var p = SWATCHES[+b.getAttribute('data-p')];
+      S.h = p.h; S.sa = p.sa; relight(); save();
+    });
+    $('pick').addEventListener('input', function () {
+      var c = hueOf($('pick').value); if (!c) return;
+      S.h = c.h; S.sa = c.sa; relight(); save();
+    });
+
+    $('sUp').addEventListener('click', function () {
+      S.s = Math.min(20, S.s + 1); paintText(); save();
+    });
+    $('sDown').addEventListener('click', function () {
+      S.s = Math.max(1, S.s - 1); paintText(); save();
+    });
+
+    $('reset').addEventListener('click', function () {
+      if (!window.confirm('Back to the invite as written?')) return;
+      Object.keys(DEF).forEach(function (k) { S[k] = DEF[k]; });
+      try { localStorage.removeItem('roastDraft'); } catch (e) {}
+      $('out').classList.remove('on');
+      paintAll();
+    });
+
+    var hand = function (url, said) {
+      var out = $('out');
+      out.value = url; out.classList.add('on');
+      var done = function () { $('hint').innerHTML = '<b>' + said + '</b>'; };
+      var manual = function () {
+        out.focus(); out.select();
+        $('hint').innerHTML = '<b>Copy it from the line above.</b>';
+      };
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(url).then(done).catch(manual);
+      } else {
+        out.focus(); out.select();
+        try { document.execCommand('copy'); done(); } catch (e) { manual(); }
+      }
+    };
+    $('copyGuest').addEventListener('click', function () {
+      hand(link(false), 'Invite link copied. It opens as the invite, never the editor.');
+    });
+    $('copyEdit').addEventListener('click', function () {
+      hand(link(true), 'Edit link copied. Keep this one for yourself.');
+    });
+  }
+
+  /* ── the counter: dim until it is actually an answer ─────────────── */
+  var why = $('iWhy'), count = $('fCount');
+  function tick() {
+    var n = why.value.trim().length;
+    count.textContent = n;
+    count.classList.toggle('good', n >= 40);
+  }
+  why.addEventListener('input', tick);
+  tick();   /* a back-navigation can restore the text without firing input */
+
+  /* ── submit ──────────────────────────────────────────────────────── */
+  function flag(id, on) { $(id).classList.toggle('bad', on); }
+  function fail(msg) { $('fErr').textContent = msg; }
+
+  $('fForm').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var name  = $('iName').value.trim();
+    var phone = $('iPhone').value.replace(/\D/g, '');
+    var text  = why.value.trim();
+
+    flag('wName', !name);
+    flag('wPhone', phone.length < 10);
+    flag('wWhy', !text);
+
+    /* an error tells the reader how to get unstuck, never why being stuck is
+       expensive — ruled 2026-09-08, which is why these are not editable */
+    if (!name)             return fail('Your name, first.');
+    if (phone.length < 10) return fail('A 10-digit number I can reach you on.');
+    if (!text)             return fail('Write your first thoughts.');
+
+    fail('');
+    guest = { name:name, phone:phone.slice(-10), why:text };
+
+    var first = guest.name.split(' ')[0];
+    $('gHead').innerHTML  = rich(S.g2).replace(/\{name\}/g, esc(first));
+    $('gLede').innerHTML  = rich(S.g3).replace(/\{name\}/g, esc(first));
+    $('dRecap').innerHTML = '<b>' + esc(guest.name) + '</b> · ' + esc(guest.phone) +
+                            '<br>' + esc(guest.why);
+    record();
+    show('sSent');
+  });
+
+  /* Rows land in the shared `rsvps` tab, tagged slug=roast so they filter out
+     cleanly. A page still being edited never writes a row. */
+  function record() {
+    try {
+      localStorage.setItem('roastSent', JSON.stringify(
+        { at:new Date().toISOString(), name:guest.name, phone:guest.phone, why:guest.why }));
+    } catch (err) { /* private mode; nothing to do */ }
+
+    if (EDIT || !ENDPOINT) return;
+    /* Same shape as /buildandbreak, the one proven against Apps Script:
+       urlencoded, no-cors, fire-and-forget. Never blocks the thank-you. */
+    try {
+      fetch(ENDPOINT, {
+        method:'POST', mode:'no-cors',
+        headers:{ 'Content-Type':'application/x-www-form-urlencoded' },
+        body:new URLSearchParams({
+          step:'roast', slug:'roast', name:guest.name, phone:guest.phone,
+          why:guest.why, status:'new'
+        })
+      }).catch(function () {});
+    } catch (err) { /* the row is lost; the guest still sees they are in */ }
+  }
+})();
+</script>
+</body>
+</html>
