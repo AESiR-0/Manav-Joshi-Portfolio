@@ -44,17 +44,25 @@
     .cat-name { font-size:clamp(32px,6.4vw,54px); font-weight:600; letter-spacing:-.02em; line-height:1.12; margin-bottom:clamp(22px,3.6vh,38px); opacity:0; animation:riseIn .65s cubic-bezier(.22,1,.36,1) .35s forwards; }
 
     .hv { width:100%; opacity:0; animation:riseIn .7s cubic-bezier(.22,1,.36,1) .5s forwards; margin-bottom:clamp(24px,4vh,40px); }
-    .hv-land { width:min(560px,90vw); aspect-ratio:16/9; margin:0 auto; border-radius:12px; overflow:hidden; background:#000; }
+    .hv-land { width:min(560px,90vw,81svh); aspect-ratio:16/9; margin:0 auto; border-radius:12px; overflow:hidden; background:#000; }
     .hv-land iframe, .hv-land video { width:100%; height:100%; border:0; display:block; }
-    .hv-vert { width:min(300px,66vw); aspect-ratio:9/16; margin:0 auto; border-radius:14px; overflow:hidden; background:#000; }
+    .hv-vert { width:min(300px,66vw,31.5svh); aspect-ratio:9/16; margin:0 auto; border-radius:14px; overflow:hidden; background:#000; }
     .hv-vert iframe, .hv-vert video { width:100%; height:100%; object-fit:cover; border:0; display:block; }
 
     .book { display:inline-block; font-size:clamp(12px,1.4vw,14px); font-weight:500; letter-spacing:.16em; text-transform:uppercase; text-decoration:none; padding:15px 34px; border-radius:999px; background:#fff; color:#080808; transition:transform .2s,box-shadow .2s; opacity:0; animation:fadeIn .6s ease .68s forwards; }
     .book:hover { transform:translateY(-1px); box-shadow:0 10px 30px rgba(0,0,0,.4); }
-    /* Scroll cue: no words, just a light travelling down a hairline */
-    .scroll-cue { display:block; width:1px; height:clamp(40px,6.5vh,58px); margin:clamp(26px,4.2vh,42px) auto 0; background:rgba(255,255,255,.2); position:relative; overflow:hidden; opacity:0; animation:fadeIn .6s ease .9s forwards; }
-    .scroll-cue::after { content:''; position:absolute; inset:0; background:linear-gradient(to bottom,transparent 0%,rgba(255,255,255,.9) 45%,transparent 100%); animation:tracer 2.1s cubic-bezier(.55,0,.45,1) infinite; }
-    @keyframes tracer { 0% { transform:translateY(-100%); } 62%,100% { transform:translateY(100%); } }
+    /* Scroll cue: no words — a lit bead falling down a hairline, on a loop */
+    .scroll-cue { display:block; position:relative; width:46px; height:clamp(58px,8.2vh,80px); margin:clamp(24px,3.8vh,38px) auto 0; opacity:0; animation:fadeIn .6s ease .9s forwards; }
+    .scroll-cue::before { content:''; position:absolute; left:50%; top:0; width:1px; height:100%; margin-left:-.5px; background:linear-gradient(to bottom,rgba(255,255,255,.05),rgba(255,255,255,.3) 30%,rgba(255,255,255,.3) 70%,rgba(255,255,255,.05)); }
+    .scroll-cue::after { content:''; position:absolute; left:50%; top:0; width:16px; height:100%; margin-left:-8px; background:radial-gradient(closest-side,#fff 0%,rgba(255,255,255,.9) 20%,rgba(255,255,255,.28) 52%,transparent 100%) no-repeat; background-size:16px 16px; animation:cueDrop 2.2s cubic-bezier(.5,0,.4,1) infinite; }
+    .scroll-cue:hover::before { background:rgba(255,255,255,.45); }
+    @keyframes cueDrop {
+      0%   { background-position:50% 0%;   opacity:0; }
+      14%  { opacity:1; }
+      58%  { background-position:50% 100%; opacity:1; }
+      72%  { background-position:50% 100%; opacity:0; }
+      100% { background-position:50% 100%; opacity:0; }
+    }
 
     /* Floating chat: arrives once the hero is behind you, steps aside at the closing CTA */
     .fab { position:fixed; right:clamp(16px,3vw,30px); bottom:calc(clamp(16px,3vh,30px) + env(safe-area-inset-bottom,0px)); z-index:60; display:inline-flex; align-items:center; gap:9px; padding:12px 19px 12px 16px; border-radius:999px; background:#fff; color:#080808; font-size:13px; font-weight:600; letter-spacing:.03em; text-decoration:none; box-shadow:0 12px 34px rgba(0,0,0,.45); opacity:0; transform:translateY(14px) scale(.96); pointer-events:none; transition:opacity .34s cubic-bezier(.22,1,.36,1),transform .34s cubic-bezier(.22,1,.36,1),box-shadow .22s; }
@@ -162,7 +170,7 @@
     @keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
     @media (prefers-reduced-motion: reduce) {
       .back,.home,.cat-name,.cat-label,.hv,.book,.scroll-cue { animation-name:fadeIn; animation-duration:.3s; }
-      .scroll-cue::after { animation:none; }
+      .scroll-cue::after { animation:none; background-position:50% 50%; }
       .fab { transition:opacity .2s linear; }
       html { scroll-behavior:auto; }
     }
