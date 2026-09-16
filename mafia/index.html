@@ -266,9 +266,10 @@ form{margin-top:24px;display:flex;flex-direction:column;gap:16px}
     EDITION : '01',
     WHEN    : 'Thursday · 8pm onwards · Ahmedabad', // the eyebrow, verbatim
     SEATS   : 9,
-    /* Chairs that went before this page started counting itself. Everything
-       after them is read live from the sheet — see count(). */
-    GONE    : 5,
+    /* Chairs that went before this page started counting itself. Manav set
+       this to zero on 2026-09-16: nothing is claimed until the sheet says so,
+       so every lit card on this page is a real application. */
+    GONE    : 0,
     /* The single manavjoshi.com Apps Script, already deployed and already
        serving /buildandbreak and /smbc. No redeploy was needed — see record(). */
     ENDPOINT: 'https://script.google.com/macros/s/AKfycbyIdrCDzYTx7XQQ5l8ByaFW6FsGuSIJJvwTkN449Fhq20HrZjIYTnZpOWI4qs8-2uP5gw/exec'
