@@ -1,0 +1,62 @@
+# manavjoshi.com
+# Humans, search crawlers and AI answer engines are all welcome on the public pages.
+
+User-agent: *
+Allow: /
+Disallow: /DOC/
+Disallow: /templates/
+Disallow: /pager/
+Disallow: /seat/
+Disallow: /roast/
+Disallow: /smbc/_preview-rhythm.html
+Disallow: /smbc/draft-v1-morning-build.html
+Disallow: /smbc/draft-v2.html
+Disallow: /smbc/archive-2026-07-31-wednesday-batch.html
+
+# --- AI answer engines: explicitly allowed ---
+# These are the crawlers that feed ChatGPT, Claude, Perplexity, Gemini and
+# Copilot. Being readable by them is the whole point of /llms.txt below.
+
+User-agent: GPTBot
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Claude-SearchBot
+Allow: /
+
+User-agent: anthropic-ai
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Perplexity-User
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: Applebot
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: meta-externalagent
+Allow: /
+
+User-agent: cohere-ai
+Allow: /
+
+Sitemap: https://manavjoshi.com/sitemap.xml
