@@ -266,7 +266,9 @@ form{margin-top:24px;display:flex;flex-direction:column;gap:16px}
     EDITION : '01',
     WHEN    : 'Thursday · 8pm onwards · Ahmedabad', // the eyebrow, verbatim
     SEATS   : 9,
-    TAKEN   : 5,                                   // bump this as chairs go
+    /* Chairs that went before this page started counting itself. Everything
+       after them is read live from the sheet — see count(). */
+    GONE    : 5,
     /* The single manavjoshi.com Apps Script, already deployed and already
        serving /buildandbreak and /smbc. No redeploy was needed — see record(). */
     ENDPOINT: 'https://script.google.com/macros/s/AKfycbyIdrCDzYTx7XQQ5l8ByaFW6FsGuSIJJvwTkN449Fhq20HrZjIYTnZpOWI4qs8-2uP5gw/exec'
@@ -283,18 +285,48 @@ form{margin-top:24px;display:flex;flex-direction:column;gap:16px}
     window.scrollTo(0, 0);
   }
 
-  /* ── deal the hands ──────────────────────────────────────────── */
-  (function deal() {
+  /* ── deal the hands ───────────────────────────────────────────
+     A seat count that never moves reads as a lie, so this one is the
+     sheet's. GONE covers the chairs taken before the page started counting;
+     every application since is a row doGet can see. If the network says
+     nothing, the page keeps GONE rather than inventing a livelier number. */
+  var taken = CFG.GONE;
+
+  function deal() {
     var row = $('fHands');
+    row.innerHTML = '';
     for (var i = 0; i < CFG.SEATS; i++) {
       var c = document.createElement('span');
-      c.className = 'card' + (i < CFG.TAKEN ? ' set' : '');
+      c.className = 'card' + (i < taken ? ' set' : '');
       row.appendChild(c);
     }
-    $('fLeft').textContent = Math.max(0, CFG.SEATS - CFG.TAKEN);
+    $('fLeft').textContent = Math.max(0, CFG.SEATS - taken);
+  }
+
+  (function open() {
+    deal();
     $('fWhen').textContent = CFG.WHEN;
     document.querySelector('.mark span').textContent = CFG.EDITION;
+    count();
   })();
+
+  /* doGet counts claim rows for the slug it is asked about, and returns what
+     is left of its own 15-seat total — so claimed is total - left, and this
+     table's nine are applied to that. Cache-busted, because a stale count is
+     the bug being fixed. */
+  function count() {
+    if (!CFG.ENDPOINT) return;
+    try {
+      fetch(CFG.ENDPOINT + '?slug=mafia&_=' + Date.now(), { cache: 'no-store' })
+        .then(function (r) { return r.ok ? r.json() : null; })
+        .then(function (d) {
+          if (!d || typeof d.left !== 'number' || typeof d.total !== 'number') return;
+          taken = Math.min(CFG.SEATS, CFG.GONE + Math.max(0, d.total - d.left));
+          deal();
+        })
+        .catch(function () {});
+    } catch (err) { /* the static number stands */ }
+  }
 
   /* ── the why counter: dim until it's actually an answer ──────── */
   var why = $('iWhy'), count = $('fCount');
@@ -331,16 +363,20 @@ form{margin-top:24px;display:flex;flex-direction:column;gap:16px}
     $('dRecap').innerHTML = '<b>' + esc(guest.name) + '</b> · ' + esc(guest.phone) +
                             '<br>' + esc(guest.why);
     record();
+    taken = Math.min(CFG.SEATS, taken + 1);   /* the chair they just took */
+    deal();
     show('sSent');
   });
 
   /* The RSVP sheet is the submission — no WhatsApp handoff.
      
      Rows land in the shared `rsvps` tab, tagged slug=mafia so they filter out
-     cleanly. step is 'mafia', deliberately NOT 'claim': the script's doGet
-     counts step==='claim' rows to work out seats left for /buildandbreak, and
-     since that page sends no slug of its own, a 'claim' here would eat its
-     seats. 'mafia' is invisible to that counter.
+     cleanly. step is 'claim' so that doGet can count them and this page can
+     show a true number. That is safe ONLY because of the slug: /buildandbreak
+     asks doGet with no slug, and doGet then matches claim rows whose slug cell
+     is EMPTY — so a claim tagged mafia never touches its seat count. Rows
+     written before this change carry step='mafia' and are invisible to the
+     count; CFG.GONE is what stands in for them.
      
      The sheet's header row drives the column order, and any field it has no
      column for (edition) is parked in `extra` rather than dropped — so this
@@ -359,7 +395,7 @@ form{margin-top:24px;display:flex;flex-direction:column;gap:16px}
         method: 'POST', mode: 'no-cors',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         body: new URLSearchParams({
-          step: 'mafia',
+          step: 'claim',
           slug: 'mafia',
           edition: CFG.EDITION,
           name: guest.name,
