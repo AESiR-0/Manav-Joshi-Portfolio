@@ -4,9 +4,9 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Sunday Morning Build Club</title>
-  <meta name="description" content="Eight people in a room, and a morning of your most ambitious work. Every Sunday, 10 AM to 1 PM, Ahmedabad.">
+  <meta name="description" content="Eight people in a room, and a morning of your most ambitious work. Every Sunday, 10 AM to 1 PM. The city changes; every date says which one.">
   <meta property="og:title" content="Sunday Morning Build Club">
-  <meta property="og:description" content="Eight people in a room, and a morning of your most ambitious work. Every Sunday, Ahmedabad.">
+  <meta property="og:description" content="Eight people in a room, and a morning of your most ambitious work. Every Sunday, in a different city.">
   <meta property="og:image" content="https://manavjoshi.com/images/smbc/full/room.jpg">
   <meta property="og:url" content="https://manavjoshi.com/smbc/">
   <meta property="og:type" content="website">
@@ -19,7 +19,7 @@
   <script>document.documentElement.className += ' js';</script>
   <style>
     /* ══ DESIGN BRIEF ═══════════════════════════════════════════════
-       Product   invite page for an eight-seat Sunday-morning room, Ahmedabad
+       Product   invite page for an eight-seat Sunday-morning room that travels
        Audience  someone at 11pm on a phone, carrying one stuck ambitious thing
        Tone      hopeful, exacting
        Direction one full-screen home that dissolves into cream. Nothing below
@@ -33,8 +33,9 @@
        rules/chemistry-lab-design.md (2026-08-27), which names this page
        the standard for copy and the calendar page the standard for look.
 
-       1 · Eight builders, one room, Sunday morning in Ahmedabad. For
-           someone whose ambitious project keeps losing to their week.
+       1 · Eight builders, one room, Sunday morning. The city changes
+           week to week; the room does not. For someone whose ambitious
+           project keeps losing to their week.
        2 · Tone: CERTAIN, ALIVE.  ("bright" from the 2026-07-31 poster
            lock does not survive the ground moving from cream paper to a
            lab at night; "certain" does, and is the one that matters.)
@@ -299,6 +300,16 @@
       letter-spacing: .11em; text-transform: uppercase; color: hsl(var(--steel)); margin-top: -5px; }
     .pick-d label i { font-style: normal; font-family: var(--mono); font-size: 9.5px; letter-spacing: .04em; white-space: nowrap;
       text-transform: uppercase; font-weight: 700; line-height: 1.4; }
+    /* The city sits with the date, not with the state: it is part of WHEN this
+       room is, not part of how full it is. Kept off the sun colour on purpose:
+       the sun is the scarcity reagent and nothing else may borrow it.
+       Every city reads the same. Setting the away ones in heavier ink made
+       Ahmedabad the default and the rest exceptions, and the club stopped
+       being an Ahmedabad club (2026-09-26). The city is a decision input now,
+       so it is legible on every tile, not only the surprising ones. */
+    .pick-d label em { font-style: normal; font-family: var(--mono); font-size: 9.5px;
+      letter-spacing: .1em; text-transform: uppercase; white-space: nowrap; line-height: 1.4;
+      font-weight: 700; color: hsl(var(--ink) / .88); margin-top: -7px; }
     /* One reagent, escalating: the scarcer the Sunday, the more it lights. */
     .pick-d label i.plain { visibility: hidden; }
     .pick-d label i.warm  { color: hsl(var(--sun) / .78); }
@@ -584,7 +595,7 @@
     <h1>Sunday Morning Build&nbsp;Club</h1>
     <p class="say">Eight people in a room, and a morning of your most ambitious work.</p>
     <a class="cta" href="#apply">Request invite <span class="arw">&rarr;</span></a>
-    <p class="home-facts">Eight invites. Every Sunday, 10 AM to 1 PM, Ahmedabad.</p>
+    <p class="home-facts">Eight invites. Every Sunday, 10 AM to 1 PM. The city is on each date.</p>
   </div>
 </header>
 
@@ -747,7 +758,7 @@
         <label class="check">
           <input type="checkbox" id="cOk">
           <span class="box"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M2.5 8.5 6 12 13.5 4"/></svg></span>
-          <span>I am in Ahmedabad on <b id="tickDate">Sunday</b></span>
+          <span>I am in <b id="tickCity">the city</b> on <b id="tickDate">Sunday</b></span>
         </label>
         <label class="check">
           <input type="checkbox" id="cFee">
@@ -798,7 +809,7 @@
     </details>
     <details>
       <summary>How long, and where? <span class="pm">+</span></summary>
-      <div class="ans"><div><p>10 AM to 1 PM, in Ahmedabad. You get the address with your invite.</p></div></div>
+      <div class="ans"><div><p>10 AM to 1 PM. The city changes from one Sunday to the next, so every date in the form says where that one is. You get the address with your invite.</p></div></div>
     </details>
     <details>
       <summary>I applied. Then what? <span class="pm">+</span></summary>
@@ -830,6 +841,7 @@
   <a class="cta" href="#apply">Request invite</a>
 </div>
 
+<script src="/js/smbc-cities.js"></script>
 <script>
 (function () {
   'use strict';
@@ -850,7 +862,24 @@
   var pad = function (n) { return (n < 10 ? '0' : '') + n; };
   var sundayISO = sunday.getFullYear() + '-' + pad(sunday.getMonth() + 1) + '-' + pad(sunday.getDate());
 
-  $('tickDate').textContent   = 'Sunday, ' + dateLong;
+  /* ── where the room is, Sunday by Sunday ──
+     The one table lives in /js/smbc-cities.js and the seat page reads the same
+     file, so a city can never be right in one place and wrong in another.
+     If that file does not arrive, the tiles say nothing rather than guessing a
+     city: the same rule the fullness states follow a few hundred lines down. */
+  function cityFor(iso) {
+    return window.SMBC_CITY ? window.SMBC_CITY.at(iso) : '';
+  }
+
+  /* One writer for both halves of the tick line, so the city and the date can
+     never disagree with each other or with the tile that is lit. */
+  function setTick(iso) {
+    var td = new Date(iso + 'T12:00:00');
+    $('tickDate').textContent = 'Sunday, ' + td.getDate() + ' ' + MONTHS[td.getMonth()];
+    $('tickCity').textContent = cityFor(iso);
+  }
+
+  setTick(sundayISO);
   $('stickyDate').textContent = 'Sun ' + dateShort;
 
   /* ── reveal (fail-safe: everything shows after 4s) ── */
@@ -1157,9 +1186,11 @@
       if (k === 0 && !full) inp.checked = true;
       var lab = document.createElement('label');
       lab.setAttribute('for', id);
+      var city = cityFor(iso);
       lab.innerHTML = '<s>' + pad(k + 1) + '</s>' +
                       '<b>' + pad(d.getDate()) + '</b>' +
                       '<u>' + MONTHS[d.getMonth()].slice(0, 3) + '</u>' +
+                      '<em>' + city + '</em>' +
                       '<i class="' + tone + '">' + (state || 'Open') + '</i>';
       if (k >= SHOWN) { inp.hidden = true; lab.hidden = true; }
       wrap.appendChild(inp); wrap.appendChild(lab);
@@ -1178,9 +1209,7 @@
     wrap.appendChild(more);
     if (!wrap.querySelector('input:checked')) {
       var first = wrap.querySelector('input:not(:disabled)');
-      if (first) { first.checked = true; chosenISO = first.value;
-        var fd = new Date(chosenISO + 'T12:00:00');
-        $('tickDate').textContent = 'Sunday, ' + fd.getDate() + ' ' + MONTHS[fd.getMonth()]; }
+      if (first) { first.checked = true; chosenISO = first.value; setTick(chosenISO); }
     }
     /* Ask the CRM. On any failure — offline, 503, a shape we did not expect —
        the tiles simply stay as they were built, which is blank. A wrong state
@@ -1211,8 +1240,7 @@
     wrap.addEventListener('change', function (e) {
       if (!e.target || !e.target.value) return;
       chosenISO = e.target.value;
-      var dd = new Date(chosenISO + 'T12:00:00');
-      $('tickDate').textContent = 'Sunday, ' + dd.getDate() + ' ' + MONTHS[dd.getMonth()];
+      setTick(chosenISO);
     });
   })();
 
@@ -1321,7 +1349,7 @@
       gender: picked.gender, age_group: picked.age_group,
       found: picked.found,
       ref_name: NAMED_REF[picked.found] ? $('fRef').value.trim() : '',
-      city: 'Ahmedabad', date: chosenISO, fee_ok: 'yes', fee: '999'
+      city: cityFor(chosenISO), date: chosenISO, fee_ok: 'yes', fee: '999'
     };
     fetch(ENDPOINT, { method: 'POST', mode: 'no-cors', body: new URLSearchParams(data) })
       .catch(function () { /* opaque by design; the row still lands */ })

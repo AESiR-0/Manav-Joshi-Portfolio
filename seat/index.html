@@ -198,7 +198,7 @@ h1 em{font-style:normal;color:var(--mint);display:block}
 </head>
 <body>
 <main class="wrap">
-  <p class="mark fact"><b>Sunday Morning Build Club</b><span>Ahmedabad</span></p>
+  <p class="mark fact"><b>Sunday Morning Build Club</b><span id="mCity"></span></p>
 
   <!-- loading -->
   <section class="state on" id="sLoad"><p class="fact spin">Checking your seat…</p></section>
@@ -216,7 +216,7 @@ h1 em{font-style:normal;color:var(--mint);display:block}
 
     <div class="facts">
       <div><b id="hSunday">Sunday</b><span>10 to 1</span></div>
-      <div><b>Vastrapur</b><span>Ahmedabad</span></div>
+      <div><b id="hCity">&mdash;</b><span>address with<br>your confirmation</span></div>
     </div>
 
     <div class="pay">
@@ -250,7 +250,7 @@ h1 em{font-style:normal;color:var(--mint);display:block}
 
     <div class="addr">
       <p class="fact">Where</p>
-      <p id="dAddr">Vastrapur, Ahmedabad</p>
+      <p id="dAddr">&nbsp;</p>
       <a id="dMap" href="#" target="_blank" rel="noopener">Open in Maps &rarr;</a>
     </div>
 
@@ -296,6 +296,7 @@ h1 em{font-style:normal;color:var(--mint);display:block}
   </div>
 </main>
 
+<script src="/js/smbc-cities.js"></script>
 <script>
 (function () {
   'use strict';
@@ -395,6 +396,16 @@ h1 em{font-style:normal;color:var(--mint);display:block}
 
   var expiresAt = 0, ticker = null;
 
+  /* The city belongs to the Sunday, not to the club, and one table answers for
+     every page: /js/smbc-cities.js, the same file the invite page reads. If it
+     does not arrive, this says nothing rather than naming the wrong city. */
+  function cityOf(iso) { return window.SMBC_CITY ? window.SMBC_CITY.at(iso) : ''; }
+  function setCity(iso) {
+    var c = cityOf(iso);
+    $('mCity').textContent = c;
+    $('hCity').textContent = c || '\u2014';
+  }
+
   function hold(d) {
     /* The sheet is the authority on price — a seat can be priced by hand.
        Hardcoding it here meant a changed price silently disagreed with itself. */
@@ -405,6 +416,7 @@ h1 em{font-style:normal;color:var(--mint);display:block}
 
     $('hName').textContent   = d.name || 'you';
     $('hSunday').textContent = d.sundayPretty || 'Sunday';
+    setCity(d.sunday);
 
     /* The sheet can move the collecting address. A UPI handle can be retired
        by its provider with no warning, and when that happens the button, the
@@ -468,7 +480,10 @@ h1 em{font-style:normal;color:var(--mint);display:block}
   function confirmed(d) {
     if (ticker) clearInterval(ticker);
     $('dSunday').textContent = d.sundayPretty || 'Sunday';
-    if (d.address) $('dAddr').textContent = d.address;
+    setCity(d.sunday);
+    /* The sheet's address wins when it has one; it is the only thing that knows
+       the room. Without it the city is still true, and true beats blank. */
+    $('dAddr').textContent = d.address || cityOf(d.sunday);
     if (d.map) $('dMap').href = d.map; else $('dMap').style.display = 'none';
     show('sDone');
   }
