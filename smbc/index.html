@@ -595,7 +595,7 @@
     <h1>Sunday Morning Build&nbsp;Club</h1>
     <p class="say">Eight people in a room, and a morning of your most ambitious work.</p>
     <a class="cta" href="#apply">Request invite <span class="arw">&rarr;</span></a>
-    <p class="home-facts">Eight invites. Every Sunday, 10 AM to 1 PM. The city is on each date.</p>
+    <p class="home-facts" id="homeFacts">Eight invites. Every Sunday, 10 AM to 1 PM. Join us in Surat on Oct 4, Jaipur on Oct 11.</p>
   </div>
 </header>
 
@@ -881,6 +881,27 @@
 
   setTick(sundayISO);
   $('stickyDate').textContent = 'Sun ' + dateShort;
+
+  /* ── the travelling Sundays, named in the hero ──
+     The sentence ships in the HTML too, so it is right with no JS at all. This
+     rewrites it from the same table the tiles read, for the two reasons a
+     hardcoded line eventually fails: it goes stale the Monday after the last
+     trip, and it can disagree with the tiles directly under it. A Sunday that
+     has passed drops out on its own; when nothing is away, the sentence goes
+     and the line is just the standing facts. */
+  (function travel() {
+    var el = $('homeFacts'), table = window.SMBC_CITY;
+    if (!el || !table) return;
+    var todayISO = new Date(Date.now() + 330 * 60000).toISOString().slice(0, 10);
+    var away = Object.keys(table.bySunday).sort().filter(function (iso) {
+      return iso >= todayISO && table.bySunday[iso] !== table.fallback;
+    }).map(function (iso) {
+      var d = new Date(iso + 'T12:00:00');
+      return table.bySunday[iso] + ' on ' + MONTHS[d.getMonth()].slice(0, 3) + ' ' + d.getDate();
+    });
+    el.textContent = 'Eight invites. Every Sunday, 10 AM to 1 PM.' +
+                     (away.length ? ' Join us in ' + away.join(', ') + '.' : '');
+  })();
 
   /* ── reveal (fail-safe: everything shows after 4s) ── */
   var reveal = document.querySelectorAll('.rv');
