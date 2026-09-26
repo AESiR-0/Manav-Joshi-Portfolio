@@ -162,6 +162,49 @@
       margin-top: 22px; font-family: var(--mono);
       font-size: clamp(11.5px, 3vw, 13px); letter-spacing: .05em; color: hsl(44 30% 88%);
     }
+    /* ── the travelling Sundays ──
+       Two capsules instead of a sentence, because a city and a date are two
+       objects a person picks between, not prose they read. Each one is a
+       control: pressing it lights that Sunday in the form below, so the hero
+       and the form cannot want different things.
+
+       No sun anywhere in here. The sun is the scarcity reagent on this page and
+       it escalates; a travel tag borrowing it would say "hurry" about a fact
+       that is not about hurry. These read by glass, border and ink. */
+    .away {
+      margin-top: 16px; display: flex; flex-wrap: wrap; align-items: center;
+      gap: 9px; row-gap: 10px;
+    }
+    .away-lead {
+      font-family: var(--mono); font-size: clamp(11.5px, 3vw, 13px);
+      letter-spacing: .05em; color: hsl(44 30% 88% / .8); margin-right: 1px;
+    }
+    .cap {
+      display: inline-flex; align-items: baseline; gap: 9px;
+      padding: 8px 15px 9px; border-radius: 999px; text-decoration: none;
+      color: hsl(var(--paper));
+      background: hsl(var(--paper) / .13); border: 1px solid hsl(var(--paper) / .26);
+      backdrop-filter: blur(14px) saturate(140%); -webkit-backdrop-filter: blur(14px) saturate(140%);
+      box-shadow: inset 0 1px 0 hsl(0 0% 100% / .22);
+      transition: transform .22s var(--ease), background .22s var(--ease),
+                  border-color .22s var(--ease), box-shadow .22s var(--ease);
+    }
+    .cap b { font-family: var(--disp); font-weight: 700; font-size: 15.5px; letter-spacing: -.015em; }
+    /* A hairline, not a bullet: the city and its date are one label in two
+       registers, and a dot would read as a list of two things. */
+    .cap em {
+      font-style: normal; font-family: var(--mono); font-size: 10px;
+      letter-spacing: .1em; text-transform: uppercase; color: hsl(44 30% 88% / .82);
+      padding-left: 9px; border-left: 1px solid hsl(var(--paper) / .26);
+    }
+    .cap:hover {
+      transform: translateY(-2px); background: hsl(var(--paper) / .2);
+      border-color: hsl(var(--paper) / .46);
+      box-shadow: inset 0 1px 0 hsl(0 0% 100% / .34), 0 8px 26px hsl(var(--desk-deep) / .45);
+    }
+    .cap:active { transform: translateY(1px); box-shadow: inset 0 1px 0 hsl(0 0% 100% / .18); }
+    .cap:focus-visible { outline: 3px solid hsl(var(--sun-deep)); outline-offset: 3px; }
+
     @media (prefers-reduced-motion: no-preference) {
       .js .home-inner > * { opacity: 0; transform: translateY(18px); animation: rise .8s var(--ease) forwards; }
       .js .home-inner > :nth-child(1) { animation-delay: .12s }
@@ -169,6 +212,7 @@
       .js .home-inner > :nth-child(3) { animation-delay: .38s }
       .js .home-inner > :nth-child(4) { animation-delay: .52s }
       .js .home-inner > :nth-child(5) { animation-delay: .64s }
+      .js .home-inner > :nth-child(6) { animation-delay: .76s }
     }
     @keyframes rise { to { opacity: 1; transform: none; } }
 
@@ -595,7 +639,14 @@
     <h1>Sunday Morning Build&nbsp;Club</h1>
     <p class="say">Eight people in a room, and a morning of your most ambitious work.</p>
     <a class="cta" href="#apply">Request invite <span class="arw">&rarr;</span></a>
-    <p class="home-facts" id="homeFacts">Eight invites. Every Sunday, 10 AM to 1 PM. Join us in Surat on Oct 4, Jaipur on Oct 11.</p>
+    <p class="home-facts">Eight invites. Every Sunday, 10 AM to 1 PM.</p>
+    <!-- Shipped with today's trips in it so the hero is right with no JS at all.
+         The script rebuilds this row from js/smbc-cities.js on load. -->
+    <div class="away" id="awayRow">
+      <span class="away-lead">Join us in</span>
+      <a class="cap" href="#apply" data-go="2026-10-04"><b>Surat</b><em>Sun 4 Oct</em></a>
+      <a class="cap" href="#apply" data-go="2026-10-11"><b>Jaipur</b><em>Sun 11 Oct</em></a>
+    </div>
   </div>
 </header>
 
@@ -883,25 +934,46 @@
   $('stickyDate').textContent = 'Sun ' + dateShort;
 
   /* ── the travelling Sundays, named in the hero ──
-     The sentence ships in the HTML too, so it is right with no JS at all. This
-     rewrites it from the same table the tiles read, for the two reasons a
-     hardcoded line eventually fails: it goes stale the Monday after the last
-     trip, and it can disagree with the tiles directly under it. A Sunday that
-     has passed drops out on its own; when nothing is away, the sentence goes
-     and the line is just the standing facts. */
+     The capsules ship in the HTML too, so the hero is right with no JS at all.
+     This rebuilds them from the same table the tiles read, for the two reasons
+     a hardcoded row eventually fails: it goes stale the Monday after the last
+     trip, and it can disagree with the form directly under it. A Sunday that
+     has passed drops out on its own; when nothing is away the row empties and
+     the hero is just the standing facts. */
   (function travel() {
-    var el = $('homeFacts'), table = window.SMBC_CITY;
-    if (!el || !table) return;
+    var row = $('awayRow'), table = window.SMBC_CITY;
+    if (!row) return;
+    if (!table) { row.innerHTML = ''; return; }
     var todayISO = new Date(Date.now() + 330 * 60000).toISOString().slice(0, 10);
     var away = Object.keys(table.bySunday).sort().filter(function (iso) {
       return iso >= todayISO && table.bySunday[iso] !== table.fallback;
-    }).map(function (iso) {
-      var d = new Date(iso + 'T12:00:00');
-      return table.bySunday[iso] + ' on ' + MONTHS[d.getMonth()].slice(0, 3) + ' ' + d.getDate();
     });
-    el.textContent = 'Eight invites. Every Sunday, 10 AM to 1 PM.' +
-                     (away.length ? ' Join us in ' + away.join(', ') + '.' : '');
+    if (!away.length) { row.innerHTML = ''; return; }
+    var html = '<span class="away-lead">Join us in</span>';
+    for (var i = 0; i < away.length; i++) {
+      var d = new Date(away[i] + 'T12:00:00');
+      html += '<a class="cap" href="#apply" data-go="' + away[i] + '">' +
+              '<b>' + table.bySunday[away[i]] + '</b>' +
+              '<em>Sun ' + d.getDate() + ' ' + MONTHS[d.getMonth()].slice(0, 3) + '</em></a>';
+    }
+    row.innerHTML = html;
   })();
+
+  /* Pressing a capsule lights that Sunday in the form before the anchor takes
+     you there, so nobody arrives at a picker still sitting on a different week
+     than the one they just tapped. Delegated, because the row is rebuilt above
+     and the date tiles are built further down. A sold-out Sunday still scrolls;
+     it just cannot be chosen, which is the same answer its own tile gives. */
+  document.addEventListener('click', function (e) {
+    var cap = e.target.closest ? e.target.closest('.cap[data-go]') : null;
+    if (!cap) return;
+    var inp = document.querySelector('input[name="sunday_pick"][value="' + cap.getAttribute('data-go') + '"]');
+    if (!inp) return;
+    if (inp.hidden) { var more = document.querySelector('.more-d'); if (more) more.click(); }
+    if (inp.disabled) return;
+    inp.checked = true;
+    try { inp.dispatchEvent(new Event('change', { bubbles: true })); } catch (err) {}
+  });
 
   /* ── reveal (fail-safe: everything shows after 4s) ── */
   var reveal = document.querySelectorAll('.rv');
