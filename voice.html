@@ -27,7 +27,7 @@
     html, body { background:#080808; color:#fff; font-family:var(--font); -webkit-font-smoothing:antialiased; }
     .bg { position:fixed; inset:0; z-index:0; }
     .bg-layer { position:absolute; inset:0; background:url('assets/photos/4.jpg') center 30%/cover; }
-    .bg-overlay { position:absolute; inset:0; z-index:1; background:linear-gradient(175deg,rgba(0,0,0,.62) 0%,rgba(0,0,0,.76) 55%,rgba(0,0,0,.88) 100%); }
+    .bg-overlay { position:absolute; inset:0; z-index:1; background:linear-gradient(175deg,rgba(0,0,0,.34) 0%,rgba(0,0,0,.5) 50%,rgba(0,0,0,.6) 100%); }
 
     .back { position:absolute; top:var(--pad-top); left:var(--pad-x); z-index:30; height:clamp(40px,7vw,64px); display:flex; align-items:center; gap:9px; font-size:clamp(11px,1.3vw,13px); font-weight:500; letter-spacing:.14em; text-transform:uppercase; color:rgba(255,255,255,.62); text-decoration:none; transition:color .2s; opacity:0; animation:fadeIn .6s ease .3s forwards; }
     .back svg { width:15px; height:15px; }
@@ -45,10 +45,16 @@
     @keyframes tracer { 0% { transform:translateY(-100%); } 100% { transform:translateY(100%); } }
 
     /* Body */
-    .content { position:relative; z-index:10; background:#080808; border-top:1px solid rgba(255,255,255,.06); }
+    .content { position:relative; z-index:10; background:linear-gradient(180deg,rgba(8,8,8,.12) 0%,rgba(8,8,8,.42) 22%,rgba(8,8,8,.42) 100%); -webkit-backdrop-filter:blur(2px); backdrop-filter:blur(2px); border-top:1px solid rgba(255,255,255,.08); }
     .sec { padding:clamp(52px,9vh,86px) var(--pad-x); }
     .sec + .sec { border-top:1px solid rgba(255,255,255,.06); }
     .label { font-size:clamp(11px,1.2vw,12px); letter-spacing:.22em; text-transform:uppercase; color:rgba(255,255,255,.35); text-align:center; margin-bottom:clamp(22px,3.6vh,32px); }
+
+    /* Speed */
+    .speed { display:flex; justify-content:center; gap:6px; margin:calc(-1 * clamp(8px,1.4vh,12px)) auto clamp(24px,3.8vh,34px); }
+    .sp { padding:7px 14px; border-radius:999px; border:1px solid rgba(255,255,255,.22); background:rgba(8,8,8,.3); color:rgba(255,255,255,.6); font:inherit; font-size:clamp(11px,1.25vw,12.5px); font-weight:500; letter-spacing:.06em; cursor:pointer; transition:color .2s,border-color .2s,background .2s; -webkit-tap-highlight-color:transparent; }
+    .sp:hover { color:#fff; border-color:rgba(255,255,255,.5); }
+    .sp.on { background:#fff; border-color:#fff; color:#080808; }
 
     /* Player list */
     .list { max-width:620px; margin:0 auto; }
@@ -86,7 +92,7 @@
     .fab.on:hover { transform:translateY(-2px); box-shadow:0 16px 42px rgba(0,0,0,.55); }
     .fab svg { width:19px; height:19px; display:block; flex:none; }
 
-    .socials { display:flex; justify-content:center; gap:clamp(14px,2.2vw,20px); align-items:center; padding:0 var(--pad-x) clamp(40px,7vh,64px); background:#080808; position:relative; z-index:10; }
+    .socials { display:flex; justify-content:center; gap:clamp(14px,2.2vw,20px); align-items:center; padding:0 var(--pad-x) clamp(40px,7vh,64px); background:rgba(8,8,8,.42); -webkit-backdrop-filter:blur(2px); backdrop-filter:blur(2px); position:relative; z-index:10; }
     .soc { color:rgba(255,255,255,.42); text-decoration:none; display:flex; align-items:center; transition:color .22s,transform .22s; }
     .soc:hover { color:#fff; transform:translateY(-1px); }
     .soc svg { width:clamp(15px,1.7vw,18px); height:clamp(15px,1.7vw,18px); display:block; }
@@ -110,13 +116,18 @@
   <a href="index.html" class="home" aria-label="Manav Joshi — home"><img src="assets/signature.gif" alt="MJ" onerror="this.closest('.home').style.display='none'"></a>
   <p class="cat-label">Voice</p>
   <h1 class="cat-name">Voice over</h1>
-  <p class="cat-sub">Ads, narration and reels. Six samples below — press play.</p>
+  <p class="cat-sub">Ads, narration and reels.</p>
   <a href="#samples" class="scroll-cue" aria-label="Scroll to samples"></a>
 </header>
 
 <main class="content">
   <section class="sec" id="samples">
     <p class="label">Samples</p>
+    <div class="speed" role="group" aria-label="Playback speed">
+      <button class="sp on" data-rate="1">1&times;</button>
+      <button class="sp" data-rate="1.5">1.5&times;</button>
+      <button class="sp" data-rate="2">2&times;</button>
+    </div>
     <div class="list" id="list">
       <button class="track" data-src="assets/vo/bucketlist-iceland.mp3" data-dur="1:00">
         <span class="t-btn" aria-hidden="true"><svg class="play" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg><svg class="pause" viewBox="0 0 24 24"><path d="M6 5h4v14H6zM14 5h4v14h-4z"/></svg></span>
@@ -160,7 +171,6 @@
   <section class="sec">
     <p class="label">Send a script</p>
     <div class="copy">
-      <p>Send the script, a reference for the tone, and the date you need it by. You get the read back as a clean file, ready to drop on the timeline.</p>
       <a href="https://wa.me/919925978977?text=Hi%20Manav!%20Found%20your%20voice%20samples%20on%20manavjoshi.com.%20I%20have%20a%20script%20for%20a%20%5Bad%2Freel%2Fnarration%5D.%20Are%20you%20free%3F" target="_blank" rel="noopener noreferrer" class="book">Chat with me</a>
       <a href="mailto:work@manavjoshi.com" class="mail">work@manavjoshi.com</a>
     </div>
@@ -201,14 +211,22 @@
       if (current) reset(current);
       current = t;
       audio.src = t.dataset.src;
+      audio.playbackRate = audio.defaultPlaybackRate;
       audio.play().then(() => { t.classList.add('playing'); t.classList.remove('paused'); }).catch(() => reset(t));
     });
   });
 
+  // Playback speed — sticks across tracks
+  const speeds = [...document.querySelectorAll('.sp')];
+  speeds.forEach(b => b.addEventListener('click', () => {
+    speeds.forEach(o => o.classList.toggle('on', o === b));
+    audio.defaultPlaybackRate = audio.playbackRate = parseFloat(b.dataset.rate);
+  }));
+
   audio.addEventListener('timeupdate', () => {
     if (!current || !audio.duration) return;
     current.querySelector('.t-bar > i').style.width = (audio.currentTime / audio.duration * 100) + '%';
-    current.querySelector('.t-time').textContent = fmt(audio.duration - audio.currentTime);
+    current.querySelector('.t-time').textContent = fmt((audio.duration - audio.currentTime) / audio.playbackRate);
   });
   audio.addEventListener('ended', () => { if (current) { reset(current); current = null; } });
 
