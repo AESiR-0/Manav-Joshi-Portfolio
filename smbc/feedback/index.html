@@ -381,6 +381,16 @@
 
 <script>
 const SHEET_ENDPOINT = 'https://script.google.com/macros/s/AKfycbyIdrCDzYTx7XQQ5l8ByaFW6FsGuSIJJvwTkN449Fhq20HrZjIYTnZpOWI4qs8-2uP5gw/exec';
+/* The CRM's own door, added 28 September 2026. The sheet stays exactly as it is:
+   it is the archive, and it is the backstop for anything this call loses. This
+   one exists because the sheet was the ONLY place feedback went, and the CRM
+   read applications out of it and nothing else — so the newest answer the app
+   had ever seen was 23 August while the room kept running every Sunday. Now an
+   answer is in the app before the person has put their phone away.
+
+   Two posts, both fire-and-forget, neither one able to keep the other from
+   sending or the thank-you screen from appearing. */
+const CRM_ENDPOINT = 'https://smbc-crm2.manavjoshi01.workers.dev/api/feedback';
 /* COMMUNITY_URL — the open WhatsApp group invite link (chat.whatsapp.com/…).
    It appears on the thank-you screen the moment feedback is sent.
    Leave it blank and the join block hides itself. */
@@ -474,6 +484,12 @@ function collectChips(chipsId, otherToggleId, otherId) {
 function postRow(data) {
   if (!SHEET_ENDPOINT || SHEET_ENDPOINT.startsWith('PASTE')) { console.warn('SHEET_ENDPOINT not set:', JSON.stringify(data)); return; }
   fetch(SHEET_ENDPOINT, { method: 'POST', mode: 'no-cors', body: new URLSearchParams(data) }).catch(() => {});
+  /* `text/plain` and not JSON, deliberately: it is a CORS-safelisted content
+     type, so this flies without a preflight round trip. The worker parses the
+     text. It answers 200 to everything, including a refusal — a person who just
+     wrote three paragraphs about his Sunday is never shown a database error. */
+  if (CRM_ENDPOINT) fetch(CRM_ENDPOINT, { method: 'POST',
+    headers: { 'content-type': 'text/plain' }, body: JSON.stringify(data) }).catch(() => {});
 }
 
 /* ── steps ── */
