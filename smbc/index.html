@@ -4,27 +4,41 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Sunday Morning Build Club</title>
-  <meta name="description" content="Eight people in a room, and a morning of your most ambitious work. Every Sunday, 10 AM to 1 PM. The city changes; every date says which one.">
+  <meta name="description" content="Putting founders, creators, and the ambitious in a room for your most ambitious work. Every Sunday, 10 AM to 1 PM. The city changes; every date says which one.">
   <meta property="og:title" content="Sunday Morning Build Club">
-  <meta property="og:description" content="Eight people in a room, and a morning of your most ambitious work. Every Sunday, in a different city.">
+  <meta property="og:description" content="Putting founders, creators, and the ambitious in a room for your most ambitious work. Every Sunday, in a different city.">
   <meta property="og:image" content="https://manavjoshi.com/images/smbc/full/room.jpg">
   <meta property="og:url" content="https://manavjoshi.com/smbc/">
   <meta property="og:type" content="website">
-  <meta name="theme-color" content="#1c1a16">
+  <meta name="theme-color" content="#0f1f09">
   <link rel="icon" href="/favicon.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="preload" as="image" href="../images/smbc/full/room.jpg" fetchpriority="high">
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,450;12..96,600;12..96,800&family=Inter:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap">
+  <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/HelveticaNowDisplay-Black.woff2" crossorigin>
+  <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/HelveticaNowDisplay-Regular.woff2" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schoolbell&display=swap">
   <script>document.documentElement.className += ' js';</script>
   <style>
+    /* ══ TYPE — two families, and only two ══
+       Helvetica Now Display carries every word on the page. Three real cuts are
+       self-hosted; each is declared over a WEIGHT RANGE so any weight the page
+       asks for lands on a real cut instead of being synthetically smeared by the
+       browser. Schoolbell is the handwriting, and it is only ever allowed where
+       Manav is speaking to one person. */
+    @font-face { font-family: 'Helvetica Now Display'; src: url('/assets/fonts/HelveticaNowDisplay-Regular.woff2') format('woff2');
+                 font-weight: 300 450; font-style: normal; font-display: swap; }
+    @font-face { font-family: 'Helvetica Now Display'; src: url('/assets/fonts/HelveticaNowDisplay-Medium.woff2') format('woff2');
+                 font-weight: 451 690; font-style: normal; font-display: swap; }
+    @font-face { font-family: 'Helvetica Now Display'; src: url('/assets/fonts/HelveticaNowDisplay-Black.woff2') format('woff2');
+                 font-weight: 691 950; font-style: normal; font-display: swap; }
     /* ══ DESIGN BRIEF ═══════════════════════════════════════════════
-       Product   invite page for an eight-seat Sunday-morning room that travels
+       Product   invite page for a small Sunday-morning room that travels
        Audience  someone at 11pm on a phone, carrying one stuck ambitious thing
        Tone      hopeful, exacting
        Direction one full-screen home that dissolves into cream. Nothing below
                  it competes. Work visibly happening in every frame.
-       Type      Bricolage Grotesque display · Inter working · Space Mono facts
+       Type      Helvetica Now Display, every word · Schoolbell, the margin notes
        Signature the slow crossfade + emoji at real size
        Copy      Manav's own sentences. No em dashes.
     ════════════════════════════════════════════════════════════════ */
@@ -33,7 +47,7 @@
        rules/chemistry-lab-design.md (2026-08-27), which names this page
        the standard for copy and the calendar page the standard for look.
 
-       1 · Eight builders, one room, Sunday morning. The city changes
+       1 · A small room, Sunday morning. The city changes
            week to week; the room does not. For someone whose ambitious
            project keeps losing to their week.
        2 · Tone: CERTAIN, ALIVE.  ("bright" from the 2026-07-31 poster
@@ -41,8 +55,8 @@
            lab at night; "certain" does, and is the one that matters.)
        3 · Direction: you are standing in a chemistry lab. Four materials
            and nothing else — ground, glass, steel, one reagent.
-       4 · Type unchanged, three fonts one job each: Bricolage display,
-           Inter body, Space Mono every fact and every steel label.
+       4 · Two families and no more: Helvetica Now Display says everything,
+           Schoolbell is only allowed where he speaks to one person.
        5 · Signature: the element tile. Periodic-table cells in glass with
            the sun rim down the left edge, carrying the four Sundays.
 
@@ -50,26 +64,37 @@
        grey box and is the fastest way to make this look cheap.
        ═══════════════════════════════════════════════════════════════ */
     :root {
-      /* ground — the lab at night */
-      --bg:        100 39% 12%;
-      --desk-deep: 100 44%  8%;
-      --card:      104 24% 17%;
-      --ink:       44 40% 96%;
-      --ink-soft:  42 12% 72%;
+      /* ══ THE FOUR, and one more ══
+         #29741d green · #bc1823 red · #fdf8f0 cream · #000000 black.
+         The fifth is #f0c000, read off the petals of 🌻 with a canvas
+         sample (not guessed): the sun emoji's own dominant is #f09810,
+         which is an orange and fights the red. The ground below is the
+         brand green taken down to a night value — same hue, nothing new. */
+      --bg:        111 60% 11%;
+      --desk-deep: 111 64%  7%;
+      --card:      111 34% 17%;
+      --ink:        37 76% 97%;   /* #fdf8f0 */
+      --ink-soft:   37 16% 74%;
 
       /* the one reagent this room is allowed: 01 · sunday morning */
-      --sun:       40 86% 53%;
-      --sun-deep:  38 88% 62%;
-      --sun-soft:  42 90% 88%;
+      --sun:        48 100% 47%;  /* #f0c000 — 🌻 */
+      --sun-deep:   44 100% 55%;
+      --sun-soft:   48  92% 88%;
+
+      /* the other two, used sparingly and never as decoration */
+      --green:     112  60% 28%;  /* #29741d */
+      --red:       356  77% 42%;  /* #bc1823 */
+      --black:       0   0%  0%;
 
       /* steel — the equipment, not the chemicals */
-      --steel:     120  6% 80%;
-      --line:      112 11% 27%;
-      --paper:     44 40% 96%;
+      --steel:     111  8% 78%;
+      --line:      111 22% 30%;
+      --paper:      37 76% 97%;
 
-      --disp: 'Bricolage Grotesque', system-ui, sans-serif;
-      --sans: 'Inter', system-ui, sans-serif;
-      --mono: 'Space Mono', ui-monospace, monospace;
+      --disp: 'Helvetica Now Display', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      --sans: 'Helvetica Now Display', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      --mono: 'Helvetica Now Display', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      --hand: 'Schoolbell', 'Bradley Hand', cursive;
       --ease: cubic-bezier(.22, 1, .36, 1);
       --rail: clamp(24px, 6vw, 88px);
     }
@@ -99,6 +124,27 @@
     .cta[disabled] { opacity: .6; pointer-events: none; }
     .cta .arw { transition: transform .2s var(--ease); }
     .cta:hover .arw { transform: translateX(4px); }
+
+    /* ══ THE PARENT MARK ══
+       One flat-green transparent PNG, painted through a mask so the wordmark
+       takes a colour token instead of shipping a file per colour. Swapping in
+       a different lockup later is one url() and one aspect number. */
+    .brand {
+      position: fixed; z-index: 60;
+      top: clamp(13px, 3vw, 20px); left: var(--rail);
+      display: block; line-height: 0; color: hsl(var(--ink));
+      filter: drop-shadow(0 1px 9px hsl(var(--desk-deep) / .75));
+      transition: transform .45s var(--ease), opacity .45s var(--ease);
+    }
+    .brand i {
+      --bh: clamp(27px, 5.4vw, 40px);
+      display: block; width: calc(var(--bh) * 2.5642); height: var(--bh);
+      background: currentColor;
+      -webkit-mask: url('/assets/logos/chemistry-lab.png') no-repeat left center / contain;
+              mask: url('/assets/logos/chemistry-lab.png') no-repeat left center / contain;
+    }
+    .brand:hover { transform: rotate(-1.4deg) scale(1.03); }
+    .brand.tuck  { transform: scale(.82); transform-origin: left top; }
 
     /* emoji at real size, with its box pulled tight around the glyph */
     .emo {
@@ -262,6 +308,24 @@
     }
     .who.phys .idc { position: absolute; top: 0; left: 0; margin: 0; cursor: grab; touch-action: none; will-change: transform; }
     .who.phys .idc:active { cursor: grabbing; }
+
+    /* the sun, loose in the room. it is a body in the same solver as the
+       chips — a square one, which in a three-circle pill model IS a circle —
+       held kinematically so the cursor moves it and nothing moves it back. */
+    .ball { display: none; width: 60px; height: 60px; border-radius: 50%; }
+    .who.phys .ball {
+      display: block; position: absolute; top: 0; left: 0; z-index: 3;
+      pointer-events: none; will-change: transform;
+      background:
+        radial-gradient(circle at 34% 29%, hsl(var(--sun-deep)), hsl(var(--sun)) 58%, hsl(44 100% 36%) 100%);
+      box-shadow: 0 3px 0 hsl(44 100% 31%), 0 12px 28px hsl(var(--desk-deep) / .65);
+    }
+    .who-hint {
+      font-family: var(--hand); font-size: 16px; color: hsl(var(--ink-soft));
+      margin-top: 12px; opacity: 0; transition: opacity .5s var(--ease);
+    }
+    .who.phys ~ .who-hint { opacity: .85; }
+    .who-hint.gone { opacity: 0; }
     .idc:hover, .idc.lit { background: hsl(var(--sun)); border-color: hsl(var(--sun-deep)); box-shadow: 0 2px 0 hsl(var(--sun-deep)); }
 
     .fee {
@@ -275,7 +339,7 @@
 
     .form { margin-top: 38px; display: grid; gap: 28px; }
     .fld label, .fld .lbl { display: block; font-family: var(--disp); font-weight: 600; font-size: clamp(16px, 4vw, 18.5px); line-height: 1.25; margin-bottom: 10px; }
-    .fld .hint { font-size: 13px; line-height: 1.5; color: hsl(var(--ink-soft)); text-wrap: pretty; margin: -4px 0 12px; }
+    .fld .hint { font-family: var(--hand); font-size: 14.5px; line-height: 1.5; color: hsl(var(--ink-soft)); text-wrap: pretty; margin: -4px 0 12px; }
     .fld input, .fld textarea {
       width: 100%; font-family: var(--sans); font-size: 16.5px; color: hsl(var(--ink));
       background: hsl(var(--card)); border: 1.5px solid hsl(var(--line));
@@ -410,7 +474,7 @@
     .check input:checked + .box { background: hsl(var(--sun)); border-color: hsl(var(--sun-deep)); }
     .check input:checked + .box svg { stroke-dashoffset: 0; transition: stroke-dashoffset .3s var(--ease) .05s; }
     .check input:focus-visible + .box { outline: 3px solid hsl(var(--sun-deep)); outline-offset: 3px; }
-    .check span:last-child { font-size: 15px; line-height: 1.5; }
+    .check span:last-child { font-family: var(--hand); font-size: 16.5px; line-height: 1.5; }
     @media (prefers-reduced-motion: no-preference) { .check input:checked + .box { animation: stampish .4s var(--ease); } }
     @keyframes stampish { 0% { transform: scale(.8) rotate(-7deg); } 55% { transform: scale(1.12) rotate(3deg); } 100% { transform: none; } }
 
@@ -627,6 +691,8 @@
 <body>
 
 <!-- ══ HOME ══ -->
+<a class="brand" href="/chemistrylab/" aria-label="Chemistry Lab"><i></i></a>
+
 <header class="home" id="home">
   <div class="home-slides" aria-hidden="true">
     <img src="../images/smbc/full/room.jpg" alt="" fetchpriority="high">
@@ -637,9 +703,9 @@
   <div class="home-inner">
     <span class="emo">&#9728;&#65039;</span>
     <h1>Sunday Morning Build&nbsp;Club</h1>
-    <p class="say">Eight people in a room, and a morning of your most ambitious work.</p>
+    <p class="say">Putting founders, creators, and the ambitious in a room for your most ambitious work.</p>
     <a class="cta" href="#apply">Request invite <span class="arw">&rarr;</span></a>
-    <p class="home-facts">Eight invites. Every Sunday, 10 AM to 1 PM.</p>
+    <p class="home-facts">By invite. Every Sunday, 10 AM to 1 PM.</p>
     <!-- Shipped with today's trips in it so the hero is right with no JS at all.
          The script rebuilds this row from js/smbc-cities.js on load. -->
     <div class="away" id="awayRow">
@@ -656,7 +722,7 @@
     <span class="tag">What happens</span>
     <h2 class="h2c">We'll work on your next ambitious project.</h2>
     <div class="prose">
-      <p>You say what you're working on and what's in the way. Seven other people cut it down with you until it's small enough to actually start. They offer what they have. You say what you need.</p>
+      <p>You say what you're working on and what's in the way. The room cuts it down with you until it's small enough to actually start. They offer what they have. You say what you need.</p>
       <p>Then the room goes quiet and you start it.</p>
     </div>
 
@@ -672,7 +738,7 @@
   <div class="inner rv">
     <span class="emo sm">&#127775;</span>
     <span class="tag">Who attends</span>
-    <h2 class="h2c">Founders, Creators, and anyone working towards an ambition.</h2>
+    <h2 class="h2c">Founders, creators and the unusually ambitious.</h2>
 
     <div class="who" id="who">
       <span class="idc">A creative founder</span>
@@ -690,7 +756,24 @@
       <span class="idc">A D2C founder</span>
       <span class="idc">An experience designer</span>
       <span class="idc">A content creator</span>
+      <span class="idc">A cinematographer</span>
+      <span class="idc">A pilates instructor</span>
+      <span class="idc">A skincare founder</span>
+      <span class="idc">A haircare founder</span>
+      <span class="idc">A wedding planner</span>
+      <span class="idc">A caravan-rental founder</span>
+      <span class="idc">An AR/VR architect</span>
+      <span class="idc">A chartered accountant</span>
+      <span class="idc">A café owner</span>
+      <span class="idc">An NGO founder</span>
+      <span class="idc">A packaging designer</span>
+      <span class="idc">A yoga teacher</span>
+      <span class="idc">An M&amp;A dealmaker</span>
+      <span class="idc">A second-generation architect</span>
+      <span class="idc">A baker</span>
+      <b class="ball" id="ball" aria-hidden="true"></b>
     </div>
+    <p class="who-hint" id="whoHint">run your cursor through them &rarr;</p>
   </div>
 </section>
 
@@ -864,7 +947,7 @@
     </details>
     <details>
       <summary>I applied. Then what? <span class="pm">+</span></summary>
-      <div class="ans"><div><p>We read every one. Eight people get an invite that week. If it isn't you, your request doesn't die, it carries to the next Sunday and sits above the new ones. You never have to apply twice.</p></div></div>
+      <div class="ans"><div><p>We read every one. A few get an invite that week. If it isn't you, your request doesn't die, it carries to the next Sunday and sits above the new ones. You never have to apply twice.</p></div></div>
     </details>
   </div>
 </section>
@@ -1024,6 +1107,12 @@
     var bodies = null, sizes = null, W = 0, H = 0,
         painted = false, last = null, elapsed = 0, frozen = false;
 
+    /* the sun: a kinematic body the pointer drives. held is permanently true,
+       so every contact resolves entirely into the chip and never into it. */
+    var ballEl = $('ball'), hintEl = $('whoHint'),
+        ball = null, ptrIn = false, tx = 0, ty = 0, chipDrag = false, touched = false, fitting = false;
+    function ballSize() { return Math.max(44, Math.min(72, Math.round(box.clientWidth * .115))); }
+
     function measure() { W = box.clientWidth; H = box.clientHeight; }
 
     function seed(w) {
@@ -1046,13 +1135,18 @@
        was wrong at both ends — a settled pile packs tighter than flex wrap on a
        phone and looser on a desktop — so instead we settle a throwaway copy
        off-screen, measure the real height, and size the pit to that plus room
-       to pick a chip up. Two passes, because how far the chips fall feeds back
-       into how wide the pile spreads. */
+       to pick a chip up. Three passes, and the TALLEST answer wins rather than
+       the last one: pit height feeds back into how far the chips fall and so
+       into how wide the pile spreads, and the sequence oscillates instead of
+       converging. Taking the last pass clipped the top of the pile at 360px
+       and 700px once the room went from fifteen names to thirty.
+       Verified across eleven widths by scripts/sim-pit.js. */
     function fit() {
-      var w = box.clientWidth, h = 420,
+      var w = box.clientWidth, h = 420, tallest = 0,
           saveB = bodies, saveW = W, saveH = H, saveE = elapsed, saveF = frozen,
           k, i, top, bot;
-      for (k = 0; k < 2; k++) {
+      fitting = true;
+      for (k = 0; k < 3; k++) {
         bodies = seed(w); W = w; H = h; elapsed = 0;
         for (i = 0; i < 420; i++) { elapsed += 1 / 60; step(1 / 60); }
         top = Infinity; bot = -Infinity;
@@ -1061,9 +1155,11 @@
           if (bodies[i].y + bodies[i].h > bot) bot = bodies[i].y + bodies[i].h;
         }
         h = Math.round(bot - top + sizes[0].h * .7 + 12);
+        if (h > tallest) tallest = h;
       }
       bodies = saveB; W = saveW; H = saveH; elapsed = saveE; frozen = saveF;
-      return h;
+      fitting = false;
+      return tallest;
     }
 
     function start() {
@@ -1072,6 +1168,13 @@
       box.classList.add('phys');
       measure();
       bodies = seed(W);
+      if (ballEl) {
+        var D = ballSize();
+        ballEl.style.width = ballEl.style.height = D + 'px';
+        ball = { el: ballEl, w: D, h: D, x: W - D - 12, y: H - D - 8,
+                 vx: 0, vy: 0, rot: 0, held: true, asleep: false, still: 0, ball: true };
+        bodies.push(ball);
+      }
       elapsed = 0; frozen = false;
       draw();
       requestAnimationFrame(tick);
@@ -1104,6 +1207,10 @@
     }
 
     function step(dt) {
+      /* while someone is playing, the pile is never allowed to finish settling —
+         otherwise the damping ramp quietly turns the toy off under their hand. */
+      if (ball && ptrIn) elapsed = Math.min(elapsed, SETTLE_AT);
+      if (ball && !fitting) driveBall(dt);
       var settling = elapsed > SETTLE_AT;
       frozen = elapsed > FREEZE_AT;
       var damp = settling ? Math.pow(.90, (elapsed - SETTLE_AT) * 7.5) : 1;
@@ -1140,6 +1247,22 @@
       }
     }
 
+    /* Spring, never teleport: the lag between cursor and sun is the whole
+       feeling of pushing something with weight. Velocity is read back off the
+       move it actually made, so the impulse term in collide() is honest. */
+    function driveBall(dt) {
+      var gx = ptrIn ? tx : W - ball.w / 2 - 12,
+          gy = ptrIn ? ty : H - ball.h / 2 - 8,
+          cx = ball.x + ball.w / 2, cy = ball.y + ball.h / 2,
+          k = Math.min(1, (ptrIn ? 17 : 6) * dt),
+          nx = cx + (gx - cx) * k, ny = cy + (gy - cy) * k;
+      nx = Math.max(ball.w / 2, Math.min(W - ball.w / 2, nx));
+      ny = Math.max(ball.h / 2, Math.min(H - ball.h / 2, ny));
+      ball.vx = (nx - cx) / dt; ball.vy = (ny - cy) / dt;
+      ball.x = nx - ball.w / 2; ball.y = ny - ball.h / 2;
+      ball.rot = (ball.rot + ball.vx * dt * 1.7) % 360;
+    }
+
     function draw() {
       for (var i = 0; i < bodies.length; i++) {
         var b = bodies[i];
@@ -1165,8 +1288,13 @@
           if (overlap <= SLOP) continue;              /* inside slop: leave it alone */
           var nx = dx / d, ny = dy / d;
           var push = (overlap - SLOP) * CORRECT / 2;
-          if (!A.held) { A.x -= nx * push; A.y -= ny * push; if (A.asleep && push > .5 && !frozen) wake(A); }
-          if (!B.held) { B.x += nx * push; B.y += ny * push; if (B.asleep && push > .5 && !frozen) wake(B); }
+          /* one side immovable (a held chip, or the sun): the other takes the
+             whole correction instead of half of one it is sharing with nobody */
+          if (A.held !== B.held) push *= 2;
+          /* the sun is allowed to wake a frozen pile. nothing else is. */
+          var force = (A.ball || B.ball) || !frozen;
+          if (!A.held) { A.x -= nx * push; A.y -= ny * push; if (A.asleep && push > .5 && force) wake(A); }
+          if (!B.held) { B.x += nx * push; B.y += ny * push; if (B.asleep && push > .5 && force) wake(B); }
           var rel = (B.vx - A.vx) * nx + (B.vy - A.vy) * ny;
           if (rel < 0) {
             var imp = -rel * .42;
@@ -1185,7 +1313,7 @@
         /* grabbing restarts the settle window, otherwise a chip thrown after
            the pile has damped down would freeze the moment you let go */
         elapsed = 0;
-        b.held = true; wake(b); c.classList.add('lit');
+        b.held = true; wake(b); c.classList.add('lit'); chipDrag = true;
         var sx = ev.clientX, sy = ev.clientY, ox = b.x, oy = b.y;
         var lx = sx, ly = sy, lt = performance.now();
         function move(e) {
@@ -1198,7 +1326,7 @@
           bodies.forEach(function (o) { if (o !== b) wake(o); });
         }
         function up() {
-          b.held = false; c.classList.remove('lit');
+          b.held = false; c.classList.remove('lit'); chipDrag = false;
           b.vx = Math.max(-1100, Math.min(1100, b.vx));
           b.vy = Math.max(-1100, Math.min(1100, b.vy));
           window.removeEventListener('pointermove', move);
@@ -1211,12 +1339,30 @@
       });
     });
 
+    /* On a mouse, hovering the pit is enough. On a touch screen there is no
+       hover, so the sun follows a finger dragged on the pit — unless that
+       finger has already picked up a chip, which owns the gesture. */
+    box.addEventListener('pointermove', function (e) {
+      if (!ball || chipDrag) return;
+      var r = box.getBoundingClientRect();
+      tx = e.clientX - r.left; ty = e.clientY - r.top;
+      if (e.pointerType !== 'touch' || e.pressure > 0 || e.buttons) ptrIn = true;
+      if (!touched && hintEl) { touched = true; hintEl.classList.add('gone'); }
+    }, { passive: true });
+    box.addEventListener('pointerleave', function () { ptrIn = false; });
+    box.addEventListener('pointerup',    function () { ptrIn = false; });
+    box.addEventListener('pointercancel',function () { ptrIn = false; });
+
     window.addEventListener('resize', function () {
       if (!bodies) return;
       /* a narrower pit needs more rows, so refit before re-clamping */
       box.style.height = fit() + 'px';
       measure();
       elapsed = 0;
+      if (ball) {
+        var D = ballSize();
+        ball.w = ball.h = D; ballEl.style.width = ballEl.style.height = D + 'px';
+      }
       bodies.forEach(function (b) {
         b.x = Math.min(b.x, W - b.w - 6);
         b.y = Math.min(b.y, H - b.h - 6);
@@ -1231,7 +1377,8 @@
         box.classList.remove('phys');
         box.style.height = '';
         chips.forEach(function (c) { c.style.transform = ''; });
-        bodies = null;
+        if (hintEl) hintEl.classList.add('gone');
+        bodies = null; ball = null;
       }
     }, 500);
   })();
