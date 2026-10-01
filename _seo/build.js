@@ -243,7 +243,7 @@ const staticUrls = [
   ['/host/weddings.html', '0.8'], ['/host/corporate.html', '0.8'],
   ['/host/concerts.html', '0.7'], ['/host/shows.html', '0.7'], ['/host/private.html', '0.6'],
   ['/founder.html', '0.5'], ['/bathroom-singer.html', '0.4'],
-  ['/chemistrylab/', '0.5'], ['/smbc/', '0.5'], ['/mafia/', '0.4'], ['/supper/', '0.4'], ['/buildandbreak/', '0.4']
+  ['/chemistrylab/', '0.5'], ['/smbc/', '0.5'], ['/gamenight/', '0.4'], ['/supper/', '0.4'], ['/buildandbreak/', '0.4']
 ];
 const cityUrls = [['/host/cities/','0.8'], ...CITIES.map(c => [`/host/${c.slug}/`, '0.8'])];
 const xml = `<?xml version="1.0" encoding="UTF-8"?>
