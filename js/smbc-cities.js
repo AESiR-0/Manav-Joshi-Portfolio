@@ -18,7 +18,8 @@
     '2026-09-27': 'Ahmedabad',
     '2026-10-04': 'Surat',
     '2026-10-11': 'Jaipur',
-    '2026-10-18': 'Mumbai'
+    '2026-10-18': 'Mumbai',
+    '2026-10-25': 'Jodhpur'
   };
 
   root.SMBC_CITY = {
