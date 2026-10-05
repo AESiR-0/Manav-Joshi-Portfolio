@@ -874,7 +874,7 @@
 
       <div class="fld">
         <label for="fProject">What are you building?</label>
-        <p class="hint">On an average 38 people request an invite each Sunday and about 8 get in. Give us more reasons to say yes, below.</p>
+        <p class="hint">About 80 people request an invite for a Sunday Morning and about 20 get in. Give us more reasons to say yes, below.</p>
         <div class="talk-wrap">
           <textarea id="fProject" maxlength="600" placeholder="Don't use AI, just tell us what it is."></textarea>
           <button type="button" class="mic" data-for="fProject" hidden aria-label="speak your answer">
@@ -1834,6 +1834,16 @@
                  ' - ' + data.city;
     var waURL = 'https://wa.me/' + WA_NUMBER + '?text=' + encodeURIComponent(waText);
 
+    /* STRAIGHT THERE. This used to paint a thank-you screen, put the link on a
+       button and navigate 1.2 seconds later. His ruling, 5 October: "the
+       literal submit button should take you to wa.me without a lag. Nobody
+       clicks an optional link." A step that can be skipped is a step most
+       people skip, and this one is the whole design — their message is what
+       opens the 24-hour window.
+
+       The screen is still built underneath, because the browser may refuse the
+       hand-off and something has to be there when it does. It is a fallback
+       now, not a stop. */
     function land() {
       $('f').style.display = 'none';
       $('sentWaLink').href = waURL;
@@ -1842,11 +1852,7 @@
         $('sentDoor').hidden = false;
       }
       $('sent').classList.add('on');
-      $('sent').scrollIntoView({ block: 'center', behavior: 'smooth' });
-      /* Handed over, not merely offered. The screen is painted first so a
-         blocked or slow hand-off leaves a working button behind rather than a
-         blank page — the link above is the same URL. */
-      setTimeout(function () { window.location.href = waURL; }, 1200);
+      window.location.href = waURL;
     }
 
     /* sendBeacon, NOT fetch. The page is about to navigate to WhatsApp, and a
@@ -1856,6 +1862,10 @@
        urlencoded, which is the shape Apps Script already answers. */
     var sent = false;
     try { sent = navigator.sendBeacon(ENDPOINT, new URLSearchParams(data)); } catch (e) {}
+    /* A beacon is the one request the browser finishes after the page is gone,
+       so when it is accepted we can leave immediately. When it is not, the
+       fetch has to land before we navigate or the application is lost — a lag
+       nobody sees is better than a row nobody gets. */
     if (sent) { land(); }
     else {
       fetch(ENDPOINT, { method: 'POST', mode: 'no-cors', body: new URLSearchParams(data) })
