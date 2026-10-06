@@ -1,0 +1,1791 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Content Lab</title>
+  <meta name="description" content="Ten founders in a room. Nobody goes home till you have a piece of content. Content Lab, a Chemistry Lab practical. Friday 9 October, 9 AM, Ahmedabad.">
+  <meta property="og:title" content="Content Lab">
+  <meta property="og:description" content="Ten founders in a room. Nobody goes home till you have a piece of content. Friday 9 October, 9 AM, Ahmedabad.">
+  <meta property="og:image" content="https://manavjoshi.com/images/contentlab/full/room.jpg">
+  <meta property="og:url" content="https://manavjoshi.com/contentlab/">
+  <meta property="og:type" content="website">
+  <meta name="theme-color" content="#0f1f09">
+  <link rel="icon" href="/favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preload" as="image" href="../images/contentlab/full/room.jpg" fetchpriority="high">
+  <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/HelveticaNowDisplay-Black.woff2" crossorigin>
+  <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/HelveticaNowDisplay-Regular.woff2" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schoolbell&display=swap">
+  <script>document.documentElement.className += ' js';</script>
+  <style>
+    /* ══ TYPE — two families, and only two ══
+       Helvetica Now Display carries every word on the page. Three real cuts are
+       self-hosted; each is declared over a WEIGHT RANGE so any weight the page
+       asks for lands on a real cut instead of being synthetically smeared by the
+       browser. Schoolbell is the handwriting, and it is only ever allowed where
+       Manav is speaking to one person. */
+    @font-face { font-family: 'Helvetica Now Display'; src: url('/assets/fonts/HelveticaNowDisplay-Regular.woff2') format('woff2');
+                 font-weight: 300 450; font-style: normal; font-display: swap; }
+    @font-face { font-family: 'Helvetica Now Display'; src: url('/assets/fonts/HelveticaNowDisplay-Medium.woff2') format('woff2');
+                 font-weight: 451 690; font-style: normal; font-display: swap; }
+    @font-face { font-family: 'Helvetica Now Display'; src: url('/assets/fonts/HelveticaNowDisplay-Black.woff2') format('woff2');
+                 font-weight: 691 950; font-style: normal; font-display: swap; }
+    /* ═══════════════════════════════════════════════════════════════
+       DESIGN BRIEF — the lab bench.  Ruling: SecondBrain
+       rules/chemistry-lab-design.md (2026-08-27), which names this page
+       the standard for copy and the calendar page the standard for look.
+
+       This page is a near-replica of /smbc/. The machine, the type, the
+       palette, the glass and the form are that page's; the words, the
+       single date and two components are this room's. When the two
+       disagree about a device, /smbc/ is right and this is the copy.
+       Full brief: ./DESIGN.md
+
+       1 · One morning, one date. A practical assignment at Chemistry Lab
+           where a founder makes a piece of content and leaves with a plan.
+           For a founder who knows their product and posts nothing.
+       2 · Tone: CERTAIN, ALIVE. Inherited from /smbc/ unchanged — this
+           room asks for the same calm about an audacious thing.
+       3 · Direction: you are standing in a chemistry lab. Four materials
+           and nothing else — ground, glass, steel, one reagent.
+       4 · Two families and no more: Helvetica Now Display says everything,
+           Schoolbell is only allowed where he speaks to one person.
+       5 · Signature: the equation. Chemistry Lab's own device, carrying
+           his line — two reagents and a product, the sun rim marking
+           which of the three is the product. Plus the record light on the
+           primary button, which is the only red on the page and is never
+           type. No fifth colour is earned here: a clapperboard has no
+           colour to read off, so the reagent stays the Sunday yellow.
+
+       Glass only ever sits over photography. Glass over flat colour is a
+       grey box and is the fastest way to make this look cheap.
+       ═══════════════════════════════════════════════════════════════ */
+    :root {
+      /* ══ THE FOUR, and one more ══
+         #29741d green · #bc1823 red · #fdf8f0 cream · #000000 black.
+         The fifth is #f0c000, read off the petals of 🌻 with a canvas
+         sample (not guessed): the sun emoji's own dominant is #f09810,
+         which is an orange and fights the red. The ground below is the
+         brand green taken down to a night value — same hue, nothing new. */
+      --bg:        111 60% 11%;
+      --desk-deep: 111 64%  7%;
+      --card:      111 34% 17%;
+      --ink:        37 76% 97%;   /* #fdf8f0 */
+      --ink-soft:   37 16% 74%;
+
+      /* the one reagent this room is allowed: 01 · sunday morning */
+      --sun:        48 100% 47%;  /* #f0c000 — 🌻 */
+      --sun-deep:   44 100% 55%;
+      --sun-soft:   48  92% 88%;
+
+      /* the other two, used sparingly and never as decoration */
+      --green:     112  60% 28%;  /* #29741d */
+      --red:       356  77% 42%;  /* #bc1823 */
+      --black:       0   0%  0%;
+
+      /* steel — the equipment, not the chemicals */
+      --steel:     111  8% 78%;
+      --line:      111 22% 30%;
+      --paper:      37 76% 97%;
+
+      --disp: 'Helvetica Now Display', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      --sans: 'Helvetica Now Display', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      --mono: 'Helvetica Now Display', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      --hand: 'Schoolbell', 'Bradley Hand', cursive;
+      --ease: cubic-bezier(.22, 1, .36, 1);
+      --rail: clamp(24px, 6vw, 88px);
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+
+    html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+    body {
+      background: hsl(var(--bg)); color: hsl(var(--ink));
+      font-family: var(--sans); font-size: 16px; line-height: 1.6;
+      -webkit-font-smoothing: antialiased; overflow-x: hidden;
+    }
+    ::selection { background: hsl(var(--sun)); color: hsl(var(--ink)); }
+    :focus-visible { outline: 3px solid hsl(var(--sun)); outline-offset: 3px; border-radius: 4px; }
+
+    .cta {
+      display: inline-flex; align-items: center; gap: 10px;
+      font-family: var(--mono); font-size: 15px; font-weight: 700;
+      color: hsl(var(--ink)); background: hsl(var(--sun));
+      text-decoration: none; border: 2px solid hsl(var(--sun-deep));
+      border-radius: 999px; padding: 16px 32px; cursor: pointer;
+      box-shadow: 0 4px 0 hsl(var(--sun-deep));
+      transition: transform .16s var(--ease), box-shadow .16s var(--ease), background .16s ease;
+    }
+    .cta:hover  { background: hsl(42 92% 58%); transform: translateY(-2px); box-shadow: 0 6px 0 hsl(var(--sun-deep)); }
+    .cta:active { transform: translateY(4px); box-shadow: 0 0 0 hsl(var(--sun-deep)); }
+    .cta[disabled] { opacity: .6; pointer-events: none; }
+    .cta .arw { transition: transform .2s var(--ease); }
+    .cta:hover .arw { transform: translateX(4px); }
+
+    /* ══ THE PARENT MARK ══
+       One flat-green transparent PNG, painted through a mask so the wordmark
+       takes a colour token instead of shipping a file per colour. Swapping in
+       a different lockup later is one url() and one aspect number. */
+    .brand {
+      position: fixed; z-index: 60;
+      top: clamp(13px, 3vw, 20px); left: var(--rail);
+      display: block; line-height: 0; color: hsl(var(--ink));
+      filter: drop-shadow(0 1px 9px hsl(var(--desk-deep) / .75));
+      transition: transform .45s var(--ease), opacity .45s var(--ease);
+    }
+    .brand i {
+      --bh: clamp(27px, 5.4vw, 40px);
+      display: block; width: calc(var(--bh) * 2.5642); height: var(--bh);
+      background: currentColor;
+      -webkit-mask: url('/assets/logos/chemistry-lab.png') no-repeat left center / contain;
+              mask: url('/assets/logos/chemistry-lab.png') no-repeat left center / contain;
+    }
+    .brand:hover { transform: rotate(-1.4deg) scale(1.03); }
+    .brand.tuck  { transform: scale(.82); transform-origin: left top; }
+
+    /* emoji at real size, with its box pulled tight around the glyph */
+    .emo {
+      display: block; line-height: .82;
+      font-size: clamp(54px, 11vw, 94px);
+      margin: 0 auto .34em;
+      font-family: 'Apple Color Emoji', 'Segoe UI Emoji', 'Noto Color Emoji', sans-serif;
+    }
+    .emo.sm { font-size: clamp(38px, 7.4vw, 60px); margin-bottom: .3em; }
+
+    /* ══ HOME — the only full-screen picture ══ */
+    .home {
+      position: relative; min-height: 100svh;
+      display: flex; align-items: center; justify-content: center;
+      text-align: center; padding: clamp(64px, 10vh, 110px) var(--rail) clamp(96px, 15vh, 170px);
+      overflow: hidden; isolation: isolate; background: hsl(30 18% 10%);
+    }
+    .home-slides { position: absolute; inset: 0; z-index: -3; }
+    .home-slides img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 42%; }
+    @media (max-width: 700px) { .home-slides img { object-position: 56% 46%; } }
+    /* first frame is the permanent base so there is never a blank beat */
+    .home-slides img:nth-child(1) { opacity: 1; }
+    .home-slides img:nth-child(2), .home-slides img:nth-child(3) { opacity: 0; }
+    @media (prefers-reduced-motion: no-preference) {
+      .home-slides img:nth-child(2) { animation: xfade 27s ease-in-out infinite; }
+      .home-slides img:nth-child(3) { animation: xfade 27s ease-in-out 9s infinite; }
+    }
+    @keyframes xfade {
+      0%   { opacity: 0; }
+      6%   { opacity: 1; }
+      28%  { opacity: 1; }
+      34%  { opacity: 0; }
+      100% { opacity: 0; }
+    }
+    /* darkening for type, plus the dissolve into the cream below.
+       the radial rides on top of the vertical scrim and only covers where the
+       words sit — the three photos each go bright somewhere different behind the
+       headline, and a vertical-only scrim can't answer that without dimming the
+       whole frame. worst case measured against real photo pixels, all three images,
+       both breakpoints: was 2.87:1, now 4.79:1 — mobile is the tight one. */
+    .home::after {
+      content: ''; position: absolute; inset: 0; z-index: -2; pointer-events: none;
+      background:
+        radial-gradient(ellipse 75% 66% at 50% 47.5%, hsl(30 18% 8% / .52) 0%, hsl(30 18% 8% / .39) 45%, hsl(30 18% 8% / 0) 80%),
+        linear-gradient(180deg, hsl(30 18% 8% / .70) 0%, hsl(30 18% 8% / .46) 30%, hsl(30 18% 8% / .52) 58%, hsl(var(--desk-deep) / .82) 82%, hsl(var(--bg) / .95) 94%, hsl(var(--bg)) 100%);
+    }
+    .home-inner { max-width: 780px; width: 100%; color: hsl(var(--paper)); position: relative; }
+    .home h1 {
+      font-family: var(--disp); font-weight: 800;
+      font-size: clamp(44px, 10.5vw, 104px); line-height: .94; letter-spacing: -.042em;
+      text-wrap: balance; color: hsl(var(--paper));
+    }
+    .say {
+      margin-top: 26px; font-family: var(--disp); font-weight: 450;
+      font-size: clamp(19px, 4.4vw, 28px); line-height: 1.34;
+      max-width: 36ch; margin-left: auto; margin-right: auto;
+      text-wrap: balance; color: hsl(44 40% 93%);
+    }
+    .home .cta { margin-top: 34px; }
+    .home-facts {
+      margin-top: 22px; font-family: var(--mono);
+      font-size: clamp(11.5px, 3vw, 13px); letter-spacing: .05em; color: hsl(44 30% 88%);
+    }
+    /* ── the two facts, as capsules ──
+       Two capsules instead of a sentence, because a date and a place are two
+       objects a person checks, not prose they read. On the Sunday page each
+       one is a control that lights its week in the form; here there is one
+       date and nothing to choose, so they are plain anchors to the form.
+
+       No sun anywhere in here. The sun is the scarcity reagent on this page and
+       it escalates; a travel tag borrowing it would say "hurry" about a fact
+       that is not about hurry. These read by glass, border and ink. */
+    .away {
+      margin-top: 16px; display: flex; flex-wrap: wrap; align-items: center;
+      gap: 9px; row-gap: 10px;
+    }
+    .away-lead {
+      font-family: var(--mono); font-size: clamp(11.5px, 3vw, 13px);
+      letter-spacing: .05em; color: hsl(44 30% 88% / .8); margin-right: 1px;
+    }
+    .cap {
+      display: inline-flex; align-items: baseline; gap: 9px;
+      padding: 8px 15px 9px; border-radius: 999px; text-decoration: none;
+      color: hsl(var(--paper));
+      background: hsl(var(--paper) / .13); border: 1px solid hsl(var(--paper) / .26);
+      backdrop-filter: blur(14px) saturate(140%); -webkit-backdrop-filter: blur(14px) saturate(140%);
+      box-shadow: inset 0 1px 0 hsl(0 0% 100% / .22);
+      transition: transform .22s var(--ease), background .22s var(--ease),
+                  border-color .22s var(--ease), box-shadow .22s var(--ease);
+    }
+    .cap b { font-family: var(--disp); font-weight: 700; font-size: 15.5px; letter-spacing: -.015em; }
+    /* A hairline, not a bullet: the city and its date are one label in two
+       registers, and a dot would read as a list of two things. */
+    .cap em {
+      font-style: normal; font-family: var(--mono); font-size: 10px;
+      letter-spacing: .1em; text-transform: uppercase; color: hsl(44 30% 88% / .82);
+      padding-left: 9px; border-left: 1px solid hsl(var(--paper) / .26);
+    }
+    .cap:hover {
+      transform: translateY(-2px); background: hsl(var(--paper) / .2);
+      border-color: hsl(var(--paper) / .46);
+      box-shadow: inset 0 1px 0 hsl(0 0% 100% / .34), 0 8px 26px hsl(var(--desk-deep) / .45);
+    }
+    .cap:active { transform: translateY(1px); box-shadow: inset 0 1px 0 hsl(0 0% 100% / .18); }
+    .cap:focus-visible { outline: 3px solid hsl(var(--sun-deep)); outline-offset: 3px; }
+
+    @media (prefers-reduced-motion: no-preference) {
+      .js .home-inner > * { opacity: 0; transform: translateY(18px); animation: rise .8s var(--ease) forwards; }
+      .js .home-inner > :nth-child(1) { animation-delay: .12s }
+      .js .home-inner > :nth-child(2) { animation-delay: .24s }
+      .js .home-inner > :nth-child(3) { animation-delay: .38s }
+      .js .home-inner > :nth-child(4) { animation-delay: .52s }
+      .js .home-inner > :nth-child(5) { animation-delay: .64s }
+      .js .home-inner > :nth-child(6) { animation-delay: .76s }
+    }
+    @keyframes rise { to { opacity: 1; transform: none; } }
+
+    /* ══ cream screens ══ */
+    section.cream { background: hsl(var(--bg)); padding: clamp(50px, 7vh, 82px) var(--rail); }
+    section.cream.tight { padding-top: clamp(34px, 4.5vh, 54px); }
+    .inner { max-width: 620px; margin: 0 auto; }
+    .tag {
+      display: block; font-family: var(--mono); font-size: 11.5px; font-weight: 700;
+      letter-spacing: .26em; text-transform: uppercase; color: hsl(var(--sun-deep)); margin-bottom: 18px;
+    }
+    .h2c {
+      font-family: var(--disp); font-weight: 800;
+      font-size: clamp(29px, 6.2vw, 48px); line-height: 1.02; letter-spacing: -.032em;
+      max-width: 16ch; text-wrap: balance;
+    }
+    .prose { margin-top: 24px; max-width: 42ch; }
+    .prose p { font-size: clamp(16.5px, 4vw, 19px); line-height: 1.6; color: hsl(var(--ink-soft)); }
+    .prose p + p { margin-top: 16px; }
+    .rule {
+      margin-top: 30px; padding: 24px 26px;
+      background: hsl(var(--sun-soft)); border-radius: 16px; border: 1.5px solid hsl(42 70% 74%);
+      max-width: 44ch;
+    }
+    .rule b { display: block; font-family: var(--disp); font-size: clamp(17px, 4.2vw, 20px); font-weight: 800; margin-bottom: 8px; color: hsl(var(--ink)); }
+    .rule p { font-size: clamp(15.5px, 3.8vw, 17px); line-height: 1.5; color: hsl(var(--ink)); }
+
+    /* who attends: they fall in, settle, and go to sleep. drag to wake. */
+    /* height is unset here on purpose: the plain wrapped layout sizes to its
+       own content, and the physics pit gets an exact fitted height from JS so
+       the pile never floats inside a taller empty box. */
+    .who {
+      position: relative; margin-top: 22px;
+      display: flex; flex-wrap: wrap; gap: 9px; align-content: flex-start;
+      border-radius: 18px;
+    }
+    .who.phys { display: block; overflow: hidden; }
+    .idc {
+      font-family: var(--mono); font-size: clamp(11.5px, 2.9vw, 14px); white-space: nowrap;
+      color: hsl(var(--ink)); background: hsl(var(--card));
+      border: 1.5px solid hsl(var(--line)); border-radius: 999px;
+      /* fifteen of these have to pile up inside one phone width, so the chip
+         shrinks with the screen instead of the pit growing to a wall */
+      padding: clamp(8px, 2.3vw, 11px) clamp(12px, 3.5vw, 17px);
+      box-shadow: 0 2px 0 hsl(var(--line)); user-select: none;
+      transition: background .2s ease, border-color .2s ease;
+    }
+    .who.phys .idc { position: absolute; top: 0; left: 0; margin: 0; cursor: grab; touch-action: none; will-change: transform; }
+    .who.phys .idc:active { cursor: grabbing; }
+
+    /* The magnet, made visible. --g is the field strength at this chip,
+       written by the solver each frame and ONLY when it actually changes, so
+       the style recalc stays on the few chips near the sun instead of all
+       thirty. No transition on purpose: the value arriving is already smooth,
+       and an ease would sit a frame behind the physics and read as lag. */
+    .who.phys .idc {
+      transition: none;
+      background:   color-mix(in oklab, hsl(var(--sun))      calc(var(--g, 0) * 100%), hsl(var(--card)));
+      border-color: color-mix(in oklab, hsl(var(--sun-deep)) calc(var(--g, 0) * 100%), hsl(var(--line)));
+      color:        color-mix(in oklab, hsl(var(--desk-deep)) calc(var(--g, 0) * 100%), hsl(var(--ink)));
+      box-shadow: 0 2px 0 color-mix(in oklab, hsl(var(--sun-deep)) calc(var(--g, 0) * 100%), hsl(var(--line)));
+    }
+    /* a chip you have actually picked up outranks the field */
+    .who.phys .idc.lit {
+      background: hsl(var(--sun)); border-color: hsl(var(--sun-deep));
+      color: hsl(var(--desk-deep)); box-shadow: 0 2px 0 hsl(var(--sun-deep));
+    }
+
+    /* the sun, loose in the room. it is a body in the same solver as the
+       chips — a square one, which in a three-circle pill model IS a circle —
+       held kinematically so the cursor moves it and nothing moves it back. */
+    .ball { display: none; width: 60px; height: 60px; border-radius: 50%; }
+    .who.phys .ball {
+      display: block; position: absolute; top: 0; left: 0; z-index: 3;
+      pointer-events: none; will-change: transform;
+      background:
+        radial-gradient(circle at 34% 29%, hsl(var(--sun-deep)), hsl(var(--sun)) 58%, hsl(44 100% 36%) 100%);
+      /* the last two rings are the field itself, drawn faintly, so the chips
+         parting ahead of the sun have a visible reason to. Widened with
+         FIELD_R: the field reaches 3.6 radii now, and an 11px ring under a
+         reach that long left the chips parting around nothing. */
+      box-shadow: 0 3px 0 hsl(44 100% 31%), 0 12px 28px hsl(var(--desk-deep) / .65),
+                  0 0 0 21px hsl(var(--sun) / .05), 0 0 54px hsl(var(--sun) / .17);
+    }
+    .who-hint {
+      font-family: var(--hand); font-size: 16px; color: hsl(var(--ink-soft));
+      margin-top: 12px; opacity: 0; transition: opacity .5s var(--ease);
+    }
+    .who.phys ~ .who-hint { opacity: .85; }
+    .who-hint.gone { opacity: 0; }
+    .idc:hover, .idc.lit { background: hsl(var(--sun)); border-color: hsl(var(--sun-deep)); box-shadow: 0 2px 0 hsl(var(--sun-deep)); }
+
+    .fee {
+      margin-top: 34px; padding: 24px 28px; border-radius: 16px;
+      background: hsl(var(--ink)); color: hsl(var(--bg));
+      display: flex; align-items: center; gap: 18px; flex-wrap: wrap;
+    }
+    .fee .amt { font-family: var(--mono); font-weight: 700; font-size: clamp(28px, 6.6vw, 38px); color: hsl(var(--sun)); line-height: 1; white-space: nowrap; }
+    .fee .amt s { font-size: .62em; text-decoration-thickness: 2px; color: hsl(44 22% 62%); margin-right: 2px; }
+    .fee p { font-size: 15.5px; line-height: 1.5; }
+
+    .form { margin-top: 38px; display: grid; gap: 28px; }
+    .fld label, .fld .lbl { display: block; font-family: var(--disp); font-weight: 600; font-size: clamp(16px, 4vw, 18.5px); line-height: 1.25; margin-bottom: 10px; }
+    .fld .hint { font-family: var(--hand); font-size: 14.5px; line-height: 1.5; color: hsl(var(--ink-soft)); text-wrap: pretty; margin: -4px 0 12px; }
+    .fld input, .fld textarea {
+      width: 100%; font-family: var(--sans); font-size: 16.5px; color: hsl(var(--ink));
+      background: hsl(var(--card)); border: 1.5px solid hsl(var(--line));
+      border-radius: 14px; padding: 15px 16px;
+      transition: border-color .2s ease, box-shadow .2s ease;
+    }
+    .fld textarea { resize: vertical; min-height: 104px; line-height: 1.55; }
+    .fld input:focus, .fld textarea:focus { outline: none; border-color: hsl(var(--sun-deep)); box-shadow: 0 0 0 3px hsl(var(--sun) / .25); }
+    .fld input::placeholder, .fld textarea::placeholder { color: hsl(var(--steel) / .8); }
+    .fld input.bad, .fld textarea.bad { border-color: hsl(8 72% 62%); }
+    .duo { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    @media (max-width: 560px) { .duo { grid-template-columns: 1fr; gap: 28px; } }
+
+    .socials { display: flex; gap: 8px; margin-bottom: 10px; }
+    .soc {
+      width: 42px; height: 42px; border-radius: 12px; cursor: pointer; display: grid; place-items: center;
+      background: hsl(var(--card)); border: 1.5px solid hsl(var(--line)); box-shadow: 0 2px 0 hsl(var(--line));
+      transition: transform .15s var(--ease), background .2s ease, border-color .2s ease, box-shadow .15s var(--ease);
+    }
+    .soc svg { width: 18px; height: 18px; color: hsl(var(--ink)); fill: none; stroke: hsl(var(--ink)); stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+    .soc:hover { background: hsl(var(--sun)); border-color: hsl(var(--sun-deep)); transform: translateY(-2px); box-shadow: 0 4px 0 hsl(var(--sun-deep)); }
+    .soc:active { transform: translateY(1px); box-shadow: 0 0 0 hsl(var(--sun-deep)); }
+    .fld .opt2 { margin-top: 10px; }
+    .fld .opt2 input { font-size: 15px; padding: 12px 15px; }
+
+    /* pick-one rows (gender, age) — taps, not typing, so two extra fields
+       cost the form almost nothing. Same chip language as .idc above. */
+    .pick { display: flex; flex-wrap: wrap; gap: 9px; }
+    .pick input { position: absolute; opacity: 0; pointer-events: none; width: 1px; height: 1px; }
+    .pick label {
+      display: inline-block; margin: 0; cursor: pointer;
+      font-family: var(--mono); font-weight: 400; font-size: clamp(12px, 3vw, 13.5px);
+      white-space: nowrap; color: hsl(var(--ink)); background: hsl(var(--card));
+      border: 1.5px solid hsl(var(--line)); border-radius: 999px;
+      padding: 10px 15px; box-shadow: 0 2px 0 hsl(var(--line)); user-select: none;
+      transition: background .18s ease, border-color .18s ease, transform .18s ease, box-shadow .18s ease;
+    }
+    .pick label:hover { border-color: hsl(var(--sun-deep)); transform: translateY(-1px); box-shadow: 0 3px 0 hsl(var(--sun-deep)); }
+        .pick input:checked + label {
+      background: hsl(var(--paper) / .1); border-color: hsl(var(--sun) / .6);
+      box-shadow: inset 2px 0 0 hsl(var(--sun)), 0 2px 0 hsl(var(--desk-deep) / .6); font-weight: 700; color: hsl(var(--ink));
+    }
+    .pick input:focus-visible + label { outline: 3px solid hsl(var(--sun-deep)); outline-offset: 3px; }
+    .pick.bad label { border-color: hsl(8 72% 62%); }
+    .pick-d { gap: 11px; }
+    .pick-d label {
+      position: relative; overflow: hidden; display: flex; flex-direction: column;
+      align-items: flex-start; justify-content: space-between; gap: 9px;
+      flex: 0 0 auto; width: 108px; min-height: 108px; padding: 13px 12px 11px; border-radius: 13px;
+      background: hsl(var(--paper) / .16); border: 1px solid hsl(var(--paper) / .22);
+      backdrop-filter: blur(15px) saturate(140%); -webkit-backdrop-filter: blur(15px) saturate(140%);
+      box-shadow: inset 0 1px 0 hsl(0 0% 100% / .35), inset 1px 0 0 hsl(0 0% 100% / .12),
+                  0 4px 32px hsl(var(--desk-deep) / .35);
+      transition: transform .3s var(--ease), box-shadow .3s var(--ease), background .3s var(--ease);
+    }
+    .pick-d label:hover {
+      transform: translateY(-3px);
+      box-shadow: inset 0 1px 0 hsl(0 0% 100% / .5), inset 1px 0 0 hsl(0 0% 100% / .2),
+                  0 12px 48px hsl(var(--desk-deep) / .5), 0 0 0 1px hsl(var(--paper) / .3);
+    }
+    .pick-d label s { position: absolute; top: 10px; right: 12px; text-decoration: none;
+      font-family: var(--mono); font-size: 10px; color: hsl(var(--steel) / .85); }
+    .pick-d label b { font-family: var(--disp); font-weight: 800; font-size: 31px;
+      letter-spacing: -.045em; line-height: .88; }
+    .pick-d label u { text-decoration: none; font-family: var(--mono); font-size: 10.5px;
+      letter-spacing: .11em; text-transform: uppercase; color: hsl(var(--steel)); margin-top: -5px; }
+    .pick-d label i { font-style: normal; font-family: var(--mono); font-size: 9.5px; letter-spacing: .04em; white-space: nowrap;
+      text-transform: uppercase; font-weight: 700; line-height: 1.4; }
+    /* The city sits with the date, not with the state: it is part of WHEN this
+       room is, not part of how full it is. Kept off the sun colour on purpose:
+       the sun is the scarcity reagent and nothing else may borrow it.
+       Every city reads the same. Setting the away ones in heavier ink made
+       Ahmedabad the default and the rest exceptions, and the club stopped
+       being an Ahmedabad club (2026-09-26). The city is a decision input now,
+       so it is legible on every tile, not only the surprising ones. */
+    .pick-d label em { font-style: normal; font-family: var(--mono); font-size: 9.5px;
+      letter-spacing: .1em; text-transform: uppercase; white-space: nowrap; line-height: 1.4;
+      font-weight: 700; color: hsl(var(--ink) / .88); margin-top: -7px; }
+    /* One reagent, escalating: the scarcer the Sunday, the more it lights. */
+    .pick-d label i.plain { visibility: hidden; }
+    .pick-d label i.warm  { color: hsl(var(--sun) / .78); }
+    .pick-d label i.hot   { color: hsl(var(--sun)); }
+    .pick-d label i.gone  { color: hsl(var(--steel)); }
+    .pick-d input:checked + label {
+      background: hsl(var(--paper) / .22);
+      box-shadow: inset 0 1px 0 hsl(0 0% 100% / .5), inset 1px 0 0 hsl(0 0% 100% / .2),
+                  0 12px 48px hsl(var(--desk-deep) / .5), 0 0 0 1px hsl(var(--sun) / .35);
+    }
+    .pick-d input:checked + label::before {
+      content: ''; position: absolute; left: 0; top: 14%; bottom: 14%; width: 2px; border-radius: 2px;
+      background: linear-gradient(180deg, transparent, hsl(var(--sun)) 30%, hsl(var(--sun)) 70%, transparent);
+    }
+    .pick-d input:disabled + label { opacity: .48; cursor: not-allowed; }
+    /* The hidden ATTRIBUTE is a UA rule of display:none, and `.pick-d label`
+       sets display:flex, which outranks it. Without this the far Sundays are
+       marked hidden and render anyway. */
+    .pick-d [hidden] { display: none; }
+    .more-d {
+      flex: 0 0 auto; width: 108px; min-height: 108px; padding: 13px 12px 11px;
+      display: flex; flex-direction: column; align-items: flex-start; justify-content: space-between;
+      border-radius: 13px; cursor: pointer; font: inherit; color: hsl(var(--steel));
+      background: hsl(var(--paper) / .05); border: 1px dashed hsl(var(--paper) / .28);
+      transition: transform .3s var(--ease), border-color .3s var(--ease), background .3s var(--ease);
+    }
+    .more-d b { font-family: var(--disp); font-weight: 800; font-size: 31px; line-height: .88; }
+    .more-d u { text-decoration: none; font-family: var(--mono); font-size: 10.5px;
+      letter-spacing: .11em; text-transform: uppercase; }
+    .more-d:hover { transform: translateY(-3px); border-color: hsl(var(--sun) / .5);
+      background: hsl(var(--paper) / .1); color: hsl(var(--ink)); }
+    .pick-d input:disabled + label b { text-decoration: line-through; text-decoration-thickness: 2px; }
+    .fld .opt2[hidden] { display: none; }
+
+    .talk-wrap { position: relative; }
+    .mic {
+      position: absolute; right: 10px; bottom: 10px; width: 38px; height: 38px; border-radius: 11px;
+      cursor: pointer; display: grid; place-items: center; border: 1.5px solid hsl(var(--line)); background: hsl(var(--bg));
+      transition: background .2s ease, border-color .2s ease;
+    }
+    .mic:hover { background: hsl(var(--sun)); border-color: hsl(var(--sun-deep)); }
+    .mic svg { width: 17px; height: 17px; fill: none; stroke: hsl(var(--ink)); stroke-width: 1.8; stroke-linecap: round; }
+    .mic.rec { background: hsl(12 70% 50%); border-color: hsl(12 70% 36%); }
+    .mic.rec svg { stroke: #fff; }
+    @media (prefers-reduced-motion: no-preference) { .mic.rec { animation: pulse 1.2s ease-in-out infinite; } }
+    @keyframes pulse { 0%,100% { transform: scale(1); } 50% { transform: scale(1.08); } }
+    .mic[hidden] { display: none; }
+
+    .checks { display: grid; gap: 14px; }
+    .check { display: flex; gap: 14px; align-items: flex-start; cursor: pointer; }
+    .check input { position: absolute; opacity: 0; pointer-events: none; width: 1px; height: 1px; }
+    .box { flex: none; width: 24px; height: 24px; margin-top: 2px; border: 2px solid hsl(var(--ink-soft)); border-radius: 8px; background: hsl(var(--card)); display: grid; place-items: center; transition: background .18s ease, border-color .18s ease; }
+    .box svg { width: 13px; height: 13px; stroke: hsl(var(--ink)); stroke-width: 3.2; fill: none; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 22; stroke-dashoffset: 22; }
+    .check input:checked + .box { background: hsl(var(--sun)); border-color: hsl(var(--sun-deep)); }
+    .check input:checked + .box svg { stroke-dashoffset: 0; transition: stroke-dashoffset .3s var(--ease) .05s; }
+    .check input:focus-visible + .box { outline: 3px solid hsl(var(--sun-deep)); outline-offset: 3px; }
+    .check span:last-child { font-family: var(--hand); font-size: 16.5px; line-height: 1.5; }
+    @media (prefers-reduced-motion: no-preference) { .check input:checked + .box { animation: stampish .4s var(--ease); } }
+    @keyframes stampish { 0% { transform: scale(.8) rotate(-7deg); } 55% { transform: scale(1.12) rotate(3deg); } 100% { transform: none; } }
+
+    /* can't make this one */
+    .later-link {
+      display: inline-block; margin-top: -8px; background: none; border: 0; cursor: pointer;
+      font-family: var(--sans); font-size: 14.5px; color: hsl(var(--ink-soft));
+      text-decoration: underline; text-underline-offset: 3px; text-decoration-color: hsl(var(--line));
+      transition: color .2s ease;
+    }
+    .later-link:hover { color: hsl(var(--sun-deep)); }
+    .later-box { margin-top: 14px; }
+    .later-box[hidden] { display: none; }
+    .later-box label { display: block; font-family: var(--mono); font-size: 11.5px; letter-spacing: .1em; text-transform: uppercase; color: hsl(var(--ink-soft)); margin-bottom: 8px; }
+    .later-box select {
+      width: 100%; font-family: var(--sans); font-size: 16.5px; color: hsl(var(--ink));
+      background: hsl(var(--card)); border: 1.5px solid hsl(var(--line));
+      border-radius: 14px; padding: 14px 16px; cursor: pointer;
+      transition: border-color .2s ease, box-shadow .2s ease;
+    }
+    .later-box select:focus { outline: none; border-color: hsl(var(--sun-deep)); box-shadow: 0 0 0 3px hsl(var(--sun) / .25); }
+
+    .form-note { display: none; font-size: 14px; color: hsl(8 78% 70%); }
+    .form-note.on { display: block; }
+    .sent { display: none; text-align: center; padding: 28px 0 8px; }
+    .sent.on { display: block; }
+    .sent h3 { font-family: var(--disp); font-weight: 800; font-size: clamp(24px, 5.6vw, 34px); letter-spacing: -.03em; }
+    .sent p { margin-top: 14px; color: hsl(var(--ink-soft)); max-width: 34ch; margin-left: auto; margin-right: auto; }
+    .sent-door { margin-top: 26px; }
+    .sent-door .cta { margin-top: 16px; }
+
+    .qgrid { max-width: 980px; margin: 0 auto; display: grid; gap: 0 clamp(32px, 5vw, 64px); grid-template-columns: 1fr; }
+    @media (min-width: 880px) { .qgrid { grid-template-columns: 1fr 1fr; } }
+    details { border-bottom: 1px dashed hsl(var(--line)); }
+    summary {
+      list-style: none; cursor: pointer; padding: 18px 0; gap: 18px;
+      display: flex; justify-content: space-between; align-items: baseline;
+      font-family: var(--disp); font-weight: 600; font-size: clamp(15.5px, 3.9vw, 17.5px); line-height: 1.3;
+      transition: color .22s ease;
+    }
+    summary::-webkit-details-marker { display: none; }
+    summary:hover { color: hsl(var(--sun-deep)); }
+    summary .pm { font-family: var(--mono); font-weight: 700; color: hsl(var(--sun-deep)); flex: none; transition: transform .28s var(--ease); }
+    summary:hover .pm { transform: scale(1.2); }
+    details[open] summary .pm, details[open] summary:hover .pm { transform: rotate(45deg); }
+    .ans { display: grid; grid-template-rows: 0fr; transition: grid-template-rows .32s var(--ease); }
+    details[open] .ans { grid-template-rows: 1fr; }
+    .ans > div { min-height: 0; overflow: hidden; }
+    .ans p { padding: 0 0 18px; color: hsl(var(--ink-soft)); font-size: 15px; max-width: 44ch; opacity: 0; transform: translateY(-4px); transition: opacity .3s ease .08s, transform .3s var(--ease) .08s; }
+    details[open] .ans p { opacity: 1; transform: none; }
+
+    footer { text-align: center; padding: clamp(48px, 7vh, 76px) var(--rail) 124px; background: hsl(var(--bg)); }
+    .foot-social { display: flex; justify-content: center; gap: 10px; margin-bottom: 20px; }
+    .foot-social a {
+      width: 42px; height: 42px; border-radius: 12px; display: grid; place-items: center;
+      background: hsl(var(--card)); border: 1.5px solid hsl(var(--line)); box-shadow: 0 2px 0 hsl(var(--line));
+      transition: transform .16s var(--ease), background .2s ease, border-color .2s ease, box-shadow .16s var(--ease);
+    }
+    .foot-social svg { width: 18px; height: 18px; color: hsl(var(--ink)); fill: none; stroke: hsl(var(--ink)); stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+    .foot-social a:hover { background: hsl(var(--sun)); border-color: hsl(var(--sun-deep)); transform: translateY(-2px); box-shadow: 0 4px 0 hsl(var(--sun-deep)); }
+    .foot-social a:active { transform: translateY(1px); box-shadow: 0 0 0 hsl(var(--sun-deep)); }
+    footer .site { font-family: var(--mono); font-size: 11px; }
+    footer .site a { color: hsl(var(--ink-soft)); text-decoration-color: hsl(var(--line)); text-underline-offset: 3px; }
+
+    .sticky {
+      position: fixed; left: 50%; bottom: 18px; transform: translate(-50%, 100px); z-index: 10;
+      display: flex; align-items: center; gap: 14px;
+      background: hsl(var(--card) / .94); backdrop-filter: blur(12px);
+      border: 1.5px solid hsl(var(--line)); border-radius: 999px;
+      padding: 7px 7px 7px 20px; box-shadow: 0 14px 36px hsl(30 30% 12% / .22);
+      transition: transform .5s var(--ease);
+    }
+    .sticky.on { transform: translate(-50%, 0); }
+    .sticky .when { font-family: var(--mono); font-size: 12px; font-weight: 700; letter-spacing: .06em; white-space: nowrap; }
+    .sticky .cta { padding: 11px 20px; font-size: 13px; }
+
+    .js .rv { transform: translateY(22px); transition: transform .7s var(--ease); }
+    .js .rv.on { transform: none; }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .js .home-inner > *, .js .rv { opacity: 1; transform: none; animation: none; transition: none; }
+    }
+    /* ══ THE LAB ══ ground · glass · steel · one reagent ══ */
+
+    /* Bench. Graph paper at 26px, plus a slow vertical gradient so the
+       page is never a flat field of one dark colour. */
+    section.cream {
+      position: relative; isolation: isolate; color: hsl(var(--ink));
+      background-color: hsl(var(--bg));
+      background-image:
+        /* the wash — desk green over the room, 88-95%, so the photograph
+           is felt and never read. Text legibility is the wash's job. */
+        linear-gradient(180deg, hsl(var(--desk-deep) / .95) 0%, hsl(var(--bg) / .89) 34%,
+                                hsl(var(--bg) / .89) 66%, hsl(var(--desk-deep) / .95) 100%),
+        var(--shot, none);
+      background-size: cover, cover;
+      background-position: center, center;
+      background-repeat: no-repeat, no-repeat;
+    }
+    #happens { --shot: url('../images/contentlab/full/room.jpg'); }
+    #room    { --shot: url('../images/contentlab/room-circle.jpg'); }
+    #apply   { --shot: url('../images/contentlab/pair-laptop.jpg'); }
+    section.cream:not([id]) { --shot: url('../images/contentlab/helping.jpg'); }
+    footer {
+      position: relative; isolation: isolate;
+      background-image:
+        linear-gradient(180deg, hsl(var(--desk-deep) / .93), hsl(var(--desk-deep) / .97)),
+        url('../images/contentlab/table-wide.jpg');
+      background-size: cover; background-position: center 62%;
+    }
+    /* Graduations up the outside edge, the way measure marks run up a
+       cylinder. Decorative — hidden from anyone who is not getting the
+       picture anyway. */
+    section.cream::before {
+      content: ''; position: absolute; left: 0; top: 12%; bottom: 12%; width: 9px;
+      background-image: repeating-linear-gradient(180deg, hsl(var(--paper) / .17) 0 1px, transparent 1px 15px);
+      pointer-events: none;
+    }
+    @media (min-width: 720px) { section.cream::before { width: 13px; } }
+
+    /* Steel label — the etching on a piece of apparatus. */
+    .tag {
+      font-family: var(--mono); display: inline-flex; align-items: center; gap: .55rem;
+      font-size: 11px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase;
+      color: hsl(var(--steel));
+    }
+    .tag::before { content: ''; width: 20px; height: 1px; background: currentColor; opacity: .6; }
+
+    /* Glass — the one piece of glassware on the page carries the one
+       rule. It sits over photography, never over flat colour. */
+    .rule {
+      position: relative; overflow: hidden; isolation: isolate;
+      background: hsl(var(--paper) / .13);
+      backdrop-filter: blur(18px) saturate(140%);
+      -webkit-backdrop-filter: blur(18px) saturate(140%);
+      border: 1px solid hsl(var(--paper) / .22);
+      border-radius: 20px;
+      box-shadow: inset 0 1px 0 hsl(0 0% 100% / .35), inset 1px 0 0 hsl(0 0% 100% / .12),
+                  0 4px 32px hsl(var(--desk-deep) / .4);
+    }
+    /* No image of its own — backdrop-filter blurs the section's own
+       photograph through it, which is what a piece of glass actually does.
+       The sweep is the specular highlight crossing the curve on hover. */
+    .rule::after {
+      content: ''; position: absolute; top: 0; bottom: 0; left: -60%; width: 45%;
+      pointer-events: none; transform: skewX(-14deg);
+      background: linear-gradient(90deg, transparent, hsl(0 0% 100% / .07) 40%,
+                                  hsl(0 0% 100% / .14) 52%, transparent);
+      transition: left .95s var(--ease);
+    }
+    .rule:hover::after { left: 130%; }
+    /* The rim light down the left edge is what makes a flat rectangle
+       read as a curved piece of glassware. Do not remove it. */
+    .rule::before {
+      content: ''; position: absolute; left: 0; top: 12%; bottom: 12%; width: 2px; border-radius: 2px;
+      background: linear-gradient(180deg, transparent, hsl(var(--sun)) 35%, hsl(var(--sun)) 65%, transparent);
+      opacity: .9;
+    }
+
+    /* Meniscus — a hairline that thins at both ends, the way a liquid
+       surface pulls away from glass. Sits between sections. */
+    /* ── micro-interactions ───────────────────────────────────────
+       Every one is a transition or a keyframe, never a frame loop, so a
+       throttled tab cannot leave a control mid-state. ── */
+    @media (prefers-reduced-motion: no-preference) {
+      /* Element tile: presses like a key, and the reagent rim fills like
+         liquid rising rather than blinking on. */
+      .pick-d label { transition: transform .2s var(--ease), border-color .2s var(--ease), background .2s var(--ease); }
+      .pick-d label:active { transform: translateY(2px) scale(.982); }
+      .pick-d input:checked + label { animation: seat .34s var(--ease); }
+      .pick-d input:checked + label::before { animation: rimfill .5s var(--ease) both; }
+      @keyframes rimfill { from { clip-path: inset(100% 0 0 0); } to { clip-path: inset(0 0 0 0); } }
+      @keyframes seat { 0% { transform: translateY(2px) scale(.982); } 60% { transform: translateY(-3px) scale(1.012); } 100% { transform: none; } }
+
+      /* Steel labels: the etched rule draws itself out as the section arrives. */
+      .tag::before { transform: scaleX(0); transform-origin: left center; transition: transform .55s var(--ease) .12s; }
+      .rv.on .tag::before, .rv.on.tag::before { transform: scaleX(1); }
+
+      /* Small chips lift; the sun rim slides in from the left edge. */
+      .pick label { transition: transform .18s var(--ease), border-color .18s var(--ease), box-shadow .22s var(--ease); }
+      .pick label:active { transform: translateY(1px); }
+
+      /* Inputs light in the reagent as they take focus. */
+      .fld input, .fld textarea { transition: border-color .22s var(--ease), box-shadow .28s var(--ease), background .22s var(--ease); }
+      .fld input:focus, .fld textarea:focus { background: hsl(var(--paper) / .07); }
+
+      /* The FAQ marker rotates into a minus instead of swapping glyph. */
+      summary .pm { transition: transform .3s var(--ease), color .2s var(--ease); }
+      details[open] summary .pm { transform: rotate(135deg); }
+
+      /* The button's arrow leads, and the whole thing sits into its shadow. */
+      .cta:active .arw { transform: translateX(1px); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .rule::after { display: none; }
+      .tag::before { transform: none; }
+    }
+
+    .meniscus { height: 1px; border: 0; margin: 0;
+      background: linear-gradient(90deg, transparent, hsl(var(--paper) / .14) 15%, hsl(var(--paper) / .14) 85%, transparent); }
+
+    /* The reagent is a fill only on the button, so the type on it is the
+       ground colour, not the paper. Measured 1.88:1 the other way round. */
+    .cta { color: hsl(var(--desk-deep)); }
+    .cta:hover { background: hsl(42 92% 62%); color: hsl(var(--desk-deep)); }
+    .idc:hover, .idc.lit { color: hsl(var(--desk-deep)); }
+
+    /* Steel has to clear 4.5:1 as 10px type over glass. */
+    .pick-d label s { color: hsl(var(--steel)); }
+    .fee { display: none; }
+    /* ══ CONTENT LAB — what this page has that the Sunday page does not ══ */
+
+    /* ══ THE LOCKUPS ══  his design, 6 October 2026.
+       Both are built the way the parent wordmark is built: a word in the
+       display face with a word in the hand hanging off its corner. The
+       clapperboard sub-brand mark is retired; a room inside Chemistry Lab
+       names itself in Chemistry Lab's own construction rather than borrowing
+       an emoji.
+
+       Set in type, not from the logo file, because `logos/chemistry-lab.png`
+       has "for humans" baked into it and there is no wordmark-only asset to
+       build "practicals" onto. */
+    /* Block-level, not inline-flex. The headline below is an inline-block so
+       that "for founders" can hang off its corner, and two inline-level boxes
+       share a line — a narrow mark and a short headline end up side by side.
+       fit-content keeps the box tight to the words so the auto margins still
+       centre it. */
+    .unit {
+      display: flex; flex-direction: column; align-items: flex-start;
+      width: fit-content;
+      margin: 0 auto 1.05em; color: hsl(var(--paper));
+      font-size: clamp(20px, 4.3vw, 29px);
+      filter: drop-shadow(0 1px 9px hsl(var(--desk-deep) / .7));
+    }
+    .unit b {
+      font-family: var(--disp); font-weight: 800; line-height: .88;
+      font-size: 1em; letter-spacing: -.035em;
+    }
+    .unit .row { display: flex; align-items: baseline; gap: .26em; }
+    /* Half the wordmark's size, which is the proportion the parent mark sets
+       between "lab" and "for humans". Schoolbell's x-height is large, so half
+       an em reads bigger than half and lands where the logo's hand word sits. */
+    .unit i {
+      font-family: var(--hand); font-style: normal; font-weight: 400;
+      font-size: .5em; line-height: 1; color: hsl(44 40% 93%); white-space: nowrap;
+    }
+
+    /* The headline shrinks to its own words so "for founders" can hang off the
+       bottom-right corner, the way "for humans" hangs off the parent mark. The
+       padding is the room it hangs in; without it the hand sits on the line
+       below. No nbsp in the headline — at 320px "Content Lab." is wider than
+       the rail allows and it has to be free to break. */
+    .home h1 { position: relative; display: inline-block; padding-bottom: .36em; }
+    .home h1 i {
+      position: absolute; right: .04em; bottom: 0;
+      font-family: var(--hand); font-style: normal; font-weight: 400;
+      font-size: clamp(16px, 3.3vw, 24px); letter-spacing: 0; line-height: 1;
+      color: hsl(44 40% 93%); white-space: nowrap;
+    }
+    /* The full stop is the brand's mark and the single place the brand permits
+       red as TYPE — everywhere else on this ground red may only be a fill. It
+       is also the record light, which is what he asked it to be. The glow is
+       not decoration: #bc1823 on the darkened photograph is 2.3:1, and a mark
+       this small needs lifting off the frame to read at all. */
+    .home h1 em {
+      font-style: normal; color: hsl(var(--red));
+      filter: drop-shadow(0 0 13px hsl(var(--red) / .6)) drop-shadow(0 0 3px hsl(var(--red) / .9));
+    }
+
+    /* The beats. Five lines of what the morning contains, as a list that can
+       be scanned in one pass instead of a paragraph that has to be read.
+       Numbered in the same steel the date tiles number themselves in. */
+    .beats { margin-top: 26px; max-width: 46ch; border-top: 1px solid hsl(var(--paper) / .16); }
+    .beats li {
+      list-style: none; display: flex; align-items: baseline; gap: 15px;
+      padding: 15px 4px 16px; border-bottom: 1px solid hsl(var(--paper) / .16);
+      transition: background .3s var(--ease), padding-left .3s var(--ease);
+    }
+    .beats li:hover { background: hsl(var(--paper) / .05); padding-left: 12px; }
+    .beats s {
+      text-decoration: none; flex: 0 0 auto; width: 2.1em;
+      font-family: var(--mono); font-size: 10.5px; font-weight: 700;
+      letter-spacing: .12em; color: hsl(var(--steel) / .9);
+    }
+    .beats span {
+      font-family: var(--disp); font-weight: 600; color: hsl(var(--ink));
+      font-size: clamp(16.5px, 4vw, 20px); line-height: 1.28; letter-spacing: -.02em;
+    }
+
+  </style>
+</head>
+<body>
+
+<!-- ══ HOME ══ -->
+<a class="brand" href="/chemistrylab/" aria-label="Chemistry Lab"><i></i></a>
+
+<header class="home" id="home">
+  <div class="home-slides" aria-hidden="true">
+    <img src="../images/contentlab/full/room.jpg" alt="" fetchpriority="high">
+    <img src="../images/contentlab/full/help.jpg" alt="" loading="lazy">
+    <img src="../images/contentlab/full/solo.jpg" alt="" loading="lazy">
+  </div>
+
+  <div class="home-inner">
+    <span class="unit"><b>chemistry</b><span class="row"><b>lab</b><i>practicals</i></span></span>
+    <h1>Content Lab<em>.</em><i>for founders</i></h1>
+    <p class="say">Ten founders in a room. Nobody goes home till you have a piece of content.</p>
+    <a class="cta" href="#apply">Request invite <span class="arw">&rarr;</span></a>
+    <p class="home-facts">Invite-only. &#8377;1999 after the invite.</p>
+    <!-- One date, so the capsules are the whole of it and they are static.
+         Nothing here is computed, which is why nothing here can go stale
+         except by being out of date, and that is a date change, not a bug. -->
+    <div class="away" id="awayRow">
+      <span class="away-lead">Join us on</span>
+      <a class="cap" href="#apply"><b>Fri 9 Oct</b><em>9 AM</em></a>
+      <a class="cap" href="#apply"><b>Ahmedabad</b><em>Address on invite</em></a>
+    </div>
+  </div>
+</header>
+
+<!-- ══ WHAT HAPPENS ══ -->
+<section class="cream tight" id="happens">
+  <div class="inner rv">
+    <span class="tag">What happens</span>
+    <h2 class="h2c">We'll go out with a piece of content and a content plan.</h2>
+    <ol class="beats">
+      <li><s>01</s><span>Content that really works</span></li>
+      <li><s>02</s><span>Founder Brand Blueprint</span></li>
+      <li><s>03</s><span>Create with fellow founders</span></li>
+      <li><s>04</s><span>Hit that record button!!!</span></li>
+      <li><s>05</s><span>Thumb rules of scripting, shooting, editing</span></li>
+    </ol>
+
+    <div class="rule">
+      <b>One rule: nobody goes home without a piece of content.</b>
+    </div>
+  </div>
+</section>
+
+<!-- ══ THE ASK ══ -->
+<section class="cream" id="apply">
+  <div class="inner rv">
+    <span class="tag">The ask</span>
+    <h2 class="h2c">Tell us what you're building.</h2>
+
+    <form class="form" id="f" novalidate>
+      <div class="duo">
+        <div class="fld">
+          <label for="fName">Name</label>
+          <input type="text" id="fName" autocomplete="name" maxlength="60" placeholder="your name">
+        </div>
+        <div class="fld">
+          <label for="fPhone">Contact number</label>
+          <input type="tel" id="fPhone" autocomplete="tel" inputmode="tel" maxlength="20" placeholder="98765 43210">
+        </div>
+      </div>
+
+      <div class="fld">
+        <label for="fEmail">Email</label>
+        <input type="email" id="fEmail" autocomplete="email" maxlength="120" placeholder="you@example.com">
+      </div>
+
+      <div class="fld">
+        <span class="lbl" id="lblG">Gender</span>
+        <div class="pick" id="gPick" role="radiogroup" aria-labelledby="lblG">
+          <input type="radio" name="gender" id="g1" value="Woman"><label for="g1">Woman</label>
+          <input type="radio" name="gender" id="g2" value="Man"><label for="g2">Man</label>
+          <input type="radio" name="gender" id="g3" value="Transgender"><label for="g3">Transgender</label>
+          <input type="radio" name="gender" id="g4" value="Other"><label for="g4">Other</label>
+          <input type="radio" name="gender" id="g5" value="Prefer not to say"><label for="g5">Prefer not to say</label>
+        </div>
+      </div>
+
+      <div class="fld">
+        <span class="lbl" id="lblA">Age</span>
+        <div class="pick" id="aPick" role="radiogroup" aria-labelledby="lblA">
+          <input type="radio" name="age_group" id="a1" value="Under 18"><label for="a1">Under 18</label>
+          <input type="radio" name="age_group" id="a2" value="18-21"><label for="a2">18&ndash;21</label>
+          <input type="radio" name="age_group" id="a3" value="22-26"><label for="a3">22&ndash;26</label>
+          <input type="radio" name="age_group" id="a4" value="27-34"><label for="a4">27&ndash;34</label>
+          <input type="radio" name="age_group" id="a5" value="35-44"><label for="a5">35&ndash;44</label>
+          <input type="radio" name="age_group" id="a6" value="45+"><label for="a6">45+</label>
+        </div>
+      </div>
+
+      <div class="fld">
+        <label for="fLink">Social link</label>
+        <p class="hint">We open your link before we decide. If it&rsquo;s private, we see nothing, and nothing is what we decide on.</p>
+        <div class="socials" aria-label="tap one to start the link">
+          <button type="button" class="soc" data-base="instagram.com/" aria-label="Instagram">
+            <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r=".8" fill="currentColor"/></svg>
+          </button>
+          <button type="button" class="soc" data-base="linkedin.com/in/" aria-label="LinkedIn">
+            <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M8 11v6M8 8v.1M12 17v-4a2.2 2.2 0 0 1 4.4 0v4"/></svg>
+          </button>
+          <button type="button" class="soc" data-base="x.com/" aria-label="X">
+            <svg viewBox="0 0 24 24"><path d="M5 5l14 14M19 5L5 19"/></svg>
+          </button>
+          <button type="button" class="soc" data-base="youtube.com/@" aria-label="YouTube">
+            <svg viewBox="0 0 24 24"><path fill-rule="evenodd" fill="currentColor" stroke="none" d="M2 9a4 4 0 0 1 4-4h12a4 4 0 0 1 4 4v6a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4z M10 9.2v5.6l4.8-2.8z"/></svg>
+          </button>
+          <button type="button" class="soc" data-base="" aria-label="Your website">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.6 3.8 5.7 3.8 9S14.5 18.4 12 21M12 3C9.5 5.6 8.2 8.7 8.2 12s1.3 6.4 3.8 9"/></svg>
+          </button>
+        </div>
+        <input type="text" id="fLink" inputmode="url" maxlength="200" placeholder="instagram.com/&hellip;">
+        <div class="opt2"><input type="text" id="fLink2" inputmode="url" maxlength="200" placeholder="one more"></div>
+      </div>
+
+      <div class="fld">
+        <label for="fProject">What are you building?</label>
+        <p class="hint">Give us more reasons to say yes, below.</p>
+        <div class="talk-wrap">
+          <textarea id="fProject" maxlength="600" placeholder="Don't use AI, just tell us what it is."></textarea>
+          <button type="button" class="mic" data-for="fProject" hidden aria-label="speak your answer">
+            <svg viewBox="0 0 24 24"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5.5 11.5a6.5 6.5 0 0 0 13 0M12 18v3"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <div class="fld">
+        <label for="fWhy">Why do you want to attend?</label>
+        <div class="talk-wrap">
+          <textarea id="fWhy" maxlength="600" placeholder="Write your honest first thoughts."></textarea>
+          <button type="button" class="mic" data-for="fWhy" hidden aria-label="speak your answer">
+            <svg viewBox="0 0 24 24"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5.5 11.5a6.5 6.5 0 0 0 13 0M12 18v3"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <div class="fld">
+        <span class="lbl" id="lblF">How did you find us?</span>
+        <div class="pick" id="fPick" role="radiogroup" aria-labelledby="lblF">
+          <input type="radio" name="found" id="s1" value="Instagram"><label for="s1">Instagram</label>
+          <input type="radio" name="found" id="s2" value="LinkedIn"><label for="s2">LinkedIn</label>
+          <input type="radio" name="found" id="s3" value="A friend"><label for="s3">A friend</label>
+          <input type="radio" name="found" id="s6" value="A community member"><label for="s6">A community member</label>
+          <input type="radio" name="found" id="s4" value="Chemistry Lab"><label for="s4">Chemistry Lab</label>
+          <input type="radio" name="found" id="s5" value="Somewhere else"><label for="s5">Somewhere else</label>
+        </div>
+        <div class="opt2" id="refWho" hidden>
+          <input type="text" id="fRef" maxlength="60" placeholder="their name &mdash; we&rsquo;ll thank them">
+        </div>
+      </div>
+
+      <div class="fld">
+        <span class="lbl" id="lblD">The date</span>
+        <div class="pick pick-d" id="dPick" role="radiogroup" aria-labelledby="lblD"></div>
+      </div>
+
+      <div class="checks">
+        <label class="check">
+          <input type="checkbox" id="cOk">
+          <span class="box"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M2.5 8.5 6 12 13.5 4"/></svg></span>
+          <span>I am in <b id="tickCity">Ahmedabad</b> on <b id="tickDate">Friday, 9 October</b></span>
+        </label>
+        <label class="check">
+          <input type="checkbox" id="cFee">
+          <span class="box"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M2.5 8.5 6 12 13.5 4"/></svg></span>
+          <span>I know the fee is &#8377;1999, paid after I'm invited</span>
+        </label>
+      </div>
+
+
+      <input type="text" name="website" id="fHp" tabindex="-1" autocomplete="off" style="position:absolute;left:-5000px" aria-hidden="true">
+
+      <div>
+        <button class="cta" type="submit" id="sendBtn">Send request <span class="arw">&rarr;</span></button>
+      </div>
+      <p class="form-note" id="note" role="status"></p>
+    </form>
+
+    <div class="sent" id="sent" role="status">
+      <span class="emo">&#128640;</span>
+      <h3>One more tap.</h3>
+      <p>Say hello on WhatsApp so I can reply to you there. Everything about your
+         request &mdash; the yes or no, your invite, the address &mdash; comes back
+         on that chat.</p>
+      <div class="sent-door" id="sentWa">
+        <a class="cta" id="sentWaLink" href="#" target="_blank" rel="noopener">Open WhatsApp <span class="arw">&rarr;</span></a>
+      </div>
+      <div class="sent-door" id="sentDoor" hidden>
+        <p>I'd rather you didn't wait for the 9th to meet the room. Most of the people you'd have sat with are already in here.</p>
+        <a class="cta" id="sentDoorLink" href="#" target="_blank" rel="noopener">Come in <span class="arw">&rarr;</span></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ QUESTIONS ══ -->
+<section class="cream">
+  <div class="qgrid rv">
+    <details>
+      <summary>My reels get no views. Will this fix that? <span class="pm">+</span></summary>
+      <div class="ans"><div><p>Views come from the first three seconds and from having something worth saying. Both get worked on here. The algorithm does not, and nobody in the room will pretend otherwise.</p></div></div>
+    </details>
+    <details>
+      <summary>I hate being on camera. <span class="pm">+</span></summary>
+      <div class="ans"><div><p>Most founders do. You still hit record, because that is the only thing that makes it smaller. You choose the format and faceless counts. You leave with a piece either way.</p></div></div>
+    </details>
+    <details>
+      <summary>I post for two weeks and then stop. <span class="pm">+</span></summary>
+      <div class="ans"><div><p>That happens to almost everyone, and it is a planning problem. You leave with a plan you wrote yourself, sized to the hours you actually have.</p></div></div>
+    </details>
+    <details>
+      <summary>Can't I just pay someone to make my content? <span class="pm">+</span></summary>
+      <div class="ans"><div><p>You can, and plenty of people will take the money. They can shoot and they can cut. They cannot have your point of view, and that is the part that makes a founder's content work. Learn it once, then hand over the rest.</p></div></div>
+    </details>
+    <details>
+      <summary>What do I bring? <span class="pm">+</span></summary>
+      <div class="ans"><div><p>A charged phone with free storage. No professional gear is expected. If you own a tripod or a mic, bring them. Don't write a script beforehand.</p></div></div>
+    </details>
+    <details>
+      <summary>How long, and where? <span class="pm">+</span></summary>
+      <div class="ans"><div><p>9 AM, not 9:15. It ends when your piece is made, which is about three hours. A centrally located venue in Ahmedabad, and you get the address with your invite.</p></div></div>
+    </details>
+  </div>
+</section>
+
+<footer>
+  <div class="foot-social">
+    <a href="https://www.instagram.com/manav.joshii/" target="_blank" rel="noopener" aria-label="Instagram">
+      <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r=".8" fill="currentColor"/></svg>
+    </a>
+    <a href="https://www.linkedin.com/in/manav-joshi/" target="_blank" rel="noopener" aria-label="LinkedIn">
+      <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M8 11v6M8 8v.1M12 17v-4a2.2 2.2 0 0 1 4.4 0v4"/></svg>
+    </a>
+    <a href="https://x.com/manavjoshii" target="_blank" rel="noopener" aria-label="X">
+      <svg viewBox="0 0 24 24"><path d="M5 5l14 14M19 5L5 19"/></svg>
+    </a>
+    <a href="https://www.youtube.com/@manav.joshii" target="_blank" rel="noopener" aria-label="YouTube">
+      <svg viewBox="0 0 24 24"><path fill-rule="evenodd" fill="currentColor" stroke="none" d="M2 9a4 4 0 0 1 4-4h12a4 4 0 0 1 4 4v6a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4z M10 9.2v5.6l4.8-2.8z"/></svg>
+    </a>
+  </div>
+  <p class="site"><a href="https://manavjoshi.com">manavjoshi.com</a></p>
+</footer>
+
+<div class="sticky" id="sticky">
+  <span class="when" id="stickyDate">Fri 9 Oct</span>
+  <a class="cta" href="#apply">Request invite</a>
+</div>
+
+<script>
+(function () {
+  'use strict';
+  var ENDPOINT = 'https://script.google.com/macros/s/AKfycbyIdrCDzYTx7XQQ5l8ByaFW6FsGuSIJJvwTkN449Fhq20HrZjIYTnZpOWI4qs8-2uP5gw/exec';
+  // Paste the WhatsApp community invite link here. Blank = the door stays hidden.
+  var COMMUNITY_URL = '';
+  /* The Chemistry Lab WhatsApp number. The applicant messages US first, which
+     is what opens WhatsApp's 24-hour window before we have said anything — so
+     every reply after this is solicited, and the acknowledgement inside that
+     window costs nothing. It is also the only check on the phone number: the
+     one in the form is typed, this one is WhatsApp's own. */
+  var WA_NUMBER = '917862948874';
+  var $ = function (id) { return document.getElementById(id); };
+
+  /* ── the one date ──
+     The Sunday page computes its next Sunday because it has infinitely many.
+     This room has one, so the date is a constant and changing it is a
+     one-line edit. Every string the page prints is derived from it, so the
+     hero, the tile, the tick, the sticky bar and the WhatsApp message cannot
+     disagree with each other. */
+  var EVENT_ISO = '2026-10-09';
+  var CITY      = 'Ahmedabad';
+  var MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+  var DAYS   = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+  var pad = function (n) { return (n < 10 ? '0' : '') + n; };
+  var ev = new Date(EVENT_ISO + 'T12:00:00');
+  var dateShort = ev.getDate() + ' ' + MONTHS[ev.getMonth()].slice(0, 3);
+  var dateLong  = ev.getDate() + ' ' + MONTHS[ev.getMonth()];
+  var dayName   = DAYS[ev.getDay()];
+
+  /* One room, one city. Kept as a function so the submit payload and the
+     tick line read it the same way the Sunday page's do. */
+  function cityFor() { return CITY; }
+
+  /* One writer for both halves of the tick line, so the city and the date can
+     never disagree with each other or with the tile that is lit. */
+  function setTick(iso) {
+    var td = new Date(iso + 'T12:00:00');
+    $('tickDate').textContent = DAYS[td.getDay()] + ', ' + td.getDate() + ' ' + MONTHS[td.getMonth()];
+    $('tickCity').textContent = CITY;
+  }
+
+  setTick(EVENT_ISO);
+  $('stickyDate').textContent = dayName.slice(0, 3) + ' ' + dateShort;
+
+  /* ── reveal (fail-safe: everything shows after 4s) ── */
+  var reveal = document.querySelectorAll('.rv');
+  function revealAll() { Array.prototype.forEach.call(reveal, function (el) { el.classList.add('on'); }); }
+  if (typeof IntersectionObserver === 'function') {
+    try {
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('on'); io.unobserve(e.target); } });
+      }, { threshold: 0.1, rootMargin: '0px 0px -6% 0px' });
+      Array.prototype.forEach.call(reveal, function (el) { io.observe(el); });
+      setTimeout(function () { if (!document.querySelector('.rv.on')) revealAll(); }, 4000);
+    } catch (err) { revealAll(); }
+  } else { revealAll(); }
+
+  /* ── sticky ── */
+  var sticky = $('sticky'), homeEl = $('home'), askEl = $('apply');
+  if (typeof IntersectionObserver === 'function') {
+    try {
+      var pastHome = false, atAsk = false;
+      var paint = function () { sticky.classList.toggle('on', pastHome && !atAsk); };
+      new IntersectionObserver(function (e) { pastHome = !e[0].isIntersecting; paint(); }, { threshold: 0.15 }).observe(homeEl);
+      new IntersectionObserver(function (e) { atAsk = e[0].isIntersecting; paint(); }, { threshold: 0.12 }).observe(askEl);
+    } catch (err) { /* fine without it */ }
+  }
+
+  /* ══ who attends: a pile you plough with the cursor ══
+     A magnet in water, not a magnet in air. Three things move the chips. A
+     soft field around the sun parts them BEFORE it arrives, with a smoothstep
+     falloff. A tangential term alongside it carries them AROUND the sun rather
+     than straight out of its way, which is what a body dragging through water
+     does and what the pushing-only version was missing. And CARRY bleeds a
+     little of the sun's own velocity into them so a sweep ploughs rather than
+     landing a series of hits. Under all three, an oversized invisible
+     collision shell keeps them off its edge. The split is load-bearing: a
+     force cannot converge, so a parked magnet held the whole pile awake for
+     ever; the shell converges, so the room falls asleep inside its own bubble
+     and the pit goes silent.
+
+     The water itself is DRAG, on both axes. The first version damped only vx,
+     so a chip's fall was limited by nothing but CHIP_VMAX and the pile slammed
+     rather than sank; that one asymmetry was most of what read as hyperactive.
+     Everything in here now has a terminal velocity of GRAV / DRAG, and the
+     cap is re-applied after the collision passes as well as before them,
+     because every speed spike measured was an impulse out of the solver.
+     Across eleven widths that took peak chip speed from 2292 to 520 px/s and
+     the 95th percentile from 485 to 409, while the pile still moves 27-30 of
+     its 30 chips on a sweep. Measured, not guessed: scripts/sim-pit.js.
+
+     Every constant is mirrored in scripts/sim-pit.js and was chosen by
+     sweeping it there; sim-pit.js reads this file back and refuses to report
+     numbers if the two have drifted apart. If you change a number here and
+     not there, this section is unverified.
+
+     It CAN also be watched running, which an earlier note here denied: the
+     preview pane issues no animation frames at all, and headless Chrome
+     issues one burst and stops — until you open a Page.startScreencast, which
+     keeps the compositor producing frames and brings rAF back to ~63fps. With
+     that open, a PointerEvent dispatched inside the page (CDP's
+     Input.dispatchMouseEvent never reaches this listener in headless) drives
+     the real thing end to end. That is how the glide, the idle drift and the
+     handover below were checked. */
+  (function pit() {
+    var box = $('who');
+    if (!box || !window.matchMedia('(prefers-reduced-motion: no-preference)').matches) return;
+    var chips = Array.prototype.slice.call(box.querySelectorAll('.idc'));
+    if (!chips.length) return;
+
+    var GRAV = 2400, REST = .05, FRICT = .9985,
+        DRAG = 4.6,                 /* 1/s the water takes back, on BOTH axes */
+        SLOP = .6, CORRECT = .5,
+        BOUNCE = .18,               /* chip-on-chip restitution. water does not clack */
+        STILL_RATE = 26,            /* px/sec of movement that still counts as rest */
+        SLEEP_AFTER = .3,           /* seconds under that before a body sleeps */
+        SETTLE_AT = 2.6, FREEZE_AT = SETTLE_AT + 3,
+        STEP = 1 / 120,             /* fixed substep. frame rate cannot change physics */
+        FIELD_R = 3.6,              /* magnet reach, in ball radii */
+        FIELD_A = 1700,             /* px/s² at the core, smoothstepped to nothing */
+        SWIRL = 2100,               /* px/s² ACROSS that line: chips go round, not away */
+        CARRY = 2.4,                /* 1/s of the sun's own motion a chip takes on */
+        STIR_V = 12,                /* below this the magnet is off entirely */
+        STIR_FLOOR = .5, STIR_FULL = 1600,   /* gentle when crept, firmer when swiped */
+        GLOW_FADE = 3.2,            /* 1/s the lit bubble fades, so a sweep leaves a wake */
+        SHELL = 1.26,               /* the sun collides bigger than it draws */
+        CHIP_VMAX = 520, OMEGA = 8.5,
+        LEAN = .03, LEAN_MAX = 11, LEAN_BACK = 4.5;
+
+    var bodies = null, sizes = null, W = 0, H = 0,
+        painted = false, last = null, acc = 0, elapsed = 0, frozen = false,
+        fitting = false, fieldHit = 0;
+
+    var ballEl = $('ball'), hintEl = $('whoHint'),
+        ball = null, ptrIn = false, chipDrag = false, touched = false,
+        /* `seen` is sticky: a mouse that has moved once on this page has a
+           position for ever after, and the sun goes to it the moment the
+           section scrolls under it. `inView` only matters for the one case
+           where it does not — someone who wheel-scrolls here without having
+           moved the mouse at all, who would otherwise find the sun parked in
+           a corner doing nothing. */
+        seen = false, inView = false, driftT = 0,
+        cx = 0, cy = 0, rect = null, rectDirty = true;
+
+    function cl(lo, v, hi) { return Math.min(hi, Math.max(lo, v)); }
+    function len2(x, y) { return Math.sqrt(x * x + y * y); }
+    function ballSize() { return Math.max(44, Math.min(72, Math.round(box.clientWidth * .115))); }
+    function measure() { W = box.clientWidth; H = box.clientHeight; }
+
+    /* Implicit critically-damped spring: unconditionally stable at any dt,
+       which is the whole reason the sun never overshoots or buzzes on a slow
+       frame. ES5, so it hands its two answers back through a scratch pair. */
+    var _sx = 0, _sv = 0;
+    function spring(x, v, target, dt) {
+      var f = 1 + 2 * dt * OMEGA, oo = OMEGA * OMEGA,
+          hoo = dt * oo, hhoo = dt * hoo, det = 1 / (f + hhoo);
+      _sx = (f * x + dt * v + hhoo * target) * det;
+      _sv = (v + hoo * (target - x)) * det;
+    }
+
+    function seed(w) {
+      var span = 0;
+      return sizes.map(function (s, i) {
+        var x = span; span += s.w + 10;
+        if (x + s.w > w - 10) { x = (i * 53) % Math.max(20, w - s.w - 20); }
+        return {
+          el: chips[i], w: s.w, h: s.h,
+          x: Math.max(8, Math.min(w - s.w - 8, x)),
+          y: -s.h - 30 - i * 24,
+          vx: 0, vy: 0, rest: ((i % 5) - 2) * 1.5, rot: ((i % 5) - 2) * 1.5,
+          glow: 0, shown: -1, held: false, asleep: false, stillT: 0, inside: false
+        };
+      });
+    }
+
+    function wake(b) { b.asleep = false; b.stillT = 0; }
+
+    /* walls, floor and a lid. The lid arms only once a chip has finished
+       falling in — without it the magnet could hurl one out through the top,
+       where overflow:hidden ate it and it never came back. */
+    function clamp(b) {
+      if (b.x < 6) { b.x = 6; if (b.vx < 0) b.vx = -b.vx * REST; }
+      if (b.x + b.w > W - 6) { b.x = W - 6 - b.w; if (b.vx > 0) b.vx = -b.vx * REST; }
+      if (b.y + b.h > H - 6) {
+        b.y = H - 6 - b.h;
+        b.vy = Math.abs(b.vy) > 60 ? -b.vy * REST : 0;
+        b.vx *= .84;
+      }
+      if (b.y >= 6) b.inside = true;
+      if (b.inside && b.y < 6) { b.y = 6; if (b.vy < 0) b.vy = -b.vy * REST; }
+      if (b.y < -700) b.y = -700;
+    }
+
+    /* The sun is kinematic: a spring carries it to the cursor and nothing in
+       the room can push it back. The target is clamped into the pit, so a
+       cursor anywhere on the page parks it against the nearest edge rather
+       than losing it — which is why it is already under your hand when you
+       scroll the section into view, and why it glides there over about a
+       quarter-second instead of snapping (OMEGA, halved for the water). */
+    function driveBall(dt) {
+      var gx, gy;
+      if (ptrIn && rect) { gx = cx - rect.left; gy = cy - rect.top; }
+      else if (!seen && inView) {
+        /* Nobody has pointed at anything yet, but the pit is on screen. Rather
+           than sit in a corner it wanders the room, which both shows what the
+           thing does and means the sun is already moving when the cursor
+           arrives. Two incommensurate periods, so it never visibly loops. */
+        driftT += dt;
+        gx = W * .5 + Math.cos(driftT * .47) * W * .26;
+        gy = H * .56 + Math.sin(driftT * .71) * H * .2;
+      } else { gx = W - ball.w / 2 - 12; gy = H - ball.h / 2 - 8; }
+      gx = cl(ball.w / 2, gx, W - ball.w / 2);
+      gy = cl(ball.h / 2, gy, H - ball.h / 2);
+      spring(ball.x + ball.w / 2, ball.vx, gx, dt);
+      ball.x = _sx - ball.w / 2; ball.vx = _sv;
+      spring(ball.y + ball.h / 2, ball.vy, gy, dt);
+      ball.y = _sx - ball.h / 2; ball.vy = _sv;
+    }
+
+    function field(dt) {
+      var r = ball.w / 2, bx = ball.x + r, by = ball.y + r, R = r * FIELD_R,
+          speed = len2(ball.vx, ball.vy), stirring = speed > STIR_V,
+          gain = STIR_FLOOR + (1 - STIR_FLOOR) * Math.min(1, speed / STIR_FULL),
+          i, b, cr, ay, ax, dx, dy, ln, d, t, sm, c, sx, sy;
+      for (i = 0; i < bodies.length; i++) {
+        b = bodies[i];
+        if (b.ball) continue;
+        b.glow -= b.glow * Math.min(1, GLOW_FADE * dt);
+        if (b.held) continue;
+        cr = b.h / 2; ay = b.y + cr; ax = cl(b.x + cr, bx, b.x + b.w - cr);
+        dx = bx - ax; dy = by - ay;
+        ln = len2(dx, dy); d = ln - cr;
+        if (d >= R) continue;
+        t = cl(0, 1 - d / R, 1); sm = t * t * (3 - 2 * t);
+        if (b.glow < sm) b.glow = sm;      /* the bubble stays lit even parked */
+        if (!stirring) continue;           /* a parked magnet applies no force */
+        wake(b);
+        if (b.asleep) continue;
+        fieldHit++;
+        if (ln > .001) { dx /= ln; dy /= ln; } else { dx = 0; dy = -1; }
+        b.vx -= dx * FIELD_A * sm * gain * dt;
+        b.vy -= dy * FIELD_A * sm * gain * dt;
+        /* and ACROSS that line, in whichever of the two perpendicular
+           directions the sun is already travelling. A body moving through
+           water drags what it passes AROUND itself; pushing only outward is
+           what read as a slap. This is the whole difference between a magnet
+           in air and a magnet in water. */
+        sx = -dy; sy = dx;
+        if (sx * ball.vx + sy * ball.vy < 0) { sx = dy; sy = -dx; }
+        b.vx += sx * SWIRL * sm * gain * dt;
+        b.vy += sy * SWIRL * sm * gain * dt;
+        c = Math.min(1, CARRY * sm * dt);
+        b.vx += (ball.vx - b.vx) * c;
+        b.vy += (ball.vy - b.vy) * c * .55;
+      }
+    }
+
+    /* a pill is two end circles plus a middle one; the sun is square, so its
+       three coincide and it is exactly a circle */
+    function circles(b) {
+      var r = b.h / 2, cy2 = b.y + r;
+      return [{ x: b.x + r, y: cy2 }, { x: b.x + b.w / 2, y: cy2 }, { x: b.x + b.w - r, y: cy2 }];
+    }
+    function collide(A, B) {
+      if (A.asleep && B.asleep) return;
+      if (A.x + A.w < B.x || B.x + B.w < A.x || A.y + A.h < B.y || B.y + B.h < A.y) return;
+      var ca = circles(A), cb = circles(B), r = (A.h + B.h) / 2;
+      for (var i = 0; i < 3; i++) {
+        for (var j = 0; j < 3; j++) {
+          var dx = cb[j].x - ca[i].x, dy = cb[j].y - ca[i].y;
+          var d2 = dx * dx + dy * dy;
+          if (d2 <= 0 || d2 >= r * r) continue;
+          var d = Math.sqrt(d2), overlap = r - d;
+          if (overlap <= SLOP) continue;
+          var nx = dx / d, ny = dy / d;
+          var push = (overlap - SLOP) * CORRECT / 2;
+          if (A.held !== B.held) push *= 2;
+          /* The sun is solid. A soft correction let it sink halfway into a
+             chip that had a wall behind it; a full one-sided projection is
+             the only thing that reads as an object. */
+          if (A.ball || B.ball) push = overlap - SLOP;
+          var force = A.ball || B.ball || !frozen;
+          if (!A.held) { A.x -= nx * push; A.y -= ny * push; if (A.asleep && push > .5 && force) wake(A); }
+          if (!B.held) { B.x += nx * push; B.y += ny * push; if (B.asleep && push > .5 && force) wake(B); }
+          var rel = (B.vx - A.vx) * nx + (B.vy - A.vy) * ny;
+          if (rel < 0) {
+            var imp = -rel * BOUNCE;
+            if (!A.held) { A.vx -= nx * imp; A.vy -= ny * imp; }
+            if (!B.held) { B.vx += nx * imp; B.vy += ny * imp; }
+          }
+        }
+      }
+    }
+
+    function step(dt) {
+      if (ball && !fitting) { driveBall(dt); field(dt); }
+      /* Damping only ramps when the room is left alone. One chip inside the
+         magnet holds the pile awake; a sweep through empty space lets it keep
+         settling, which is what stops the pit humming. */
+      if (fieldHit) elapsed = Math.min(elapsed, SETTLE_AT);
+      var settling = elapsed > SETTLE_AT;
+      frozen = elapsed > FREEZE_AT;
+      var damp = settling ? Math.pow(.90, (elapsed - SETTLE_AT) * 7.5) : 1;
+      var tol = (settling ? STILL_RATE * 3 : STILL_RATE) * dt;
+      var i, j, b, sp, want;
+
+      for (i = 0; i < bodies.length; i++) {
+        b = bodies[i];
+        b.px = b.x; b.py = b.y;
+        if (b.ball) continue;
+        if (!b.held && !b.asleep) {
+          b.vy += GRAV * dt;
+          /* Water, and the single biggest reason the pit stopped being
+             hyperactive. The old solver damped only vx, so a chip's FALL was
+             limited by nothing but CHIP_VMAX and it slammed. With drag on both
+             axes everything in here has a terminal velocity of GRAV / DRAG. */
+          var vis = 1 - Math.min(.5, DRAG * dt);
+          b.vx *= FRICT * vis; b.vy *= vis;
+          if (settling) { b.vx *= damp; b.vy *= Math.max(damp, .5); }
+          sp = len2(b.vx, b.vy);
+          if (sp > CHIP_VMAX) { b.vx *= CHIP_VMAX / sp; b.vy *= CHIP_VMAX / sp; }
+          b.x += b.vx * dt;
+          b.y += b.vy * dt;
+        }
+        if (!b.held) clamp(b);
+      }
+
+      for (var pass = 0; pass < 5; pass++) {
+        for (i = 0; i < bodies.length; i++) {
+          for (j = i + 1; j < bodies.length; j++) collide(bodies[i], bodies[j]);
+        }
+      }
+      /* The speed cap is re-applied AFTER the collision passes, not only before
+         them. Capping the integration alone left it toothless: every spike
+         measured in scripts/sim-pit.js came out of the solver, so a chip
+         squeezed between the sun and a wall still left at three times the cap.
+         With this, peak chip speed across every width fell 2292 -> 520 px/s. */
+      for (i = 0; i < bodies.length; i++) {
+        b = bodies[i];
+        if (b.held || b.ball) continue;
+        clamp(b);
+        sp = len2(b.vx, b.vy);
+        if (sp > CHIP_VMAX) { b.vx *= CHIP_VMAX / sp; b.vy *= CHIP_VMAX / sp; }
+      }
+
+      for (i = 0; i < bodies.length; i++) {
+        b = bodies[i];
+        if (b.ball) continue;
+        /* a visual lean only. The collision shape stays axis-aligned, so the
+           cap is small enough that a tilted corner never leaves its own pill. */
+        want = cl(-LEAN_MAX, b.vx * LEAN, LEAN_MAX) + b.rest;
+        b.rot += (want - b.rot) * Math.min(1, LEAN_BACK * dt);
+        if (b.held || b.asleep) continue;
+        if (Math.abs(b.x - b.px) + Math.abs(b.y - b.py) < tol) {
+          b.stillT += dt;
+          if (b.stillT > SLEEP_AFTER) { b.asleep = true; b.vx = 0; b.vy = 0; }
+        } else { b.stillT = 0; }
+      }
+      fieldHit = 0;
+    }
+
+    function draw() {
+      for (var i = 0; i < bodies.length; i++) {
+        var b = bodies[i];
+        if (b.ball) {
+          var off = (b.w - b.draw) / 2, sp = len2(b.vx, b.vy);
+          b.el.style.transform = 'translate3d(' + (b.x + off).toFixed(2) + 'px,' +
+            (b.y + off).toFixed(2) + 'px,0) scale(' + (1 + Math.min(.13, sp / 1700)).toFixed(3) + ')';
+          continue;
+        }
+        b.el.style.transform = 'translate3d(' + b.x.toFixed(2) + 'px,' + b.y.toFixed(2) +
+          'px,0) rotate(' + b.rot.toFixed(2) + 'deg)';
+        /* only the handful of chips near the sun ever change, so the style
+           recalc that --g triggers stays off the other twenty-odd */
+        var g = b.glow < .012 ? 0 : b.glow;
+        if (Math.abs(g - b.shown) > .02 || (g !== b.shown && (g === 0 || b.shown <= 0))) {
+          b.el.style.setProperty('--g', g.toFixed(3));
+          b.shown = g;
+        }
+      }
+    }
+
+    /* The pit has to be exactly as tall as this pile stands, or it reads as a
+       stack of chips floating in an empty box. Three passes, and the TALLEST
+       answer wins rather than the last: pit height feeds back into how far the
+       chips fall and so into how wide the pile spreads, and the sequence
+       oscillates instead of converging. Plus a flat collar, because fit runs
+       at 1/60 and the live pit at 1/120 and the two pile slightly differently
+       — the collar doubles as room to shove a chip upward into.
+       Verified clipping-free across eleven widths by scripts/sim-pit.js. */
+    function fit() {
+      var w = box.clientWidth, h = 420, tallest = 0,
+          saveB = bodies, saveW = W, saveH = H, saveE = elapsed, saveF = frozen,
+          k, i, top, bot;
+      fitting = true;
+      for (k = 0; k < 3; k++) {
+        bodies = seed(w); W = w; H = h; elapsed = 0; frozen = false;
+        for (i = 0; i < 420; i++) { elapsed += 1 / 60; step(1 / 60); }
+        top = Infinity; bot = -Infinity;
+        for (i = 0; i < bodies.length; i++) {
+          if (bodies[i].y < top) top = bodies[i].y;
+          if (bodies[i].y + bodies[i].h > bot) bot = bodies[i].y + bodies[i].h;
+        }
+        h = Math.round(bot - top + sizes[0].h + 20);
+        if (h > tallest) tallest = h;
+      }
+      bodies = saveB; W = saveW; H = saveH; elapsed = saveE; frozen = saveF;
+      fitting = false;
+      return tallest + Math.round(sizes[0].h * 1.4);
+    }
+
+    function start() {
+      sizes = chips.map(function (c) { return { w: c.offsetWidth, h: c.offsetHeight }; });
+      box.style.height = fit() + 'px';
+      box.classList.add('phys');
+      measure();
+      bodies = seed(W);
+      if (ballEl) {
+        var d = ballSize(), D = Math.round(d * SHELL);
+        ballEl.style.width = ballEl.style.height = d + 'px';
+        ball = { el: ballEl, w: D, h: D, draw: d, x: W - D - 12, y: H - D - 8,
+                 vx: 0, vy: 0, rot: 0, held: true, asleep: false, stillT: 0,
+                 inside: true, ball: true };
+        bodies.push(ball);
+      }
+      elapsed = 0; frozen = false; acc = 0;
+      draw();
+      requestAnimationFrame(tick);
+    }
+
+    /* Nothing worth stepping: the sun is parked, no pointer is on it and every
+       chip is asleep. Checked per frame because it is thirty booleans, where
+       the solver it skips is five collision passes over thirty bodies. */
+    function quiet() {
+      if (ptrIn || !ball) return false;
+      if (!seen && inView) return false;      /* the idle drift is still motion */
+      if (Math.abs(ball.vx) + Math.abs(ball.vy) > 2) return false;
+      for (var i = 0; i < bodies.length; i++) {
+        if (!bodies[i].ball && !bodies[i].asleep) return false;
+      }
+      return true;
+    }
+
+    /* The frame loop is NEVER torn down — it re-queues before it does anything
+       else, and idleness only skips the work inside. An earlier version stopped
+       requesting frames when the section was off screen and restarted on a
+       pointer or an IntersectionObserver callback. BOTH stalled: the pile sat
+       above the pit and never fell in, silently, with no error. Neither could
+       be verified in any browser available here, so the gate is gone. quiet()
+       below is the only brake left, it is pure state with nothing to schedule,
+       and the worst it can do is skip a frame the pile did not need. */
+    function tick(t) {
+      painted = true;
+      requestAnimationFrame(tick);
+      if (last === null) last = t;
+      var dt = Math.min(.05, (t - last) / 1000); last = t;
+      /* The rect is refreshed BEFORE the idle check, and that order is the
+         whole thing. With it after, the first pointer move found rect still
+         null, so the sun stayed home, so nothing moved, so the next frame was
+         idle again and returned before ever reading the rect: a deadlock that
+         parsed fine, threw nothing, and simply did not work. */
+      if (rectDirty) { rect = box.getBoundingClientRect(); rectDirty = false; }
+      if (quiet()) { acc = 0; return; }
+      acc += dt;
+      var n = 0;
+      while (acc >= STEP && n < 8) { elapsed += STEP; step(STEP); acc -= STEP; n++; }
+      if (n === 8) acc = 0;                    /* too far behind to catch up */
+      draw();
+    }
+
+    chips.forEach(function (c, i) {
+      c.addEventListener('pointerdown', function (ev) {
+        if (!bodies) return;
+        ev.preventDefault();
+        var b = bodies[i];
+        /* grabbing restarts the settle window, otherwise a chip thrown after
+           the pile has damped down would freeze the moment you let go */
+        elapsed = 0;
+        b.held = true; wake(b); c.classList.add('lit'); chipDrag = true;
+        var sx = ev.clientX, sy = ev.clientY, ox = b.x, oy = b.y;
+        var lx = sx, ly = sy, lt = performance.now();
+        function move(e) {
+          var nt = performance.now(), d = Math.max(8, nt - lt);
+          b.vx = (e.clientX - lx) / d * 1000;
+          b.vy = (e.clientY - ly) / d * 1000;
+          lx = e.clientX; ly = e.clientY; lt = nt;
+          b.x = Math.max(6, Math.min(W - b.w - 6, ox + (e.clientX - sx)));
+          b.y = Math.max(-200, Math.min(H - b.h - 6, oy + (e.clientY - sy)));
+          bodies.forEach(function (o) { if (o !== b) wake(o); });
+        }
+        function up() {
+          b.held = false; c.classList.remove('lit'); chipDrag = false;
+          b.vx = Math.max(-1100, Math.min(1100, b.vx));
+          b.vy = Math.max(-1100, Math.min(1100, b.vy));
+          window.removeEventListener('pointermove', move);
+          window.removeEventListener('pointerup', up);
+          window.removeEventListener('pointercancel', up);
+        }
+        window.addEventListener('pointermove', move);
+        window.addEventListener('pointerup', up);
+        window.addEventListener('pointercancel', up);
+      });
+    });
+
+    /* The cursor is tracked on the WINDOW, not the pit, so the sun is already
+       waiting under your hand the moment the section scrolls into view. On a
+       touch screen there is no hover, so it follows a finger while one is
+       down — unless that finger has already picked up a chip. */
+    function onMove(e) {
+      if (chipDrag) return;
+      cx = e.clientX; cy = e.clientY; ptrIn = true; seen = true;
+      /* re-read the pit's position on any move, not only on scroll: a reveal
+         animation or a font swap shifts it too, and a stale rect shows up as
+         the sun sitting a constant offset away from the cursor */
+      rectDirty = true;
+      if (!touched && hintEl) { touched = true; hintEl.classList.add('gone'); }
+    }
+    window.addEventListener('pointermove', onMove, { passive: true });
+    window.addEventListener('pointerdown', onMove, { passive: true });
+    window.addEventListener('pointerup', function (e) {
+      if (e.pointerType === 'touch') { ptrIn = false; }
+    }, { passive: true });
+    document.addEventListener('pointerleave', function () { ptrIn = false; });
+    window.addEventListener('scroll', function () { rectDirty = true; }, { passive: true });
+
+    /* This observer sets ONE boolean and schedules nothing. An earlier version
+       used an observer to gate requestAnimationFrame and the pile silently
+       never fell in; the frame loop still runs unconditionally and this only
+       decides where an unclaimed sun chooses to wait. */
+    if (window.IntersectionObserver) {
+      new IntersectionObserver(function (es) {
+        inView = es[0].isIntersecting;
+      }, { threshold: .15 }).observe(box);
+    } else { inView = true; }
+
+    window.addEventListener('resize', function () {
+      if (!bodies) return;
+      /* a narrower pit needs more rows, so refit before re-clamping */
+      box.style.height = fit() + 'px';
+      measure();
+      rectDirty = true;
+      elapsed = 0;
+      if (ball) {
+        var d = ballSize(), D = Math.round(d * SHELL);
+        ball.w = ball.h = D; ball.draw = d;
+        ballEl.style.width = ballEl.style.height = d + 'px';
+      }
+      bodies.forEach(function (b) {
+        b.x = Math.min(b.x, W - b.w - 6);
+        b.y = Math.min(b.y, H - b.h - 6);
+        wake(b);
+      });
+     
+    });
+
+    start();
+    /* environments without animation frames keep the plain wrapped layout */
+    setTimeout(function () {
+      if (!painted) {
+        box.classList.remove('phys');
+        box.style.height = '';
+        chips.forEach(function (c) { c.style.transform = ''; });
+        if (hintEl) hintEl.classList.add('gone');
+        bodies = null; ball = null;
+      }
+    }, 500);
+  })();
+
+  /* ── the date ──
+     One tile, in the same component the Sunday page builds twelve of. It is
+     checked on arrival because there is nothing to choose; it is here so the
+     date is confirmed by the person applying and travels in the payload the
+     CRM already expects. The state slot renders `plain`, which is hidden —
+     this page must never show a fullness nobody told it. */
+  var chosenISO = EVENT_ISO;
+  (function date1() {
+    var wrap = $('dPick');
+    if (!wrap) return;
+    var inp = document.createElement('input');
+    inp.type = 'radio'; inp.name = 'date_pick'; inp.id = 'd0';
+    inp.value = EVENT_ISO; inp.checked = true;
+    var lab = document.createElement('label');
+    lab.setAttribute('for', 'd0');
+    lab.innerHTML = '<s>01</s>' +
+                    '<b>' + pad(ev.getDate()) + '</b>' +
+                    '<u>' + MONTHS[ev.getMonth()].slice(0, 3) + '</u>' +
+                    '<em>' + CITY + '</em>' +
+                    '<i class="plain">Open</i>';
+    wrap.appendChild(inp); wrap.appendChild(lab);
+    setTick(EVENT_ISO);
+  })();
+
+  /* ── social prefill ── */
+  Array.prototype.forEach.call(document.querySelectorAll('.soc'), function (btn) {
+    btn.addEventListener('click', function () {
+      var base = btn.getAttribute('data-base'), l1 = $('fLink'), l2 = $('fLink2');
+      var target = (!l1.value.trim() || l1 === document.activeElement) ? l1 : (!l2.value.trim() ? l2 : l1);
+      target.value = base; target.focus();
+      target.setSelectionRange(target.value.length, target.value.length);
+    });
+  });
+
+  /* ── voice typing ── */
+  var SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if (SR) {
+    Array.prototype.forEach.call(document.querySelectorAll('.mic'), function (btn) {
+      btn.hidden = false;
+      var area = $(btn.getAttribute('data-for')), rec = null;
+      btn.addEventListener('click', function () {
+        if (rec) { rec.stop(); return; }
+        rec = new SR(); rec.lang = 'en-IN'; rec.continuous = true; rec.interimResults = false;
+        btn.classList.add('rec');
+        rec.onresult = function (e) {
+          var text = '';
+          for (var i = e.resultIndex; i < e.results.length; i++) if (e.results[i].isFinal) text += e.results[i][0].transcript;
+          if (text) { area.value = (area.value ? area.value.replace(/\s+$/, '') + ' ' : '') + text.trim(); area.dispatchEvent(new Event('input')); }
+        };
+        rec.onend = function () { btn.classList.remove('rec'); rec = null; };
+        rec.onerror = function () { btn.classList.remove('rec'); rec = null; };
+        try { rec.start(); } catch (err) { btn.classList.remove('rec'); rec = null; }
+      });
+    });
+  }
+
+  /* ── "a friend" / "a community member" opens a box for their name ── */
+  var NAMED_REF = { 'A friend': 1, 'A community member': 1 };
+  Array.prototype.forEach.call(document.querySelectorAll('input[name="found"]'), function (r) {
+    r.addEventListener('change', function () {
+      var named = !!NAMED_REF[r.value];
+      $('refWho').hidden = !named;
+      if (named) $('fRef').focus();
+    });
+  });
+
+  /* ── submit ── */
+  var FLDS = [
+    { el: 'fName',    msg: 'Your name first.' },
+    { el: 'fPhone',   msg: 'A number we can reach you on. The invite has nowhere to land without it.', test: function (v) { return v.replace(/\D/g, '').length >= 10; } },
+    { el: 'fEmail',   msg: 'An email that reaches you.', test: function (v) { return /^\S+@\S+\.\S+$/.test(v); } },
+    { el: 'gPick',    msg: 'Pick one. “Prefer not to say” is a real answer.', pick: 'gender' },
+    { el: 'aPick',    msg: 'Which bracket are you in?', pick: 'age_group' },
+    { el: 'fLink',    msg: 'One link. Anywhere you exist.' },
+    { el: 'fProject', msg: 'This is the one we read closest.' },
+    { el: 'fWhy',     msg: 'Your honest first thoughts.' },
+    { el: 'fPick',    msg: 'How did this reach you?', pick: 'found' }
+  ];
+  $('f').addEventListener('submit', function (ev) {
+    ev.preventDefault();
+    var note = $('note');
+    note.classList.remove('on');
+    FLDS.forEach(function (f) { $(f.el).classList.remove('bad'); });
+    $('fRef').classList.remove('bad');
+    var picked = {};
+    for (var i = 0; i < FLDS.length; i++) {
+      var f = FLDS[i], ok, hit;
+      if (f.pick) {
+        hit = $('f').querySelector('input[name="' + f.pick + '"]:checked');
+        ok = !!hit;
+        if (ok) picked[f.pick] = hit.value;
+      } else {
+        var v = $(f.el).value.trim();
+        ok = !!v && (!f.test || f.test(v));
+      }
+      if (!ok) {
+        $(f.el).classList.add('bad');
+        note.textContent = f.msg; note.classList.add('on');
+        if (!f.pick) $(f.el).focus({ preventScroll: false });
+        $(f.el).scrollIntoView({ block: 'center', behavior: 'smooth' });
+        return;
+      }
+    }
+    if (NAMED_REF[picked.found] && !$('fRef').value.trim()) {
+      $('fRef').classList.add('bad');
+      note.textContent = 'Their name — it’s how we thank them.'; note.classList.add('on');
+      $('fRef').focus({ preventScroll: false });
+      $('fRef').scrollIntoView({ block: 'center', behavior: 'smooth' });
+      return;
+    }
+    if (!$('cOk').checked || !$('cFee').checked) { note.textContent = 'Tick both boxes if they’re true.'; note.classList.add('on'); return; }
+    if ($('fHp').value) return;
+
+    var links = $('fLink').value.trim();
+    if ($('fLink2').value.trim()) links += ' · ' + $('fLink2').value.trim();
+    $('sendBtn').disabled = true;
+    $('sendBtn').textContent = 'Sending…';
+    var data = {
+      form: 'contentlab', slug: 'contentlab',
+      name: $('fName').value.trim(), phone: $('fPhone').value.trim(), email: $('fEmail').value.trim(),
+      work: links,
+      // Two questions, two fields. They used to travel as one packed string,
+      // which meant the sheet could not sort on either one and the CRM had to
+      // guess where the first answer ended.
+      project: $('fProject').value.trim(),
+      why: $('fWhy').value.trim(),
+      gender: picked.gender, age_group: picked.age_group,
+      found: picked.found,
+      ref_name: NAMED_REF[picked.found] ? $('fRef').value.trim() : '',
+      city: CITY, date: chosenISO, fee_ok: 'yes', fee: '1999'
+    };
+    /* His own words, carrying the two things the CRM needs to match this
+       message to this application: which date and which city. */
+    var waText = 'Hey, I have requested an invite to Content Lab - ' +
+                 dateShort + ' - ' + CITY;
+    var waURL = 'https://wa.me/' + WA_NUMBER + '?text=' + encodeURIComponent(waText);
+
+    /* STRAIGHT THERE. This used to paint a thank-you screen, put the link on a
+       button and navigate 1.2 seconds later. His ruling, 5 October: "the
+       literal submit button should take you to wa.me without a lag. Nobody
+       clicks an optional link." A step that can be skipped is a step most
+       people skip, and this one is the whole design — their message is what
+       opens the 24-hour window.
+
+       The screen is still built underneath, because the browser may refuse the
+       hand-off and something has to be there when it does. It is a fallback
+       now, not a stop. */
+    function land() {
+      $('f').style.display = 'none';
+      $('sentWaLink').href = waURL;
+      if (COMMUNITY_URL) {
+        $('sentDoorLink').href = COMMUNITY_URL;
+        $('sentDoor').hidden = false;
+      }
+      $('sent').classList.add('on');
+      window.location.href = waURL;
+    }
+
+    /* sendBeacon, NOT fetch. The page is about to navigate to WhatsApp, and a
+       no-cors fetch in flight when that happens is cancelled — the row never
+       lands and nobody finds out. A beacon is the one request the browser
+       promises to finish after the page is gone. URLSearchParams makes it
+       urlencoded, which is the shape Apps Script already answers. */
+    var sent = false;
+    try { sent = navigator.sendBeacon(ENDPOINT, new URLSearchParams(data)); } catch (e) {}
+    /* A beacon is the one request the browser finishes after the page is gone,
+       so when it is accepted we can leave immediately. When it is not, the
+       fetch has to land before we navigate or the application is lost — a lag
+       nobody sees is better than a row nobody gets. */
+    if (sent) { land(); }
+    else {
+      fetch(ENDPOINT, { method: 'POST', mode: 'no-cors', body: new URLSearchParams(data) })
+        .catch(function () { /* opaque by design; the row still lands */ })
+        .finally(land);
+    }
+  });
+})();
+</script>
+</body>
+</html>
