@@ -20,17 +20,11 @@
     .sig-wrap { position:fixed; top:var(--pad-top); left:var(--pad-x); z-index:20; opacity:0; animation:riseIn .9s cubic-bezier(.22,1,.36,1) .2s forwards; }
     .sig-wrap img { height:clamp(44px,7vw,88px); width:auto; display:block; filter:brightness(0) invert(1); }
     .stage { position:fixed; inset:0; z-index:10; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:clamp(100px,18vh,160px) var(--pad-x) clamp(60px,12vh,100px); }
-    .label { font-size:clamp(11px,1.2vw,12px); font-weight:400; letter-spacing:.22em; text-transform:uppercase; color:rgba(255,255,255,.28); margin-bottom:clamp(20px,3.5vh,34px); opacity:0; animation:fadeIn .6s ease .3s forwards; }
-    .ventures { display:flex; flex-direction:column; align-items:center; gap:clamp(18px,3.5vh,36px); margin-bottom:clamp(24px,4vh,42px); opacity:0; animation:riseIn .65s cubic-bezier(.22,1,.36,1) .35s forwards; }
-    .venture { text-decoration:none; color:#fff; display:flex; flex-direction:column; align-items:center; gap:5px; transition:opacity .22s; }
-    .venture + .venture { padding-top:clamp(18px,3.5vh,36px); border-top:1px solid rgba(255,255,255,.07); width:clamp(160px,40vw,280px); }
+    .ventures { display:flex; flex-direction:column; align-items:center; gap:clamp(18px,3.5vh,36px); opacity:0; animation:riseIn .65s cubic-bezier(.22,1,.36,1) .35s forwards; }
+    .venture { text-decoration:none; color:#fff; display:flex; flex-direction:column; align-items:flex-start; text-align:left; gap:clamp(8px,1.4vh,14px); transition:opacity .22s; }
     .venture:hover { opacity:.55; }
-    .v-name { font-size:clamp(18px,3.2vw,42px); font-weight:600; letter-spacing:-.02em; line-height:1.05; }
-    .v-sub { font-size:clamp(11px,1.2vw,13px); letter-spacing:.18em; text-transform:uppercase; color:rgba(255,255,255,.28); }
-    .brag { height:clamp(13px,2.2vh,17px); overflow:hidden; opacity:0; animation:fadeIn .6s ease .7s forwards; }
-    .brag-text { font-size:clamp(11px,1.35vw,14px); font-weight:400; letter-spacing:.16em; text-transform:uppercase; color:rgba(255,255,255,.38); display:block; transition:opacity .45s ease,transform .45s ease; }
-    .brag-text.out { opacity:0; transform:translateY(-6px); }
-    .brag-text.in  { opacity:1; transform:translateY(0); }
+    .v-name { font-size:clamp(34px,7vw,76px); font-weight:600; letter-spacing:-.03em; line-height:.96; text-transform:lowercase; }
+    .v-sub { font-size:clamp(11px,1.2vw,13px); letter-spacing:.18em; text-transform:uppercase; color:rgba(255,255,255,.5); }
     @keyframes riseIn { from { opacity:0; transform:translateY(12px); } to { opacity:1; transform:none; } }
     @keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
     /* Back arrow */
@@ -41,7 +35,7 @@
     .soc{color:rgba(255,255,255,.42);text-decoration:none;display:flex;align-items:center;transition:color .22s,transform .22s;}
     .soc:hover{color:#fff;transform:translateY(-1px);}
     .soc svg{width:clamp(15px,1.7vw,18px);height:clamp(15px,1.7vw,18px);display:block;}
-    @media (prefers-reduced-motion: reduce) { .sig-wrap,.stage,.brag,.back { animation-name:fadeIn; animation-duration:.3s; } }
+    @media (prefers-reduced-motion: reduce) { .sig-wrap,.stage,.back { animation-name:fadeIn; animation-duration:.3s; } }
   </style>
 </head>
 <body>
@@ -51,23 +45,11 @@
 </a>
 <a href="index.html" class="back" aria-label="Back to home">←</a>
 <main class="stage">
-  <p class="label">Ventures</p>
   <div class="ventures">
-    <a href="/buildhouse" class="venture">
-      <span class="v-name">The Build House</span>
-      <span class="v-sub">a residency for founders · apply</span>
-    </a>
     <a href="https://chemistrylab.in" target="_blank" rel="noopener noreferrer" class="venture">
-      <span class="v-name">Chemistry Lab</span>
-      <span class="v-sub">chemistrylab.in ↗</span>
+      <span class="v-name">chemistry<br>lab.</span>
+      <span class="v-sub">chemistrylab.in &#8599;</span>
     </a>
-    <a href="https://stone.in" target="_blank" rel="noopener noreferrer" class="venture">
-      <span class="v-name">Stone</span>
-      <span class="v-sub">stone.in ↗</span>
-    </a>
-  </div>
-  <div class="brag" aria-live="polite" aria-atomic="true">
-    <span class="brag-text in" id="bragText"></span>
   </div>
 </main>
 <nav class="socials" aria-label="Social profiles">
@@ -80,7 +62,6 @@
 </nav>
 <script>
 const PHOTOS=['assets/photos/9.jpg','assets/photos/12.jpg','assets/photos/4.jpg','assets/photos/8.jpg','assets/photos/7.jpg'];
-async function fetchBrags(tag){try{const r=await fetch('/src/content/brags.txt');const txt=await r.text();return txt.split('\n').map(l=>l.trim()).filter(Boolean).flatMap(l=>{const[b,t]=l.split('|');if(!b||!t)return[];return t.split(',').map(s=>s.trim()).includes(tag)?[b.trim()]:[];});}catch{return[];}}
 (function(){const l1=document.getElementById('layer1'),l2=document.getElementById('layer2');let front=l1,back=l2;const loaded=[];let pool=[],pidx=0,last=null;
 function shuffle(a){const b=[...a];for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]];}return b;}
 function nextSrc(){const av=loaded.length?loaded:PHOTOS;if(pidx>=pool.length){let f=shuffle([...av]);if(last&&f.length>1&&f[0]===last)f=[...f.slice(1),f[0]];pool=f;pidx=0;}last=pool[pidx];return pool[pidx++];}
@@ -93,7 +74,6 @@ function preload(cb){let called=false;PHOTOS.forEach(src=>{const img=new Image()
 const slow=()=>{const c=navigator.connection||navigator.mozConnection||navigator.webkitConnection;return c&&(c.saveData||c.effectiveType==='slow-2g'||c.effectiveType==='2g');};
 window.addEventListener('load',()=>{if(slow()){l1.style.backgroundImage=`url('${PHOTOS[0]}')`;l1.style.opacity='1';}else preload(start);});
 })();
-(async()=>{const lines=await fetchBrags('founder');if(!lines.length)return;const el=document.getElementById('bragText');let idx=0;el.textContent=lines[0];setInterval(()=>{el.classList.remove('in');el.classList.add('out');setTimeout(()=>{idx=(idx+1)%lines.length;el.textContent=lines[idx];el.classList.remove('out');el.classList.add('in');},460);},4200);})();
 </script>
 </body>
 </html>
