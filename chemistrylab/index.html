@@ -4,45 +4,57 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/chemistrylab/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#e6e6e6" />
 
-    <!-- SEO / OG -->
-    <title>chemistry lab for humans.</title>
-    <meta name="description" content="we put strangers in a room and watch them react. real-life experiments on humans. join the next one." />
-    <meta property="og:title" content="chemistry lab. — for humans." />
-    <meta property="og:description" content="we put strangers in a room and watch them react." />
+    <!-- Chemistry Lab is not tied to a city. Ahmedabad is where Manav is,
+         not where Chemistry Lab is — venue detail belongs on the page of a
+         specific room and nowhere else. Ruled 2026-09-03. -->
+    <title>chemistry lab — an invite-only society of ambitious people</title>
+    <meta
+      name="description"
+      content="Trying something bigger than yourself is the norm here. Failing is appreciated."
+    />
+    <meta property="og:title" content="chemistry lab — an invite-only society of ambitious people" />
+    <meta
+      property="og:description"
+      content="Trying something bigger than yourself is the norm here. Failing is appreciated."
+    />
     <meta property="og:image" content="https://manavjoshi.com/chemistrylab/images/hero.jpg" />
     <meta property="og:type" content="website" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="chemistry lab. — for humans." />
-    <meta name="twitter:description" content="we put strangers in a room and watch them react." />
+    <meta name="twitter:title" content="chemistry lab — an invite-only society of ambitious people" />
+    <meta
+      name="twitter:description"
+      content="Trying something bigger than yourself is the norm here. Failing is appreciated."
+    />
     <meta name="twitter:image" content="https://manavjoshi.com/chemistrylab/images/hero.jpg" />
 
-    <!-- Schoolbell — only font loaded externally, for handwritten accents -->
+    <!-- One typeface, self-hosted. font-family: Helvetica silently becomes
+         Arial on Android, which is where most of the Instagram traffic is.
+         The two weights the first screen needs are preloaded; the other two
+         arrive with the stylesheet. No webfont service is used at all. -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <!-- One handwritten line, for the tagline under the wordmark. The
+         10 September ruling is one family and no pairing; this is the
+         single exception Manav named, taken from the live lockup. -->
     <link href="https://fonts.googleapis.com/css2?family=Schoolbell&display=swap" rel="stylesheet" />
-
-    <!-- Helvetica Display hook — drop .woff2 into /public/fonts/ and uncomment -->
-    <!--
-    <style>
-      @font-face {
-        font-family: 'Helvetica Display';
-        src: url('/fonts/HelveticaDisplay-Bold.woff2') format('woff2');
-        font-weight: 700;
-        font-display: swap;
-      }
-      @font-face {
-        font-family: 'Helvetica Display';
-        src: url('/fonts/HelveticaDisplay-Regular.woff2') format('woff2');
-        font-weight: 400;
-        font-display: swap;
-      }
-    </style>
-    -->
-
-    <!-- GA4 — swap in your real ID in src/config.ts and this script will be injected at runtime -->
-    <script type="module" crossorigin src="/chemistrylab/assets/index-zTPRyuCv.js"></script>
-    <link rel="stylesheet" crossorigin href="/chemistrylab/assets/index-OT9vu47P.css">
+    <link
+      rel="preload"
+      href="/chemistrylab/fonts/HelveticaNowDisplay-Black.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="/chemistrylab/fonts/HelveticaNowDisplay-Medium.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <script type="module" crossorigin src="/chemistrylab/assets/index-BKcM0ewt.js"></script>
+    <link rel="stylesheet" crossorigin href="/chemistrylab/assets/index-iPaVRxLI.css">
   </head>
   <body>
     <div id="root"></div>
