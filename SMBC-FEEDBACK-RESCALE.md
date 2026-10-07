@@ -35,7 +35,7 @@ The code is in `apps-script-smbc-rescale.gs` in this repo.
 
 **Nothing here is deployed.** These functions run inside the editor against the
 bound spreadsheet. The web app and its `/exec` URL are untouched, so there is
-no redeploy and no risk to the invite form, chemistry lab, or build-and-break.
+no redeploy and no risk to the invite form, chemistry labs, or build-and-break.
 
 ## What it does when you run it for real
 
