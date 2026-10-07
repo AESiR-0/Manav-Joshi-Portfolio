@@ -727,8 +727,9 @@
        centre it. */
     .unit {
       display: flex; flex-direction: column; align-items: flex-start;
-      width: fit-content;
+      width: fit-content; text-decoration: none;
       margin: 0 auto 1.05em; color: hsl(var(--paper));
+      transition: transform .3s var(--ease), opacity .3s var(--ease);
       font-size: clamp(20px, 4.3vw, 29px);
       filter: drop-shadow(0 1px 9px hsl(var(--desk-deep) / .7));
     }
@@ -736,6 +737,8 @@
       font-family: var(--disp); font-weight: 800; line-height: .88;
       font-size: 1em; letter-spacing: -.035em;
     }
+    .unit:hover { transform: translateY(-1px); opacity: .86; }
+    .unit:focus-visible { outline: 3px solid hsl(var(--sun)); outline-offset: 7px; border-radius: 5px; }
     .unit .row { display: flex; align-items: baseline; gap: .26em; }
     /* Half the wordmark's size, which is the proportion the parent mark sets
        between "lab" and "for humans". Schoolbell's x-height is large, so half
@@ -792,8 +795,6 @@
 <body>
 
 <!-- ══ HOME ══ -->
-<a class="brand" href="/chemistrylab/" aria-label="Chemistry Labs"><i></i></a>
-
 <header class="home" id="home">
   <div class="home-slides" aria-hidden="true">
     <img src="../images/contentlab/full/room.jpg" alt="" fetchpriority="high">
@@ -802,7 +803,7 @@
   </div>
 
   <div class="home-inner">
-    <span class="unit"><b>chemistry</b><span class="row"><b>lab</b><i>practicals</i></span></span>
+    <a class="unit" href="/chemistrylab/"><b>chemistry</b><span class="row"><b>lab</b><i>practicals</i></span></a>
     <h1>Content Lab<em>.</em><i>for founders</i></h1>
     <p class="say">Ten founders in a room. Nobody goes home till you have a piece of content.</p>
     <a class="cta" href="#apply">Request invite <span class="arw">&rarr;</span></a>
