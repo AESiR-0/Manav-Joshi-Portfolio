@@ -231,6 +231,11 @@ form{margin-top:24px;display:flex;flex-direction:column;gap:16px}
         <input id="iPhone" name="phone" type="tel" inputmode="numeric" autocomplete="tel" placeholder="10 digits">
       </div>
 
+      <div class="field" id="wCity">
+        <label for="iCity">City you live in</label>
+        <input id="iCity" name="from_city" type="text" data-city-wheel maxlength="60" placeholder="pick your city">
+      </div>
+
       <div class="field" id="wWhy">
         <label for="iWhy">Why should you definitely be on the table?
           <span class="count" id="fCount">0</span></label>
@@ -377,7 +382,7 @@ form{margin-top:24px;display:flex;flex-direction:column;gap:16px}
     if (!text)             return fail('Write your first thoughts.');
 
     fail('');
-    guest = { name: name, phone: phone.slice(-10), why: text };
+    guest = { name: name, phone: phone.slice(-10), why: text, from_city: document.getElementById('iCity').value.trim() };
 
     $('dName').textContent = guest.name.split(' ')[0];
     $('dRecap').innerHTML = '<b>' + esc(guest.name) + '</b> · ' + esc(guest.phone) +
@@ -421,6 +426,7 @@ form{margin-top:24px;display:flex;flex-direction:column;gap:16px}
           name: guest.name,
           phone: guest.phone,
           why: guest.why,
+          from_city: guest.from_city,
           status: 'new'
         })
       }).catch(function () {});
@@ -507,5 +513,6 @@ form{margin-top:24px;display:flex;flex-direction:column;gap:16px}
   }
 })();
 </script>
+<script src="/js/city-wheel.js" defer></script>
 </body>
 </html>

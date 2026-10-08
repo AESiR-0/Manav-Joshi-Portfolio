@@ -826,6 +826,11 @@
       </div>
 
       <div class="fld">
+        <label for="fCity">City you live in</label>
+        <input type="text" id="fCity" data-city-wheel maxlength="60" placeholder="pick your city">
+      </div>
+
+      <div class="fld">
         <span class="lbl" id="lblG">Gender</span>
         <div class="pick" id="gPick" role="radiogroup" aria-labelledby="lblG">
           <input type="radio" name="gender" id="g1" value="Woman"><label for="g1">Woman</label>
@@ -917,7 +922,7 @@
         <label class="check">
           <input type="checkbox" id="cOk">
           <span class="box"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M2.5 8.5 6 12 13.5 4"/></svg></span>
-          <span>I am in <b id="tickCity">the city</b> on <b id="tickDate">Sunday</b></span>
+          <span id="tickFixed">I am in <b id="tickCity">the city</b> on <b id="tickDate">Sunday</b></span><span id="tickFluid" style="display:none">I can make any Sunday<span id="tickFluidIn"> in <b id="tickFluidCity"></b></span></span>
         </label>
         <label class="check">
           <input type="checkbox" id="cFee">
@@ -1044,6 +1049,16 @@
   /* One writer for both halves of the tick line, so the city and the date can
      never disagree with each other or with the tile that is lit. */
   function setTick(iso) {
+    /* Date fluid swaps the whole sentence: there is no Sunday to name, and
+       the city is the one they live in, if they gave one. */
+    var fluid = iso === 'fluid', home = $('fCity') ? $('fCity').value.trim() : '';
+    $('tickFixed').style.display = fluid ? 'none' : '';
+    $('tickFluid').style.display = fluid ? '' : 'none';
+    if (fluid) {
+      $('tickFluidIn').style.display = home ? '' : 'none';
+      $('tickFluidCity').textContent = home;
+      return;
+    }
     var td = new Date(iso + 'T12:00:00');
     $('tickDate').textContent = 'Sunday, ' + td.getDate() + ' ' + MONTHS[td.getMonth()];
     $('tickCity').textContent = cityFor(iso);
@@ -1681,6 +1696,16 @@
       more.setAttribute('aria-expanded', 'true');
       more.remove();
     });
+
+    /* I'M DATE FLUID. His ruling, 8 October 2026: people can pick a city and
+       be fluid about the date. It is a tile in the same row, so choosing it
+       is the same gesture as choosing a Sunday. */
+    var fl = document.createElement('input');
+    fl.type = 'radio'; fl.name = 'sunday_pick'; fl.id = 'dFluid'; fl.value = 'fluid';
+    var fll = document.createElement('label');
+    fll.setAttribute('for', 'dFluid');
+    fll.innerHTML = '<b>Any</b><u>Sunday</u><em>I&rsquo;m date fluid</em><i class="plain">Open</i>';
+    wrap.appendChild(fl); wrap.appendChild(fll);
     wrap.appendChild(more);
     if (!wrap.querySelector('input:checked')) {
       var first = wrap.querySelector('input:not(:disabled)');
@@ -1717,7 +1742,23 @@
       chosenISO = e.target.value;
       setTick(chosenISO);
     });
+    /* The fluid sentence names their city, so it follows the city wheel. */
+    if ($('fCity')) $('fCity').addEventListener('change', function () {
+      if (chosenISO === 'fluid') setTick('fluid');
+    });
   })();
+
+  /* THE SUNDAY A FLUID APPLICATION CARRIES. The CRM files every application
+     against a Sunday and its automated messages print that Sunday, so a blank
+     one would send an invite with no date in it. A fluid applicant goes on the
+     first open Sunday in their own city, else the first open Sunday at all,
+     and date_fluid=yes tells him they would take any other. */
+  function fluidSunday(home) {
+    var open = Array.prototype.filter.call(document.querySelectorAll('input[name="sunday_pick"]'),
+      function (i) { return i.value !== 'fluid' && !i.disabled; });
+    for (var i = 0; i < open.length; i++) if (home && cityFor(open[i].value) === home) return open[i].value;
+    return open.length ? open[0].value : sundayISO;
+  }
 
   /* ── social prefill ── */
   Array.prototype.forEach.call(document.querySelectorAll('.soc'), function (btn) {
@@ -1812,9 +1853,11 @@
     if ($('fLink2').value.trim()) links += ' · ' + $('fLink2').value.trim();
     $('sendBtn').disabled = true;
     $('sendBtn').textContent = 'Sending…';
+    var fluid = chosenISO === 'fluid';
+    var sendISO = fluid ? fluidSunday($('fCity').value.trim()) : chosenISO;
     var data = {
       form: 'smbc',
-      name: $('fName').value.trim(), phone: $('fPhone').value.trim(), email: $('fEmail').value.trim(),
+      name: $('fName').value.trim(), phone: $('fPhone').value.trim(), email: $('fEmail').value.trim(), from_city: $('fCity').value.trim(),
       work: links,
       // Two questions, two fields. They used to travel as one packed string,
       // which meant the sheet could not sort on either one and the CRM had to
@@ -1824,14 +1867,17 @@
       gender: picked.gender, age_group: picked.age_group,
       found: picked.found,
       ref_name: NAMED_REF[picked.found] ? $('fRef').value.trim() : '',
-      city: cityFor(chosenISO), date: chosenISO, fee_ok: 'yes', fee: '1499'
+      city: cityFor(sendISO), date: sendISO, date_fluid: fluid ? 'yes' : '',
+      fee_ok: 'yes', fee: '1499'
     };
     /* His own words, carrying the two things the CRM needs to match this
        message to this application: which Sunday and which city. */
-    var d = new Date(chosenISO + 'T00:00:00Z');
-    var waText = 'Hey, I have requested an invite to Sunday Morning Build Club - ' +
-                 d.getUTCDate() + ' ' + MONTHS[d.getUTCMonth()].slice(0, 3) +
-                 ' - ' + data.city;
+    var d = new Date(sendISO + 'T00:00:00Z');
+    var waText = fluid
+      ? 'Hey, I have requested an invite to Sunday Morning Build Club - date fluid' +
+        (data.from_city ? ' - ' + data.from_city : '')
+      : 'Hey, I have requested an invite to Sunday Morning Build Club - ' +
+        d.getUTCDate() + ' ' + MONTHS[d.getUTCMonth()].slice(0, 3) + ' - ' + data.city;
     var waURL = 'https://wa.me/' + WA_NUMBER + '?text=' + encodeURIComponent(waText);
 
     /* STRAIGHT THERE. This used to paint a thank-you screen, put the link on a
@@ -1875,5 +1921,6 @@
   });
 })();
 </script>
+<script src="/js/city-wheel.js" defer></script>
 </body>
 </html>

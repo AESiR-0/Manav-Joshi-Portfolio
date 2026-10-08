@@ -862,6 +862,11 @@
       </div>
 
       <div class="fld">
+        <label for="fCity">City you live in</label>
+        <input type="text" id="fCity" data-city-wheel maxlength="60" placeholder="pick your city">
+      </div>
+
+      <div class="fld">
         <span class="lbl" id="lblG">Gender</span>
         <div class="pick" id="gPick" role="radiogroup" aria-labelledby="lblG">
           <input type="radio" name="gender" id="g1" value="Woman"><label for="g1">Woman</label>
@@ -953,7 +958,7 @@
         <label class="check">
           <input type="checkbox" id="cOk">
           <span class="box"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M2.5 8.5 6 12 13.5 4"/></svg></span>
-          <span>I am in <b id="tickCity">Ahmedabad</b> on <b id="tickDate">Friday, 9 October</b></span>
+          <span id="tickFixed">I am in <b id="tickCity">Ahmedabad</b> on <b id="tickDate">Friday, 9 October</b></span><span id="tickFluid" style="display:none">I can make another date in <b id="tickFluidCity">Ahmedabad</b></span>
         </label>
         <label class="check">
           <input type="checkbox" id="cFee">
@@ -1078,6 +1083,12 @@
   /* One writer for both halves of the tick line, so the city and the date can
      never disagree with each other or with the tile that is lit. */
   function setTick(iso) {
+    /* Date fluid swaps the whole sentence: there is no date to name. */
+    var fluid = iso === 'fluid';
+    $('tickFixed').style.display = fluid ? 'none' : '';
+    $('tickFluid').style.display = fluid ? '' : 'none';
+    $('tickFluidCity').textContent = CITY;
+    if (fluid) return;
     var td = new Date(iso + 'T12:00:00');
     $('tickDate').textContent = DAYS[td.getDay()] + ', ' + td.getDate() + ' ' + MONTHS[td.getMonth()];
     $('tickCity').textContent = CITY;
@@ -1631,6 +1642,21 @@
                     '<em>' + CITY + '</em>' +
                     '<i class="plain">Open</i>';
     wrap.appendChild(inp); wrap.appendChild(lab);
+
+    /* I'M DATE FLUID. His ruling, 8 October 2026: people can pick a city and
+       be fluid about the date. It is a tile in the same row, so choosing it
+       is the same gesture as choosing a date. */
+    var fl = document.createElement('input');
+    fl.type = 'radio'; fl.name = 'date_pick'; fl.id = 'dFluid'; fl.value = 'fluid';
+    var fll = document.createElement('label');
+    fll.setAttribute('for', 'dFluid');
+    fll.innerHTML = '<b>Any</b><u>date</u><em>I&rsquo;m date fluid</em><i class="plain">Open</i>';
+    wrap.appendChild(fl); wrap.appendChild(fll);
+    wrap.addEventListener('change', function (e) {
+      if (!e.target || !e.target.value) return;
+      chosenISO = e.target.value;
+      setTick(chosenISO);
+    });
     setTick(EVENT_ISO);
   })();
 
@@ -1729,7 +1755,7 @@
     $('sendBtn').textContent = 'Sending…';
     var data = {
       form: 'contentlab', slug: 'contentlab',
-      name: $('fName').value.trim(), phone: $('fPhone').value.trim(), email: $('fEmail').value.trim(),
+      name: $('fName').value.trim(), phone: $('fPhone').value.trim(), email: $('fEmail').value.trim(), from_city: $('fCity').value.trim(),
       work: links,
       // Two questions, two fields. They used to travel as one packed string,
       // which meant the sheet could not sort on either one and the CRM had to
@@ -1739,12 +1765,14 @@
       gender: picked.gender, age_group: picked.age_group,
       found: picked.found,
       ref_name: NAMED_REF[picked.found] ? $('fRef').value.trim() : '',
-      city: CITY, date: chosenISO, fee_ok: 'yes', fee: '1999'
+      /* No CRM reads this tab, so a fluid row honestly carries no date. */
+      city: CITY, date: chosenISO === 'fluid' ? '' : chosenISO,
+      date_fluid: chosenISO === 'fluid' ? 'yes' : '', fee_ok: 'yes', fee: '1999'
     };
     /* His own words, carrying the two things the CRM needs to match this
        message to this application: which date and which city. */
     var waText = 'Hey, I have requested an invite to Content Lab - ' +
-                 dateShort + ' - ' + CITY;
+                 (chosenISO === 'fluid' ? 'date fluid' : dateShort) + ' - ' + CITY;
     var waURL = 'https://wa.me/' + WA_NUMBER + '?text=' + encodeURIComponent(waText);
 
     /* STRAIGHT THERE. This used to paint a thank-you screen, put the link on a
@@ -1788,5 +1816,6 @@
   });
 })();
 </script>
+<script src="/js/city-wheel.js" defer></script>
 </body>
 </html>
