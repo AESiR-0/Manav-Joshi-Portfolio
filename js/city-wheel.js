@@ -1,27 +1,32 @@
 /* ── The city wheel ───────────────────────────────────────────────────
    Every form on the site asks where you live, and this is the one way it
-   asks. His ruling, 8 October 2026: a city picker on any form, and the
-   scroll should feel like setting an alarm on an iPhone. Same day: the
-   wheel sits IN the form, no pop-up, and it lists only the cities he has
-   announced or talked about, not every city in India.
+   asks. His rulings, 8 October 2026, in order:
+     1. a city picker on any form, and the scroll should feel like setting
+        an alarm on an iPhone
+     2. the wheel sits IN the form, no pop-up, and lists only the cities he
+        has announced or talked about
+     3. it is ONE LINE, the size of every other field, and it starts on the
+        city of the next Build Club Sunday that still has room
 
    USE IT
      <script src="/js/city-wheel.js" defer></script>
      <input type="text" id="fCity" data-city-wheel>
 
-   The input is hidden and a wheel is drawn right after it. The input still
-   holds the answer, so the page reads it the way it reads every other
-   field: $('fCity').value. Send it as `from_city`, never `city`. On the
-   Sunday forms `city` already means where the SUNDAY is, and the CRM
-   matches WhatsApp messages on it.
+   The input is hidden and a one-line wheel is drawn in its place, dressed
+   in the input's own computed styles, so it looks like the field next to
+   it on any page. The input still holds the answer, so the page reads it
+   the way it reads every other field: $('fCity').value. Send it as
+   `from_city`, never `city`. On the Sunday forms `city` already means where
+   the SUNDAY is, and the CRM matches WhatsApp messages on it.
 
-   The wheel starts on "scroll to pick", which means no answer. A wheel
-   that starts on a real city would send that city for everyone who never
-   touched it, and the sheet would say half the applicants live in
-   Ahmedabad because Ahmedabad was on top.
+   THE DEFAULT is the city of the next Sunday, read from /js/smbc-cities.js
+   (the one table every Sunday page reads), then moved on past any Sunday
+   the CRM says is sold out. A wheel somebody has touched is never moved.
+   The cost, accepted: an untouched wheel sends that city, so from_city
+   reads "lives in Jaipur" for anyone who left it alone.
 
    WHAT MAKES IT FEEL LIKE THE ALARM WHEEL
-     · a drum: rows tilt away on rotateX as they leave the centre band
+     · a drum: rows roll away on rotateX as they leave the line
      · native momentum and snap, so a flick coasts and lands on a row
      · one tick per row crossed: vibrate() on Android, the switch-checkbox
        haptic on iPhone Safari 18+, and a quiet click sound everywhere
@@ -42,43 +47,37 @@
      Alphabetical, so the wheel is predictable. A new city goes in when it
      is announced, not before. */
   var CITIES = ['Ahmedabad', 'Hyderabad', 'Jaipur', 'Jodhpur', 'Mumbai', 'Pune', 'Surat'];
-  var NONE = 'scroll to pick';
   var OTHER = 'Somewhere else';
-  var ROWS = [NONE].concat(CITIES, OTHER);
-  var ROW = 38;           // px per row, the alarm wheel's rhythm
-  var SHOW = 5;           // rows visible: the centre plus two either side
-  var TILT = 22;          // degrees of drum per row away from centre
+  var ROWS = CITIES.concat(OTHER);
+  var TILT = 58;          // degrees a row rolls away per row from the line
+  var LOAD_API = 'https://smbc-crm2.manavjoshi01.workers.dev/api/load';
+  var CITIES_JS = '/js/smbc-cities.js';
 
   var reduced = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
   var coarse = window.matchMedia && matchMedia('(pointer: coarse)').matches;
 
-  /* ── styles, injected once so a page only needs the script tag. Colour is
-     inherited from the field it sits in, so it reads right on any page. ── */
+  /* ── styles, injected once. Sizes and skin come from the input itself,
+     per wheel, so only the behaviour lives here. ── */
   var css = [
-    '.cw{position:relative;height:' + (ROW * SHOW) + 'px;border-radius:16px;',
-    'border:1px solid rgba(127,127,127,.28);border-color:color-mix(in srgb,currentColor 22%,transparent);',
-    '-webkit-user-select:none;user-select:none;overflow:hidden}',
-    '.cw:focus-within{border-color:color-mix(in srgb,currentColor 45%,transparent)}',
-    '.cw-band{position:absolute;left:8px;right:8px;top:50%;height:' + ROW + 'px;margin-top:-' + (ROW / 2) + 'px;',
-    'border-radius:10px;background:rgba(127,127,127,.16);background:color-mix(in srgb,currentColor 11%,transparent);pointer-events:none}',
+    '.cw{position:relative;overflow:hidden;-webkit-user-select:none;user-select:none;box-sizing:border-box}',
     '.cw-scroll{position:absolute;inset:0;overflow-y:scroll;overscroll-behavior:contain;scroll-snap-type:y mandatory;',
-    'scrollbar-width:none;-webkit-overflow-scrolling:touch;perspective:440px;outline:none;touch-action:pan-y;',
-    '-webkit-mask-image:linear-gradient(transparent,#000 28%,#000 72%,transparent);mask-image:linear-gradient(transparent,#000 28%,#000 72%,transparent)}',
+    'scrollbar-width:none;-webkit-overflow-scrolling:touch;perspective:300px;outline:none;touch-action:pan-y;cursor:ns-resize}',
     '.cw-scroll::-webkit-scrollbar{display:none}',
     '.cw-scroll.drag{scroll-snap-type:none;cursor:grabbing}',
-    '.cw-pad{height:' + (ROW * (SHOW - 1) / 2) + 'px}',
-    '.cw-item{height:' + ROW + 'px;line-height:' + ROW + 'px;text-align:center;font-size:20px;white-space:nowrap;',
-    'scroll-snap-align:center;transform-origin:50% 50%;backface-visibility:hidden;cursor:pointer;will-change:transform,opacity}',
-    '.cw-item.ph,.cw-item.other{font-style:italic;font-size:17px}',
+    '.cw-item{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;scroll-snap-align:center;scroll-snap-stop:always;',
+    'transform-origin:50% 50%;backface-visibility:hidden;will-change:transform,opacity;box-sizing:border-box}',
+    '.cw-item.other{font-style:italic}',
+    '.cw-chev{position:absolute;right:14px;top:50%;width:16px;height:16px;margin-top:-8px;opacity:.55;pointer-events:none}',
     '.cw-other{margin-top:10px}',
     '.cw-other[hidden]{display:none!important}',
-    '.cw.pop .cw-band{animation:cwPop .4s cubic-bezier(.34,1.56,.64,1)}',
-    '@keyframes cwPop{0%{transform:scale(1)}40%{transform:scale(1.03)}100%{transform:scale(1)}}',
+    '.cw.pop{animation:cwPop .4s cubic-bezier(.34,1.56,.64,1)}',
+    '@keyframes cwPop{0%{transform:scale(1)}40%{transform:scale(1.02)}100%{transform:scale(1)}}',
     '.cw-hap{position:fixed;top:0;left:0;width:1px;height:1px;opacity:0;pointer-events:none;overflow:hidden}',
-    '@media (prefers-reduced-motion:reduce){.cw.pop .cw-band{animation:none}}'
+    '@media (prefers-reduced-motion:reduce){.cw.pop{animation:none}}'
   ].join('');
 
   var styled = false, hap = null, audio = null, uid = 0;
+  var wheels = [];        // every wheel on the page, so the default can reach them
 
   function setup() {
     if (styled) return;
@@ -149,6 +148,56 @@
     input.dispatchEvent(new Event('change', { bubbles: true }));
   }
 
+  /* ── THE DEFAULT: the next Build Club Sunday that still has room ── */
+  var defaultCity = '';
+
+  function sundays(n) {
+    var now = new Date(), d = new Date(now);
+    d.setDate(now.getDate() + ((7 - now.getDay()) % 7));
+    /* Same cut-over as the Sunday page: the room ends at 1 pm. */
+    if (now.getDay() === 0 && now.getHours() >= 13) d.setDate(d.getDate() + 7);
+    var out = [];
+    for (var k = 0; k < n; k++) {
+      var x = new Date(d); x.setDate(d.getDate() + 7 * k);
+      out.push(x.getFullYear() + '-' + String(x.getMonth() + 1).padStart(2, '0') + '-' + String(x.getDate()).padStart(2, '0'));
+    }
+    return out;
+  }
+
+  function offer(city) {
+    if (!city || ROWS.indexOf(city) < 0 || city === OTHER) return;
+    defaultCity = city;
+    wheels.forEach(function (w) { w.suggest(city); });
+  }
+
+  function findDefault() {
+    var C = window.SMBC_CITY;
+    if (!C) return;
+    var weeks = sundays(12);
+    offer(C.at(weeks[0]));           // instant: next Sunday, no network
+    /* Then ask the CRM which Sundays are sold out, and skip them. On any
+       failure the instant answer stands. */
+    try {
+      fetch(LOAD_API + '?weeks=12', { mode: 'cors', cache: 'no-store' })
+        .then(function (r) { return r.ok ? r.json() : null; })
+        .then(function (load) {
+          if (!load || typeof load !== 'object') return;
+          for (var i = 0; i < weeks.length; i++) {
+            if (String(load[weeks[i]] || '').trim().toLowerCase() !== 'sold out') { offer(C.at(weeks[i])); return; }
+          }
+        })
+        .catch(function () {});
+    } catch (e) {}
+  }
+
+  function loadCities() {
+    if (window.SMBC_CITY) return findDefault();
+    var s = document.createElement('script');
+    s.src = CITIES_JS;
+    s.onload = findDefault;
+    document.head.appendChild(s);
+  }
+
   /* ── one wheel, drawn in place of one input ── */
   function make(input) {
     if (input.__cw) return;
@@ -156,29 +205,53 @@
     setup();
     var n = ++uid;
 
+    /* Dress the wheel in the input's own clothes, read before it is hidden:
+       same height, border, radius, fill, type and left padding as the field
+       above it, so it reads as one more line of the same form. */
+    var cs = getComputedStyle(input);
+    var row = input.offsetHeight || 54;
+    var padL = cs.paddingLeft;
+    var skin = {
+      height: row + 'px', borderRadius: cs.borderRadius,
+      borderWidth: cs.borderTopWidth, borderStyle: cs.borderTopStyle, borderColor: cs.borderTopColor,
+      backgroundColor: cs.backgroundColor, boxShadow: cs.boxShadow,
+      color: cs.color, fontFamily: cs.fontFamily, fontSize: cs.fontSize, fontWeight: cs.fontWeight
+    };
+    var inner = row - 2 * (parseFloat(cs.borderTopWidth) || 0);
+
     input.hidden = true;
     input.tabIndex = -1;
 
     var box = el('div', 'cw');
-    box.appendChild(el('div', 'cw-band'));
+    for (var k in skin) box.style[k] = skin[k];
+    if (cs.backdropFilter && cs.backdropFilter !== 'none') box.style.backdropFilter = cs.backdropFilter;
+    if (cs.webkitBackdropFilter && cs.webkitBackdropFilter !== 'none') box.style.webkitBackdropFilter = cs.webkitBackdropFilter;
+
     var sc = el('div', 'cw-scroll');
     sc.tabIndex = 0;
     sc.setAttribute('role', 'listbox');
     var lab = input.id && document.querySelector('label[for="' + input.id + '"]');
     if (lab) { lab.id = lab.id || 'cw-lab-' + n; sc.setAttribute('aria-labelledby', lab.id); }
     else sc.setAttribute('aria-label', 'City you live in');
-    sc.appendChild(el('div', 'cw-pad'));
     var items = ROWS.map(function (name, i) {
-      var it = el('div', 'cw-item' + (i === 0 ? ' ph' : name === OTHER ? ' other' : ''));
+      var it = el('div', 'cw-item' + (name === OTHER ? ' other' : ''));
       it.id = 'cw-' + n + '-' + i;
       it.setAttribute('role', 'option');
       it.textContent = name;
-      it.addEventListener('click', function () { if (!dragMoved) { arm(); go(i, true); } });
+      it.style.height = inner + 'px';
+      it.style.lineHeight = inner + 'px';
+      it.style.paddingLeft = padL;
+      it.style.paddingRight = '40px';
       sc.appendChild(it);
       return it;
     });
-    sc.appendChild(el('div', 'cw-pad'));
     box.appendChild(sc);
+
+    /* The up-and-down chevron every one-line picker wears, so it reads as
+       something you can turn. */
+    box.insertAdjacentHTML('beforeend',
+      '<svg class="cw-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" ' +
+      'stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 9.5l5-5 5 5M7 14.5l5 5 5-5"/></svg>');
 
     /* The "somewhere else" box borrows the page's own input styling by
        being a plain input in the same field. */
@@ -204,21 +277,22 @@
 
     function clamp(i) { return Math.max(0, Math.min(ROWS.length - 1, i)); }
 
-    /* ── the drum ── each row tilts by how far it sits from the centre band */
+    /* ── the drum ── a row rolls away as it leaves the line */
     function paint() {
-      var mid = sc.scrollTop / ROW;
+      var mid = sc.scrollTop / inner;
       for (var i = 0; i < items.length; i++) {
         var d = i - mid, a = Math.abs(d);
-        var deg = Math.max(-80, Math.min(80, d * TILT));
+        if (a > 1.5) { items[i].style.visibility = 'hidden'; continue; }
+        items[i].style.visibility = '';
+        var deg = Math.max(-88, Math.min(88, d * TILT));
         items[i].style.transform = 'rotateX(' + (-deg) + 'deg) translateZ(0)';
-        items[i].style.opacity = String(Math.max(0.1, (i === 0 ? 0.6 : 1) - a * 0.26));
-        items[i].style.fontWeight = a < 0.5 && i > 0 ? '600' : '400';
+        items[i].style.opacity = String(Math.max(0, 1 - a * 0.85));
       }
     }
 
     function onScroll() {
       paint();
-      var i = clamp(Math.round(sc.scrollTop / ROW));
+      var i = clamp(Math.round(sc.scrollTop / inner));
       if (i !== lastTick) { lastTick = i; if (armed) tick(); }
       clearTimeout(settleT);
       settleT = setTimeout(settle, 140);
@@ -226,7 +300,7 @@
 
     function settle() {
       clearTimeout(settleT);
-      var i = clamp(Math.round(sc.scrollTop / ROW));
+      var i = clamp(Math.round(sc.scrollTop / inner));
       items[idx].setAttribute('aria-selected', 'false');
       var moved = i !== idx;
       idx = i;
@@ -239,23 +313,32 @@
         if (moved && armed) other.focus({ preventScroll: true });
       } else {
         other.hidden = true;
-        setValue(input, idx === 0 ? '' : name);
+        setValue(input, name);
       }
-      if (moved && armed && idx > 0) {
+      if (moved && armed) {
         box.classList.remove('pop'); box.offsetWidth; box.classList.add('pop');
       }
     }
 
     function go(i, smooth) {
       i = clamp(i);
-      sc.scrollTo({ top: i * ROW, behavior: smooth && !reduced ? 'smooth' : 'auto' });
-      if (!smooth || reduced) { paint(); settle(); }
+      sc.scrollTo({ top: i * inner, behavior: smooth && !reduced ? 'smooth' : 'auto' });
+      if (!smooth || reduced) { lastTick = i; paint(); settle(); }
     }
+
+    /* A tap steps one row, like nudging the wheel with a thumb: the top
+       half goes back, the bottom half goes forward. */
+    sc.addEventListener('click', function (e) {
+      if (dragMoved) return;
+      arm();
+      var r = sc.getBoundingClientRect();
+      go(idx + (e.clientY < r.top + r.height / 2 ? -1 : 1), true);
+    });
 
     /* ── keys ── arrows step, letters jump */
     sc.addEventListener('keydown', function (e) {
       var k = e.key, step = { ArrowDown: 1, ArrowUp: -1, PageDown: 3, PageUp: -3 }[k];
-      var at = clamp(Math.round(sc.scrollTop / ROW));
+      var at = clamp(Math.round(sc.scrollTop / inner));
       if (step) { e.preventDefault(); go(at + step, true); return; }
       if (k === 'Home') { e.preventDefault(); go(0, true); return; }
       if (k === 'End') { e.preventDefault(); go(ROWS.length - 1, true); return; }
@@ -263,7 +346,7 @@
         var c = k.toLowerCase();
         for (var j = 1; j <= ROWS.length; j++) {
           var m = (at + j) % ROWS.length;
-          if (m > 0 && ROWS[m].charAt(0).toLowerCase() === c) { go(m, true); break; }
+          if (ROWS[m].charAt(0).toLowerCase() === c) { go(m, true); break; }
         }
       }
     });
@@ -289,19 +372,31 @@
       if (!dragMoved) return;
       sc.classList.remove('drag');
       /* A little coast, so a flick with the mouse lands further than a drag. */
-      go(Math.round((sc.scrollTop - v * 160) / ROW), true);
+      go(Math.round((sc.scrollTop - v * 120) / inner), true);
       setTimeout(function () { dragMoved = false; }, 0);
     });
 
     sc.addEventListener('scroll', onScroll, { passive: true });
     if ('onscrollend' in window) sc.addEventListener('scrollend', settle);
 
-    /* A value already in the input (a restored draft, a back button) is
-       where the wheel starts. */
+    /* Where it starts: a value already in the input (a restored draft, the
+       back button) wins; then the next Sunday's city; then the first row. */
     var start = ROWS.indexOf(input.value);
     if (start < 0 && input.value) { start = ROWS.length - 1; other.value = input.value; }
-    lastTick = Math.max(0, start);
+    var own = start >= 0;
+    if (!own && defaultCity) start = ROWS.indexOf(defaultCity);
     go(Math.max(0, start), false);
+
+    wheels.push({
+      /* The default may arrive after the wheel is drawn (the CRM answers
+         late). Move to it only if nobody has touched the wheel and it was
+         not restored from a value of its own. */
+      suggest: function (city) {
+        if (armed || own) return;
+        var i = ROWS.indexOf(city);
+        if (i >= 0 && i !== idx) go(i, false);
+      }
+    });
   }
 
   /* ── wiring ── every input already on the page, and any that appear
@@ -312,6 +407,7 @@
   }
   function boot() {
     scan();
+    loadCities();
     new MutationObserver(function (list) {
       for (var i = 0; i < list.length; i++) {
         for (var j = 0; j < list[i].addedNodes.length; j++) {
