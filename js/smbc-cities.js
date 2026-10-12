@@ -19,7 +19,7 @@
     '2026-10-04': 'Surat',
     '2026-10-11': 'Jaipur',
     '2026-10-18': 'Mumbai',
-    '2026-10-25': 'Jodhpur'
+    '2026-10-25': 'Ahmedabad'
   };
 
   /* A Sunday that costs something other than the usual. Only the exceptions
