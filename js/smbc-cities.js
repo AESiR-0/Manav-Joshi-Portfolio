@@ -22,9 +22,18 @@
     '2026-10-25': 'Jodhpur'
   };
 
+  /* A Sunday that costs something other than the usual. Only the exceptions
+     live here; a Sunday not listed charges the usual fee. */
+  var PRICE_BY_SUNDAY = {
+    '2026-10-18': 1999
+  };
+
   root.SMBC_CITY = {
     fallback: DEFAULT_CITY,
     bySunday: BY_SUNDAY,
+    priceAt: function (iso) {
+      return PRICE_BY_SUNDAY[String(iso || '').slice(0, 10)] || 0;
+    },
     at: function (iso) {
       return BY_SUNDAY[String(iso || '').slice(0, 10)] || DEFAULT_CITY;
     }

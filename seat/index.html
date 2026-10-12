@@ -409,7 +409,7 @@ h1 em{font-style:normal;color:var(--mint);display:block}
   function hold(d) {
     /* The sheet is the authority on price — a seat can be priced by hand.
        Hardcoding it here meant a changed price silently disagreed with itself. */
-    PRICE = Number(d.price) || PRICE;
+    PRICE = (window.SMBC_CITY && window.SMBC_CITY.priceAt(d.sunday)) || Number(d.price) || PRICE;
     Array.prototype.forEach.call(document.querySelectorAll('.amtv'), function (el) {
       el.textContent = PRICE;
     });

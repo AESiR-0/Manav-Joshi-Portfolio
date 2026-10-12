@@ -927,7 +927,7 @@
         <label class="check">
           <input type="checkbox" id="cFee">
           <span class="box"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M2.5 8.5 6 12 13.5 4"/></svg></span>
-          <span>I know the fee is &#8377;1499, paid after I'm invited</span>
+          <span>I know the fee is &#8377;<b id="tickFee">1499</b>, paid after I'm invited</span>
         </label>
       </div>
 
@@ -1052,6 +1052,7 @@
     /* Date fluid swaps the whole sentence: there is no Sunday to name, and
        the city is the one they live in, if they gave one. */
     var fluid = iso === 'fluid', home = $('fCity') ? $('fCity').value.trim() : '';
+    $('tickFee').textContent = (!fluid && window.SMBC_CITY && window.SMBC_CITY.priceAt(iso)) || 1499;
     $('tickFixed').style.display = fluid ? 'none' : '';
     $('tickFluid').style.display = fluid ? '' : 'none';
     if (fluid) {
@@ -1868,7 +1869,7 @@
       found: picked.found,
       ref_name: NAMED_REF[picked.found] ? $('fRef').value.trim() : '',
       city: cityFor(sendISO), date: sendISO, date_fluid: fluid ? 'yes' : '',
-      fee_ok: 'yes', fee: '1499'
+      fee_ok: 'yes', fee: String((!fluid && window.SMBC_CITY && window.SMBC_CITY.priceAt(sendISO)) || 1499)
     };
     /* His own words, carrying the two things the CRM needs to match this
        message to this application: which Sunday and which city. */
