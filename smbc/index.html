@@ -361,6 +361,13 @@
     .fee p { font-size: 15.5px; line-height: 1.5; }
 
     .form { margin-top: 38px; display: grid; gap: 28px; }
+    /* coming again: the short form is the long one with everything but the
+       name, the number, the Sunday and the ticks put away. */
+    .again-line { margin-top: 14px; font-size: clamp(15px, 3.7vw, 16.5px); line-height: 1.5; }
+    .again-btn { font: inherit; font-weight: 700; color: inherit; background: none; border: 0; padding: 0;
+                 text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
+    #f.again > .fld:not(.keep) { display: none; }
+    #f.again #dFluid, #f.again label[for="dFluid"] { display: none; }
     .fld label, .fld .lbl { display: block; font-family: var(--disp); font-weight: 600; font-size: clamp(16px, 4vw, 18.5px); line-height: 1.25; margin-bottom: 10px; }
     .fld .hint { font-family: var(--hand); font-size: 14.5px; line-height: 1.5; color: hsl(var(--ink-soft)); text-wrap: pretty; margin: -4px 0 12px; }
     .fld input, .fld textarea {
@@ -806,7 +813,13 @@
 <section class="cream" id="apply">
   <div class="inner rv">
     <span class="tag">The ask</span>
-    <h2 class="h2c">Tell us what you're building.</h2>
+    <h2 class="h2c" id="askHead">Tell us what you're building.</h2>
+    <!-- COMING AGAIN. Somebody who has been in the room does not fill this in
+         twice: name, number, a Sunday, the two ticks. The CRM knows the rest. -->
+    <p class="again-line" id="againLine">
+      <span id="againSay">Been to one before? You don't need to fill all this in again.</span>
+      <button type="button" class="again-btn" id="againBtn">Just pick a Sunday</button>
+    </p>
 
     <form class="form" id="f" novalidate>
       <div class="duo">
@@ -913,7 +926,7 @@
         </div>
       </div>
 
-      <div class="fld">
+      <div class="fld keep">
         <span class="lbl" id="lblD">Which Sunday?</span>
         <div class="pick pick-d" id="dPick" role="radiogroup" aria-labelledby="lblD"></div>
       </div>
@@ -1815,8 +1828,67 @@
     { el: 'fWhy',     msg: 'Your honest first thoughts.' },
     { el: 'fPick',    msg: 'How did this reach you?', pick: 'found' }
   ];
+  /* ── COMING AGAIN ───────────────────────────────────────────────────────
+     One switch. The CRM decides what a returning request becomes: somebody it
+     has seen in a room goes straight to a yes, anybody else waits for Manav.
+     The page says the same thing either way. */
+  var AGAIN_API = 'https://smbc-crm2.manavjoshi01.workers.dev/api/again';
+  $('againBtn').addEventListener('click', function () {
+    var on = !$('f').classList.contains('again');
+    $('f').classList.toggle('again', on);
+    $('askHead').textContent = on ? 'Good to have you back.' : 'Tell us what you\u2019re building.';
+    $('againSay').textContent = on ? 'Use the number you came with last time.' : 'Been to one before? You don\u2019t need to fill all this in again.';
+    $('againBtn').textContent = on ? 'First time? Fill in the full form' : 'Just pick a Sunday';
+    if (on && chosenISO === 'fluid') {
+      var first = document.querySelector('input[name="sunday_pick"]:not([value="fluid"]):not(:disabled)');
+      if (first) { first.checked = true; chosenISO = first.value; setTick(chosenISO); }
+    }
+    $('note').classList.remove('on');
+    $('fName').focus({ preventScroll: true });
+  });
+  function sendAgain() {
+    var note = $('note');
+    note.classList.remove('on');
+    var name = $('fName').value.trim(), phone = $('fPhone').value.trim();
+    var bad = !name ? ['fName', 'Your name.'] :
+              phone.replace(/\D/g, '').length < 10 ? ['fPhone', 'The number you came with.'] :
+              (!chosenISO || chosenISO === 'fluid') ? ['dPick', 'Pick one Sunday.'] : null;
+    if (bad) {
+      $(bad[0]).classList.add('bad');
+      note.textContent = bad[1]; note.classList.add('on');
+      $(bad[0]).scrollIntoView({ block: 'center', behavior: 'smooth' });
+      return;
+    }
+    if (!$('cOk').checked || !$('cFee').checked) { note.textContent = 'Tick both boxes if they\u2019re true.'; note.classList.add('on'); return; }
+    if ($('fHp').value) return;
+    $('sendBtn').disabled = true;
+    $('sendBtn').textContent = 'Sending\u2026';
+    var city = cityFor(chosenISO);
+    /* Straight into the CRM. text/plain so the browser sends it without a
+       preflight, and as a beacon so it survives the jump to WhatsApp. */
+    var body = JSON.stringify({ phone: phone, name: name, sunday: chosenISO, website: $('fHp').value });
+    var sent = false;
+    try { sent = navigator.sendBeacon(AGAIN_API, new Blob([body], { type: 'text/plain' })); } catch (e) {}
+    if (!sent) { try { fetch(AGAIN_API, { method: 'POST', mode: 'no-cors', body: body, keepalive: true }); } catch (e) {} }
+    /* And the sheet's copy, so the request is on record twice. The CRM files
+       a sunday it has already seen once, so this never doubles up. */
+    var row = { form: 'smbc', returning: 'yes', name: name, phone: phone, city: city, date: chosenISO,
+                fee_ok: 'yes', fee: String((window.SMBC_CITY && window.SMBC_CITY.priceAt(chosenISO)) || 1499) };
+    try { navigator.sendBeacon(ENDPOINT, new URLSearchParams(row)); } catch (e) {}
+    var d = new Date(chosenISO + 'T00:00:00Z');
+    var waText = 'Hey, I have been to Sunday Morning Build Club before and I\u2019d like to come again - ' +
+      d.getUTCDate() + ' ' + MONTHS[d.getUTCMonth()].slice(0, 3) + ' - ' + city;
+    var waURL = 'https://wa.me/' + WA_NUMBER + '?text=' + encodeURIComponent(waText);
+    $('f').style.display = 'none';
+    $('againLine').style.display = 'none';
+    $('sentWaLink').href = waURL;
+    $('sent').classList.add('on');
+    window.location.href = waURL;
+  }
+
   $('f').addEventListener('submit', function (ev) {
     ev.preventDefault();
+    if ($('f').classList.contains('again')) return sendAgain();
     var note = $('note');
     note.classList.remove('on');
     FLDS.forEach(function (f) { $(f.el).classList.remove('bad'); });
