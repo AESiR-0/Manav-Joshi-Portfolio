@@ -1055,8 +1055,19 @@
      file, so a city can never be right in one place and wrong in another.
      If that file does not arrive, the tiles say nothing rather than guessing a
      city: the same rule the fullness states follow a few hundred lines down. */
-  function cityFor(iso) {
-    return window.SMBC_CITY ? window.SMBC_CITY.at(iso) : '';
+  /* A TILE IS A DATE — or, on a Sunday two cities share, a date and a city:
+     "2026-12-06@Surat". Everything that needs the date asks isoOf(); the city
+     comes from the tile when the tile names one. The CRM matches the pair to
+     its own room, so this page never needs to know a room's key. */
+  function isoOf(v) { return String(v || '').split('@')[0]; }
+  function cityFor(v) {
+    var named = String(v || '').split('@')[1];
+    if (named) return named;
+    return window.SMBC_CITY ? window.SMBC_CITY.at(v) : '';
+  }
+  function citiesOn(iso) {
+    var c = window.SMBC_CITY && window.SMBC_CITY.cities ? window.SMBC_CITY.cities(iso) : null;
+    return c && c.length ? c : [cityFor(iso)];
   }
 
   /* One writer for both halves of the tick line, so the city and the date can
@@ -1065,7 +1076,7 @@
     /* Date fluid swaps the whole sentence: there is no Sunday to name, and
        the city is the one they live in, if they gave one. */
     var fluid = iso === 'fluid', home = $('fCity') ? $('fCity').value.trim() : '';
-    $('tickFee').textContent = (!fluid && window.SMBC_CITY && window.SMBC_CITY.priceAt(iso)) || 1499;
+    $('tickFee').textContent = (!fluid && window.SMBC_CITY && window.SMBC_CITY.priceAt(isoOf(iso))) || 1499;
     $('tickFixed').style.display = fluid ? 'none' : '';
     $('tickFluid').style.display = fluid ? '' : 'none';
     if (fluid) {
@@ -1073,7 +1084,7 @@
       $('tickFluidCity').textContent = home;
       return;
     }
-    var td = new Date(iso + 'T12:00:00');
+    var td = new Date(isoOf(iso) + 'T12:00:00');
     $('tickDate').textContent = 'Sunday, ' + td.getDate() + ' ' + MONTHS[td.getMonth()];
     $('tickCity').textContent = cityFor(iso);
   }
@@ -1681,23 +1692,29 @@
     for (var k = 0; k < HORIZON; k++) {
       var d = new Date(sunday); d.setDate(sunday.getDate() + 7 * k);
       var iso = d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate());
-      var st = stateFor(SUNDAY_LOAD[iso]);
-      var state = st.state, tone = st.tone, full = st.full;
-      var id = 'd' + k;
-      var inp = document.createElement('input');
-      inp.type = 'radio'; inp.name = 'sunday_pick'; inp.id = id; inp.value = iso;
-      if (full) inp.disabled = true;
-      if (k === 0 && !full) inp.checked = true;
-      var lab = document.createElement('label');
-      lab.setAttribute('for', id);
-      var city = cityFor(iso);
-      lab.innerHTML = '<s>' + pad(k + 1) + '</s>' +
-                      '<b>' + pad(d.getDate()) + '</b>' +
-                      '<u>' + MONTHS[d.getMonth()].slice(0, 3) + '</u>' +
-                      '<em>' + city + '</em>' +
-                      '<i class="' + tone + '">' + (state || 'Open') + '</i>';
-      if (k >= SHOWN) { inp.hidden = true; lab.hidden = true; }
-      wrap.appendChild(inp); wrap.appendChild(lab);
+      /* One tile per room: a Sunday two cities share is two tiles, each
+         carrying its city, so picking the date IS picking the room. */
+      var rooms = citiesOn(iso);
+      for (var j = 0; j < rooms.length; j++) {
+        var value = rooms.length > 1 ? iso + '@' + rooms[j] : iso;
+        var st = stateFor(SUNDAY_LOAD[iso]);
+        var state = st.state, tone = st.tone, full = st.full;
+        var id = 'd' + k + (rooms.length > 1 ? '_' + j : '');
+        var inp = document.createElement('input');
+        inp.type = 'radio'; inp.name = 'sunday_pick'; inp.id = id; inp.value = value;
+        if (full) inp.disabled = true;
+        if (k === 0 && j === 0 && !full) inp.checked = true;
+        var lab = document.createElement('label');
+        lab.setAttribute('for', id);
+        var city = rooms[j];
+        lab.innerHTML = '<s>' + pad(k + 1) + '</s>' +
+                        '<b>' + pad(d.getDate()) + '</b>' +
+                        '<u>' + MONTHS[d.getMonth()].slice(0, 3) + '</u>' +
+                        '<em>' + city + '</em>' +
+                        '<i class="' + tone + '">' + (state || 'Open') + '</i>';
+        if (k >= SHOWN) { inp.hidden = true; lab.hidden = true; }
+        wrap.appendChild(inp); wrap.appendChild(lab);
+      }
     }
 
     /* A cell in the same language, dashed, that opens the rest of the table. */
@@ -1734,8 +1751,10 @@
         .then(function (data) {
           if (!data || typeof data !== 'object') return;
           Array.prototype.forEach.call(wrap.querySelectorAll('input'), function (inp) {
-            if (!(inp.value in data)) return;
-            var st = stateFor(data[inp.value]), lab = wrap.querySelector('label[for="' + inp.id + '"]');
+            /* A city tile asks about its own room: the CRM answers "date@city". */
+            var key = inp.value.indexOf('@') > 0 ? isoOf(inp.value) + '@' + cityFor(inp.value).toLowerCase() : inp.value;
+            if (!(key in data)) return;
+            var st = stateFor(data[key]), lab = wrap.querySelector('label[for="' + inp.id + '"]');
             if (!lab) return;
             var i = lab.querySelector('i');
             i.className = st.tone;
@@ -1866,16 +1885,16 @@
     var city = cityFor(chosenISO);
     /* Straight into the CRM. text/plain so the browser sends it without a
        preflight, and as a beacon so it survives the jump to WhatsApp. */
-    var body = JSON.stringify({ phone: phone, name: name, sunday: chosenISO, website: $('fHp').value });
+    var body = JSON.stringify({ phone: phone, name: name, sunday: isoOf(chosenISO), city: city, website: $('fHp').value });
     var sent = false;
     try { sent = navigator.sendBeacon(AGAIN_API, new Blob([body], { type: 'text/plain' })); } catch (e) {}
     if (!sent) { try { fetch(AGAIN_API, { method: 'POST', mode: 'no-cors', body: body, keepalive: true }); } catch (e) {} }
     /* And the sheet's copy, so the request is on record twice. The CRM files
        a sunday it has already seen once, so this never doubles up. */
-    var row = { form: 'smbc', returning: 'yes', name: name, phone: phone, city: city, date: chosenISO,
-                fee_ok: 'yes', fee: String((window.SMBC_CITY && window.SMBC_CITY.priceAt(chosenISO)) || 1499) };
+    var row = { form: 'smbc', returning: 'yes', name: name, phone: phone, city: city, date: isoOf(chosenISO),
+                fee_ok: 'yes', fee: String((window.SMBC_CITY && window.SMBC_CITY.priceAt(isoOf(chosenISO))) || 1499) };
     try { navigator.sendBeacon(ENDPOINT, new URLSearchParams(row)); } catch (e) {}
-    var d = new Date(chosenISO + 'T00:00:00Z');
+    var d = new Date(isoOf(chosenISO) + 'T00:00:00Z');
     var waText = 'Hey, I have been to Sunday Morning Build Club before and I\u2019d like to come again - ' +
       d.getUTCDate() + ' ' + MONTHS[d.getUTCMonth()].slice(0, 3) + ' - ' + city;
     var waURL = 'https://wa.me/' + WA_NUMBER + '?text=' + encodeURIComponent(waText);
@@ -1940,12 +1959,12 @@
       gender: picked.gender, age_group: picked.age_group,
       found: picked.found,
       ref_name: NAMED_REF[picked.found] ? $('fRef').value.trim() : '',
-      city: cityFor(sendISO), date: sendISO, date_fluid: fluid ? 'yes' : '',
-      fee_ok: 'yes', fee: String((!fluid && window.SMBC_CITY && window.SMBC_CITY.priceAt(sendISO)) || 1499)
+      city: cityFor(sendISO), date: isoOf(sendISO), date_fluid: fluid ? 'yes' : '',
+      fee_ok: 'yes', fee: String((!fluid && window.SMBC_CITY && window.SMBC_CITY.priceAt(isoOf(sendISO))) || 1499)
     };
     /* His own words, carrying the two things the CRM needs to match this
        message to this application: which Sunday and which city. */
-    var d = new Date(sendISO + 'T00:00:00Z');
+    var d = new Date(isoOf(sendISO) + 'T00:00:00Z');
     var waText = fluid
       ? 'Hey, I have requested an invite to Sunday Morning Build Club - date fluid' +
         (data.from_city ? ' - ' + data.from_city : '')
