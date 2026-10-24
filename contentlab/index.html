@@ -1803,6 +1803,14 @@
        urlencoded, which is the shape Apps Script already answers. */
     var sent = false;
     try { sent = navigator.sendBeacon(ENDPOINT, new URLSearchParams(data)); } catch (e) {}
+    /* And straight into the CRM, where a Practical is run the way the Sunday
+       is: a request, a yes, an invite. The sheet keeps its copy as the backup.
+       A date-fluid request is filed on this page's date and says it is fluid. */
+    try {
+      navigator.sendBeacon('https://smbc-crm2.manavjoshi01.workers.dev/api/apply', new Blob([JSON.stringify(
+        Object.assign({}, data, { date: chosenISO === 'fluid' ? EVENT_ISO : chosenISO,
+                                  website: $('fHp') ? $('fHp').value : '' }))], { type: 'text/plain' }));
+    } catch (e) {}
     /* A beacon is the one request the browser finishes after the page is gone,
        so when it is accepted we can leave immediately. When it is not, the
        fetch has to land before we navigate or the application is lost — a lag
