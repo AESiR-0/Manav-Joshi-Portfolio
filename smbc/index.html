@@ -286,6 +286,82 @@
     .rule b { display: block; font-family: var(--disp); font-size: clamp(17px, 4.2vw, 20px); font-weight: 800; margin-bottom: 8px; color: hsl(var(--ink)); }
     .rule p { font-size: clamp(15.5px, 3.8vw, 17px); line-height: 1.5; color: hsl(var(--ink)); }
 
+    /* what they said: the numbers stand still, the words come as cards.
+       A card holds a whole quote, wrapped, so the eye reads it in one look instead
+       of chasing a moving line: three are in view on a desktop, one and the edge
+       of the next on a phone. The row steps one card on at reading pace (longer
+       quotes stay longer), shown as a ring filling round the next arrow. Swipe,
+       scroll, hover, focus or the arrows hand control to the reader; it picks up
+       again after six idle seconds. Reduced motion: no stepping, arrows still work. */
+    .said { background: hsl(var(--desk-deep)); border-block: 1px solid hsl(var(--line)); padding: 22px 0 24px; }
+    .said-head { padding: 0 var(--rail); }
+    .said-head .tag { margin-bottom: 14px; }
+    .stats { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+    .stats li { display: flex; flex-direction: column; gap: 6px; }
+    .stats b {
+      font-family: var(--disp); font-weight: 800; font-size: clamp(26px, 6vw, 34px); line-height: 1;
+      letter-spacing: -.03em; color: hsl(var(--sun)); white-space: nowrap;
+    }
+    .stats b i { font-style: normal; }
+    .stats b small { font-size: .5em; font-weight: 700; letter-spacing: 0; color: hsl(var(--sun) / .7); margin-left: 2px; }
+    .stats span { font-size: 13.5px; line-height: 1.35; color: hsl(var(--ink-soft)); text-wrap: pretty; }
+    .said-bar { margin-top: 14px; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+    .said-src { font-family: var(--hand); font-size: 14.5px; line-height: 1.4; color: hsl(var(--ink-soft)); text-wrap: pretty; }
+    .said-src .short { display: none; }
+    .said-nav { display: flex; gap: 8px; flex: none; }
+    .said-nav button {
+      width: 40px; height: 40px; padding: 0; border-radius: 50%; border: 1px solid hsl(var(--line));
+      background: hsl(var(--card) / .5); color: hsl(var(--ink)); cursor: pointer;
+      display: grid; place-items: center; transition: border-color .2s, color .2s, transform .2s var(--ease);
+    }
+    .said-nav button:hover { border-color: hsl(var(--sun) / .7); color: hsl(var(--sun)); }
+    .said-nav button:active { transform: scale(.92); }
+    .said-nav button:focus-visible { outline: 2px solid hsl(var(--sun)); outline-offset: 2px; }
+    .said-nav svg { width: 40px; height: 40px; overflow: visible; }
+    .said-nav path { fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+    .said-nav .ring {
+      fill: none; stroke: hsl(var(--sun)); stroke-width: 1.6; stroke-dasharray: 100; stroke-dashoffset: 100;
+      transform: rotate(-90deg); transform-origin: 20px 20px;
+    }
+    .qrow {
+      position: relative; display: flex; gap: 12px; list-style: none; margin: 16px 0 0;
+      padding: 2px max(var(--rail), calc((100% - 620px) / 2)) 4px;
+      scroll-padding-inline: max(var(--rail), calc((100% - 620px) / 2));
+      overflow-x: auto; scroll-snap-type: x mandatory; overscroll-behavior-x: contain;
+      scrollbar-width: none; outline: none;
+    }
+    .qrow::-webkit-scrollbar { display: none; }
+    .qrow:focus-visible { box-shadow: inset 0 0 0 2px hsl(var(--sun) / .6); }
+    .qc {
+      flex: 0 0 min(86vw, 320px); scroll-snap-align: start; display: flex; flex-direction: column; gap: 8px;
+      padding: 14px 15px 12px; border-radius: 14px;
+      background: hsl(var(--card) / .55); border: 1px solid hsl(var(--line));
+    }
+    .qc q {
+      font-family: var(--disp); font-weight: 500; font-size: 16px; line-height: 1.38; letter-spacing: -.01em;
+      color: hsl(var(--ink)); quotes: '\201C' '\201D'; text-wrap: pretty;
+    }
+    .qc q::before, .qc q::after { color: hsl(var(--sun)); }
+    .qc .who { margin-top: auto; font-size: 12.5px; line-height: 1.35; color: hsl(var(--steel) / .85); }
+    .qc .who b { font-weight: 700; color: hsl(var(--ink-soft)); }
+    .qc .got { display: flex; flex-wrap: wrap; column-gap: 10px; font-size: 11.5px; line-height: 1.5; color: hsl(var(--sun)); }
+    .qc .got i { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+    .qc .got span::before { content: '\2713\00a0'; }
+    @media (max-width: 560px) {
+      .said { padding: 18px 0 20px; }
+      .stats { grid-template-columns: 1.3fr 1.1fr .8fr; gap: 12px; }
+      .stats b { font-size: 25px; }
+      .stats span { font-size: 12px; line-height: 1.3; }
+      .said-src { font-size: 13.5px; }
+      .said-src .long { display: none; }
+      .said-src .short { display: inline; }
+      .said-bar { margin-top: 12px; }
+      .said-nav { display: none; }
+      .qrow { margin-top: 12px; }
+      .qc q { font-size: 15px; }
+    }
+    @media (prefers-reduced-motion: reduce) { .said-nav .ring { display: none; } }
+
     /* who attends: they fall in, settle, and go to sleep. drag to wake. */
     /* height is unset here on purpose: the plain wrapped layout sizes to its
        own content, and the physics pit gets an exact fitted height from JS so
@@ -808,6 +884,134 @@
     <p class="who-hint" id="whoHint">run your cursor through them &rarr;</p>
   </div>
 </section>
+
+<!-- ══ WHAT THEY SAID ══
+     Snapshot of the CRM feedback log (smbc-crm2 D1, event verb='feedback'), taken
+     24 Oct 2026: 44 rated forms from 13 Sundays, test rows removed, one row per
+     person per Sunday. 9.5 = mean of "How likely are you to recommend SMBC to
+     someone you love?"; 9.3 = mean of "the people"; 83% = 34 of the 41 who
+     answered "What did you leave with?" ticked clarity, action plan or potential
+     collaboration. The 2/10 is counted. Quotes are "One line to sum up your
+     experience", copied exactly, typos and all; three long ones are cut at a
+     sentence or clause, marked with an ellipsis. "Left with" is that person's own
+     answer, at most three, most concrete first ("a new friend" drops off when all
+     four were ticked). Titles come from what each person wrote they are building, with brand
+     names taken out. No names, no dates. -->
+<section class="said" aria-labelledby="saidTag">
+  <div class="said-head">
+    <div class="inner rv">
+      <span class="tag" id="saidTag">From 44 feedback forms</span>
+      <ul class="stats">
+        <li><b><i data-n="83">83</i>%</b><span>left with clarity, an action plan or a potential collaboration</span></li>
+        <li><b><i data-n="9.5">9.5</i><small>/10</small></b><span>would recommend it to someone they love</span></li>
+        <li><b><i data-n="9.3">9.3</i><small>/10</small></b><span>for the people in the room</span></li>
+      </ul>
+      <div class="said-bar">
+        <p class="said-src"><span class="long">13 Sundays in Ahmedabad, Surat, Jaipur and Mumbai. Quotes are word for word.</span><span class="short">13 Sundays, 4 cities. Word for word.</span></p>
+        <div class="said-nav">
+          <button type="button" id="saidPrev" aria-label="Previous quote"><svg viewBox="0 0 40 40" aria-hidden="true"><path d="M23 13l-7 7 7 7"/></svg></button>
+          <button type="button" id="saidNext" aria-label="Next quote"><svg viewBox="0 0 40 40" aria-hidden="true"><circle class="ring" cx="20" cy="20" r="19.5" pathLength="100"/><path d="M17 13l7 7-7 7"/></svg></button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <ul class="qrow" id="said" tabindex="0" aria-label="What people wrote after their Sunday">
+      <li class="qc"><q>Worth cancelling a family lunch with the cousins I love btw!</q><p class="who"><b>Personal care brand founder</b> &middot; Ahmedabad</p><p class="got"><i>Left with </i><span>action plan</span><span>potential collab</span><span>clarity</span></p></li>
+      <li class="qc"><q>If you are in business and you feel stuck somewhere in business, it&rsquo;s right place to help yourself.</q><p class="who"><b>Luxury fashion house founder</b> &middot; Jaipur</p><p class="got"><i>Left with </i><span>action plan</span><span>potential collab</span><span>clarity</span></p></li>
+      <li class="qc"><q>i think i got the clarity i needed</q><p class="who"><b>Life coach, writing a book</b> &middot; Mumbai</p><p class="got"><i>Left with </i><span>action plan</span><span>clarity</span><span>new friend</span></p></li>
+      <li class="qc"><q>Think BIG &amp; Fail sooner</q><p class="who"><b>Consultant to food businesses</b> &middot; Surat</p><p class="got"><i>Left with </i><span>potential collab</span><span>clarity</span><span>new friend</span></p></li>
+      <li class="qc"><q>A lot more collaborative than I expected, a lot less performative than I dreaded</q><p class="who"><b>Has a day job, wants to build</b> &middot; Ahmedabad</p><p class="got"><i>Left with </i><span>potential collab</span><span>new friend</span></p></li>
+      <li class="qc"><q>People will be there to help, a way will be made out, you just have to believe and do it.</q><p class="who"><b>Packaging studio co-founder</b> &middot; Ahmedabad</p><p class="got"><i>Left with </i><span>action plan</span><span>potential collab</span><span>clarity</span></p></li>
+      <li class="qc"><q>&hellip;not at all like a business networking. It was PEOPLE networking and I loved it</q><p class="who"><b>Dietitian, 8+ years</b> &middot; Surat</p><p class="got"><i>Left with </i><span>action plan</span><span>new friend</span></p></li>
+      <li class="qc"><q>I came in with a thought, left with plenty!</q><p class="who"><b>Runs an NGO for kids</b> &middot; Ahmedabad</p><p class="got"><i>Left with </i><span>new friend</span></p></li>
+      <li class="qc"><q>It was a Sunday well spent. Just the room you want to be in.</q><p class="who"><b>Beverage brand co-founder</b> &middot; Mumbai</p><p class="got"><i>Left with </i><span>clarity</span></p></li>
+      <li class="qc"><q>It gave me a lot of clearity and a step closer towards my goal</q><p class="who"><b>Creative curator</b> &middot; Ahmedabad</p><p class="got"><i>Left with </i><span>potential collab</span><span>clarity</span></p></li>
+      <li class="qc"><q>&hellip;business/creative mindset vadha badha j loko aek room ma discussing their problem and solutions maja aa gaya.</q><p class="who"><b>Electronics product developer</b> &middot; Surat</p><p class="got"><i>Left with </i><span>clarity</span><span>new friend</span></p></li>
+      <li class="qc"><q>Absolutely worth it.</q><p class="who"><b>Founder, student jobs platform</b> &middot; Ahmedabad</p></li>
+      <li class="qc"><q>It was a morning of lots of learnings. Thanks much</q><p class="who"><b>Plus-size fashion, 9 years in D2C</b> &middot; Jaipur</p><p class="got"><i>Left with </i><span>new friend</span></p></li>
+      <li class="qc"><q>Felt like being back to MICA - quality discussion with good people</q><p class="who"><b>B2B marketing founder</b> &middot; Ahmedabad</p><p class="got"><i>Left with </i><span>clarity</span></p></li>
+      <li class="qc"><q>It was warm and safe. Easy to be just be and talk :)</q><p class="who"><b>Creative educator</b> &middot; Ahmedabad</p><p class="got"><i>Left with </i><span>new friend</span></p></li>
+      <li class="qc"><q>An inspiring room full of ambition</q><p class="who"><b>Installation artist</b> &middot; Ahmedabad</p><p class="got"><i>Left with </i><span>clarity</span></p></li>
+      <li class="qc"><q>Would gladly wake up every Sunday for this</q><p class="who"><b>Haircare brand founder</b> &middot; Ahmedabad</p><p class="got"><i>Left with </i><span>clarity</span><span>new friend</span></p></li>
+  </ul>
+</section>
+<script>
+  (function () {
+    var row = document.getElementById('said');
+    if (!row) return;
+    var cards = [].slice.call(row.children);
+    var ring = document.querySelector('#saidNext .ring');
+    var still = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var cur = 0, t = 0, last = 0, raf = 0, seen = false, held = false, idleUntil = 0, autoUntil = 0;
+
+    function pad() { return parseFloat(getComputedStyle(row).paddingLeft) || 0; }
+    function nearest() {
+      var x = row.scrollLeft + pad(), best = 0, d = Infinity;
+      cards.forEach(function (c, i) { var dd = Math.abs(c.offsetLeft - x); if (dd < d) { d = dd; best = i; } });
+      return best;
+    }
+    function atEnd() { return row.scrollLeft >= row.scrollWidth - row.clientWidth - 4; }
+    // a quote stays as long as it takes to read: a second to find it, a quarter second a word
+    function dwell(i) { var w = cards[i].querySelector('q').textContent.trim().split(/\s+/).length; return Math.min(6000, Math.max(2600, 1000 + w * 250)); }
+    function go(i) {
+      if (i >= cards.length || (i > cur && atEnd())) i = 0;
+      if (i < 0) i = cards.length - 1;
+      cur = i; t = 0;
+      autoUntil = performance.now() + 900;
+      row.scrollTo({ left: cards[i].offsetLeft - pad(), behavior: still ? 'auto' : 'smooth' });
+    }
+    function rest() { idleUntil = performance.now() + 6000; t = 0; }
+
+    document.getElementById('saidPrev').addEventListener('click', function () { go(cur - 1); rest(); });
+    document.getElementById('saidNext').addEventListener('click', function () { go(cur + 1); rest(); });
+    ['pointerdown', 'wheel', 'keydown'].forEach(function (e) { row.addEventListener(e, rest, { passive: true }); });
+    row.addEventListener('scroll', function () {
+      if (performance.now() > autoUntil) { cur = nearest(); rest(); }
+    }, { passive: true });
+    row.addEventListener('mouseenter', function () { held = true; });
+    row.addEventListener('mouseleave', function () { held = false; });
+    row.addEventListener('focusin', function () { held = true; });
+    row.addEventListener('focusout', function () { held = false; });
+
+    function frame(now) {
+      var dt = last ? Math.min(100, now - last) : 0;
+      last = now;
+      if (!held && now > idleUntil) {
+        t += dt;
+        if (t >= dwell(cur)) go(cur + 1);
+      }
+      ring.style.strokeDashoffset = 100 - Math.min(100, (t / dwell(cur)) * 100);
+      raf = requestAnimationFrame(frame);
+    }
+    if (!still && 'IntersectionObserver' in window) {
+      new IntersectionObserver(function (es) {
+        seen = es[0].isIntersecting;
+        cancelAnimationFrame(raf); last = 0;
+        if (seen) raf = requestAnimationFrame(frame);
+      }, { threshold: .5 }).observe(row);
+    }
+
+    // the numbers count up once, the first time they are on screen; the HTML already holds the final value
+    var nums = document.querySelectorAll('.stats [data-n]');
+    if (still || !('IntersectionObserver' in window)) return;
+    var io = new IntersectionObserver(function (es) {
+      if (!es[0].isIntersecting) return;
+      io.disconnect();
+      var t0 = performance.now();
+      (function tick(now) {
+        var k = Math.max(0, Math.min(1, (now - t0) / 1100)), e = 1 - Math.pow(1 - k, 3);
+        nums.forEach(function (el) {
+          var n = parseFloat(el.dataset.n), dp = el.dataset.n.indexOf('.') > -1 ? 1 : 0;
+          el.textContent = (n * e).toFixed(dp);
+        });
+        if (k < 1) requestAnimationFrame(tick);
+      })(t0);
+      // a browser that stalls animation frames still ends on the real numbers
+      setTimeout(function () { nums.forEach(function (el) { el.textContent = el.dataset.n; }); }, 1600);
+    }, { threshold: .6 });
+    io.observe(document.querySelector('.stats'));
+  })();
+</script>
 
 <!-- ══ THE ASK ══ -->
 <section class="cream" id="apply">
