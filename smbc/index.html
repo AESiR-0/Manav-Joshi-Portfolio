@@ -2053,9 +2053,11 @@
     { el: 'fPick',    msg: 'How did this reach you?', pick: 'found' }
   ];
   /* ── COMING AGAIN ───────────────────────────────────────────────────────
-     One switch. The CRM decides what a returning request becomes: somebody it
-     has seen in a room goes straight to a yes, anybody else waits for Manav.
-     The page says the same thing either way. */
+     One switch, for registered numbers only (his ruling, 25 Oct 2026). The
+     CRM checks the number first: one it has never had is sent to the full
+     form. Anybody on file goes through, and the CRM decides the rest —
+     somebody it has seen in a room goes straight to a yes, anybody else
+     waits for Manav. */
   var AGAIN_API = 'https://smbc-crm2.manavjoshi01.workers.dev/api/again';
   $('againBtn').addEventListener('click', function () {
     var on = !$('f').classList.contains('again');
@@ -2073,6 +2075,7 @@
   function sendAgain() {
     var note = $('note');
     note.classList.remove('on');
+    ['fName', 'fPhone', 'dPick'].forEach(function (id) { if ($(id)) $(id).classList.remove('bad'); });
     var name = $('fName').value.trim(), phone = $('fPhone').value.trim();
     var bad = !name ? ['fName', 'Your name.'] :
               phone.replace(/\D/g, '').length < 10 ? ['fPhone', 'The number you came with.'] :
@@ -2088,26 +2091,49 @@
     $('sendBtn').disabled = true;
     $('sendBtn').textContent = 'Sending\u2026';
     var city = cityFor(chosenISO);
-    /* Straight into the CRM. text/plain so the browser sends it without a
-       preflight, and as a beacon so it survives the jump to WhatsApp. */
     var body = JSON.stringify({ phone: phone, name: name, sunday: isoOf(chosenISO), city: city, website: $('fHp').value });
-    var sent = false;
-    try { sent = navigator.sendBeacon(AGAIN_API, new Blob([body], { type: 'text/plain' })); } catch (e) {}
-    if (!sent) { try { fetch(AGAIN_API, { method: 'POST', mode: 'no-cors', body: body, keepalive: true }); } catch (e) {} }
-    /* And the sheet's copy, so the request is on record twice. The CRM files
-       a sunday it has already seen once, so this never doubles up. */
-    var row = { form: 'smbc', returning: 'yes', name: name, phone: phone, city: city, date: isoOf(chosenISO),
-                fee_ok: 'yes', fee: String((window.SMBC_CITY && window.SMBC_CITY.priceAt(isoOf(chosenISO))) || 1499) };
-    try { navigator.sendBeacon(ENDPOINT, new URLSearchParams(row)); } catch (e) {}
-    var d = new Date(isoOf(chosenISO) + 'T00:00:00Z');
-    var waText = 'Hey, I have been to Sunday Morning Build Club before and I\u2019d like to come again - ' +
-      d.getUTCDate() + ' ' + MONTHS[d.getUTCMonth()].slice(0, 3) + ' - ' + city;
-    var waURL = 'https://wa.me/' + WA_NUMBER + '?text=' + encodeURIComponent(waText);
-    $('f').style.display = 'none';
-    $('againLine').style.display = 'none';
-    $('sentWaLink').href = waURL;
-    $('sent').classList.add('on');
-    window.location.href = waURL;
+    function refuse(el, msg) {
+      $(el).classList.add('bad');
+      note.textContent = msg; note.classList.add('on');
+      $('sendBtn').disabled = false;
+      $('sendBtn').innerHTML = 'Send request <span class="arw">&rarr;</span>';
+      $(el).scrollIntoView({ block: 'center', behavior: 'smooth' });
+    }
+    function go() {
+      /* The sheet's copy, so the request is on record twice. The CRM files a
+         sunday it has already seen once, so this never doubles up, and it
+         checks the number again there. */
+      var row = { form: 'smbc', returning: 'yes', name: name, phone: phone, city: city, date: isoOf(chosenISO),
+                  fee_ok: 'yes', fee: String((window.SMBC_CITY && window.SMBC_CITY.priceAt(isoOf(chosenISO))) || 1499) };
+      try { navigator.sendBeacon(ENDPOINT, new URLSearchParams(row)); } catch (e) {}
+      var d = new Date(isoOf(chosenISO) + 'T00:00:00Z');
+      var waText = 'Hey, I have been to Sunday Morning Build Club before and I\u2019d like to come again - ' +
+        d.getUTCDate() + ' ' + MONTHS[d.getUTCMonth()].slice(0, 3) + ' - ' + city;
+      var waURL = 'https://wa.me/' + WA_NUMBER + '?text=' + encodeURIComponent(waText);
+      $('f').style.display = 'none';
+      $('againLine').style.display = 'none';
+      $('sentWaLink').href = waURL;
+      $('sent').classList.add('on');
+      window.location.href = waURL;
+    }
+    /* Straight into the CRM, and wait for its answer: only a number it already
+       has may come this way. A string body goes as text/plain, so there is no
+       preflight. If the CRM cannot be reached in eight seconds the request
+       still goes, through the sheet, where the same check runs. */
+    var done = false;
+    var timer = setTimeout(function () { if (!done) { done = true; go(); } }, 8000);
+    fetch(AGAIN_API, { method: 'POST', body: body })
+      .then(function (r) { return r.json(); })
+      .then(function (out) {
+        if (done) return;
+        done = true; clearTimeout(timer);
+        out = out || {};
+        if (out.unknown) return refuse('fPhone', 'We can\u2019t find this number. Try the one you used last time, or fill in the full form.');
+        if (out.full) return refuse('dPick', 'That Sunday is full. Pick another one.');
+        if (out.error === 'sunday') return refuse('dPick', 'Pick another Sunday.');
+        if (out.error === 'phone') return refuse('fPhone', 'The number you came with.');
+        go();
+      }, function () { if (!done) { done = true; clearTimeout(timer); go(); } });
   }
 
   $('f').addEventListener('submit', function (ev) {
