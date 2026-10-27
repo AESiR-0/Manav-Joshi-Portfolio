@@ -1812,7 +1812,10 @@
     $('sendBtn').textContent = 'Sending…';
     var data = {
       form: 'catalyst',
-      name: $('fName').value.trim(), phone: $('fPhone').value.trim(), email: $('fEmail').value.trim(), from_city: $('fCity').value.trim(),
+      // Digits only. Typed as "+91 98765 43210" the number reaches the sheet as
+      // a formula Sheets cannot parse, is stored as #ERROR!, and the CRM drops
+      // the row for having no phone. Ten applicants went that way, Aug-Oct 2026.
+      name: $('fName').value.trim(), phone: $('fPhone').value.replace(/\D/g, ''), email: $('fEmail').value.trim(), from_city: $('fCity').value.trim(),
       work: links,
       // Two questions, two fields. They used to travel as one packed string,
       // which meant the sheet could not sort on either one and the CRM had to
