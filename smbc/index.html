@@ -815,11 +815,6 @@
     <!-- Shipped with today's trips in it so the hero is right with no JS at all.
          The script rebuilds this row from js/smbc-cities.js on load. -->
     <div class="away" id="awayRow">
-      <span class="away-lead">Join us in</span>
-      <a class="cap" href="#apply" data-go="2026-10-04"><b>Surat</b><em>Sun 4 Oct</em></a>
-      <a class="cap" href="#apply" data-go="2026-10-11"><b>Jaipur</b><em>Sun 11 Oct</em></a>
-      <a class="cap" href="#apply" data-go="2026-10-18"><b>Mumbai</b><em>Sun 18 Oct</em></a>
-      <a class="cap" href="#apply" data-go="2026-10-25"><b>Jodhpur</b><em>Sun 25 Oct</em></a>
     </div>
   </div>
 </header>
@@ -1139,7 +1134,7 @@
         <label class="check">
           <input type="checkbox" id="cOk">
           <span class="box"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M2.5 8.5 6 12 13.5 4"/></svg></span>
-          <span id="tickFixed">I am in <b id="tickCity">the city</b> on <b id="tickDate">Sunday</b></span><span id="tickFluid" style="display:none">I can make any Sunday<span id="tickFluidIn"> in <b id="tickFluidCity"></b></span></span>
+          <span id="tickFixed"><span id="tickIn">I am in <b id="tickCity">the city</b> on </span><span id="tickCan" style="display:none">I can make </span><b id="tickDate">Sunday</b></span><span id="tickFluid" style="display:none">I can make any Sunday<span id="tickFluidIn"> in <b id="tickFluidCity"></b></span></span>
         </label>
         <label class="check">
           <input type="checkbox" id="cFee">
@@ -1291,11 +1286,20 @@
     }
     var td = new Date(isoOf(iso) + 'T12:00:00');
     $('tickDate').textContent = 'Sunday, ' + td.getDate() + ' ' + MONTHS[td.getMonth()];
-    $('tickCity').textContent = cityFor(iso);
+    var named = cityFor(iso);
+    $('tickCity').textContent = named;
+    $('tickIn').style.display = named ? '' : 'none';
+    $('tickCan').style.display = named ? 'none' : '';
   }
 
   setTick(sundayISO);
-  $('stickyDate').textContent = 'Sun ' + dateShort;
+  /* The rail names the next Sunday that is running, not a closed one. */
+  var railDay = new Date(sunday);
+  while (window.SMBC_CITY && window.SMBC_CITY.closedAt &&
+         window.SMBC_CITY.closedAt(railDay.getFullYear() + '-' + pad(railDay.getMonth() + 1) + '-' + pad(railDay.getDate()))) {
+    railDay.setDate(railDay.getDate() + 7);
+  }
+  $('stickyDate').textContent = 'Sun ' + railDay.getDate() + ' ' + MONTHS[railDay.getMonth()].slice(0, 3);
 
   /* ── the travelling Sundays, named in the hero ──
      The capsules ship in the HTML too, so the hero is right with no JS at all.
@@ -1904,6 +1908,8 @@
         var value = rooms.length > 1 ? iso + '@' + rooms[j] : iso;
         var st = stateFor(SUNDAY_LOAD[iso]);
         var state = st.state, tone = st.tone, full = st.full;
+        var closed = window.SMBC_CITY && window.SMBC_CITY.closedAt ? window.SMBC_CITY.closedAt(iso) : '';
+        if (closed) { state = closed; tone = 'gone'; full = true; }
         var id = 'd' + k + (rooms.length > 1 ? '_' + j : '');
         var inp = document.createElement('input');
         inp.type = 'radio'; inp.name = 'sunday_pick'; inp.id = id; inp.value = value;
@@ -1915,7 +1921,7 @@
         lab.innerHTML = '<s>' + pad(k + 1) + '</s>' +
                         '<b>' + pad(d.getDate()) + '</b>' +
                         '<u>' + MONTHS[d.getMonth()].slice(0, 3) + '</u>' +
-                        '<em>' + city + '</em>' +
+                        (city ? '<em>' + city + '</em>' : '') +
                         '<i class="' + tone + '">' + (state || 'Open') + '</i>';
         if (k >= SHOWN) { inp.hidden = true; lab.hidden = true; }
         wrap.appendChild(inp); wrap.appendChild(lab);
@@ -1959,6 +1965,7 @@
             /* A city tile asks about its own room: the CRM answers "date@city". */
             var key = inp.value.indexOf('@') > 0 ? isoOf(inp.value) + '@' + cityFor(inp.value).toLowerCase() : inp.value;
             if (!(key in data)) return;
+            if (window.SMBC_CITY && window.SMBC_CITY.closedAt && window.SMBC_CITY.closedAt(isoOf(inp.value))) return;
             var st = stateFor(data[key]), lab = wrap.querySelector('label[for="' + inp.id + '"]');
             if (!lab) return;
             var i = lab.querySelector('i');
@@ -2108,7 +2115,7 @@
       try { navigator.sendBeacon(ENDPOINT, new URLSearchParams(row)); } catch (e) {}
       var d = new Date(isoOf(chosenISO) + 'T00:00:00Z');
       var waText = 'Hey, I have been to Sunday Morning Build Club before and I\u2019d like to come again - ' +
-        d.getUTCDate() + ' ' + MONTHS[d.getUTCMonth()].slice(0, 3) + ' - ' + city;
+        d.getUTCDate() + ' ' + MONTHS[d.getUTCMonth()].slice(0, 3) + (city ? ' - ' + city : '');
       var waURL = 'https://wa.me/' + WA_NUMBER + '?text=' + encodeURIComponent(waText);
       $('f').style.display = 'none';
       $('againLine').style.display = 'none';

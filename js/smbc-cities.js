@@ -22,10 +22,21 @@
     '2026-10-25': 'Ahmedabad',
     '2026-11-01': 'Ahmedabad',
     '2026-11-08': 'Ahmedabad',
-    '2026-11-15': 'Surat',
+    '2026-11-15': 'Ahmedabad',
     '2026-11-22': 'Jaipur',
     '2026-11-29': 'Mumbai'
   };
+
+  /* Manav, 2026-11-04: no room on 8 November, it is Diwali. A Sunday here
+     shows these words on its tile and cannot be picked, whatever the CRM says. */
+  var CLOSED_BY_SUNDAY = {
+    '2026-11-08': 'Diwali break'
+  };
+
+  /* Manav, 2026-11-04: Sundays after this one do not name a city in public.
+     The lines above and below stay as the plan. To name them again, move this
+     date. */
+  var CITY_SHOWN_UNTIL = '2026-11-15';
 
   /* Sundays that run in more than one city at once. Manav's plan, set
      2026-10-22: from December every city runs every other Sunday, in two
@@ -49,6 +60,7 @@
 
   function citiesAt(iso) {
     var d = String(iso || '').slice(0, 10);
+    if (CLOSED_BY_SUNDAY[d] || d > CITY_SHOWN_UNTIL) return [];
     if (d >= EVERY_CITY_FROM) return CITIES.slice();
     if (PAIRS_BY_SUNDAY[d]) return PAIRS_BY_SUNDAY[d].slice();
     return [BY_SUNDAY[d] || DEFAULT_CITY];
@@ -60,14 +72,24 @@
     '2026-10-18': 1999
   };
 
+  var SHOWN_BY_SUNDAY = {};
+  Object.keys(BY_SUNDAY).forEach(function (d) {
+    if (d <= CITY_SHOWN_UNTIL) SHOWN_BY_SUNDAY[d] = BY_SUNDAY[d];
+  });
+
   root.SMBC_CITY = {
     fallback: DEFAULT_CITY,
-    bySunday: BY_SUNDAY,
+    bySunday: SHOWN_BY_SUNDAY,
+    closedAt: function (iso) {
+      return CLOSED_BY_SUNDAY[String(iso || '').slice(0, 10)] || '';
+    },
     priceAt: function (iso) {
       return PRICE_BY_SUNDAY[String(iso || '').slice(0, 10)] || 0;
     },
     at: function (iso) {
-      return BY_SUNDAY[String(iso || '').slice(0, 10)] || citiesAt(iso)[0];
+      var d = String(iso || '').slice(0, 10);
+      if (d > CITY_SHOWN_UNTIL) return '';
+      return BY_SUNDAY[d] || citiesAt(d)[0] || '';
     },
     cities: citiesAt,
     all: CITIES.slice()
