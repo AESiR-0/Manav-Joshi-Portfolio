@@ -769,12 +769,9 @@ body.edit [data-k]:focus{outline:1px dashed var(--flame);background:rgba(0,0,0,.
           why:guest.why, status:'new'
         })
       }).catch(function () {});
-      /* The CRM's own door, so this request is a person in the CRM and not only a row in the Sheet. */
-      navigator.sendBeacon('https://smbc-crm2.manavjoshi01.workers.dev/api/apply', new Blob([JSON.stringify({ form:'roast', name:guest.name, phone:guest.phone, why:guest.why })], { type:'text/plain' }));
     } catch (err) { /* the row is lost; the guest still sees they are in */ }
   }
 })();
 </script>
-<script defer src="https://chemistrylabs.in/js/s.js"></script>
 </body>
 </html>

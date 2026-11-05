@@ -430,8 +430,6 @@ form{margin-top:24px;display:flex;flex-direction:column;gap:16px}
           status: 'new'
         })
       }).catch(function () {});
-      /* The CRM's own door, so this request is a person in the CRM and not only a row in the Sheet. */
-      navigator.sendBeacon('https://smbc-crm2.manavjoshi01.workers.dev/api/apply', new Blob([JSON.stringify({ form:'mafia', name:guest.name, phone:guest.phone, why:guest.why, from_city:guest.from_city })], { type:'text/plain' }));
     } catch (err) { /* the WhatsApp message still carries everything */ }
   }
 
@@ -516,6 +514,5 @@ form{margin-top:24px;display:flex;flex-direction:column;gap:16px}
 })();
 </script>
 <script src="/js/city-wheel.js" defer></script>
-<script defer src="https://chemistrylabs.in/js/s.js"></script>
 </body>
 </html>
