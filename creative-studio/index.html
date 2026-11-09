@@ -17,7 +17,7 @@ form.no{animation:s .36s}@keyframes s{25%{transform:translateX(-7px)}50%{transfo
 <script>
 const ITER=600000,f=document.getElementById('f'),p=document.getElementById('p'),b=document.getElementById('b'),e=document.getElementById('e');
 async function open(pw){const v=new Uint8Array(await (await fetch('vault.bin',{cache:'no-cache'})).arrayBuffer());const base=await crypto.subtle.importKey('raw',new TextEncoder().encode(pw),'PBKDF2',false,['deriveKey']);const key=await crypto.subtle.deriveKey({name:'PBKDF2',hash:'SHA-256',salt:v.slice(0,16),iterations:ITER},base,{name:'AES-GCM',length:256},false,['decrypt']);const out=await crypto.subtle.decrypt({name:'AES-GCM',iv:v.slice(16,28)},key,v.slice(28));return JSON.parse(new TextDecoder().decode(out))}
-function show(a){const s=document.createElement('style');s.textContent=a.css;document.querySelector('style').replaceWith(s);document.body.innerHTML=a.body;for(const src of [a.studio,a.app]){const t=document.createElement('script');t.textContent=src;document.body.append(t)}}
+function show(a){document.open();document.write(a.html);document.close()}
 f.onsubmit=async x=>{x.preventDefault();b.disabled=true;e.textContent='';try{const a=await open(p.value);try{sessionStorage.setItem('cs',p.value)}catch(_){}show(a)}catch(_){e.textContent="That password didn't work.";f.classList.remove('no');void f.offsetWidth;f.classList.add('no');p.select();b.disabled=false}};
 try{const s=sessionStorage.getItem('cs');if(s)open(s).then(show).catch(()=>{})}catch(_){}
 </script></body></html>
