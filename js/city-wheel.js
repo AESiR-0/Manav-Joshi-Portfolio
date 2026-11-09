@@ -154,8 +154,8 @@
   function sundays(n) {
     var now = new Date(), d = new Date(now);
     d.setDate(now.getDate() + ((7 - now.getDay()) % 7));
-    /* Same cut-over as the Sunday page: the room ends at 1 pm. */
-    if (now.getDay() === 0 && now.getHours() >= 13) d.setDate(d.getDate() + 7);
+    /* Same cut-over as the Sunday page: the room ends at 2 pm. */
+    if (now.getDay() === 0 && now.getHours() >= 14) d.setDate(d.getDate() + 7);
     var out = [];
     for (var k = 0; k < n; k++) {
       var x = new Date(d); x.setDate(d.getDate() + 7 * k);
