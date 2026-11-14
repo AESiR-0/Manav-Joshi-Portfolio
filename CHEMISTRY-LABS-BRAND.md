@@ -67,7 +67,7 @@ The text reads `chemistry` on the first line and `labs.` on the second.
 
 - **Inform, don't sell, but make them feel it.** No "please apply" pushes. Do convey the vibe: the reader should feel they get it, can't wait to join, and wish they'd found it sooner. Lead with their problem, then the promise.
 - Write as "we", warm and plain: "We meet every week." "We bring in experts." "We're so excited to have you."
-- Flow: here's what we're doing → this → that → what we ask of you → good to know → we're excited to have you.
+- Flow: their problem → our promise → how we do it → why it works → they're not alone → warm close.
 - Leave out pitch lines, fear-based hooks ("stop building alone"), "apply now" pushes and scarcity talk.
 - One idea per line. Concrete over abstract.
 
