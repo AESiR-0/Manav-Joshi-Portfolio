@@ -65,7 +65,7 @@ The text reads `chemistry` on the first line and `labs.` on the second.
 
 ## 4. Tone
 
-- **Inform, don't sell.** People already know the program is good. Tell them what we're doing.
+- **Inform, don't sell, but make them feel it.** No "please apply" pushes. Do convey the vibe: the reader should feel they get it, can't wait to join, and wish they'd found it sooner. Lead with their problem, then the promise.
 - Write as "we", warm and plain: "We meet every week." "We bring in experts." "We're so excited to have you."
 - Flow: here's what we're doing → this → that → what we ask of you → good to know → we're excited to have you.
 - Leave out pitch lines, fear-based hooks ("stop building alone"), "apply now" pushes and scarcity talk.
@@ -85,14 +85,33 @@ The text reads `chemistry` on the first line and `labs.` on the second.
 
 ## 6. Programs (facts to reuse)
 
-**Venture Catalyst**
-- 8-week online program for founders building a company.
-- Small group, once a week, everyone together.
-- Each founder shares what their company did that week and what it does next.
-- Subject matter experts run sessions on common problems: marketing, finance, branding, tech and more.
-- Starts the first week of every month.
+**Venture Catalyst** — the Chemistry Labs accelerator
+
+*The core (say this, not logistics):*
+- The promise: months of work, done in eight weeks.
+- Day one: the founder sets one goal for the two months. We break it down and go after a piece of it every week.
+- What makes it work:
+  - a clear goal
+  - a clear direction
+  - mentors who've done it (practitioners only, people who've solved the problem in real life)
+  - accountability (us, plus the other founders)
+- Ambitious founders building together, every week. That's where things move.
+- Mentorship covers marketing, finance, branding, tech, and whatever they're stuck on.
+
+*Audience:* founders at the idea or early stage. Their problems:
+- too many priorities
+- deadlines that slip
+- advice from people who've never done it
+- building alone
+
+*One-pager story:* recognition ("how long have you been almost ready?") → promise → how it works (one goal, 8 weekly steps) → what gets you there → you're not alone → warm close ("This is officially where the good things start.").
+
+*Facts:*
+- 8 weeks, online, once a week.
+- Cohort 01 is the first cohort, so there are no past results yet. Never invent proof.
 - Fee or equity, agreed after selection.
 - Communication on WhatsApp.
+- Don't put dates or "first week of the month" on collateral unless asked.
 
 **Sunday Morning Build Club**
 - Every Sunday morning, in person.
