@@ -1,13 +1,14 @@
 # Chemistry Labs — design system
 
 Use this for anything made for Chemistry Labs: pages, one-pagers, decks, posts.
+Source of truth: the chemistrylabs.in site CSS. Its last copy in this repo is `chemistrylab/assets/index-*.css` in git history before commit `96da93c`.
 If something here conflicts with a newer instruction from Manav, Manav wins. Update this file when that happens.
 
 ---
 
 ## 1. Logo
 
-**Always use the logo file. Never type the logo out in a font.** Typing it out changes the weight. It is a medium weight, not bold or black.
+**Always use the logo file. Never type the logo out in a font.** It's a fixed piece of artwork.
 
 The text reads `chemistry` on the first line and `labs.` on the second.
 
@@ -17,11 +18,11 @@ The text reads `chemistry` on the first line and `labs.` on the second.
 |---|---|---|---|
 | Green | `#29741D` | Green, same as the text | `assets/logos/chemistry-labs.png` |
 | White | White | White, same as the text | `assets/logos/chemistry-labs-white.png` |
-| White + red dot | White | Red | *No file yet. Ask Manav for the red.* |
+| White + red dot | White | Red `#FF2D55` | `assets/logos/chemistry-labs-white-red.png` |
 
 - The dot is always the same colour as the text, except in the white + red dot version.
-- **No other versions.** No yellow dot. No green text with a different dot. No recolouring beyond the table.
-- Use white versions on dark green. Use the green version on paper or cream.
+- **No other versions.** No yellow dot. No other dot colours. No recolouring beyond the table.
+- The white + red dot version goes with Venture Catalyst, whose accent is red.
 
 `assets/logos/chemistry-lab.png` is the same file as `chemistry-labs.png`.
 `chemistrylab/images/logo.png` reads "chemistry lab." (old, singular). Don't use it.
@@ -30,62 +31,87 @@ The text reads `chemistry` on the first line and `labs.` on the second.
 
 ## 2. Colour
 
+### Base (every page)
+
 | Token | Value | Use |
 |---|---|---|
-| Logo green | `#29741D` | Logo, small accents (numbers, icons, dots) |
-| Deep green (bg) | `hsl(111 60% 11%)` | Dark bands, headers, footers |
-| Paper | `hsl(37 76% 97%)` | Page background |
-| Tint | `hsl(37 50% 93%)` | Soft cards and pills on paper |
-| Rule | `hsl(37 22% 84%)` | Hairlines on paper |
-| Ink | `hsl(111 40% 9%)` | Main text on paper |
-| Mid | `hsl(111 8% 36%)` | Secondary text on paper |
-| Soft | `hsl(37 16% 76%)` | Secondary text on deep green |
-| Red | `hsl(356 77% 42%)` | From the old site. Confirm before use. |
+| `--desk` | `#172a12` | Background. The brand is dark green. |
+| `--paper` / `--ink-1` | `#fdf8f0` | Main text, headlines |
+| `--ink-2` | `rgba(253,248,240,.86)` | Body copy, leads |
+| `--ink-3` | `rgba(253,248,240,.56)` | Labels, secondary text |
+| `--ink-4` | `rgba(253,248,240,.34)` | Faint text, quiet icons |
+| `--line` | `rgba(253,248,240,.14)` | Hairlines |
+| `--line-2` | `rgba(253,248,240,.24)` | Stronger lines, pill borders |
+| Surface | `rgba(253,248,240,.06)` | Cards and boxes on the desk |
 
-- Green and cream do the work. Use green as the only accent on a page.
-- Yellow (`hsl(48 100% 47%)`) was used on older pages. Never use it on the logo. Avoid it as an accent unless Manav asks for it.
+Text is always paper at different see-through levels. Don't introduce new greys.
+
+### One accent per program
+
+| Program | Accent |
+|---|---|
+| Chemistry Labs (home) | `#3F732B` (text version `#79BD59`) |
+| Venture Catalyst | `#FF2D55` |
+| Sunday Morning Build Club | `#F5EE23` |
+| Calendar | `#38BDF8` |
+| Practicals / Sleepovers | `#A78BFA` |
+
+- Use only that program's accent on its pages. Use it sparingly:
+  - full stops at the end of headings
+  - one highlighted phrase
+  - the short line in front of labels
+  - one key shape
+- Body text and icons stay in paper ink.
 
 ---
 
 ## 3. Type
 
-**Helvetica Now Display.** Files are in `chemistrylab/fonts/` and `assets/fonts/`.
+**Helvetica Now Display.** Files are in `chemistrylab/fonts/`: Regular, Medium, Bold, Black.
 
-| Weight | Use |
-|---|---|
-| Regular 400 | The calm voice: headlines, body, almost everything |
-| Medium 500 | Labels, chips, buttons, small bold-ish emphasis |
-| Black 900 | Rare emphasis only. **Never for headlines by default.** |
+| Element | Weight | Details |
+|---|---|---|
+| Headlines, titles | **Bold 700** | Tracking about -0.024em, tight line-height (1.1–1.18) |
+| Body, leads | Regular 400 | `--ink-2`, measure about 44–60ch |
+| Chips, buttons, small names | Medium 500 | |
+| Labels | Bold 700 | 0.16em tracking, uppercase, `--ink-3` |
+| Black 900 | Avoid | |
 
-- Large headlines are Regular with tight tracking (about -0.03em).
-- Small uppercase labels: Medium, tracking +0.14em.
-- Handwritten accent font on older pages: Schoolbell. Optional, use sparingly.
+**Signature moves**
+- **Headings end with a full stop in the accent colour**, e.g. "Venture Catalyst." with a red full stop. The site uses `<span class="dot">.</span>`.
+- **Highlight one phrase in the accent colour** (the `.hi` class), e.g. "Rooms for your most *ambitious* experiments."
+- **Labels have a short accent line in front:** 28px wide, 2px high (`.rule-lead`).
+- Handwritten accent: Schoolbell, used rarely, e.g. the footer note "I approve of your stupid ideas."
 
 ---
 
-## 4. Tone
+## 4. Shapes & layout
 
-- **Inform, don't sell, but make them feel it.** No "please apply" pushes. Do convey the vibe: the reader should feel they get it, can't wait to join, and wish they'd found it sooner. Lead with their problem, then the promise.
-- Write as "we", warm and plain: "We meet every week." "We bring in experts." "We're so excited to have you."
+- Radius: 14px for cards, pills fully round, 2px for small marks.
+- "Rule-box": a 6px accent bar on top, rounded bottom corners, surface background. Use it for one feature box.
+- Use hairlines (`--line`) to separate sections. No drop shadows.
+- Spacing scale: 4, 8, 12, 16, 24, 32, 48, 64.
+- Numbered rows (`01`, `02` …) with a thin left line.
+- Photography: real Chemistry Labs rooms and people, with a dark green tint. Don't show in-person photos for something that happens online.
+
+---
+
+## 5. Tone
+
+- **Inform, don't sell, but make them feel it.** No "please apply" pushes.
+  - Convey the vibe: the reader should feel they get it, can't wait to join, and wish they'd found it sooner.
+  - Lead with their problem, then the promise.
+- Write as "we", warm and plain.
 - Flow: their problem → our promise → how we do it → why it works → they're not alone → warm close.
-- Leave out pitch lines, fear-based hooks ("stop building alone"), "apply now" pushes and scarcity talk.
+- Leave out "apply now" pushes and scarcity talk.
 - One idea per line. Concrete over abstract.
-
----
-
-## 5. Layout
-
-- Mostly paper/cream, with deep green bands at the top and bottom.
-- Thin hairlines instead of boxes and shadows. Generous whitespace.
-- Numbered sections (`01`, `02` …) in logo green, with headline left and detail right.
-- Simple line icons (1.8 stroke) in logo green.
-- Keep visuals simple: one timeline, one row of pills, a few soft cards. No word clouds.
+- Never invent proof, results or numbers.
 
 ---
 
 ## 6. Programs (facts to reuse)
 
-**Venture Catalyst** — the Chemistry Labs accelerator
+**Venture Catalyst** — the Chemistry Labs accelerator. Accent `#FF2D55`.
 
 *The core (say this, not logistics):*
 - The promise: months of work, done in eight weeks.
@@ -108,13 +134,15 @@ The text reads `chemistry` on the first line and `labs.` on the second.
 
 *Facts:*
 - 8 weeks, online, once a week.
-- Cohort 01 is the first cohort, so there are no past results yet. Never invent proof.
+- Cohort 01 is the first cohort, so there are no past results yet.
 - Fee or equity, agreed after selection.
 - Communication on WhatsApp.
 - Don't put dates or "first week of the month" on collateral unless asked.
 
-**Sunday Morning Build Club**
+**Sunday Morning Build Club** — accent `#F5EE23`
 - Every Sunday morning, in person.
 - Cities: Ahmedabad, Surat, Jaipur, Mumbai (as of Oct 2026).
+
+**Chemistry Labs** — "Rooms for your most ambitious experiments." An invite-only build club for founders, creators and the unusually ambitious.
 
 Site: chemistrylabs.in
