@@ -124,13 +124,24 @@ Text is always paper at different see-through levels. Don't introduce new greys.
 - Ambitious founders building together, every week. That's where things move.
 - Mentorship covers marketing, finance, branding, tech, and whatever they're stuck on.
 
-*Audience:* founders at the idea or early stage. Their problems:
+*What Chemistry Labs actually provides (answer "what do I get?" with this):*
+- Day one: goal setting. One goal for the two months, broken into weekly targets.
+- Group session at a fixed time every week, with the cohort.
+- Expert sessions on specific problems, led by senior practitioners from internet-famous brands, listed companies and legacy businesses. Never name mentors: they're picked per problem, when it comes up.
+- One-on-one time with Manav and selected mentors, when needed.
+- After the accelerator, where Chemistry Labs holds equity: consulting fortnightly or monthly, more often when needed.
+- Topics vary by company, e.g. financial modelling, go-to-market strategy, sales funnels, tech automation, community building, product–market fit.
+- Founders often ask "what services or expertise do I get?" before signing over equity. Collateral must answer that plainly, not only sell the feeling.
+
+*Audience:* founders at the idea or early stage. This includes people running a business for years whose revenue still isn't steady. Their problems:
 - too many priorities
 - deadlines that slip
 - advice from people who've never done it
+- revenue that comes and goes
 - building alone
 
-*One-pager story:* recognition ("how long have you been almost ready?") → promise → how it works (one goal, 8 weekly steps) → what gets you there → you're not alone → warm close ("This is officially where the good things start.").
+*One-pager story (front):* recognition ("how long have you been almost ready?") → promise → how it works (one goal, 8 weekly steps) → what gets you there → you're not alone → warm close ("This is officially where the good things start.").
+*Back page:* "Here's exactly what we bring." Through-the-program timeline → who mentors you → what we work on → fee or equity (equity = we stay on) → "Ask us on WhatsApp."
 
 *Facts:*
 - 8 weeks, online, once a week.
