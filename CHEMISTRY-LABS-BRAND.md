@@ -65,6 +65,25 @@ Text is always paper at different see-through levels. Don't introduce new greys.
 
 ---
 
+### Rule: one theme per piece, never pink and green together (Manav, Nov 2026)
+
+For printed or shared collateral (PDFs, one-pagers), pick one of these and stick to it:
+- **Light green (default for print):**
+  - background: very light grey `#F3F4F1`
+  - cards: white
+  - text: near-black `#121612`
+  - accent: logo green `#29741D`
+  - logo: the green version
+- **Light pink:**
+  - background: white
+  - text: black
+  - accent: pink `#FF2D55`
+  - no logo version suits this yet, because the only red-dot logo is white text
+
+The dark desk theme above is the website's.
+
+Venture Catalyst one-pager v8 uses the light green theme.
+
 ## 3. Type
 
 **Helvetica Now Display.** Files are in `chemistrylab/fonts/`: Regular, Medium, Bold, Black.
