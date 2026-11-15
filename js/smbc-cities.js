@@ -24,7 +24,11 @@
     '2026-11-08': 'Ahmedabad',
     '2026-11-15': 'Ahmedabad',
     '2026-11-22': 'Jaipur',
-    '2026-11-29': 'Mumbai'
+    '2026-11-29': 'Ahmedabad',
+    '2026-12-06': 'Vadodara',
+    '2026-12-13': 'Surat',
+    '2026-12-20': 'Mumbai',
+    '2026-12-27': 'Ahmedabad'
   };
 
   /* Manav, 2026-11-04: no room on 8 November, it is Diwali. A Sunday here
@@ -35,12 +39,16 @@
 
   /* Manav, 2026-11-04: Sundays after this one do not name a city in public.
      The lines above and below stay as the plan. To name them again, move this
-     date. */
-  var CITY_SHOWN_UNTIL = '2026-11-15';
+     date. Moved to 27 December on 2026-11-16, when he gave the city for every
+     Sunday up to then. */
+  var CITY_SHOWN_UNTIL = '2026-12-27';
 
   /* Sundays that run in more than one city at once. Manav's plan, set
      2026-10-22: from December every city runs every other Sunday, in two
      pairs, three times each; from 17 January all four run every Sunday.
+
+     The December pairs were dropped 2026-11-16: he named one city per
+     Sunday through 27 December, so only January stays as a pair.
 
      Kept apart from BY_SUNDAY on purpose. The Sunday form, the seat page
      and the away-dates row all read one city per Sunday through at(), and
@@ -50,10 +58,6 @@
   var CITIES = ['Ahmedabad', 'Surat', 'Jaipur', 'Mumbai'];
   var EVERY_CITY_FROM = '2027-01-17';
   var PAIRS_BY_SUNDAY = {
-    '2026-12-06': ['Ahmedabad', 'Surat'],
-    '2026-12-13': ['Jaipur', 'Mumbai'],
-    '2026-12-20': ['Ahmedabad', 'Surat'],
-    '2026-12-27': ['Jaipur', 'Mumbai'],
     '2027-01-03': ['Ahmedabad', 'Surat'],
     '2027-01-10': ['Jaipur', 'Mumbai']
   };
