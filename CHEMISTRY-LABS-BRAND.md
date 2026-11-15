@@ -125,6 +125,9 @@ Venture Catalyst one-pager v8 uses the light green theme.
 - Leave out "apply now" pushes and scarcity talk.
 - One idea per line. Concrete over abstract.
 - Never invent proof, results or numbers.
+- Cut filler. If a word or phrase adds no information, delete it ("exactly", "we'd love to", "start to finish", "join from anywhere", "put people like that together…").
+
+**Layout rule:** never leave one item alone on a second row of chips or tiles. Put them all on one row, or split them evenly.
 
 ---
 
@@ -149,7 +152,8 @@ Venture Catalyst one-pager v8 uses the light green theme.
 - Expert sessions on specific problems, led by senior practitioners from internet-famous brands, listed companies and legacy businesses. Never name mentors: they're picked per problem, when it comes up.
 - One-on-one time with Manav and selected mentors, when needed.
 - After the accelerator, where Chemistry Labs holds equity: consulting fortnightly or monthly, more often when needed.
-- Topics vary by company, e.g. financial modelling, go-to-market strategy, sales funnels, tech automation, community building, product–market fit.
+- Built specifically for early-stage startups. Focus areas (use exactly these five): designing the offering, brand positioning, financial modelling, go-to-market, community building.
+- Mentor types (four): internet-famous brands, listed companies, legacy businesses, industry veterans.
 - Founders often ask "what services or expertise do I get?" before signing over equity. Collateral must answer that plainly, not only sell the feeling.
 
 *Audience:* founders at the idea or early stage. This includes people running a business for years whose revenue still isn't steady. Their problems:
