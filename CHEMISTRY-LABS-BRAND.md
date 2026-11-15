@@ -152,7 +152,7 @@ Venture Catalyst one-pager v8 uses the light green theme.
 - Expert sessions on specific problems, led by senior practitioners from internet-famous brands, listed companies and legacy businesses. Never name mentors: they're picked per problem, when it comes up.
 - One-on-one time with Manav and selected mentors, when needed.
 - After the accelerator, where Chemistry Labs holds equity: consulting fortnightly or monthly, more often when needed.
-- Built specifically for early-stage startups. Focus areas (use exactly these five): designing the offering, brand positioning, financial modelling, go-to-market, community building.
+- Built specifically for early-stage startups. Focus areas: designing the offering, brand positioning, financial modelling, go-to-market, community building. Always show them as examples, not a fixed list: introduce them with "Things like:" and end with "Anything else you're stuck on".
 - Mentor types (four): internet-famous brands, listed companies, legacy businesses, industry veterans.
 - Founders often ask "what services or expertise do I get?" before signing over equity. Collateral must answer that plainly, not only sell the feeling.
 
