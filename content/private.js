@@ -15,7 +15,7 @@ export const private_ = {
 
   links: [
     { label: "See what I do",   url: "#" },
-    { label: "Book me",         url: "mailto:hello@manavjoshi.com" },
+    { label: "Book me",         url: "mailto:hello@chemistrylabs.in" },
   ],
 
   photos: [

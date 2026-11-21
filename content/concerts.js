@@ -15,7 +15,7 @@ export const concerts = {
 
   links: [
     { label: "See my work",   url: "#" },
-    { label: "Book me",       url: "mailto:hello@manavjoshi.com" },
+    { label: "Book me",       url: "mailto:hello@chemistrylabs.in" },
   ],
 
   photos: [

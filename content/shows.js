@@ -15,7 +15,7 @@ export const shows = {
 
   links: [
     { label: "Watch my reel",   url: "#" },
-    { label: "Book me",         url: "mailto:hello@manavjoshi.com" },
+    { label: "Book me",         url: "mailto:hello@chemistrylabs.in" },
   ],
 
   photos: [
